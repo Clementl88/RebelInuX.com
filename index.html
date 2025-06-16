@@ -104,30 +104,29 @@ nav {
   gap: 1rem;
   margin-top: 1rem;
 }
-/* On desktop: always show nav */
-nav.desktop {
+
+/* Wrap nav in a div for toggling on mobile */
+#nav-mobile {
   display: flex;
+  flex-direction: row;
 }
-/* On mobile: hide nav by default, toggle show class to display */
-nav.mobile {
+#nav-mobile.hidden {
   display: none;
-  max-height: 0;
-  overflow: hidden;
-  flex-direction: column;
-  transition: max-height 0.3s ease;
-}
-nav.mobile.show {
-  display: flex;
-  max-height: 1000px;
 }
 
 @media(max-width:768px){
-  nav.desktop {
-    display: none;
+  #nav-mobile {
+    flex-direction: column;
+    width: 100%;
+    display: none; /* hide by default */
   }
-  nav.mobile {
+  #nav-mobile.show {
     display: flex;
   }
+}
+
+nav.desktop {
+  display: flex;
 }
 
 /* Sections styling */
@@ -351,17 +350,16 @@ footer a {
 </head>
 <body>
 
-<!-- HEADER with improved layout -->
+<!-- HEADER with toggle button -->
 <header>
   <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
     <h1 style="margin:0;">RebelInuX (REBL)</h1>
-    <!-- Toggle button only on mobile -->
     <button class="header-toggle" aria-label="Toggle Menu" style="position:absolute; right:10px; display:none;">
       <i class="fas fa-bars"></i>
     </button>
   </div>
-  <!-- Navigation: desktop always visible, mobile toggles -->
-  <nav id="nav-menu" class="desktop">
+  <!-- Navigation wrapped in div for toggle -->
+  <div id="nav-mobile" class="desktop">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#tokenomics">Tokenomics</a>
@@ -369,7 +367,7 @@ footer a {
     <a href="#features">Features</a>
     <a href="#community">Community</a>
     <a href="#contact">Contact</a>
-  </nav>
+  </div>
 </header>
 
 <!-- Hero Section -->
@@ -440,7 +438,7 @@ footer a {
   <div class="milestone left">
     <div class="circle">Q4</div>
     <div class="content">
-      <h3>Q4 2025</h3>
+      <h3>Q4</h3>
       <p>Listings & Visibility — Start exploring small exchange listings if the community and project are ready, continue outreach.</p>
     </div>
   </div>
@@ -523,7 +521,7 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for mobile menu toggle -->
+<!-- Script for toggle -->
 <script>
   const toggleButton = document.querySelector('.header-toggle');
   const navMobile = document.getElementById('nav-mobile');
@@ -542,15 +540,15 @@ footer a {
     }
   });
 
-  // handle display based on screen size
+  // Handle display on resize
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   function handleResize(e) {
     if (e.matches) {
       document.querySelector('.header-toggle').style.display = 'block';
-      document.getElementById('nav-mobile').classList.remove('show'); // hide on load
+      navMobile.classList.remove('show');
     } else {
       document.querySelector('.header-toggle').style.display = 'none';
-      document.getElementById('nav-mobile').classList.remove('show');
+      navMobile.classList.remove('show');
     }
   }
   mediaQuery.addListener(handleResize);
