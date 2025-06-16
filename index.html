@@ -120,11 +120,9 @@
     h1 {
       font-size: 1.8em;
     }
-    /* Show hamburger button, hide nav initially */
     .menu-toggle {
       display: block;
     }
-    /* Hide nav by default on mobile, toggle with class */
     nav {
       width: 100%;
       flex-direction: column;
@@ -133,7 +131,7 @@
       overflow: hidden;
     }
     nav.show {
-      max-height: 1000px; /* expand */
+      max-height: 1000px;
     }
   }
 
@@ -174,20 +172,38 @@
     margin-bottom: 10px;
     color: var(--color-primary);
   }
-  /* Timeline styles */
+
+  /* Timeline styles for roadmap */
   .timeline {
+    position: relative;
+    margin: 50px 0;
+    padding-left: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+  /* Vertical line in the center */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--color-earth);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Each milestone */
   .milestone {
+    position: relative;
     display: flex;
     align-items: center;
-    margin: 20px 0;
-    max-width: 600px;
-    width: 100%;
+    width: 80%;
+    margin: 30px 0;
   }
-  .circle {
+  /* Circles on both sides for Q2, Q3, etc. */
+  .milestone .circle {
     width: 50px;
     height: 50px;
     background-color: var(--color-earth);
@@ -197,13 +213,55 @@
     justify-content: center;
     color: #fff;
     font-weight: bold;
-    margin-right: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }
-  .content {
-    flex: 1;
+  /* Left side circle (Q2, Q4) */
+  .milestone.left {
+    justify-content: flex-start;
+  }
+  .milestone.left .circle {
+    right: -25px;
+  }
+  /* Right side circle (Q3, Q1) */
+  .milestone.right {
+    justify-content: flex-end;
+  }
+  .milestone.right .circle {
+    left: -25px;
   }
 
-  /* Additional styles for images, buttons, etc. */
+  /* Content box */
+  .milestone .content {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    width: 60%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: left;
+  }
+
+  /* Responsive adjustments */
+  @media(max-width:768px){
+    .milestone {
+      flex-direction: column;
+      width: 90%;
+    }
+    .milestone.left, .milestone.right {
+      justify-content: center;
+    }
+    .milestone .circle {
+      position: static;
+      margin: 10px 0;
+      transform: none;
+    }
+    .milestone .content {
+      width: 100%;
+    }
+  }
+
+  /* Other styles for images, buttons, etc. */
   .img-center {
     display: block;
     margin: 20px auto;
@@ -307,28 +365,28 @@
 <h2>Our Rebellion Roadmap</h2>
 <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Roadmap" class="img-center" style="max-width:600px;">
 <div class="timeline">
-  <div class="milestone">
+  <div class="milestone left">
     <div class="circle">Q2</div>
     <div class="content">
       <h3>Q2 2025</h3>
       <p>Launch & Community Building — Deploy the coin, start social media campaigns, and grow organically.</p>
     </div>
   </div>
-  <div class="milestone">
+  <div class="milestone right">
     <div class="circle">Q3</div>
     <div class="content">
       <h3>Q3 2025</h3>
       <p>Meme Campaigns & Engagement — Increase meme content, contests, and community interaction.</p>
     </div>
   </div>
-  <div class="milestone">
+  <div class="milestone left">
     <div class="circle">Q4</div>
     <div class="content">
       <h3>Q4 2025</h3>
       <p>Listings & Visibility — Start exploring small exchange listings if the community and project are ready, continue outreach.</p>
     </div>
   </div>
-  <div class="milestone">
+  <div class="milestone right">
     <div class="circle">Q1</div>
     <div class="content">
       <h3>Q1 2026</h3>
