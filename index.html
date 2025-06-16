@@ -104,11 +104,13 @@ nav {
   gap: 1rem;
   margin-top: 1rem;
 }
+/* On desktop: always show nav */
 nav.desktop {
   display: flex;
 }
+/* On mobile: hide nav by default, toggle show class to display */
 nav.mobile {
-  display: none; /* hidden on desktop, toggled on mobile */
+  display: none;
   max-height: 0;
   overflow: hidden;
   flex-direction: column;
@@ -119,7 +121,6 @@ nav.mobile.show {
   max-height: 1000px;
 }
 
-/* Show/hide mobile menu */
 @media(max-width:768px){
   nav.desktop {
     display: none;
@@ -271,13 +272,13 @@ h2 {
   display: block;
   margin: 0 auto;
 }
-/* Further reduce size for mobile screens */
+/* Make image very small on mobile screens */
 #hero .image-container img {
-  max-width: 100px; /* very small on mobile */
+  max-width: 50px; /* very small */
 }
 @media(max-width:768px){
   #hero .image-container img {
-    max-width: 80px; /* even smaller on mobile */
+    max-width: 40px; /* even smaller on mobile */
   }
 }
 .overlay {
@@ -350,16 +351,16 @@ footer a {
 </head>
 <body>
 
-<!-- HEADER with improved layout and toggle -->
+<!-- HEADER with improved layout -->
 <header>
   <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
     <h1 style="margin:0;">RebelInuX (REBL)</h1>
     <!-- Toggle button only on mobile -->
-    <button class="header-toggle" aria-label="Toggle Menu" aria-expanded="true" style="position:absolute; right:10px; display:none;">
+    <button class="header-toggle" aria-label="Toggle Menu" style="position:absolute; right:10px; display:none;">
       <i class="fas fa-bars"></i>
     </button>
   </div>
-  <!-- Navigation: always visible on large screens, toggle on mobile -->
+  <!-- Navigation: desktop always visible, mobile toggles -->
   <nav id="nav-menu" class="desktop">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
@@ -522,17 +523,17 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for header toggle on mobile -->
+<!-- Script for mobile menu toggle -->
 <script>
   const toggleButton = document.querySelector('.header-toggle');
-  const nav = document.getElementById('nav-menu');
+  const navMobile = document.getElementById('nav-mobile');
 
   // Show/hide menu on mobile
   toggleButton.addEventListener('click', () => {
-    const isShown = nav.classList.toggle('show');
+    navMobile.classList.toggle('show');
     // Change icon
     const icon = toggleButton.querySelector('i');
-    if (isShown) {
+    if (navMobile.classList.contains('show')) {
       icon.classList.remove('fa-bars');
       icon.classList.add('fa-times');
     } else {
@@ -541,21 +542,20 @@ footer a {
     }
   });
 
-  // Show toggle button only on mobile
+  // handle display based on screen size
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   function handleResize(e) {
     if (e.matches) {
-      toggleButton.style.display = "block";
-      // hide the desktop nav if needed
-      // but keep in DOM, just toggle display
+      document.querySelector('.header-toggle').style.display = 'block';
+      document.getElementById('nav-mobile').classList.remove('show'); // hide on load
     } else {
-      toggleButton.style.display = "none";
-      // ensure nav is visible
-      document.getElementById('nav-menu').classList.remove('show');
+      document.querySelector('.header-toggle').style.display = 'none';
+      document.getElementById('nav-mobile').classList.remove('show');
     }
   }
   mediaQuery.addListener(handleResize);
   handleResize(mediaQuery);
 </script>
+
 </body>
 </html>
