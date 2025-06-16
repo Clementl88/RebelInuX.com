@@ -42,7 +42,7 @@
     color: inherit;
   }
 
-  /* Make all images responsive globally */
+  /* Responsive images */
   img {
     max-width: 100%;
     height: auto;
@@ -63,7 +63,7 @@
   .header-top {
     width: 100%;
     display: flex;
-    justify-content: center; /* center header content */
+    justify-content: center; /* center header text */
     align-items: center;
     position: relative;
   }
@@ -75,14 +75,7 @@
     letter-spacing: 2px;
     text-align: center;
   }
-  /* Center header by default, add toggle button */
-  .header-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Toggle button for header menu visibility */
+  /* Toggle button for mobile menu */
   .header-toggle {
     position: absolute;
     right: 10px;
@@ -96,14 +89,13 @@
     color: var(--color-earth);
   }
 
-  /* Show toggle button on mobile */
   @media(max-width:768px){
     .header-toggle {
       display: block;
     }
   }
 
-  /* Navigation styles - always visible, toggle on mobile */
+  /* Navigation styles */
 nav {
   width: 100%;
   display: flex;
@@ -112,19 +104,28 @@ nav {
   gap: 1rem;
   margin-top: 1rem;
 }
-nav.hidden {
-  display: none;
+nav.desktop {
+  display: flex;
+}
+nav.mobile {
+  display: none; /* hidden on desktop, toggled on mobile */
+  max-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+  transition: max-height 0.3s ease;
+}
+nav.mobile.show {
+  display: flex;
+  max-height: 1000px;
 }
 
+/* Show/hide mobile menu */
 @media(max-width:768px){
-  nav {
-    max-height: 0;
-    overflow: hidden;
-    flex-direction: column;
-    transition: max-height 0.3s ease;
+  nav.desktop {
+    display: none;
   }
-  nav.show {
-    max-height: 1000px;
+  nav.mobile {
+    display: flex;
   }
 }
 
@@ -149,7 +150,7 @@ h2 {
   font-weight: 900;
 }
 
-/* Card styles */
+/* Card styling */
 .cards {
   display: flex;
   flex-wrap: wrap;
@@ -270,9 +271,14 @@ h2 {
   display: block;
   margin: 0 auto;
 }
-/* Significantly reduce size of first hero image */
+/* Further reduce size for mobile screens */
 #hero .image-container img {
-  max-width: 150px; /* much smaller size */
+  max-width: 100px; /* very small on mobile */
+}
+@media(max-width:768px){
+  #hero .image-container img {
+    max-width: 80px; /* even smaller on mobile */
+  }
 }
 .overlay {
   position: absolute;
@@ -297,7 +303,7 @@ h2 {
   text-align: center;
 }
 
-/* Call-to-action button style for emphasis */
+/* Call-to-action button style */
 .cta-button {
   display: inline-block;
   background-color: var(--color-primary);
@@ -340,27 +346,21 @@ footer a {
 .social-icons a:hover {
   color: var(--color-accent);
 }
-
-/* Responsive adjustments for hero image on mobile */
-@media(max-width:768px){
-  #hero .image-container img {
-    max-width: 100px; /* even smaller on mobile */
-  }
-}
 </style>
 </head>
 <body>
 
-<!-- HEADER with toggle option -->
+<!-- HEADER with improved layout and toggle -->
 <header>
-  <div class="header-top header-center">
-    <h1>RebelInuX (REBL)</h1>
-    <!-- Toggle button to show/hide menu -->
-    <button class="header-toggle" aria-label="Toggle Menu" aria-expanded="true">
+  <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
+    <h1 style="margin:0;">RebelInuX (REBL)</h1>
+    <!-- Toggle button only on mobile -->
+    <button class="header-toggle" aria-label="Toggle Menu" aria-expanded="true" style="position:absolute; right:10px; display:none;">
       <i class="fas fa-bars"></i>
     </button>
   </div>
-  <nav id="nav-menu" class="show">
+  <!-- Navigation: always visible on large screens, toggle on mobile -->
+  <nav id="nav-menu" class="desktop">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#tokenomics">Tokenomics</a>
@@ -522,15 +522,15 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for toggle header menu -->
+<!-- Script for header toggle on mobile -->
 <script>
   const toggleButton = document.querySelector('.header-toggle');
   const nav = document.getElementById('nav-menu');
 
-  // Toggle menu visibility
+  // Show/hide menu on mobile
   toggleButton.addEventListener('click', () => {
     const isShown = nav.classList.toggle('show');
-    // Change icon accordingly
+    // Change icon
     const icon = toggleButton.querySelector('i');
     if (isShown) {
       icon.classList.remove('fa-bars');
@@ -540,6 +540,22 @@ footer a {
       icon.classList.add('fa-bars');
     }
   });
+
+  // Show toggle button only on mobile
+  const mediaQuery = window.matchMedia("(max-width: 768px)");
+  function handleResize(e) {
+    if (e.matches) {
+      toggleButton.style.display = "block";
+      // hide the desktop nav if needed
+      // but keep in DOM, just toggle display
+    } else {
+      toggleButton.style.display = "none";
+      // ensure nav is visible
+      document.getElementById('nav-menu').classList.remove('show');
+    }
+  }
+  mediaQuery.addListener(handleResize);
+  handleResize(mediaQuery);
 </script>
 </body>
 </html>
