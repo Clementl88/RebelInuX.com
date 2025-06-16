@@ -42,7 +42,7 @@
     color: inherit;
   }
 
-  /* Make all images responsive */
+  /* Make all images responsive globally */
   img {
     max-width: 100%;
     height: auto;
@@ -72,7 +72,9 @@
     font-weight: 900;
     color: var(--color-accent);
     letter-spacing: 2px;
+    text-align: center;
   }
+
   /* Hamburger menu for mobile */
   .menu-toggle {
     display: none;
@@ -82,6 +84,8 @@
     border: none;
     color: var(--color-earth);
   }
+
+  /* Navigation menu styles */
   nav {
     width: 100%;
     display: flex;
@@ -91,226 +95,231 @@
     margin-top: 1rem;
     transition: max-height 0.3s ease;
   }
-  /* Hidden by default on mobile, visible on desktop */
+  /* Hidden by default on mobile, visible on toggle */
+  nav {
+    display: flex;
+  }
   nav.hidden {
     display: none;
   }
-  /* Show class toggles display on mobile */
-  nav.show {
-    display: flex;
-  }
-
-  nav a {
-    font-weight: 700;
-    font-size: 1.2em;
-    padding: 0.5em 1em;
-    transition: color 0.3s, transform 0.2s;
-    color: var(--color-earth);
-  }
-  nav a:hover {
-    color: var(--color-hover);
-    transform: scale(1.05);
-  }
-
-  /* Media queries for mobile */
   @media(max-width:768px){
-    header {
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-    }
-    h1 {
-      font-size: 1.8em;
-    }
     .menu-toggle {
       display: block;
     }
     nav {
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
       max-height: 0;
       overflow: hidden;
-      display: none; /* hide by default */
+      flex-direction: column;
+      width: 100%;
+      transition: max-height 0.3s ease;
     }
     nav.show {
-      display: flex;
-      max-height: 1000px; /* expand on toggle */
+      max-height: 1000px; /* expand when toggled */
     }
-    /* Limit images in sections on mobile for better fit */
-    section img {
-      max-width: 90%;
-    }
-    /* Specifically for hero image, set max-width to 100% to ensure it scales down */
-    .hero-img {
-      max-width: 100%;
+    nav a {
+      font-size: 1.5em;
+      padding: 10px 0;
     }
   }
 
-  section {
-    padding: 3rem 1rem;
-    max-width: 1200px;
-    margin: auto;
-    text-align: center;
-  }
-  h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: var(--color-earth);
-    border-bottom: 3px solid var(--color-earth);
-    display: inline-block;
-    padding-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 900;
-  }
+  /* Section styles */
+section {
+  padding: 3rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
 
-  /* Card styles */
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  .card {
-    background: var(--color-card-bg);
-    padding: 20px;
-    border-radius: 10px;
-    width: 250px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-  .card i {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: var(--color-primary);
-  }
+/* Heading styles */
+h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--color-earth);
+  border-bottom: 3px solid var(--color-earth);
+  display: inline-block;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
 
-  /* Timeline styles for roadmap */
-  .timeline {
-    position: relative;
-    margin: 50px 0;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  /* Vertical line in the center */
-  .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: var(--color-earth);
-    left: 50%;
-    transform: translateX(-50%);
-  }
+/* Card styles */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.card {
+  background: var(--color-card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.card i {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+}
 
-  /* Each milestone */
+/* Timeline styles */
+.timeline {
+  position: relative;
+  margin: 50px 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-earth);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.milestone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 30px 0;
+}
+.milestone .circle {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-earth);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.milestone.left {
+  justify-content: flex-start;
+}
+.milestone.left .circle {
+  right: -25px;
+}
+.milestone.right {
+  justify-content: flex-end;
+}
+.milestone.right .circle {
+  left: -25px;
+}
+.milestone .content {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  width: 60%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: left;
+}
+@media(max-width:768px){
   .milestone {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 80%;
-    margin: 30px 0;
+    flex-direction: column;
+    width: 90%;
   }
-  /* Circles on both sides for Q2, Q4, etc. */
-  .milestone .circle {
-    width: 50px;
-    height: 50px;
-    background-color: var(--color-earth);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
+  .milestone.left, .milestone.right {
     justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
   }
-  /* Left side circle (Q2, Q4) */
-  .milestone.left {
-    justify-content: flex-start;
+  .milestone .circle {
+    position: static;
+    margin: 10px 0;
+    transform: none;
   }
-  .milestone.left .circle {
-    right: -25px;
-  }
-  /* Right side circle (Q3, Q1) */
-  .milestone.right {
-    justify-content: flex-end;
-  }
-  .milestone.right .circle {
-    left: -25px;
-  }
-
-  /* Content box */
   .milestone .content {
-    background: #fff;
-    padding: 15px 20px;
-    border-radius: 8px;
-    width: 60%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: left;
+    width: 100%;
   }
+}
 
-  /* Responsive adjustments for timeline */
-  @media(max-width:768px){
-    .milestone {
-      flex-direction: column;
-      width: 90%;
-    }
-    .milestone.left, .milestone.right {
-      justify-content: center;
-    }
-    .milestone .circle {
-      position: static;
-      margin: 10px 0;
-      transform: none;
-    }
-    .milestone .content {
-      width: 100%;
-    }
-  }
+/* Image overlay for attraction */
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+}
+.image-container img {
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.image-container:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right:0; bottom:0;
+  background: rgba(0,0,0,0.4);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.image-container:hover .overlay {
+  opacity: 1;
+}
+.overlay-text {
+  color: #fff;
+  font-size: 1.3em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  text-align: center;
+  padding: 10px;
+}
 
-  /* Other styles for images, buttons, etc. */
-  .img-center {
-    display: block;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    max-width: 100%;
-    height: auto;
-  }
-  .cta-button {
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: #fff;
-    padding: 12px 30px;
-    border-radius: 25px;
-    font-weight: 700;
-    margin-top: 20px;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  .cta-button:hover {
-    background-color: var(--color-hover);
-    transform: scale(1.05);
-  }
+/* Call to action button styling */
+.cta-button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 700;
+  margin-top: 20px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.cta-button:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
 
-  /* Footer styles */
-  footer {
-    background: var(--color-footer);
-    padding: 2rem 1rem;
-    text-align: center;
+/* Footer styles */
+footer {
+  background: var(--color-footer);
+  padding: 2rem 1rem;
+  text-align: center;
+}
+footer h3 {
+  margin-bottom: 10px;
+}
+footer a {
+  margin: 0 10px;
+  font-size: 2em;
+}
+
+/* Responsive image overlay text for mobile */
+@media(max-width:768px){
+  .overlay-text {
+    font-size: 1em;
   }
-  footer h3 {
-    margin-bottom: 10px;
-  }
-  /* Social icons in footer */
-  footer a {
-    margin: 0 10px;
-    font-size: 2em;
-  }
+}
 </style>
 </head>
 <body>
@@ -336,7 +345,12 @@
 <!-- Hero -->
 <section id="hero">
 <h2>🔥 THE REBELLIOUS, EARTHY MEME COIN INSPIRED BY THE DOG THAT RIPS THE RULES! 🔥</h2>
-<img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" class="img-center hero-img" style="max-width:600px;">
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:600px;">
+  <div class="overlay">
+    <div class="overlay-text">Join the Meme Revolution!</div>
+  </div>
+</div>
 <p>"Inspired by the fearless, rebellious spirit of Shiba Inu, RebelInuX is here to shake up crypto with attitude, memes, and decentralized power."</p>
 <a href="#community" class="cta-button">JOIN THE REBELLION</a>
 </section>
@@ -344,7 +358,12 @@
 <!-- About -->
 <section id="about">
 <h2>What is RebelInuX?</h2>
-<img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" class="img-center" style="max-width:300px;">
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Powerful & Rebellious!</div>
+  </div>
+</div>
 <p><strong>RebelInuX</strong> is more than a meme coin — it’s a <strong>movement of wild, rebellious crypto warriors</strong> inspired by the fierce spirit of the dog in the picture. We’re breaking rules, shaking norms, and building a decentralized revolution rooted in earthy, natural tones.</p>
 <h3>Our Mission</h3>
 <p>Unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto — making noise, shaking walls, and building a community that refuses to conform.</p>
@@ -353,13 +372,11 @@
 <!-- Tokenomics -->
 <section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;">
 <h2 style="text-align:center;">Tokenomics</h2>
-<!-- Max Supply Card -->
 <div style="max-width:500px; margin:auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
 <h3 style="margin-bottom:15px;">Max Supply</h3>
 <p style="font-size:1.4em; font-weight:bold;">13,000,000,000</p>
 <p style="margin-top:10px;">(Thirteen Billion — a rebellious number!)</p>
 </div>
-<!-- Decentralization & Security -->
 <div style="max-width:700px; margin:auto; margin-top:40px; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
 <h3 style="text-align:center; margin-bottom:20px;">Decentralization & Security</h3>
 <p style="line-height:1.6;">In our commitment to transparency and decentralization, the project has renounced the <strong>Freeze Authority</strong>, <strong>Mint Authority</strong>, and <strong>Update Authority</strong>. This means:</p>
@@ -372,10 +389,9 @@
 </div>
 </section>
 
-<!-- Roadmap (no picture) -->
+<!-- Roadmap -->
 <section id="roadmap">
 <h2>Our Rebellion Roadmap</h2>
-<!-- No image here now -->
 <div class="timeline">
   <div class="milestone left">
     <div class="circle">Q2</div>
@@ -434,7 +450,12 @@
 <!-- Community & Socials -->
 <section id="community">
 <h2>Join the Rebellion</h2>
-<img src="https://i.imgur.com/beM4V8X.png" alt="Community" class="img-center" style="max-width:300px;">
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="Community" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Unite with Rebels!</div>
+  </div>
+</div>
 <p>Connect with us on our rebellious platforms and become part of the wildest crypto movement!</p>
 <div class="social-icons" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
   <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
@@ -452,7 +473,12 @@
 <!-- Contact -->
 <section id="contact">
 <h2>Rebel Contact</h2>
-<img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" class="img-center" style="max-width:250px;">
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" style="max-width:250px;">
+  <div class="overlay">
+    <div class="overlay-text">Reach Out & Rebel!</div>
+  </div>
+</div>
 <p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
 </section>
 
