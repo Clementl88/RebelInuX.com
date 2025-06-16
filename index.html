@@ -63,8 +63,9 @@
   .header-top {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* center header content */
     align-items: center;
+    position: relative;
   }
   h1 {
     margin: 0;
@@ -74,9 +75,19 @@
     letter-spacing: 2px;
     text-align: center;
   }
+  /* Center header by default, add toggle button */
+  .header-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-  /* Hamburger menu for mobile */
-  .menu-toggle {
+  /* Toggle button for header menu visibility */
+  .header-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     display: none;
     font-size: 1.5em;
     cursor: pointer;
@@ -85,34 +96,39 @@
     color: var(--color-earth);
   }
 
-  /* Navigation styles - always visible on desktop, togglable on mobile */
-  nav {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  /* Hide menu toggle on desktop */
+  /* Show toggle button on mobile */
   @media(max-width:768px){
-    .menu-toggle {
+    .header-toggle {
       display: block;
     }
-    nav {
-      max-height: 0;
-      overflow: hidden;
-      flex-direction: column;
-      width: 100%;
-      transition: max-height 0.3s ease;
-    }
-    nav.show {
-      max-height: 1000px;
-    }
   }
 
-  /* Sections styling */
+  /* Navigation styles - always visible, toggle on mobile */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+nav.hidden {
+  display: none;
+}
+
+@media(max-width:768px){
+  nav {
+    max-height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    transition: max-height 0.3s ease;
+  }
+  nav.show {
+    max-height: 1000px;
+  }
+}
+
+/* Sections styling */
 section {
   padding: 3rem 1.5rem;
   max-width: 1200px;
@@ -254,9 +270,9 @@ h2 {
   display: block;
   margin: 0 auto;
 }
-/* Reduce size of first hero image */
+/* Significantly reduce size of first hero image */
 #hero .image-container img {
-  max-width: 300px; /* smaller size for hero image */
+  max-width: 150px; /* much smaller size */
 }
 .overlay {
   position: absolute;
@@ -328,18 +344,19 @@ footer a {
 /* Responsive adjustments for hero image on mobile */
 @media(max-width:768px){
   #hero .image-container img {
-    max-width: 200px; /* even smaller on mobile if needed */
+    max-width: 100px; /* even smaller on mobile */
   }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER with mobile menu -->
+<!-- HEADER with toggle option -->
 <header>
-  <div class="header-top">
+  <div class="header-top header-center">
     <h1>RebelInuX (REBL)</h1>
-    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+    <!-- Toggle button to show/hide menu -->
+    <button class="header-toggle" aria-label="Toggle Menu" aria-expanded="true">
       <i class="fas fa-bars"></i>
     </button>
   </div>
@@ -505,17 +522,16 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for mobile menu toggle -->
+<!-- Script for toggle header menu -->
 <script>
-  const menuButton = document.querySelector('.menu-toggle');
+  const toggleButton = document.querySelector('.header-toggle');
   const nav = document.getElementById('nav-menu');
 
-  // Always show on desktop, toggle on mobile
-  // Remove hide styles from nav, only toggle on mobile
-  menuButton.addEventListener('click', () => {
+  // Toggle menu visibility
+  toggleButton.addEventListener('click', () => {
     const isShown = nav.classList.toggle('show');
-    // toggle icon
-    const icon = menuButton.querySelector('i');
+    // Change icon accordingly
+    const icon = toggleButton.querySelector('i');
     if (isShown) {
       icon.classList.remove('fa-bars');
       icon.classList.add('fa-times');
