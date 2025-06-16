@@ -172,7 +172,7 @@ h2 {
   50% { transform: scale(1.2); }
 }
 
-/* Timeline */
+/* Timeline styles */
 .timeline {
   position: relative;
   margin: 50px 0;
@@ -558,7 +558,7 @@ footer a {
   window.addEventListener('scroll', animateSections);
   window.addEventListener('load', animateSections);
 
-  // Toggle menu on mobile
+  // Mobile menu toggle
   const toggleButton = document.querySelector('.header-toggle');
   const navMobile = document.getElementById('nav-mobile');
 
@@ -574,14 +574,19 @@ footer a {
     }
   });
 
-  // Responsive toggle button display
+  // Handle resize to show/hide toggle button and hide mobile menu when resizing
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   function handleResize(e) {
     if (e.matches) {
       document.querySelector('.header-toggle').style.display = 'block';
     } else {
       document.querySelector('.header-toggle').style.display = 'none';
+      // Hide mobile menu on larger screens
       navMobile.classList.remove('show');
+      // Reset icon to burger
+      const icon = document.querySelector('.header-toggle i');
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
     }
   }
   mediaQuery.addListener(handleResize);
