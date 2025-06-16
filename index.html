@@ -8,6 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- AOS Animation Library -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
 <style>
   :root {
@@ -84,19 +86,12 @@
     background: none;
     border: none;
     color: var(--color-earth);
+    z-index: 999;
   }
 
   @media(max-width:768px){
     .header-toggle {
       display: block;
-    }
-    #nav-mobile {
-      display: none; /* hidden by default on mobile */
-      flex-direction: column;
-      width: 100%;
-    }
-    #nav-mobile.show {
-      display: flex;
     }
   }
 
@@ -109,18 +104,30 @@
   margin-top: 1rem;
 }
 #nav-mobile {
-  display: flex; /* for desktop, bind to mobile toggle later */
+  display: none; /* hidden by default for mobile, will toggle */
+  flex-direction: column;
+  width: 100%;
+}
+#nav-mobile.show {
+  display: flex;
 }
 
-/* Sections styling */
+/* Sections styling with fade-in animations */
 section {
   padding: 3rem 1.5rem;
   max-width: 1200px;
   margin: auto;
   text-align: center;
+  opacity: 0; /* start hidden for animation */
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Heading styles */
+/* Heading styles with animation */
 h2 {
   font-size: 2em;
   margin-bottom: 20px;
@@ -133,7 +140,7 @@ h2 {
   font-weight: 900;
 }
 
-/* Card styling */
+/* Card styling with hover and bounce */
 .cards {
   display: flex;
   flex-wrap: wrap;
@@ -147,19 +154,25 @@ h2 {
   width: 280px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   transition: transform 0.3s, box-shadow 0.3s;
-  text-align: center;
 }
 .card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-8px) scale(1.02);
   box-shadow: 0 12px 20px rgba(0,0,0,0.2);
 }
 .card i {
   font-size: 2.5em;
   margin-bottom: 10px;
   color: var(--color-primary);
+  animation: pulse 2s infinite;
 }
 
-/* Timeline styling for Roadmap */
+/* Animation keyframes for pulsing icons */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Timeline */
 .timeline {
   position: relative;
   margin: 50px 0;
@@ -253,16 +266,23 @@ h2 {
   transition: transform 0.4s, box-shadow 0.4s;
   display: block;
   margin: 0 auto;
+  /* optional: add floating animation */
+  animation: float 3s ease-in-out infinite;
 }
-/* Make image very small on mobile screens */
 #hero .image-container img {
-  max-width: 50px; /* very small on mobile */
+  max-width: 600px; /* default size for large screens */
 }
 @media(max-width:768px){
   #hero .image-container img {
-    max-width: 40px; /* even smaller on mobile */
+    max-width: 50px; /* very small on mobile */
   }
 }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Overlay for images */
 .overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -286,7 +306,7 @@ h2 {
   text-align: center;
 }
 
-/* Call-to-action button style */
+/* Call-to-action button with pulse effect */
 .cta-button {
   display: inline-block;
   background-color: var(--color-primary);
@@ -296,7 +316,13 @@ h2 {
   font-weight: 700;
   margin-top: 25px;
   font-size: 1.2em;
-  transition: background-color 0.3s, transform 0.2s;
+  cursor: pointer;
+  animation: pulseBtn 2s infinite;
+  transition: transform 0.2s, background-color 0.3s;
+}
+@keyframes pulseBtn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 .cta-button:hover {
   background-color: var(--color-hover);
@@ -364,7 +390,7 @@ footer a {
 </header>
 
 <!-- Hero Section -->
-<section id="hero">
+<section id="hero" data-aos="fade-up">
 <h2>🔥 THE REBELLIOUS, EARTHY MEME COIN INSPIRED BY THE DOG THAT RIPS THE RULES! 🔥</h2>
 <div class="image-container">
   <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:600px;">
@@ -377,7 +403,7 @@ footer a {
 </section>
 
 <!-- About Section -->
-<section id="about">
+<section id="about" data-aos="fade-up" data-aos-delay="200">
 <h2>What is RebelInuX?</h2>
 <div class="image-container">
   <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" style="max-width:300px;">
@@ -391,7 +417,7 @@ footer a {
 </section>
 
 <!-- Tokenomics Section -->
-<section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;">
+<section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;" data-aos="fade-up" data-aos-delay="300">
 <h2 style="text-align:center;">Tokenomics</h2>
 <div style="max-width:500px; margin:auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
 <h3 style="margin-bottom:15px;">Max Supply</h3>
@@ -411,7 +437,7 @@ footer a {
 </section>
 
 <!-- Roadmap -->
-<section id="roadmap">
+<section id="roadmap" data-aos="fade-up" data-aos-delay="400">
 <h2>Our Rebellion Roadmap</h2>
 <div class="timeline">
   <div class="milestone left">
@@ -446,7 +472,7 @@ footer a {
 </section>
 
 <!-- Why RebelInuX -->
-<section id="features">
+<section id="features" data-aos="fade-up" data-aos-delay="500">
 <h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
 <div class="cards">
   <div class="card">
@@ -469,7 +495,7 @@ footer a {
 </section>
 
 <!-- Community & Socials -->
-<section id="community">
+<section id="community" data-aos="fade-up" data-aos-delay="600">
 <h2>Join the Rebellion</h2>
 <div class="image-container">
   <img src="https://i.imgur.com/beM4V8X.png" alt="Community" style="max-width:300px;">
@@ -492,7 +518,7 @@ footer a {
 </section>
 
 <!-- Contact -->
-<section id="contact">
+<section id="contact" data-aos="fade-up" data-aos-delay="700">
 <h2>Rebel Contact</h2>
 <div class="image-container">
   <img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" style="max-width:250px;">
@@ -514,14 +540,30 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for mobile menu toggle -->
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
+  // Initialize AOS animations
+  AOS.init({ duration: 1000, once: true });
+
+  // Animate sections when they appear
+  function animateSections() {
+    document.querySelectorAll('section').forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 50) {
+        sec.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', animateSections);
+  window.addEventListener('load', animateSections);
+
+  // Toggle menu on mobile
   const toggleButton = document.querySelector('.header-toggle');
   const navMobile = document.getElementById('nav-mobile');
 
   toggleButton.addEventListener('click', () => {
     navMobile.classList.toggle('show');
-    // Change icon
     const icon = toggleButton.querySelector('i');
     if (navMobile.classList.contains('show')) {
       icon.classList.remove('fa-bars');
@@ -532,15 +574,14 @@ footer a {
     }
   });
 
-  // Show toggle button only on mobile
+  // Responsive toggle button display
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   function handleResize(e) {
     if (e.matches) {
       document.querySelector('.header-toggle').style.display = 'block';
-      document.getElementById('nav-mobile').classList.remove('show');
     } else {
       document.querySelector('.header-toggle').style.display = 'none';
-      document.getElementById('nav-mobile').classList.remove('show');
+      navMobile.classList.remove('show');
     }
   }
   mediaQuery.addListener(handleResize);
