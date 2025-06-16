@@ -85,7 +85,7 @@
     color: var(--color-earth);
   }
 
-  /* Navigation styles */
+  /* Navigation styles - always visible on desktop, togglable on mobile */
   nav {
     width: 100%;
     display: flex;
@@ -94,9 +94,8 @@
     gap: 1rem;
     margin-top: 1rem;
   }
-  nav.hidden {
-    display: none;
-  }
+
+  /* Hide menu toggle on desktop */
   @media(max-width:768px){
     .menu-toggle {
       display: block;
@@ -110,10 +109,6 @@
     }
     nav.show {
       max-height: 1000px;
-    }
-    nav a {
-      font-size: 1.5em;
-      padding: 10px 0;
     }
   }
 
@@ -251,13 +246,17 @@ h2 {
   justify-content: center;
   align-items: center;
   margin: 20px 0;
+  position: relative;
 }
 .image-container img {
   border-radius: 15px;
-  max-width: 90%;
   transition: transform 0.4s, box-shadow 0.4s;
   display: block;
   margin: 0 auto;
+}
+/* Reduce size of first hero image */
+#hero .image-container img {
+  max-width: 300px; /* smaller size for hero image */
 }
 .overlay {
   position: absolute;
@@ -329,7 +328,7 @@ footer a {
 /* Responsive adjustments for hero image on mobile */
 @media(max-width:768px){
   #hero .image-container img {
-    max-width: 80%; /* Smaller size for mobile */
+    max-width: 200px; /* even smaller on mobile if needed */
   }
 }
 </style>
@@ -344,7 +343,7 @@ footer a {
       <i class="fas fa-bars"></i>
     </button>
   </div>
-  <nav id="nav-menu" class="hidden">
+  <nav id="nav-menu" class="show">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#tokenomics">Tokenomics</a>
@@ -511,9 +510,10 @@ footer a {
   const menuButton = document.querySelector('.menu-toggle');
   const nav = document.getElementById('nav-menu');
 
+  // Always show on desktop, toggle on mobile
+  // Remove hide styles from nav, only toggle on mobile
   menuButton.addEventListener('click', () => {
     const isShown = nav.classList.toggle('show');
-    menuButton.setAttribute('aria-expanded', isShown);
     // toggle icon
     const icon = menuButton.querySelector('i');
     if (isShown) {
