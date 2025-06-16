@@ -74,42 +74,17 @@
     letter-spacing: 2px;
     text-align: center;
   }
-  /* Toggle button for mobile menu */
-  .header-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: var(--color-earth);
-    z-index: 999;
-  }
 
-  @media(max-width:768px){
-    .header-toggle {
-      display: block;
-    }
-  }
+  /* Remove toggle button styles and hide it */
+  /* No toggle button needed, so no styles here */
 
-  /* Desktop nav always visible */
+  /* Desktop nav always visible, no toggle needed */
 #nav-desktop {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
-}
-#nav-mobile {
-  display: none; /* hidden by default for mobile, will toggle */
-  flex-direction: column;
-  width: 100%;
-}
-#nav-mobile.show {
-  display: flex;
 }
 
 /* Sections styling with fade-in animations */
@@ -359,15 +334,12 @@ footer a {
 </head>
 <body>
 
-<!-- HEADER with toggle button -->
+<!-- HEADER without toggle button -->
 <header>
   <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
     <h1 style="margin:0;">RebelInuX (REBL)</h1>
-    <button class="header-toggle" aria-label="Toggle Menu">
-      <i class="fas fa-bars"></i>
-    </button>
   </div>
-  <!-- Navigation for desktop -->
+  <!-- Always visible desktop nav -->
   <nav id="nav-desktop">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
@@ -377,23 +349,13 @@ footer a {
     <a href="#community">Community</a>
     <a href="#contact">Contact</a>
   </nav>
-  <!-- Navigation for mobile -->
-  <div id="nav-mobile" class="hidden">
-    <a href="#hero">Home</a>
-    <a href="#about">About</a>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#features">Features</a>
-    <a href="#community">Community</a>
-    <a href="#contact">Contact</a>
-  </div>
 </header>
 
 <!-- Hero Section -->
 <section id="hero" data-aos="fade-up">
 <h2>🔥 THE REBELLIOUS, EARTHY MEME COIN INSPIRED BY THE DOG THAT RIPS THE RULES! 🔥</h2>
 <div class="image-container">
-  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:400px;">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" class="small-image" />
   <div class="overlay">
     <div class="overlay-text">Join the Meme Revolution!</div>
   </div>
@@ -557,40 +519,6 @@ footer a {
   }
   window.addEventListener('scroll', animateSections);
   window.addEventListener('load', animateSections);
-
-  // Mobile menu toggle
-  const toggleButton = document.querySelector('.header-toggle');
-  const navMobile = document.getElementById('nav-mobile');
-
-  toggleButton.addEventListener('click', () => {
-    navMobile.classList.toggle('show');
-    const icon = toggleButton.querySelector('i');
-    if (navMobile.classList.contains('show')) {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
-    } else {
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
-    }
-  });
-
-  // Handle resize to show/hide toggle button and hide mobile menu when resizing
-  const mediaQuery = window.matchMedia("(max-width: 768px)");
-  function handleResize(e) {
-    if (e.matches) {
-      document.querySelector('.header-toggle').style.display = 'block';
-    } else {
-      document.querySelector('.header-toggle').style.display = 'none';
-      // Hide mobile menu on larger screens
-      navMobile.classList.remove('show');
-      // Reset icon to burger
-      const icon = document.querySelector('.header-toggle i');
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
-    }
-  }
-  mediaQuery.addListener(handleResize);
-  handleResize(mediaQuery);
 </script>
 
 </body>
