@@ -56,9 +56,6 @@
     position: sticky;
     top: 0;
     z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
   .header-top {
     width: 100%;
@@ -93,40 +90,26 @@
     .header-toggle {
       display: block;
     }
+    #nav-mobile {
+      display: none; /* hidden by default on mobile */
+      flex-direction: column;
+      width: 100%;
+    }
+    #nav-mobile.show {
+      display: flex;
+    }
   }
 
-  /* Navigation styles */
-nav {
-  width: 100%;
+  /* Desktop nav always visible */
+#nav-desktop {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
 }
-
-/* Wrap nav in a div for toggling on mobile */
 #nav-mobile {
-  display: flex;
-  flex-direction: row;
-}
-#nav-mobile.hidden {
-  display: none;
-}
-
-@media(max-width:768px){
-  #nav-mobile {
-    flex-direction: column;
-    width: 100%;
-    display: none; /* hide by default */
-  }
-  #nav-mobile.show {
-    display: flex;
-  }
-}
-
-nav.desktop {
-  display: flex;
+  display: flex; /* for desktop, bind to mobile toggle later */
 }
 
 /* Sections styling */
@@ -273,7 +256,7 @@ h2 {
 }
 /* Make image very small on mobile screens */
 #hero .image-container img {
-  max-width: 50px; /* very small */
+  max-width: 50px; /* very small on mobile */
 }
 @media(max-width:768px){
   #hero .image-container img {
@@ -354,12 +337,22 @@ footer a {
 <header>
   <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
     <h1 style="margin:0;">RebelInuX (REBL)</h1>
-    <button class="header-toggle" aria-label="Toggle Menu" style="position:absolute; right:10px; display:none;">
+    <button class="header-toggle" aria-label="Toggle Menu">
       <i class="fas fa-bars"></i>
     </button>
   </div>
-  <!-- Navigation wrapped in div for toggle -->
-  <div id="nav-mobile" class="desktop">
+  <!-- Navigation for desktop -->
+  <nav id="nav-desktop">
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#tokenomics">Tokenomics</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#features">Features</a>
+    <a href="#community">Community</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <!-- Navigation for mobile -->
+  <div id="nav-mobile" class="hidden">
     <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#tokenomics">Tokenomics</a>
@@ -521,12 +514,11 @@ footer a {
 </div>
 </footer>
 
-<!-- Script for toggle -->
+<!-- Script for mobile menu toggle -->
 <script>
   const toggleButton = document.querySelector('.header-toggle');
   const navMobile = document.getElementById('nav-mobile');
 
-  // Show/hide menu on mobile
   toggleButton.addEventListener('click', () => {
     navMobile.classList.toggle('show');
     // Change icon
@@ -540,15 +532,15 @@ footer a {
     }
   });
 
-  // Handle display on resize
+  // Show toggle button only on mobile
   const mediaQuery = window.matchMedia("(max-width: 768px)");
   function handleResize(e) {
     if (e.matches) {
       document.querySelector('.header-toggle').style.display = 'block';
-      navMobile.classList.remove('show');
+      document.getElementById('nav-mobile').classList.remove('show');
     } else {
       document.querySelector('.header-toggle').style.display = 'none';
-      navMobile.classList.remove('show');
+      document.getElementById('nav-mobile').classList.remove('show');
     }
   }
   mediaQuery.addListener(handleResize);
