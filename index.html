@@ -75,9 +75,6 @@
     text-align: center;
   }
 
-  /* Remove toggle button styles and hide it */
-  /* No toggle button needed, so no styles here */
-
   /* Desktop nav always visible, no toggle needed */
 #nav-desktop {
   display: flex;
@@ -493,7 +490,37 @@ footer a {
 <p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
 </section>
 
-<!-- Footer -->
+<!-- -------------- Launch Countdown Section -------------- -->
+<div style="text-align:center; margin:20px 0;">
+  <h2>🚀 Launch Countdown</h2>
+  <div id="countdown" style="font-size:2em; font-weight:bold;"></div>
+</div>
+
+<!-- -------------- Countdown Script -------------- -->
+<script>
+  // Set your actual launch date here (example: Dec 31, 2025)
+  const launchDate = new Date("2025-12-31T00:00:00").getTime();
+
+  const countdownFunction = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = launchDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = 
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    if (distance < 0) {
+      clearInterval(countdownFunction);
+      document.getElementById("countdown").innerHTML = "🚀 Launched!";
+    }
+  }, 1000);
+</script>
+
+<!-- -------------- Footer (unchanged) -------------- -->
 <footer>
 <h3>Join the Rebellion & Make Noise!</h3>
 <p>© 2025 RebelInuX. All rights reserved.</p>
@@ -503,6 +530,12 @@ footer a {
   <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
 </div>
 </footer>
+
+<!-- -------------- Legal Disclaimer -------------- -->
+<section id="disclaimer" style="padding:2rem; background:#f4e4c1; font-size:0.9em; text-align:center; margin-top:20px;">
+  <h3>Legal Disclaimer</h3>
+  <p>This website and the RebelInuX project are for informational purposes only. Cryptocurrency investments carry risk. Do your own research and consult financial advisors before investing. RebelInuX does not guarantee any profit or returns.</p>
+</section>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -522,6 +555,5 @@ footer a {
   window.addEventListener('scroll', animateSections);
   window.addEventListener('load', animateSections);
 </script>
-
 </body>
 </html>
