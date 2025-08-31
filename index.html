@@ -62,7 +62,7 @@
   .header-top {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* center header text */
     align-items: center;
     position: relative;
   }
@@ -76,293 +76,265 @@
   }
 
   /* Desktop nav always visible, no toggle needed */
-  #nav-desktop {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
+#nav-desktop {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
 
-  /* Mobile navigation */
-  @media (max-width: 768px) {
-    #nav-desktop {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    #nav-desktop a {
-      padding: 0.5rem;
-      background: rgba(139, 90, 43, 0.1);
-      border-radius: 4px;
-      text-align: center;
-      width: 100%;
-    }
-  }
+/* Sections styling with fade-in animations */
+section {
+  padding: 3rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+  opacity: 0; /* start hidden for animation */
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  /* Sections styling with fade-in animations */
-  section {
-    padding: 3rem 1.5rem;
-    max-width: 1200px;
-    margin: auto;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease, transform 1s ease;
-  }
-  section.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Heading styles with animation */
+h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--color-earth);
+  border-bottom: 4px solid var(--color-earth);
+  display: inline-block;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
 
-  /* Heading styles with animation */
-  h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: var(--color-earth);
-    border-bottom: 4px solid var(--color-earth);
-    display: inline-block;
-    padding-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 900;
-  }
+/* Card styling with hover and bounce */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.card {
+  background: var(--color-card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+}
+.card i {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+  animation: pulse 2s infinite;
+}
 
-  /* Card styling with hover and bounce */
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  .card {
-    background: var(--color-card-bg);
-    padding: 20px;
-    border-radius: 12px;
-    width: 280px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-  }
-  .card i {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    color: var(--color-primary);
-    animation: pulse 2s infinite;
-  }
+/* Animation keyframes for pulsing icons */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
 
-  /* Animation keyframes for pulsing icons */
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-  }
-
-  /* Timeline styles */
-  .timeline {
-    position: relative;
-    margin: 50px 0;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 4px;
-    background: var(--color-earth);
-    left: 50%;
-    transform: translateX(-50%);
-  }
+/* Timeline styles */
+.timeline {
+  position: relative;
+  margin: 50px 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 4px;
+  background: var(--color-earth);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.milestone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 30px 0;
+}
+.milestone .circle {
+  width: 60px;
+  height: 60px;
+  background-color: var(--color-earth);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.milestone.left {
+  justify-content: flex-start;
+}
+.milestone.left .circle {
+  right: -30px;
+}
+.milestone.right {
+  justify-content: flex-end;
+}
+.milestone.right .circle {
+  left: -30px;
+}
+.milestone .content {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  width: 60%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: left;
+  margin-left: 80px;
+}
+@media(max-width:768px){
   .milestone {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 80%;
-    margin: 30px 0;
+    flex-direction: column;
+    width: 90%;
+  }
+  .milestone.left, .milestone.right {
+    justify-content: center;
+    margin-left: 0;
   }
   .milestone .circle {
-    width: 60px;
-    height: 60px;
-    background-color: var(--color-earth);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .milestone.left {
-    justify-content: flex-start;
-  }
-  .milestone.left .circle {
-    right: -30px;
-  }
-  .milestone.right {
-    justify-content: flex-end;
-  }
-  .milestone.right .circle {
-    left: -30px;
+    position: static;
+    margin: 10px 0;
+    transform: none;
   }
   .milestone .content {
-    background: #fff;
-    padding: 15px 20px;
-    border-radius: 8px;
-    width: 60%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: left;
-    margin-left: 80px;
+    width: 100%;
+    margin-left: 0;
   }
-  @media(max-width:768px){
-    .milestone {
-      flex-direction: column;
-      width: 90%;
-    }
-    .milestone.left, .milestone.right {
-      justify-content: center;
-      margin-left: 0;
-    }
-    .milestone .circle {
-      position: static;
-      margin: 10px 0;
-      transform: none;
-    }
-    .milestone .content {
-      width: 100%;
-      margin-left: 0;
-    }
-    .timeline::before {
-      left: 30px;
-    }
-  }
+}
 
-  /* Image container with overlay for attraction */
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    position: relative;
-  }
-  .image-container img {
-    border-radius: 15px;
-    transition: transform 0.4s, box-shadow 0.4s;
-    display: block;
-    margin: 0 auto;
-    animation: float 3s ease-in-out infinite;
-  }
+/* Image container with overlay for attraction */
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  position: relative;
+}
+.image-container img {
+  border-radius: 15px;
+  transition: transform 0.4s, box-shadow 0.4s;
+  display: block;
+  margin: 0 auto;
+  /* optional: add floating animation */
+  animation: float 3s ease-in-out infinite;
+}
+#hero .image-container img {
+  max-width: 600px; /* default size for large screens */
+}
+@media(max-width:768px){
   #hero .image-container img {
-    max-width: 600px;
+    max-width: 50px; /* very small on mobile */
   }
-  @media(max-width:768px){
-    #hero .image-container img {
-      max-width: 300px;
-    }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
 
-  /* Overlay for images */
-  .overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .image-container:hover .overlay {
-    opacity: 1;
-  }
-  .overlay-text {
-    color: #fff;
-    font-size: 1.4em;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    padding: 10px;
-    text-align: center;
-  }
+/* Overlay for images */
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.image-container:hover .overlay {
+  opacity: 1;
+}
+.overlay-text {
+  color: #fff;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  padding: 10px;
+  text-align: center;
+}
 
-  /* Call-to-action button with pulse effect */
-  .cta-button {
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: #fff;
-    padding: 14px 30px;
-    border-radius: 30px;
-    font-weight: 700;
-    margin-top: 25px;
-    font-size: 1.2em;
-    cursor: pointer;
-    animation: pulseBtn 2s infinite;
-    transition: transform 0.2s, background-color 0.3s;
-  }
-  @keyframes pulseBtn {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-  .cta-button:hover {
-    background-color: var(--color-hover);
-    transform: scale(1.05);
-  }
+/* Call-to-action button with pulse effect */
+.cta-button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 14px 30px;
+  border-radius: 30px;
+  font-weight: 700;
+  margin-top: 25px;
+  font-size: 1.2em;
+  cursor: pointer;
+  animation: pulseBtn 2s infinite;
+  transition: transform 0.2s, background-color 0.3s;
+}
+@keyframes pulseBtn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.cta-button:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
 
-  /* Footer styles */
-  footer {
-    background: var(--color-footer);
-    padding: 2rem 1.5rem;
-    text-align: center;
-  }
-  footer h3 {
-    margin-bottom: 10px;
-  }
-  footer p {
-    margin-bottom: 15px;
-  }
-  footer a {
-    margin: 0 10px;
-    font-size: 2em;
-    color: var(--color-earth);
-  }
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 15px;
-  }
-  .social-icons a:hover {
-    color: var(--color-accent);
-  }
-  
-  /* Content update markers */
-  .update-marker {
-    border-left: 4px solid #ffcc00;
-    padding-left: 15px;
-    margin: 20px 0;
-    background-color: rgba(255, 204, 0, 0.1);
-    padding: 15px;
-    border-radius: 0 8px 8px 0;
-  }
+/* Footer styles */
+footer {
+  background: var(--color-footer);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+footer h3 {
+  margin-bottom: 10px;
+}
+footer p {
+  margin-bottom: 15px;
+}
+footer a {
+  margin: 0 10px;
+  font-size: 2em;
+  color: var(--color-earth);
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 15px;
+}
+.social-icons a:hover {
+  color: var(--color-accent);
+}
 </style>
 </head>
 <body>
 
 <!-- HEADER without toggle button -->
 <header>
-  <div class="header-top">
-    <h1>RebelInuX (REBL)</h1>
+  <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
+    <h1 style="margin:0;">RebelInuX (REBL)</h1>
   </div>
   <!-- Always visible desktop nav -->
   <nav id="nav-desktop">
@@ -378,196 +350,171 @@
 
 <!-- Hero Section -->
 <section id="hero" data-aos="fade-up">
-  <h2>🔥 THE REBELLIOUS, EARTHY MEME COIN INSPIRED BY THE DOG THAT RIPS THE RULES! 🔥</h2>
-  <div class="image-container">
-    <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:400px;">
-    <div class="overlay">
-      <div class="overlay-text">Join the Meme Revolution!</div>
-    </div>
+<h2>🔥 THE REBELLIOUS, EARTHY MEME COIN INSPIRED BY THE DOG THAT RIPS THE RULES! 🔥</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:400px;">
+  <div class="overlay">
+    <div class="overlay-text">Join the Meme Revolution!</div>
   </div>
-  <p>"Inspired by the fearless, rebellious spirit of Shiba Inu, RebelInuX is here to shake up crypto with attitude, memes, and decentralized power."</p>
-  <a href="#community" class="cta-button">JOIN THE REBELLION</a>
+</div>
+<p>"Inspired by the fearless, rebellious spirit of Shiba Inu, RebelInuX is here to shake up crypto with attitude, memes, and decentralized power."</p>
+<a href="#community" class="cta-button">JOIN THE REBELLION</a>
 </section>
 
 <!-- About Section -->
 <section id="about" data-aos="fade-up" data-aos-delay="200">
-  <h2>What is RebelInuX?</h2>
-  <div class="image-container">
-    <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" style="max-width:300px;">
-    <div class="overlay">
-      <div class="overlay-text">Powerful & Rebellious!</div>
-    </div>
+<h2>What is RebelInuX?</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Powerful & Rebellious!</div>
   </div>
-  
-  <!-- WHITE PAPER CONTENT UPDATE MARKER - ABOUT SECTION -->
-  <div class="update-marker">
-    <p><strong>CONTENT FROM WHITE PAPER SHOULD BE INSERTED HERE</strong></p>
-    <p>Replace this section with updated content from your white paper about what RebelInuX is, its core philosophy, and unique value proposition.</p>
-  </div>
-  
-  <h3>Our Mission</h3>
-  
-  <!-- WHITE PAPER CONTENT UPDATE MARKER - MISSION SECTION -->
-  <div class="update-marker">
-    <p><strong>CONTENT FROM WHITE PAPER SHOULD BE INSERTED HERE</strong></p>
-    <p>Replace this section with the updated mission statement from your white paper.</p>
-  </div>
+</div>
+<p><strong>RebelInuX</strong> is more than a meme coin — it’s a <strong>movement of wild, rebellious crypto warriors</strong> inspired by the fierce spirit of the Shiba Inu in the picture. We’re breaking rules, shaking norms, and building a decentralized revolution rooted in earthy, natural tones.</p>
+<h3>Our Mission</h3>
+<p>Unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto — making noise, shaking walls, and building a community that refuses to conform.</p>
 </section>
 
 <!-- Tokenomics Section -->
 <section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;" data-aos="fade-up" data-aos-delay="300">
-  <h2 style="text-align:center;">Tokenomics</h2>
+<h2 style="text-align:center;">Tokenomics</h2>
+<div style="max-width:500px; margin:auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
+<h3 style="margin-bottom:15px;">Max Supply</h3>
+<p style="font-size:1.4em; font-weight:bold;">13,000,000,000</p>
+<p style="margin-top:10px;">(Thirteen Billion — a rebellious number!)</p>
+</div>
+<div style="max-width:700px; margin:auto; margin-top:40px; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+<h3 style="text-align:center; margin-bottom:20px;">Decentralization & Security</h3>
+<p style="line-height:1.6;">In our commitment to transparency and decentralization, the project has renounced the <strong>Freeze Authority</strong>, <strong>Mint Authority</strong>, and <strong>Update Authority</strong>. This means:</p>
+<ul style="margin-top:15px; padding-left:20px; list-style-type: disc;">
+  <li><strong>No central authority can freeze or mint new tokens</strong></li>
+  <li><strong>All updates are community-driven</strong></li>
+  <li><strong>Ensuring a fair and trustless environment for our rebels</strong></li>
+</ul>
+<p style="margin-top:15px; line-height:1.6;">Built on Solana's secure platform, our rebellion is fully decentralized and unstoppable.</p>
   
-  <!-- WHITE PAPER CONTENT UPDATE MARKER - TOKENOMICS SECTION -->
-  <div class="update-marker">
-    <p><strong>UPDATE THIS SECTION WITH DETAILED TOKENOMICS FROM YOUR WHITE PAPER</strong></p>
-    <p>Include information about token distribution, allocation, vesting schedules, and economic model.</p>
-  </div>
-  
-  <div style="max-width:500px; margin:auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
-    <h3 style="margin-bottom:15px;">Max Supply</h3>
-    <p style="font-size:1.4em; font-weight:bold;">13,000,000,000</p>
-    <p style="margin-top:10px;">(Thirteen Billion — a rebellious number!)</p>
-  </div>
-  
-  <div style="max-width:700px; margin:auto; margin-top:40px; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-    <h3 style="text-align:center; margin-bottom:20px;">Decentralization & Security</h3>
-    <p style="line-height:1.6;">In our commitment to transparency and decentralization, the project has renounced the <strong>Freeze Authority</strong>, <strong>Mint Authority</strong>, and <strong>Update Authority</strong>. This means:</p>
-    <ul style="margin-top:15px; padding-left:20px; list-style-type: disc;">
-      <li><strong>No central authority can freeze or mint new tokens</strong></li>
-      <li><strong>All updates are community-driven</strong></li>
-      <li><strong>Ensuring a fair and trustless environment for our rebels</strong></li>
-    </ul>
-    <p style="margin-top:15px; line-height:1.6;">Built on Solana's secure platform, our rebellion is fully decentralized and unstoppable.</p>
-    
-    <h3 style="margin-top:40px;">Future Burning Mechanism</h3>
-    <p style="line-height:1.6;">
-      We are committed to establishing a transparent and systematic token burning process in the future. This mechanism will involve periodically reducing the circulating supply by burning a percentage of tokens from designated wallets. Details such as the frequency and percentage of tokens to be burned will be communicated transparently through updates on our website and in the white paper. Stay tuned as we work towards making our ecosystem more deflationary and community-driven.
-    </p>
-  </div>
+<!-- New paragraph added here inside the same white box -->
+<h3 style="margin-top:40px;">Future Burning Mechanism</h3>
+<p style="line-height:1.6;">
+We are committed to establishing a transparent and systematic token burning process in the future. This mechanism will involve periodically reducing the circulating supply by burning a percentage of tokens from designated wallets. Details such as the frequency and percentage of tokens to be burned will be communicated transparently through updates on our website and in the white paper. Stay tuned as we work towards making our ecosystem more deflationary and community-driven.
+</p>
+</div>
 </section>
-
-<!-- Roadmap Section -->
+<!-- Roadmap -->
 <section id="roadmap" data-aos="fade-up" data-aos-delay="400">
-  <h2>Our Rebellion Roadmap</h2>
-  
-  <!-- WHITE PAPER CONTENT UPDATE MARKER - ROADMAP SECTION -->
-  <div class="update-marker">
-    <p><strong>UPDATE ROADMAP WITH DETAILED MILESTONES FROM YOUR WHITE PAPER</strong></p>
-    <p>Replace the timeline below with the updated roadmap from your white paper, including phases, milestones, and timelines.</p>
-  </div>
-  
-  <div class="timeline">
-    <div class="milestone left">
-      <div class="circle">Q2</div>
-      <div class="content">
-        <h3>Q2 2025</h3>
-        <p>Launch & Community Building — Deploy the coin, start social media campaigns, and grow organically.</p>
-      </div>
-    </div>
-    <div class="milestone right">
-      <div class="circle">Q3</div>
-      <div class="content">
-        <h3>Q3 2025</h3>
-        <p>Meme Campaigns & Engagement — Increase meme content, contests, and community interaction.</p>
-      </div>
-    </div>
-    <div class="milestone left">
-      <div class="circle">Q4</div>
-      <div class="content">
-        <h3>Q4 2025</h3>
-        <p>Listings & Visibility — Start exploring small exchange listings if the community and project are ready, continue outreach.</p>
-      </div>
-    </div>
-    <div class="milestone right">
-      <div class="circle">Q1</div>
-      <div class="content">
-        <h3>Q1 2026</h3>
-        <p>Utility & Partnerships — Develop utility features, explore collaborations, and maintain community growth with a sustainable approach.</p>
-      </div>
+<h2>Our Rebellion Roadmap</h2>
+<div class="timeline">
+  <div class="milestone left">
+    <div class="circle">Q2</div>
+    <div class="content">
+      <h3>Q2 2025</h3>
+      <p>Launch & Community Building — Deploy the coin, start social media campaigns, and grow organically.</p>
     </div>
   </div>
-</section>
-
-<!-- Features Section -->
+  <div class="milestone right">
+    <div class="circle">Q3</div>
+    <div class="content">
+      <h3>Q3 2025</h3>
+      <p>Meme Campaigns & Engagement — Increase meme content, contests, and community interaction.</p>
+    </div>
+  </div>
+  <div class="milestone left">
+    <div class="circle">Q4</div>
+    <div class="content">
+      <h3>Q4 2025</h3>
+      <p>Listings & Visibility — Start exploring small exchange listings if the community and project are ready, continue outreach.</p>
+    </div>
+  </div>
+  <div class="milestone right">
+    <div class="circle">Q1</div>
+    <div class="content">
+      <h3>Q1 2026</h3>
+      <p>Utility & Partnerships — Develop utility features, explore collaborations, and maintain community growth with a sustainable approach.</p>
+    </div>
+  </div>
+</div>
+<!-- Why RebelInuX -->
 <section id="features" data-aos="fade-up" data-aos-delay="500">
-  <h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
-  
-  <!-- WHITE PAPER CONTENT UPDATE MARKER - FEATURES SECTION -->
-  <div class="update-marker">
-    <p><strong>UPDATE FEATURES WITH KEY HIGHLIGHTS FROM YOUR WHITE PAPER</strong></p>
-    <p>Replace the feature cards below with the key features and benefits highlighted in your white paper.</p>
+<h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
+<div class="cards">
+  <div class="card">
+    <i class="fas fa-rocket"></i>
+    <h3>Fast & Fearless</h3>
+    <p>Built on Solana for lightning-fast transactions, security, and that earthy, rebellious spirit. No rules, just results — because rebellion doesn’t wait.</p>
   </div>
-  
-  <div class="cards">
-    <div class="card">
-      <i class="fas fa-rocket"></i>
-      <h3>Fast & Fearless</h3>
-      <p>Built on Solana for lightning-fast transactions, security, and that earthy, rebellious spirit. No rules, just results — because rebellion doesn't wait.</p>
-    </div>
-    <div class="card">
-      <i class="fas fa-users"></i>
-      <h3>Community of Rebels</h3>
-      <p>A decentralized, wild family of meme warriors committed to the cause.</p>
-    </div>
-    <div class="card">
-      <i class="fas fa-flame"></i>
-      <h3>Burn Bright</h3>
-      <p>With an explosive roadmap, we're here to set the crypto world ablaze with earthy fire.</p>
-    </div>
+  <div class="card">
+    <i class="fas fa-users"></i>
+    <h3>Community of Rebels</h3>
+    <p>A decentralized, wild family of meme warriors committed to the cause.</p>
   </div>
+  <div class="card">
+    <i class="fas fa-flame"></i>
+    <div class="burn-bright-symbol">🔥</div>
+    <h3>Burn Bright</h3>
+    <p>With an explosive roadmap, we're here to set the crypto world ablaze with earthy fire.</p>
+  </div>
+</div>
 </section>
-
+</section>
 <!-- White Paper Download Section -->
 <section id="whitepaper" style="padding: 40px 20px; background-color: var(--color-section); text-align: center;">
   <h2>Learn More - Download Our White Paper</h2>
   <p>Discover the full details about RebelInuX's tokenomics, roadmap, and vision.</p>
-  <a href="RebelInuX_White_Paper.pdf" target="_blank" class="cta-button">Download White Paper</a>
+  <a href="RebelInuX_White_Paper.pdf" target="_blank" style="
+    padding: 15px 30px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+  ">Download White Paper</a>
 </section>
-
-<!-- Community & Socials Section -->
+<!-- Community & Socials -->
 <section id="community" data-aos="fade-up" data-aos-delay="600">
-  <h2>Join the Rebellion</h2>
-  <div class="image-container">
-    <img src="https://i.imgur.com/bfPgAoS.jpg" alt="RebelInuX Unleash the roar" style="max-width:300px;">
-    <div class="overlay">
-      <div class="overlay-text">Unite with Rebels!</div>
-    </div>
+<h2>Join the Rebellion</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/bfPgAoS.jpg" alt="RebelInuX Unleash the roar" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Unite with Rebels!</div>
   </div>
+</div>
 
-  <p>Connect with us on our rebellious platforms and become part of the wildest crypto movement!</p>
-  <div class="social-icons">
-    <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
-      <i class="fab fa-telegram"></i>
-    </a>
-    <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
-      <i class="fab fa-discord"></i>
-    </a>
-  </div>
+<!-- Optional: Add a caption or description -->
+<p>Connect with us on our rebellious platforms and become part of the wildest crypto movement!</p>
+<div class="social-icons" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+  <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+    <i class="fab fa-telegram"></i>
+  </a>
+  <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+    <i class="fab fa-discord"></i>
+  </a>
+</div>
 </section>
 
-<!-- Contact Section -->
+<!-- Contact -->
 <section id="contact" data-aos="fade-up" data-aos-delay="700">
-  <h2>Rebel Contact</h2>
-  <div class="image-container">
-    <img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" style="max-width:250px;">
-    <div class="overlay">
-      <div class="overlay-text">Reach Out & Rebel!</div>
-    </div>
+<h2>Rebel Contact</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" style="max-width:250px;">
+  <div class="overlay">
+    <div class="overlay-text">Reach Out & Rebel!</div>
   </div>
-  <p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
+</div>
+<p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
 </section>
 
-<!-- Launch Countdown Section -->
+<!-- -------------- Launch Countdown Section -------------- -->
 <div style="text-align:center; margin:20px 0;">
   <h2>🚀 Launch Countdown</h2>
   <div id="countdown" style="font-size:2em; font-weight:bold;"></div>
 </div>
 
-<!-- Countdown Script -->
+<!-- -------------- Countdown Script -------------- -->
 <script>
   // Set your actual launch date here (example: Jun 18, 2025)
   const launchDate = new Date("2025-06-18T21:00:00").getTime();
@@ -591,18 +538,18 @@
   }, 1000);
 </script>
 
-<!-- Footer -->
+<!-- -------------- Footer (unchanged) -------------- -->
 <footer>
-  <h3>Join the Rebellion & Make Noise!</h3>
-  <p>© 2025 RebelInuX. All rights reserved.</p>
-  <div class="social-icons">
-    <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
-    <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
-    <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
-  </div>
+<h3>Join the Rebellion & Make Noise!</h3>
+<p>© 2025 RebelInuX. All rights reserved.</p>
+<div class="social-icons">
+  <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+  <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
+  <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+</div>
 </footer>
 
-<!-- Legal Disclaimer -->
+<!-- -------------- Legal Disclaimer -------------- -->
 <section id="disclaimer" style="padding:2rem; background:#f4e4c1; font-size:0.9em; text-align:center; margin-top:20px;">
   <h3>Legal Disclaimer</h3>
   <p>This website and the RebelInuX project are for informational and entertainment purposes only. Crypto investments are risky and unpredictable—think twice before jumping in! Always do your own research, consult financial experts, and never invest more than you can afford to lose. RebelInuX makes no guarantees of profits, gains, or returns. Rebellion involves risk—invest responsibly!</p>
