@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <!-- AOS Animation Library -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<!-- Chart.js for token distribution chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
   :root {
@@ -420,6 +422,119 @@ footer a {
     border-right: none;
   }
 }
+
+/* NEW TOKENOMICS STYLES */
+.tokenomics-card {
+  background: var(--color-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+  border-left: 5px solid var(--color-primary);
+  text-align: left;
+}
+
+.supply-box {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  background: var(--color-card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.supply-amount {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  margin: 15px 0;
+}
+
+.chart-container {
+  max-width: 600px;
+  margin: 40px auto;
+  height: 400px;
+}
+
+.tokenomics-card ul {
+  padding-left: 20px;
+  margin: 15px 0;
+}
+
+.tokenomics-card li {
+  margin-bottom: 12px;
+  padding-left: 10px;
+}
+
+.highlight {
+  background-color: rgba(139, 90, 43, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  border-left: 3px solid var(--color-primary);
+}
+
+.contract-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  margin: 10px 0;
+  padding: 8px 15px;
+  background: rgba(139, 90, 43, 0.1);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.contract-link:hover {
+  background: rgba(139, 90, 43, 0.2);
+  transform: translateY(-2px);
+}
+
+.contract-link i {
+  margin-right: 8px;
+}
+
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+
+.token-grid-item {
+  background: var(--color-card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.tag {
+  display: inline-block;
+  background: var(--accent-color);
+  color: #000;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .tokenomics-card, .supply-box {
+    padding: 20px;
+  }
+  
+  .supply-amount {
+    font-size: 2rem;
+  }
+  
+  .chart-container {
+    height: 300px;
+  }
+}
 </style>
 </head>
 <body>
@@ -468,30 +583,138 @@ footer a {
 <p>Unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto — making noise, shaking walls, and building a community that refuses to conform.</p>
 </section>
 
-<!-- Tokenomics Section -->
+<!-- Tokenomics Section - REPLACED WITH ENHANCED VERSION -->
 <section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;" data-aos="fade-up" data-aos-delay="300">
-<h2 style="text-align:center;">Tokenomics</h2>
-<div style="max-width:500px; margin:auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); text-align:center;">
-<h3 style="margin-bottom:15px;">Max Supply</h3>
-<p style="font-size:1.4em; font-weight:bold;">13,000,000,000</p>
-<p style="margin-top:10px;">(Thirteen Billion — a rebellious number!)</p>
-</div>
-<div style="max-width:700px; margin:auto; margin-top:40px; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-<h3 style="text-align:center; margin-bottom:20px;">Decentralization & Security</h3>
-<p style="line-height:1.6;">In our commitment to transparency and decentralization, the project has renounced the <strong>Freeze Authority</strong>, <strong>Mint Authority</strong>, and <strong>Update Authority</strong>. This means:</p>
-<ul style="margin-top:15px; padding-left:20px; list-style-type: disc;">
-  <li><strong>No central authority can freeze or mint new tokens</strong></li>
-  <li><strong>All updates are community-driven</strong></li>
-  <li><strong>Ensuring a fair and trustless environment for our rebels</strong></li>
-</ul>
-<p style="margin-top:15px; line-height:1.6;">Built on Solana's secure platform, our rebellion is fully decentralized and unstoppable.</p>
+  <h2 style="text-align:center;">Tokenomics</h2>
   
-<!-- New paragraph added here inside the same white box -->
-<h3 style="margin-top:40px;">Future Burning Mechanism</h3>
-<p style="line-height:1.6;">
-We are committed to establishing a transparent and systematic token burning process in the future. This mechanism will involve periodically reducing the circulating supply by burning a percentage of tokens from designated wallets. Details such as the frequency and percentage of tokens to be burned will be communicated transparently through updates on our website and in the white paper. Stay tuned as we work towards making our ecosystem more deflationary and community-driven.
-</p>
-</div>
+  <div class="supply-box">
+    <h3>Max Supply</h3>
+    <p class="supply-amount">13,000,000,000</p>
+    <p>(Thirteen Billion — a rebellious number!)</p>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>Token Distribution</h3>
+    <p>The total supply of RebelInuX tokens is fixed at <strong>13 billion (13,000,000,000)</strong> with <strong>9 decimals</strong>. No inflation or additional minting is planned.</p>
+    
+    <div class="chart-container">
+      <canvas id="distributionChart"></canvas>
+    </div>
+    
+    <div class="token-grid">
+      <div class="token-grid-item">
+        <span class="tag">13%</span>
+        <h4>Ecosystem Fund</h4>
+        <p><strong>1.69B REBL</strong> for development, audits, marketing, and operational costs with transparent vesting schedule.</p>
+      </div>
+      
+      <div class="token-grid-item">
+        <span class="tag">13%</span>
+        <h4>Community Reserve</h4>
+        <p><strong>1.69B REBL</strong> locked until March 31, 2026, then transferred to DAO control.</p>
+      </div>
+      
+      <div class="token-grid-item">
+        <span class="tag">40%</span>
+        <h4>Liquidity Pool</h4>
+        <p><strong>5.2B REBL</strong> for Raydium liquidity with LP tokens locked for 1 year.</p>
+      </div>
+      
+      <div class="token-grid-item">
+        <span class="tag">34%</span>
+        <h4>Community Distribution</h4>
+        <p><strong>4.42B REBL</strong> for rewarding Creator Coin and Content Coin holders.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>Ecosystem Fund Vesting Schedule & Security</h3>
+    <p>The Ecosystem Fund is subject to a transparent vesting schedule, executed and enforced on-chain:</p>
+    
+    <ul>
+      <li><strong>Platform:</strong> StreamFlow.finance</li>
+      <li><strong>Initial Cliff:</strong> 20% of allocation unlocked at TGE</li>
+      <li><strong>Linear Vesting:</strong> Remaining 80% vests linearly over 24 months</li>
+      <li><strong>Current Governance:</strong> Vested tokens released to secure multi-signature wallet</li>
+      <li><strong>Future Governance:</strong> Transition to community-governed 3-of-5 multi-signature wallet</li>
+    </ul>
+    
+    <h4>On-Chain Verification</h4>
+    <a href="https://solscan.io/account/DVDBDPP6LpcBFRQWKDJU8L1QcQ7HXrVAg9j7dCJ7UqSv" target="_blank" class="contract-link">
+      <i class="fas fa-external-link-alt"></i>Ecosystem Fund Vesting Contract
+    </a>
+    <br>
+    <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" class="contract-link">
+      <i class="fas fa-external-link-alt"></i>Initial Receiving Wallet (Multisig)
+    </a>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>NFT Holder Reward Mechanism</h3>
+    <p>The entire Community Distribution Wallet (4.42B $REBL) is allocated to reward holders of <strong>Creator Coins</strong>.</p>
+    
+    <div class="highlight">
+      <p><strong>Each RebelInuX Creator Coin represents a foundational claim of 4.42 $REBL</strong> on the Solana blockchain, drawn directly from the Community Distribution wallet.</p>
+    </div>
+    
+    <p>This fixed allocation will be distributed over specific claim periods. Future DAO proposals may integrate the Community Reserve treasury, potentially increasing each Creator Coin's underlying value.</p>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>Community Reserve Wallet Utilization</h3>
+    <p>The Community Reserve Wallet (1.69B $REBL) is locked until March 31, 2026.</p>
+    
+    <h4>On-Chain Verification</h4>
+    <a href="https://solscan.io/account/GF3vv7NVEYGH4AmJexfzFKFerHRZ9mgmRiP1gA4Ap2Qt" target="_blank" class="contract-link">
+      <i class="fas fa-external-link-alt"></i>Token Lock Contract
+    </a>
+    <br>
+    <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" class="contract-link">
+      <i class="fas fa-external-link-alt"></i>Designated Multisig Recipient
+    </a>
+    
+    <p>Upon unlock, control will be transferred to the RebelInuX DAO for community-governed initiatives:</p>
+    
+    <ul>
+      <li>Strategic Partnerships & Collaborations</li>
+      <li>Community Grants & Initiatives</li>
+      <li>Exchange Listings</li>
+      <li>Ecosystem Incentives</li>
+      <li>Security & Audits</li>
+    </ul>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>Cross-Chain Value Acceleration</h3>
+    <p>RebelInuX leverages a multi-chain strategy to maximize value for $REBL holders:</p>
+    
+    <ul>
+      <li><strong>Revenue Generation on ZORA:</strong> Trading fees from Creator Coin and Content Coin NFTs generate ETH income</li>
+      <li><strong>Strategic Allocation:</strong> 80% bridged to Solana to buy back $REBL, 15% to Community Reserve, 5% for operational costs</li>
+      <li><strong>Value Distribution:</strong> Purchased $REBL tokens are burned, increasing scarcity and value</li>
+    </ul>
+    
+    <div class="highlight">
+      <p>This creates a powerful cross-chain feedback loop where ZORA asset success directly translates into buying pressure and value accumulation for the $REBL token on Solana.</p>
+    </div>
+  </div>
+  
+  <div class="tokenomics-card">
+    <h3>Decentralization & Security</h3>
+    <p>In our commitment to transparency, the project has renounced <strong>Freeze Authority</strong>, <strong>Mint Authority</strong>, and <strong>Update Authority</strong>. This means:</p>
+    
+    <ul>
+      <li><strong>No central authority can freeze or mint new tokens</strong></li>
+      <li><strong>All updates are community-driven</strong></li>
+      <li><strong>Ensuring a fair and trustless environment for our rebels</strong></li>
+    </ul>
+    
+    <p>Built on Solana's secure platform, our rebellion is fully decentralized and unstoppable.</p>
+    
+    <h4>Future Burning Mechanism</h4>
+    <p>We are committed to establishing a transparent and systematic token burning process. This will involve periodically reducing the circulating supply by burning a percentage of tokens from designated wallets. Details will be communicated transparently through updates.</p>
+  </div>
 </section>
 
 <!-- Roadmap Section - UPDATED -->
@@ -703,6 +926,55 @@ We are committed to establishing a transparent and systematic token burning proc
   }
   window.addEventListener('scroll', animateSections);
   window.addEventListener('load', animateSections);
+
+  // Pie chart for token distribution
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('distributionChart').getContext('2d');
+    const distributionChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Ecosystem Fund (13%)', 'Community Reserve (13%)', 'Liquidity Pool (40%)', 'Community Distribution (34%)'],
+        datasets: [{
+          data: [13, 13, 40, 34],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(255, 206, 86, 0.7)',
+            'rgba(75, 192, 192, 0.7)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: 14
+              },
+              padding: 20
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.label + ': ' + context.raw + '%';
+              }
+            }
+          }
+        }
+      }
+    });
+  });
 </script>
 </body>
 </html>
