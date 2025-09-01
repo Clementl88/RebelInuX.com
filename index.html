@@ -4,8 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
+<meta name="description" content="RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains.">
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <!-- AOS Animation Library -->
@@ -27,23 +28,32 @@
     --color-card-bg: #fff8f0;
     --color-primary: #8b5a2b;
     --accent-color: #ffcc00;
+    --transition: all 0.3s ease;
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
 
   body {
     font-family: 'Montserrat', sans-serif;
     background-color: var(--color-background);
     color: var(--color-text);
-    margin: 0;
-    padding: 0;
     line-height: 1.6;
-    scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   a {
     text-decoration: none;
     color: inherit;
+    transition: var(--transition);
   }
 
   /* Responsive images */
@@ -56,507 +66,846 @@
   /* HEADER styles */
   header {
     background: var(--color-header);
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
-  .header-top {
-    width: 100%;
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
-    justify-content: center; /* center header text */
+    flex-direction: column;
     align-items: center;
-    position: relative;
   }
+  
   h1 {
     margin: 0;
-    font-size: 2em;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 900;
     color: var(--color-accent);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Navigation */
+  #nav-desktop {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  #nav-desktop a {
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  #nav-desktop a:hover {
+    background: rgba(139, 90, 43, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  #nav-desktop a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: var(--transition);
+    transform: translateX(-50%);
+  }
+  
+  #nav-desktop a:hover::after {
+    width: 70%;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  /* Sections styling */
+  section {
+    padding: 4rem 1.5rem;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Heading styles */
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    margin-bottom: 2rem;
+    color: var(--color-earth);
+    border-bottom: 4px solid var(--color-earth);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 900;
+    position: relative;
+  }
+  
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 30%;
+    height: 2px;
+    background: var(--accent-color);
+  }
+
+  /* Card styling */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .card {
+    background: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+  }
+  
+  .card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+    animation: pulse 2s infinite;
+  }
+
+  /* Animation keyframes */
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Image container */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    position: relative;
+  }
+  
+  .image-container img {
+    border-radius: 15px;
+    transition: transform 0.4s, box-shadow 0.4s;
+    animation: float 3s ease-in-out infinite;
+    max-width: 100%;
+  }
+  
+  /* Overlay for images */
+  .overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  
+  .image-container:hover .overlay {
+    opacity: 1;
+  }
+  
+  .overlay-text {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    padding: 1rem;
     text-align: center;
   }
 
-  /* Desktop nav always visible, no toggle needed */
-#nav-desktop {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-/* Sections styling with fade-in animations */
-section {
-  padding: 3rem 1.5rem;
-  max-width: 1200px;
-  margin: auto;
-  text-align: center;
-  opacity: 0; /* start hidden for animation */
-  transform: translateY(20px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Heading styles with animation */
-h2 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: var(--color-earth);
-  border-bottom: 4px solid var(--color-earth);
-  display: inline-block;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 900;
-}
-
-/* Card styling with hover and bounce */
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-.card {
-  background: var(--color-card-bg);
-  padding: 20px;
-  border-radius: 12px;
-  width: 280px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-}
-.card i {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-  color: var(--color-primary);
-  animation: pulse 2s infinite;
-}
-
-/* Animation keyframes for pulsing icons */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-/* Image container with overlay for attraction */
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-  position: relative;
-}
-.image-container img {
-  border-radius: 15px;
-  transition: transform 0.4s, box-shadow 0.4s;
-  display: block;
-  margin: 0 auto;
-  /* optional: add floating animation */
-  animation: float 3s ease-in-out infinite;
-}
-#hero .image-container img {
-  max-width: 600px; /* default size for large screens */
-}
-@media(max-width:768px){
-  #hero .image-container img {
-    max-width: 50px; /* very small on mobile */
-  }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* Overlay for images */
-.overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.image-container:hover .overlay {
-  opacity: 1;
-}
-.overlay-text {
-  color: #fff;
-  font-size: 1.4em;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-  padding: 10px;
-  text-align: center;
-}
-
-/* Call-to-action button with pulse effect */
-.cta-button {
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 14px 30px;
-  border-radius: 30px;
-  font-weight: 700;
-  margin-top: 25px;
-  font-size: 1.2em;
-  cursor: pointer;
-  animation: pulseBtn 2s infinite;
-  transition: transform 0.2s, background-color 0.3s;
-}
-@keyframes pulseBtn {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-.cta-button:hover {
-  background-color: var(--color-hover);
-  transform: scale(1.05);
-}
-
-/* Footer styles */
-footer {
-  background: var(--color-footer);
-  padding: 2rem 1.5rem;
-  text-align: center;
-}
-footer h3 {
-  margin-bottom: 10px;
-}
-footer p {
-  margin-bottom: 15px;
-}
-footer a {
-  margin: 0 10px;
-  font-size: 2em;
-  color: var(--color-earth);
-}
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 15px;
-}
-.social-icons a:hover {
-  color: var(--color-accent);
-}
-
-/* UPDATED ROADMAP STYLES - Adapted to match site theme */
-.roadmap-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.roadmap-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-  color: var(--color-earth);
-  text-shadow: 0 0 10px rgba(139, 90, 43, 0.3);
-}
-
-.roadmap-timeline {
-  position: relative;
-  padding: 20px 0;
-}
-
-.roadmap-timeline::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
-  border-radius: 2px;
-}
-
-.roadmap-milestone {
-  position: relative;
-  margin-bottom: 40px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.roadmap-milestone.right {
-  justify-content: flex-end;
-}
-
-.roadmap-circle {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  background-color: var(--color-primary);
-  border: 4px solid var(--color-accent);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  z-index: 2;
-  box-shadow: 0 0 15px rgba(139, 90, 43, 0.5);
-  color: white;
-}
-
-.roadmap-content {
-  width: 45%;
-  background-color: var(--color-card-bg);
-  border: 2px solid var(--color-primary);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 2px -2px 0 var(--color-accent);
-  position: relative;
-}
-
-.roadmap-milestone.right .roadmap-content {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), -2px -2px 0 var(--color-accent);
-}
-
-.roadmap-content::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  width: 20px;
-  height: 20px;
-  background-color: var(--color-primary);
-  transform: rotate(45deg);
-  z-index: -1;
-}
-
-.roadmap-milestone.left .roadmap-content::before {
-  right: -10px;
-  border-right: 2px solid var(--color-primary);
-  border-top: 2px solid var(--color-primary);
-}
-
-.roadmap-milestone.right .roadmap-content::before {
-  left: -10px;
-  border-left: 2px solid var(--color-primary);
-  border-top: 2px solid var(--color-primary);
-}
-
-.roadmap-content h3 {
-  color: var(--color-accent);
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  border-bottom: 1px solid var(--color-primary);
-  padding-bottom: 5px;
-}
-
-.roadmap-content p, .roadmap-content ul {
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-.roadmap-content ul {
-  padding-left: 20px;
-}
-
-.roadmap-content li {
-  margin-bottom: 8px;
-}
-
-.roadmap-disclaimer {
-  background-color: var(--color-card-bg);
-  border: 2px solid var(--color-accent);
-  border-radius: 8px;
-  padding: 20px;
-  margin: 40px auto;
-  max-width: 800px;
-  font-style: italic;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
-}
-
-.roadmap-disclaimer h3 {
-  color: var(--color-accent);
-  border: none;
-  margin-bottom: 10px;
-}
-
-.roadmap-evolving-path {
-  text-align: center;
-  font-style: italic;
-  margin-top: 20px;
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-/* Responsive adjustments for roadmap */
-@media (max-width: 768px) {
-  .roadmap-timeline::before {
-    left: 30px;
+  /* Call-to-action button */
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    animation: pulseBtn 2s infinite;
+    transition: var(--transition);
+    gap: 0.5rem;
   }
   
-  .roadmap-milestone, .roadmap-milestone.right {
+  @keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  .cta-button:hover {
+    background-color: var(--color-hover);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Footer styles */
+  footer {
+    background: var(--color-footer);
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  
+  footer h3 {
+    margin-bottom: 1rem;
+    color: var(--color-earth);
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .social-icons a {
+    font-size: 1.8rem;
+    color: var(--color-earth);
+    transition: var(--transition);
+  }
+  
+  .social-icons a:hover {
+    color: var(--color-accent);
+    transform: translateY(-5px);
+  }
+
+  /* Back to top button */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .back-to-top:hover {
+    background: var(--color-hover);
+    transform: translateY(-5px);
+  }
+
+  /* Loading animation */
+  .loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+  
+  .loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(139, 90, 43, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--color-primary);
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Improved roadmap styles */
+  .roadmap-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .roadmap-title {
+    text-align: center;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    margin-bottom: 3rem;
+    color: var(--color-earth);
+    text-shadow: 0 0 10px rgba(139, 90, 43, 0.3);
+  }
+
+  .roadmap-timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+
+  .roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+    border-radius: 2px;
+  }
+
+  .roadmap-milestone {
+    position: relative;
+    margin-bottom: 3rem;
+    width: 100%;
+    display: flex;
     justify-content: flex-start;
   }
-  
+
+  .roadmap-milestone.right {
+    justify-content: flex-end;
+  }
+
   .roadmap-circle {
-    left: 30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-primary);
+    border: 4px solid var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(139, 90, 43, 0.5);
+    color: white;
   }
-  
+
   .roadmap-content {
-    width: calc(100% - 80px);
-    margin-left: 80px;
+    width: 45%;
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 2px -2px 0 var(--color-accent);
+    position: relative;
+    transition: var(--transition);
   }
   
-  .roadmap-milestone.left .roadmap-content::before,
+  .roadmap-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 2px -2px 0 var(--color-accent);
+  }
+
+  .roadmap-milestone.right .roadmap-content {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), -2px -2px 0 var(--color-accent);
+  }
+  
+  .roadmap-milestone.right .roadmap-content:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), -2px -2px 0 var(--color-accent);
+  }
+
+  .roadmap-content::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--color-primary);
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+
+  .roadmap-milestone.left .roadmap-content::before {
+    right: -10px;
+    border-right: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
+  }
+
   .roadmap-milestone.right .roadmap-content::before {
     left: -10px;
     border-left: 2px solid var(--color-primary);
     border-top: 2px solid var(--color-primary);
-    border-right: none;
   }
-}
 
-/* NEW TOKENOMICS STYLES */
-.tokenomics-card {
-  background: var(--color-card-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  padding: 30px;
-  margin-bottom: 30px;
-  border-left: 5px solid var(--color-primary);
-  text-align: left;
-}
+  .roadmap-content h3 {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--color-primary);
+    padding-bottom: 0.5rem;
+  }
 
-.supply-box {
-  text-align: center;
-  max-width: 500px;
-  margin: 0 auto 40px;
-  background: var(--color-card-bg);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
+  .roadmap-content p, .roadmap-content ul {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
 
-.supply-amount {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--color-primary);
-  margin: 15px 0;
-}
+  .roadmap-content ul {
+    padding-left: 1.2rem;
+    text-align: left;
+  }
 
-.chart-container {
-  max-width: 600px;
-  margin: 40px auto;
-  height: 400px;
-}
+  .roadmap-content li {
+    margin-bottom: 0.5rem;
+  }
 
-.tokenomics-card ul {
-  padding-left: 20px;
-  margin: 15px 0;
-}
+  .roadmap-disclaimer {
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 3rem auto;
+    max-width: 800px;
+    font-style: italic;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+  }
 
-.tokenomics-card li {
-  margin-bottom: 12px;
-  padding-left: 10px;
-}
+  .roadmap-disclaimer h3 {
+    color: var(--color-accent);
+    border: none;
+    margin-bottom: 1rem;
+  }
 
-.highlight {
-  background-color: rgba(139, 90, 43, 0.1);
-  padding: 20px;
-  border-radius: 12px;
-  margin: 20px 0;
-  border-left: 3px solid var(--color-primary);
-}
+  .roadmap-evolving-path {
+    text-align: center;
+    font-style: italic;
+    margin-top: 2rem;
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
 
-.contract-link {
-  display: inline-flex;
-  align-items: center;
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: 600;
-  margin: 10px 0;
-  padding: 8px 15px;
-  background: rgba(139, 90, 43, 0.1);
-  border-radius: 30px;
-  transition: all 0.3s ease;
-}
-
-.contract-link:hover {
-  background: rgba(139, 90, 43, 0.2);
-  transform: translateY(-2px);
-}
-
-.contract-link i {
-  margin-right: 8px;
-}
-
-.token-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  margin: 30px 0;
-}
-
-.token-grid-item {
-  background: var(--color-card-bg);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.tag {
-  display: inline-block;
-  background: var(--accent-color);
-  color: #000;
-  padding: 5px 12px;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 5px 0;
-}
-
-@media (max-width: 768px) {
-  .tokenomics-card, .supply-box {
-    padding: 20px;
+  /* Improved tokenomics styles */
+  .tokenomics-card {
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--color-primary);
+    text-align: left;
+    transition: var(--transition);
   }
   
+  .tokenomics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  .supply-box {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    background: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    transition: var(--transition);
+  }
+  
+  .supply-box:hover {
+    transform: scale(1.02);
+  }
+
   .supply-amount {
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: bold;
+    color: var(--color-primary);
+    margin: 1rem 0;
+  }
+
+  .chart-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    height: 400px;
+  }
+
+  .tokenomics-card ul {
+    padding-left: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .tokenomics-card li {
+    margin-bottom: 0.8rem;
+    padding-left: 0.5rem;
+  }
+
+  .highlight {
+    background-color: rgba(139, 90, 43, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--color-primary);
+  }
+
+  .contract-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 30px;
+    transition: var(--transition);
+    gap: 0.5rem;
+  }
+
+  .contract-link:hover {
+    background: rgba(139, 90, 43, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .token-grid-item {
+    background: var(--color-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: var(--transition);
   }
   
-  .chart-container {
-    height: 300px;
+  .token-grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   }
-}
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #000;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.3rem 0;
+  }
+
+  /* Accordion Styles */
+  .accordion {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+  }
+
+  .accordion-item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  .accordion-header {
+    width: 100%;
+    padding: 1.2rem;
+    text-align: left;
+    background: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    gap: 0.5rem;
+  }
+
+  .accordion-header:hover {
+    background: #e8e8e8;
+  }
+
+  .accordion-header.active {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .accordion-header.active .accordion-icon {
+    transform: rotate(180deg);
+  }
+
+  .accordion-icon {
+    transition: transform 0.3s;
+  }
+
+  .accordion-content {
+    padding: 0 1.2rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    background: white;
+  }
+
+  .accordion-content.active {
+    padding: 1.2rem;
+    max-height: 1000px;
+  }
+
+  /* Countdown styles */
+  .countdown-container {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .countdown-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+  
+  #countdown {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .countdown-unit {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    min-width: 80px;
+  }
+  
+  .countdown-label {
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    header {
+      padding: 1rem;
+    }
+    
+    .header-container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    #nav-desktop {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--color-header);
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    #nav-desktop.active {
+      display: flex;
+    }
+    
+    .mobile-nav-toggle {
+      display: block;
+    }
+    
+    section {
+      padding: 3rem 1rem;
+    }
+    
+    .roadmap-timeline::before {
+      left: 30px;
+    }
+    
+    .roadmap-milestone, .roadmap-milestone.right {
+      justify-content: flex-start;
+    }
+    
+    .roadmap-circle {
+      left: 30px;
+    }
+    
+    .roadmap-content {
+      width: calc(100% - 80px);
+      margin-left: 80px;
+    }
+    
+    .roadmap-milestone.left .roadmap-content::before,
+    .roadmap-milestone.right .roadmap-content::before {
+      left: -10px;
+      border-left: 2px solid var(--color-primary);
+      border-top: 2px solid var(--color-primary);
+      border-right: none;
+    }
+    
+    .tokenomics-card, .supply-box {
+      padding: 1.5rem;
+    }
+    
+    .supply-amount {
+      font-size: 1.8rem;
+    }
+    
+    .chart-container {
+      height: 300px;
+    }
+    
+    .countdown-unit {
+      min-width: 60px;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      min-width: 100%;
+    }
+    
+    .token-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    #countdown {
+      gap: 0.3rem;
+    }
+    
+    .countdown-unit {
+      min-width: 50px;
+      padding: 0.3rem 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
 </style>
 </head>
 <body>
 
-<!-- HEADER without toggle button -->
+<!-- Loading animation -->
+<div class="loader">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- Back to top button -->
+<div class="back-to-top">
+  <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- HEADER with mobile toggle -->
 <header>
-  <div class="header-top" style="width:100%; display:flex; align-items:center; justify-content:center; position:relative;">
-    <h1 style="margin:0;">RebelInuX (REBL)</h1>
+  <div class="header-container">
+    <h1>RebelInuX (REBL)</h1>
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- Desktop nav -->
+    <nav id="nav-desktop">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#tokenomics">Tokenomics</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#features">Features</a>
+      <a href="#community">Community</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
-  <!-- Always visible desktop nav -->
-  <nav id="nav-desktop">
-    <a href="#hero">Home</a>
-    <a href="#about">About</a>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#features">Features</a>
-    <a href="#community">Community</a>
-    <a href="#contact">Contact</a>
-  </nav>
 </header>
 
-<!-- Hero Section - ENHANCED -->
+<!-- Hero Section -->
 <section id="hero" data-aos="fade-up" style="position: relative; overflow: hidden;">
   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(139, 90, 43, 0.1) 0%, rgba(210, 180, 140, 0.2) 100%); z-index: -1;"></div>
   
@@ -608,7 +957,7 @@ footer a {
   </div>
 </section>
 
-<!-- About Section - ENHANCED -->
+<!-- About Section -->
 <section id="about" data-aos="fade-up" data-aos-delay="200">
   <h2>What is RebelInuX?</h2>
   
@@ -673,7 +1022,7 @@ footer a {
   </div>
 </section>
 
-<!-- Tokenomics Section - IMPROVED VERSION -->
+<!-- Tokenomics Section -->
 <section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;" data-aos="fade-up" data-aos-delay="300">
   <h2 style="text-align:center; margin-bottom: 40px;">Tokenomics</h2>
   
@@ -864,101 +1213,7 @@ footer a {
   </div>
 </section>
 
-<style>
-  /* Accordion Styles */
-  .accordion {
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  
-  .accordion-item {
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .accordion-item:last-child {
-    border-bottom: none;
-  }
-  
-  .accordion-header {
-    width: 100%;
-    padding: 20px;
-    text-align: left;
-    background: #f5f5f5;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s;
-  }
-  
-  .accordion-header:hover {
-    background: #e8e8e8;
-  }
-  
-  .accordion-header.active {
-    background: var(--color-primary);
-    color: white;
-  }
-  
-  .accordion-header.active .accordion-icon {
-    transform: rotate(180deg);
-  }
-  
-  .accordion-icon {
-    transition: transform 0.3s;
-  }
-  
-  .accordion-content {
-    padding: 0 20px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s, padding 0.3s;
-    background: white;
-  }
-  
-  .accordion-content.active {
-    padding: 20px;
-    max-height: 1000px;
-  }
-</style>
-
-<script>
-  // Toggle distribution details
-  document.getElementById('distribution-toggle').addEventListener('click', function() {
-    const details = document.getElementById('distribution-details');
-    const isVisible = details.style.display === 'block';
-    
-    details.style.display = isVisible ? 'none' : 'block';
-    this.textContent = isVisible ? 'Show Details' : 'Hide Details';
-  });
-  
-  // Accordion functionality
-  document.querySelectorAll('.accordion-header').forEach(button => {
-    button.addEventListener('click', () => {
-      const content = button.nextElementSibling;
-      const isActive = content.classList.contains('active');
-      
-      // Close all accordion items
-      document.querySelectorAll('.accordion-content').forEach(item => {
-        item.classList.remove('active');
-      });
-      document.querySelectorAll('.accordion-header').forEach(header => {
-        header.classList.remove('active');
-      });
-      
-      // Open clicked item if it wasn't already active
-      if (!isActive) {
-        content.classList.add('active');
-        button.classList.add('active');
-      }
-    });
-  });
-</script>
-
-<!-- Roadmap Section - UPDATED -->
+<!-- Roadmap Section -->
 <section id="roadmap" data-aos="fade-up" data-aos-delay="400">
   <h2 class="roadmap-title">Our Rebellion Roadmap</h2>
   <div class="roadmap-timeline">
@@ -1046,16 +1301,9 @@ footer a {
 <section id="whitepaper" style="padding: 40px 20px; background-color: var(--color-section); text-align: center;">
   <h2>Learn More - Download Our White Paper</h2>
   <p>Discover the full details about RebelInuX's tokenomics, roadmap, and vision.</p>
-  <a href="RebelInuX_White_Paper.pdf" target="_blank" style="
-    padding: 15px 30px;
-    background-color: var(--color-primary);
-    color: #fff;
-    border-radius: 10px;
-    font-size: 1.2em;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-  ">Download White Paper</a>
+  <a href="RebelInuX_White_Paper.pdf" target="_blank" class="cta-button">
+    <i class="fas fa-download"></i> Download White Paper
+  </a>
 </section>
 
 <!-- Community & Socials -->
@@ -1068,9 +1316,8 @@ footer a {
   </div>
 </div>
 
-<!-- Optional: Add a caption or description -->
 <p>Connect with us on our rebellious platforms and become part of the wildest crypto movement!</p>
-<div class="social-icons" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+<div class="social-icons">
   <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
     <i class="fab fa-twitter"></i>
   </a>
@@ -1080,9 +1327,8 @@ footer a {
   <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
     <i class="fab fa-discord"></i>
   </a>
-  <!-- New Zora Link -->
   <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora" title="Zora">
-    <i class="fas fa-cube"></i> <!-- Generic cube icon, consider a custom Zora icon if available -->
+    <i class="fas fa-cube"></i>
   </a>
 </div>
 </section>
@@ -1099,37 +1345,30 @@ footer a {
 <p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
 </section>
 
-<!-- -------------- Launch Countdown Section -------------- -->
-<div style="text-align:center; margin:20px 0;">
-  <h2>🚀 Launch Countdown</h2>
-  <div id="countdown" style="font-size:2em; font-weight:bold;"></div>
+<!-- Launch Countdown Section -->
+<div class="countdown-container">
+  <h2 class="countdown-title">🚀 Launch Countdown</h2>
+  <div id="countdown">
+    <div class="countdown-unit">
+      <span id="days">00</span>
+      <span class="countdown-label">Days</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="hours">00</span>
+      <span class="countdown-label">Hours</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="minutes">00</span>
+      <span class="countdown-label">Minutes</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="seconds">00</span>
+      <span class="countdown-label">Seconds</span>
+    </div>
+  </div>
 </div>
 
-<!-- -------------- Countdown Script -------------- -->
-<script>
-  // Set your actual launch date here (example: Jun 18, 2025)
-  const launchDate = new Date("2025-06-18T21:00:00").getTime();
-
-  const countdownFunction = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = launchDate - now;
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("countdown").innerHTML = 
-      `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-    if (distance < 0) {
-      clearInterval(countdownFunction);
-      document.getElementById("countdown").innerHTML = "🚀 Launched!";
-    }
-  }, 1000);
-</script>
-
-<!-- -------------- Footer (unchanged) -------------- -->
+<!-- Footer -->
 <footer>
 <h3>Join the Rebellion & Make Noise!</h3>
 <p>© 2025 RebelInuX. All rights reserved.</p>
@@ -1137,12 +1376,11 @@ footer a {
   <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
   <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
   <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
-  <!-- New Zora Link -->
   <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora" title="Zora"><i class="fas fa-cube"></i></a>
 </div>
 </footer>
 
-<!-- -------------- Legal Disclaimer -------------- -->
+<!-- Legal Disclaimer -->
 <section id="disclaimer" style="padding: 2rem; background: #fff8e1; border-top: 2px solid #ffcc00; font-size: 0.9em; text-align: center; margin-top: 20px;">
     <h3 style="color: #d32f2f; margin-bottom: 1rem;">⚠️ Important Legal Notice</h3>
     <p style="margin-bottom: 0.5rem;"><strong>RebelInuX is a meme token for entertainment, not an investment product.</strong> It confers no financial rights or guarantees. Value is driven by community alone.</p>
@@ -1154,19 +1392,103 @@ footer a {
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
   // Initialize AOS animations
-  AOS.init({ duration: 1000, once: true });
+  AOS.init({ 
+    duration: 1000, 
+    once: true,
+    offset: 100 
+  });
+
+  // Loading animation
+  window.addEventListener('load', function() {
+    const loader = document.querySelector('.loader');
+    setTimeout(function() {
+      loader.classList.add('hidden');
+    }, 1000);
+  });
+
+  // Mobile navigation toggle
+  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const navDesktop = document.getElementById('nav-desktop');
+  
+  mobileNavToggle.addEventListener('click', function() {
+    navDesktop.classList.toggle('active');
+    const icon = this.querySelector('i');
+    if (navDesktop.classList.contains('active')) {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    } else {
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    }
+  });
+
+  // Close mobile nav when clicking on a link
+  document.querySelectorAll('#nav-desktop a').forEach(link => {
+    link.addEventListener('click', function() {
+      navDesktop.classList.remove('active');
+      mobileNavToggle.querySelector('i').classList.remove('fa-times');
+      mobileNavToggle.querySelector('i').classList.add('fa-bars');
+    });
+  });
+
+  // Back to top button
+  const backToTopButton = document.querySelector('.back-to-top');
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('visible');
+    } else {
+      backToTopButton.classList.remove('visible');
+    }
+  });
+  
+  backToTopButton.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   // Animate sections when they appear
   function animateSections() {
     document.querySelectorAll('section').forEach(sec => {
       const rect = sec.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 50) {
+      if (rect.top < window.innerHeight - 100) {
         sec.classList.add('visible');
       }
     });
   }
+  
   window.addEventListener('scroll', animateSections);
   window.addEventListener('load', animateSections);
+
+  // Toggle distribution details
+  document.getElementById('distribution-toggle').addEventListener('click', function() {
+    const details = document.getElementById('distribution-details');
+    const isVisible = details.style.display === 'block';
+    
+    details.style.display = isVisible ? 'none' : 'block';
+    this.textContent = isVisible ? 'Show Details' : 'Hide Details';
+  });
+  
+  // Accordion functionality
+  document.querySelectorAll('.accordion-header').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      const isActive = content.classList.contains('active');
+      
+      // Close all accordion items
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.classList.remove('active');
+      });
+      
+      // Open clicked item if it wasn't already active
+      if (!isActive) {
+        content.classList.add('active');
+        button.classList.add('active');
+      }
+    });
+  });
 
   // Pie chart for token distribution
   document.addEventListener('DOMContentLoaded', function() {
@@ -1216,6 +1538,31 @@ footer a {
       }
     });
   });
+
+  // Improved countdown timer
+  function updateCountdown() {
+    const launchDate = new Date("2025-06-18T21:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = launchDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days.toString().padStart(2, '0');
+    document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+    document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+    document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("countdown").innerHTML = "<div class='countdown-unit'>🚀 Launched!</div>";
+    }
+  }
+
+  const countdownInterval = setInterval(updateCountdown, 1000);
+  updateCountdown(); // Initial call
 </script>
 </body>
 </html>
