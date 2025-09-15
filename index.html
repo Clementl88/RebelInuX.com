@@ -1263,7 +1263,11 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add the datalabels plugin here -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
   <script>
     // Initialize AOS animations
     AOS.init({
@@ -1353,47 +1357,106 @@ document.querySelectorAll('.accordion-header').forEach(header => {
   });
 });
 
-    // Pie chart for token distribution
-    document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('distributionChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO (1%)'],
-          datasets: [{
-            data: [70, 16, 7, 6, 1],
-            backgroundColor: [
-              'rgba(255, 51, 102, 0.7)',
-              'rgba(255, 159, 64, 0.7)',
-              'rgba(75, 192, 192, 0.7)',
-              'rgba(255, 206, 86, 0.7)',
-              'rgba(75, 192, 86, 0.7)'
-            ],
-            borderColor: [
-              'rgba(255, 51, 102, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 86, 1)'
-            ],
-            borderWidth: 1
-          }]
+// Pie chart for token distribution
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('distributionChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO (1%)'],
+      datasets: [{
+        data: [70, 16, 7, 6, 1],
+        backgroundColor: [
+          'rgba(255, 51, 102, 0.9)',   // Brighter Bonding Curve
+          'rgba(255, 159, 64, 0.9)',  // Brighter ZORA Rewards
+          'rgba(75, 192, 192, 0.9)',  // Brighter Team Fund
+          'rgba(255, 206, 86, 0.9)',  // Brighter Ecosystem Fund
+          'rgba(75, 192, 86, 0.9)'    // Brighter Community DAO
+        ],
+        borderColor: [
+          'rgba(255, 255, 255, 1)',   // White borders for contrast
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: {
+              size: 14,
+              family: 'Montserrat',
+              weight: '600'
+            },
+            color: 'white',  // White text for contrast
+            padding: 20,
+            usePointStyle: true,  // Use point-style legend for better visibility
+            pointStyle: 'circle',
+          },
+          title: {
+            display: true,
+            text: 'Token Distribution',
+            color: 'white',
+            font: {
+              size: 16,
+              family: 'Montserrat',
+              weight: '700'
+            },
+            padding: 20
+          }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                font: { size: 14, color: 'white' },
-                padding: 20
-              }
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.label}: ${context.raw}%`;
             }
+          },
+          bodyFont: {
+            family: 'Montserrat',
+            size: 14
+          },
+          titleFont: {
+            family: 'Montserrat',
+            size: 16,
+            weight: '700'
+          },
+          padding: 12,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: 'white',
+          bodyColor: 'white',
+          borderColor: 'rgba(255, 255, 255, 0.2)',
+          borderWidth: 1
+        },
+        // Add data labels plugin for visibility on pie slices
+        datalabels: {
+          color: 'white',
+          font: {
+            size: 14,
+            family: 'Montserrat',
+            weight: '600'
+          },
+          formatter: function(value, context) {
+            return context.chart.data.labels[context.dataIndex].split(' ')[0]; // Show first word of label
+          },
+          anchor: 'end',
+          align: 'top',
+          offset: 10,
+          display: function(context) {
+            return context.dataset.data[context.dataIndex] > 5; // Only show labels for slices > 5%
           }
         }
-      });
-    });
+      }
+    },
+    plugins: [ChartDataLabels] // Enable the datalabels plugin
+  });
+});
 
     // Countdown timer
     function updateCountdown() {
