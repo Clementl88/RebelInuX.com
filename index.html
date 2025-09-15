@@ -1170,29 +1170,30 @@
     window.addEventListener('load', animateSections);
 
     // Accordion functionality
-    document.querySelectorAll('.accordion-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const content = header.nextElementSibling;
-        const isActive = content.classList.contains('active');
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const isActive = content.classList.contains('active');
 
-        document.querySelectorAll('.accordion-content').forEach(item => {
-          item.classList.remove('active');
-          item.style.maxHeight = null;
-        });
-
-        document.querySelectorAll('.accordion-header').forEach(h => {
-          h.classList.remove('active');
-          h.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
-        });
-
-        if (!isActive) {
-          content.classList.add('active');
-          content.style.maxHeight = content.scrollHeight + 'px';
-          header.classList.add('active');
-          header.querySelector('.accordion-icon').style.transform = 'rotate(180deg)';
-        }
-      });
+    // Close all accordion items
+    document.querySelectorAll('.accordion-content').forEach(item => {
+      item.classList.remove('active');
+      item.style.maxHeight = null;
+      item.style.padding = '0 var(--spacing-md)';
     });
+
+    document.querySelectorAll('.accordion-header').forEach(h => {
+      h.classList.remove('active');
+    });
+
+    // Open clicked item if it wasn't already active
+    if (!isActive) {
+      content.classList.add('active');
+      content.style.maxHeight = content.scrollHeight + 100 + 'px'; // Extra space for buttons
+      header.classList.add('active');
+    }
+  });
+});
 
     // Pie chart for token distribution
     document.addEventListener('DOMContentLoaded', function() {
