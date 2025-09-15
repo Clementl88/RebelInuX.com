@@ -542,6 +542,71 @@
         transition: none !important;
       }
     }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
   </style>
 </head>
 
@@ -670,7 +735,33 @@
             <p>The Ecosystem Fund (60M REBL, 6%) is allocated for development, audits, and marketing, with a 6-month cliff and 18-month linear vesting.</p>
           </div>
         </div>
-        <!-- Additional accordion items -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-award" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i> NFT Holder Reward Mechanism</span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The ZORA Rewards Treasury (160M REBL) is strategically split into two components for asset holder rewards and community incentives.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-users" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i> Community DAO Reserve</span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The Community DAO Reserve (10M REBL, 1% of total supply) is the treasury fund for the RebelInuX DAO, dedicated to its long-term health and growth.</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span><i class="fas fa-link" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i> Cross-Chain Value Acceleration</span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>RebelInuX leverages a multi-chain strategy to maximize value for REBL holders, bridging revenue from ZORA to Solana.</p>
+          </div>
+        </div>
       </div>
       <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) 0;">
         <canvas id="distributionChart" style="max-height: 400px;"></canvas>
@@ -689,6 +780,7 @@
           <ul>
             <li>RebelInuX ($REBL) token creation.</li>
             <li>Initial community building on X, Telegram, Discord.</li>
+            <li>Renouncement of mint, freeze, and update authority.</li>
           </ul>
         </div>
       </div>
@@ -698,11 +790,40 @@
           <h3>Q3 2025: Triple-Asset Ecosystem Launch</h3>
           <ul>
             <li><strong>LAUNCH:</strong> RebelInuX Creator Coins & Content Coin NFTs on ZORA.</li>
-            <li><strong>LAUNCH:</strong> RebelInuX ($REBL) token listed on a Solana DEX.</li>
+            <li>New reward mechanism: Hold both assets to claim $REBL.</li>
+            <li>Shift to digital ownership and utility-based distribution.</li>
+            <li><strong>LAUNCH:</strong> RebelInuX ($REBL) token listed on a Solana DEX (PumpSwap).</li>
+            <li>Deployment of the $REBL token claim portal for holders.</li>
           </ul>
         </div>
       </div>
-      <!-- Additional milestones -->
+      <div class="roadmap-milestone left">
+        <div class="roadmap-circle">Q4</div>
+        <div class="roadmap-content">
+          <h3>Q4 2025: Expansion & Utility</h3>
+          <ul>
+            <li>Initiate community governance discussions and planning.</li>
+            <li>Form initial partnerships aligned with the rebel ethos.</li>
+            <li><strong>Research and pursue</strong> additional DEX liquidity and future CEX listing opportunities.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="roadmap-milestone right">
+        <div class="roadmap-circle">Q1-Q3</div>
+        <div class="roadmap-content">
+          <h3>Q1-Q3 2026: Governance & The Future Pack</h3>
+          <ul>
+            <li>Official launch of the RebelInuX DAO on Realms.</li>
+            <li>Grant holders of both core assets enhanced governance rights.</li>
+            <li>Develop further utility for the triple-asset ecosystem.</li>
+            <li>Community-funded initiatives from the treasury.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-xl) auto; max-width: 800px; font-style: italic; text-align: center;">
+      <h3 style="color: var(--rebel-gold);">Note on Timelines:</h3>
+      <p>This roadmap outlines our strategic goals and estimated timeframes. Development is complex and unpredictable. These dates are forecasts, not promises, and may shift based on technical challenges, community feedback, and market conditions.</p>
     </div>
   </section>
 
@@ -713,17 +834,17 @@
       <div class="card">
         <i class="fas fa-rocket"></i>
         <h3>Fast & Fearless</h3>
-        <p>Built on Solana for lightning-fast transactions.</p>
+        <p>Built on Solana for lightning-fast transactions, security, and that earthy, rebellious spirit.</p>
       </div>
       <div class="card">
         <i class="fas fa-users"></i>
         <h3>Community of Rebels</h3>
-        <p>A decentralized, wild family of meme warriors.</p>
+        <p>A decentralized, wild family of meme warriors committed to the cause.</p>
       </div>
       <div class="card">
         <i class="fas fa-fire"></i>
         <h3>Burn Bright</h3>
-        <p>Explosive roadmap to set the crypto world ablaze.</p>
+        <p>With an explosive roadmap, we're here to set the crypto world ablaze with earthy fire.</p>
       </div>
     </div>
   </section>
@@ -779,32 +900,56 @@
       <a href="https://zora.co/@rebelinux" aria-label="Zora"><i class="fas fa-cube"></i></a>
     </div>
     <p>© 2025 RebelInuX. All rights reserved.</p>
+    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 10px; margin-top: var(--spacing-md); border-left: 4px solid var(--rebel-red); max-width: 600px; margin-left: auto; margin-right: auto;">
+      <p style="margin: 0; font-size: 0.9em;"><strong>⚠️ DISCLAIMER:</strong> RebelInuX is a meme token for entertainment. High risk. DYOR.</p>
+    </div>
   </footer>
 
   <!-- JavaScript -->
   <script>
+    // Initialize AOS animations
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100
+    });
+
     // Loading animation
     window.addEventListener('load', function() {
       setTimeout(function() {
-        document.getElementById('loader').style.opacity = '0';
-        document.getElementById('loader').style.visibility = 'hidden';
+        document.getElementById('loader').classList.add('hidden');
       }, 1000);
     });
 
     // Mobile navigation
     document.getElementById('mobileNavToggle').addEventListener('click', function() {
       document.getElementById('nav-desktop').classList.toggle('active');
+      const icon = this.querySelector('i');
+      if (document.getElementById('nav-desktop').classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close mobile nav when clicking on a link
+    document.querySelectorAll('#nav-desktop a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById('nav-desktop').classList.remove('active');
+        document.getElementById('mobileNavToggle').querySelector('i').classList.remove('fa-times');
+        document.getElementById('mobileNavToggle').querySelector('i').classList.add('fa-bars');
+      });
     });
 
     // Back to top button
     window.addEventListener('scroll', function() {
       const backToTop = document.getElementById('backToTop');
       if (window.pageYOffset > 300) {
-        backToTop.style.opacity = '1';
-        backToTop.style.visibility = 'visible';
+        backToTop.classList.add('visible');
       } else {
-        backToTop.style.opacity = '0';
-        backToTop.style.visibility = 'hidden';
+        backToTop.classList.remove('visible');
       }
     });
 
@@ -849,30 +994,7 @@
       });
     });
 
-    // Countdown timer
-    function updateCountdown() {
-      const launchDate = new Date("2025-09-07T19:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = launchDate - now;
-
-      if (distance < 0) {
-        document.getElementById('countdown').innerHTML = '<div class="countdown-unit">🚀 Launched!</div>';
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById('days').textContent = days.toString().padStart(2, '0');
-      document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-      document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-      document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-    }
-    setInterval(updateCountdown, 1000);
-
-    // Pie chart
+    // Pie chart for token distribution
     document.addEventListener('DOMContentLoaded', function() {
       const ctx = document.getElementById('distributionChart').getContext('2d');
       new Chart(ctx, {
@@ -913,6 +1035,30 @@
         }
       });
     });
+
+    // Countdown timer
+    function updateCountdown() {
+      const launchDate = new Date("2025-09-07T19:00:00").getTime();
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance < 0) {
+        document.getElementById('countdown').innerHTML = '<div class="countdown-unit" style="min-width: 200px; font-size: 1.5rem;">🚀 Launched!</div>';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
   </script>
 </body>
 </html>
