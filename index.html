@@ -1,543 +1,1739 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
-  <meta name="description" content="RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains.">
+<head
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
+<meta name="description" content="RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains.">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- AOS Animation Library -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<!-- Chart.js for token distribution chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- AOS Animation -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-  <style>
-    :root {
-      --color-background: #f4e4c1;
-      --color-primary: #8b5a2b;
-      --color-secondary: #d2b48c;
-      --color-accent: #ffcc00;
-      --color-dark: #3a2f1f;
-      --color-light: #fff8f0;
-      --color-text: #4b3d2e;
-      --font-family: 'Montserrat', sans-serif;
-      --transition: all 0.3s ease;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-family);
-      background-color: var(--color-background);
-      color: var(--color-text);
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-header {
-  position: sticky;
-  top: 0;
-  background-color: var(--color-secondary);
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-header h1 {
-  font-weight: 900;
-  color: var(--color-primary);
-  font-size: 1.8rem;
-}
-
-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-nav a {
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-nav a:hover {
-  background-color: rgba(139, 90, 43, 0.1);
-  transform: translateY(-2px);
-}
-
-/* Mobile menu */
-.menu-toggle {
-  display: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-section {
-  padding: 4rem 1rem;
-  text-align: center;
-}
-
-section h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--color-primary);
-  font-weight: 900;
-}
-
-.btn {
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  transition: var(--transition);
-}
-.btn:hover {
-  background-color: #6e4222;
-  transform: scale(1.05);
-}
-
-.hero {
-  background: linear-gradient(135deg, rgba(139, 90, 43, 0.1), rgba(210, 180, 140, 0.2));
-  padding: 4rem 1rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  max-width: 700px;
-  margin: 0 auto 2rem;
-  font-size: 1.2rem;
-  line-height: 1.6;
-}
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.feature-card {
-  background-color: var(--color-light);
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 300px;
-  flex: 1;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-}
-.feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-.feature-card i {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: var(--color-primary);
-}
-
-/* Tokenomics & Roadmap */
-section#tokenomics, section#roadmap {
-  background-color: var(--color-light);
-}
-
-.tokenomics, .roadmap {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-h3 {
-  margin-bottom: 1rem;
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
-.subsection {
-  margin-top: 2rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* Token distribution pie chart container */
-.chart-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  height: 400px;
-}
-
-/* Accordion styles */
-.accordion {
-  max-width: 800px;
-  margin: 2rem auto;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.accordion-item {
-  border-top: 1px solid #ccc;
-}
-.accordion-header {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: var(--transition);
-}
-.accordion-header:hover {
-  background-color: #e8e8e8;
-}
-.accordion-active {
-  background-color: var(--color-primary);
-  color: #fff;
-}
-.accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s;
-  padding: 0 1rem;
-}
-.accordion-content.show {
-  max-height: 1000px;
-  padding: 1rem;
-}
-
-/* Countdown timer styles */
-.countdown {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-.countdown-box {
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  min-width: 100px;
-  text-align: center;
-}
-.countdown-box span {
-  display: block;
-  font-size: 2rem;
-  font-weight: 700;
-}
-.countdown-label {
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-}
-
-/* Footer */
-footer {
-  background-color: var(--color-secondary);
-  padding: 2rem 1rem;
-  text-align: center;
-  margin-top: 4rem;
-}
-footer h3 {
-  margin-bottom: 1rem;
-}
-.social-icons {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-}
-.social-icons a {
-  font-size: 1.8rem;
-  transition: var(--transition);
-}
-.social-icons a:hover {
-  color: var(--color-accent);
-}
-
-/* Responsive styles */
-@media(max-width:768px){
-  header {
-    flex-direction: column;
-    align-items: flex-start;
+<style>
+  :root {
+    --color-background: #f4e4c1;
+    --color-header: #d2b48c;
+    --color-hero: #c9a66b;
+    --color-section: #f9f9f9;
+    --color-footer: #d2b48c;
+    --color-text: #4b3d2e;
+    --color-accent: #8b5a2b;
+    --color-hover: #6e4222;
+    --color-earth: #3a2f1f;
+    --color-card-bg: #fff8f0;
+    --color-primary: #8b5a2b;
+    --accent-color: #ffcc00;
+    --transition: all 0.3s ease;
   }
-  nav {
-    flex-direction: column;
-    width: 100%;
+
+  *, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
   }
-  .menu-toggle {
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+  }
+
+  /* Responsive images */
+  img {
+    max-width: 100%;
+    height: auto;
     display: block;
   }
-  nav {
-    display: none;
+
+  /* HEADER styles */
+  header {
+    background: var(--color-header);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
-  nav.active {
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
-  }
-  .features {
     flex-direction: column;
+    align-items: center;
   }
-}
+  
+  h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-weight: 900;
+    color: var(--color-accent);
+    letter-spacing: 1px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Navigation */
+  #nav-desktop {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  #nav-desktop a {
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  #nav-desktop a:hover {
+    background: rgba(139, 90, 43, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  #nav-desktop a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: var(--transition);
+    transform: translateX(-50%);
+  }
+  
+  #nav-desktop a:hover::after {
+    width: 70%;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  /* Sections styling */
+  section {
+    padding: 4rem 1.5rem;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Heading styles */
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    margin-bottom: 2rem;
+    color: var(--color-earth);
+    border-bottom: 4px solid var(--color-earth);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 900;
+    position: relative;
+  }
+  
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 30%;
+    height: 2px;
+    background: var(--accent-color);
+  }
+
+  /* Card styling */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .card {
+    background: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+  }
+  
+  .card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+    animation: pulse 2s infinite;
+  }
+
+  /* Animation keyframes */
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Image container */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    position: relative;
+  }
+  
+  .image-container img {
+    border-radius: 15px;
+    transition: transform 0.4s, box-shadow 0.4s;
+    animation: float 3s ease-in-out infinite;
+    max-width: 100%;
+  }
+  
+  /* Overlay for images */
+  .overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  
+  .image-container:hover .overlay {
+    opacity: 1;
+  }
+  
+  .overlay-text {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  /* Call-to-action button */
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    animation: pulseBtn 2s infinite;
+    transition: var(--transition);
+    gap: 0.5rem;
+  }
+  
+  @keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  .cta-button:hover {
+    background-color: var(--color-hover);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Footer styles */
+  footer {
+    background: var(--color-footer);
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  
+  footer h3 {
+    margin-bottom: 1rem;
+    color: var(--color-earth);
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .social-icons a {
+    font-size: 1.8rem;
+    color: var(--color-earth);
+    transition: var(--transition);
+  }
+  
+  .social-icons a:hover {
+    color: var(--color-accent);
+    transform: translateY(-5px);
+  }
+
+  /* Back to top button */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .back-to-top:hover {
+    background: var(--color-hover);
+    transform: translateY(-5px);
+  }
+
+  /* Loading animation */
+  .loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+  
+  .loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(139, 90, 43, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--color-primary);
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Improved roadmap styles */
+  .roadmap-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .roadmap-title {
+    text-align: center;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    margin-bottom: 3rem;
+    color: var(--color-earth);
+    text-shadow: 0 0 10px rgba(139, 90, 43, 0.3);
+  }
+
+  .roadmap-timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+
+  .roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));
+    border-radius: 2px;
+  }
+
+  .roadmap-milestone {
+    position: relative;
+    margin-bottom: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .roadmap-milestone.right {
+    justify-content: flex-end;
+  }
+
+  .roadmap-circle {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-primary);
+    border: 4px solid var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(139, 90, 43, 0.5);
+    color: white;
+  }
+
+  .roadmap-content {
+    width: 45%;
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 2px -2px 0 var(--color-accent);
+    position: relative;
+    transition: var(--transition);
+  }
+  
+  .roadmap-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 2px -2px 0 var(--color-accent);
+  }
+
+  .roadmap-milestone.right .roadmap-content {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), -2px -2px 0 var(--color-accent);
+  }
+  
+  .roadmap-milestone.right .roadmap-content:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), -2px -2px 0 var(--color-accent);
+  }
+
+  .roadmap-content::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--color-primary);
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+
+  .roadmap-milestone.left .roadmap-content::before {
+    right: -10px;
+    border-right: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
+  }
+
+  .roadmap-milestone.right .roadmap-content::before {
+    left: -10px;
+    border-left: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
+  }
+
+  .roadmap-content h3 {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--color-primary);
+    padding-bottom: 0.5rem;
+  }
+
+  .roadmap-content p, .roadmap-content ul {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .roadmap-content ul {
+    padding-left: 1.2rem;
+    text-align: left;
+  }
+
+  .roadmap-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .roadmap-disclaimer {
+    background-color: var(--color-card-bg);
+    border: 2px solid var(--color-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 3rem auto;
+    max-width: 800px;
+    font-style: italic;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+  }
+
+  .roadmap-disclaimer h3 {
+    color: var(--color-accent);
+    border: none;
+    margin-bottom: 1rem;
+  }
+
+  .roadmap-evolving-path {
+    text-align: center;
+    font-style: italic;
+    margin-top: 2rem;
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  /* Improved tokenomics styles */
+  .tokenomics-card {
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--color-primary);
+    text-align: left;
+    transition: var(--transition);
+  }
+  
+  .tokenomics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  .supply-box {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    background: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    transition: var(--transition);
+  }
+  
+  .supply-box:hover {
+    transform: scale(1.02);
+  }
+
+  .supply-amount {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: bold;
+    color: var(--color-primary);
+    margin: 1rem 0;
+  }
+
+  .chart-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    height: 400px;
+  }
+
+  .tokenomics-card ul {
+    padding-left: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .tokenomics-card li {
+    margin-bottom: 0.8rem;
+    padding-left: 0.5rem;
+  }
+
+  .highlight {
+    background-color: rgba(139, 90, 43, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--color-primary);
+  }
+
+  .contract-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background: rgba(139, 90, 43, 0.1);
+    border-radius: 30px;
+    transition: var(--transition);
+    gap: 0.5rem;
+  }
+
+  .contract-link:hover {
+    background: rgba(139, 90, 43, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .token-grid-item {
+    background: var(--color-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: var(--transition);
+  }
+  
+  .token-grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #000;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.3rem 0;
+  }
+
+  /* Accordion Styles */
+  .accordion {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+  }
+
+  .accordion-item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  .accordion-header {
+    width: 100%;
+    padding: 1.2rem;
+    text-align: left;
+    background: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    gap: 0.5rem;
+  }
+
+  .accordion-header:hover {
+    background: #e8e8e8;
+  }
+
+  .accordion-header.active {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .accordion-header.active .accordion-icon {
+    transform: rotate(180deg);
+  }
+
+  .accordion-icon {
+    transition: transform 0.3s;
+  }
+
+  .accordion-content {
+    padding: 0 1.2rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    background: white;
+  }
+
+  .accordion-content.active {
+    padding: 1.2rem;
+    max-height: 1000px;
+  }
+
+  /* Countdown styles */
+  .countdown-container {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .countdown-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+  
+  #countdown {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .countdown-unit {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    min-width: 80px;
+  }
+  
+  .countdown-label {
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* New styles for updated tokenomics */
+  .allocation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .allocation-item {
+    background: var(--color-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: var(--transition);
+    text-align: left;
+  }
+
+  .allocation-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+
+  .allocation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .allocation-percentage {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+
+  .allocation-amount {
+    color: var(--color-text);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .vesting-info {
+    background: rgba(139, 90, 43, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .contract-address {
+    font-family: monospace;
+    background: rgba(139, 90, 43, 0.1);
+    padding: 0.5rem;
+    border-radius: 4px;
+    word-break: break-all;
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+  }
+
+  .value-flow-diagram {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .flow-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .flow-content {
+    flex: 1;
+    text-align: left;
+  }
+
+  .flow-arrow {
+    text-align: center;
+    margin: 1rem 0;
+    color: var(--color-primary);
+    font-size: 1.5rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    header {
+      padding: 1rem;
+    }
+    
+    .header-container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    #nav-desktop {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--color-header);
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    #nav-desktop.active {
+      display: flex;
+    }
+    
+    .mobile-nav-toggle {
+      display: block;
+    }
+    
+    section {
+      padding: 3rem 1rem;
+    }
+    
+    .roadmap-timeline::before {
+      left: 30px;
+    }
+    
+    .roadmap-milestone, .roadmap-milestone.right {
+      justify-content: flex-start;
+    }
+    
+    .roadmap-circle {
+      left: 30px;
+    }
+    
+    .roadmap-content {
+      width: calc(100% - 80px);
+      margin-left: 80px;
+    }
+    
+    .roadmap-milestone.left .roadmap-content::before,
+    .roadmap-milestone.right .roadmap-content::before {
+      left: -10px;
+      border-left: 2px solid var(--color-primary);
+      border-top: 2px solid var(--color-primary);
+      border-right: none;
+    }
+    
+    .tokenomics-card, .supply-box {
+      padding: 1.5rem;
+    }
+    
+    .supply-amount {
+      font-size: 1.8rem;
+    }
+    
+    .chart-container {
+      height: 300px;
+    }
+    
+    .countdown-unit {
+      min-width: 60px;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .allocation-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-step {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .flow-icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      min-width: 100%;
+    }
+    
+    .token-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    #countdown {
+      gap: 0.3rem;
+    }
+    
+    .countdown-unit {
+      min-width: 50px;
+      padding: 0.3rem 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
 </style>
 </head>
 <body>
-<!-- Header -->
+
+<!-- Loading animation -->
+<div class="loader">
+  <div class="loader-spinner"></div>
+</div>
+
+<!-- Back to top button -->
+<div class="back-to-top">
+  <i class="fas fa-arrow-up"></i>
+</div>
+
+<!-- HEADER with mobile toggle -->
 <header>
-  <h1>RebelInuX (REBL)</h1>
-  <div class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></div>
-  <nav id="navbar">
-    <a href="#hero">Home</a>
-    <a href="#about">About</a>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#features">Features</a>
-    <a href="#community">Community</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div class="header-container">
+    <h1>RebelInuX (REBL)</h1>
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <!-- Desktop nav -->
+    <nav id="nav-desktop">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#tokenomics">Tokenomics</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#features">Features</a>
+      <a href="#community">Community</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
 </header>
 
 <!-- Hero Section -->
-<section id="hero" class="hero" data-aos="fade-up">
-  <h2>🔥 THE REBELLIOUS MEME COIN THAT RIPS THE RULES! 🔥</h2>
-  <p>Introducing the triple-asset ecosystem on ZORA: collectible art, digital ownership, and cross-chain rewards. Join the meme revolution now!</p>
-  <a class="btn" href="#community">Join the Rebellion</a>
+<section id="hero" data-aos="fade-up" style="position: relative; overflow: hidden;">
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(139, 90, 43, 0.1) 0%, rgba(210, 180, 140, 0.2) 100%); z-index: -1;"></div>
+  
+  <h2 style="position: relative;">
+    <span style="display: block; font-size: 0.8em; margin-bottom: 10px; color: var(--color-primary);">INTRODUCING THE TRIPLE-ASSET ECOSYSTEM</span>
+    🔥 THE REBELLIOUS MEME COIN THAT RIPS THE RULES! 🔥
+  </h2>
+  
+  <div class="image-container">
+    <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX Meme Coin" style="max-width:400px;">
+    <div class="overlay">
+      <div class="overlay-text">Join the Meme Revolution!</div>
+    </div>
+  </div>
+  
+  <div style="max-width: 800px; margin: 0 auto;">
+    <p style="font-size: 1.2em; line-height: 1.6; margin-bottom: 20px;">
+      "RebelInuX pioneers a novel meme coin model with a <strong>triple-asset ecosystem</strong> on ZORA, merging collectible art with a secure claim mechanism across chains."
+    </p>
+    
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 30px 0;">
+      <div style="background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 10px; width: 200px; text-align: center;">
+        <div style="font-size: 2em; margin-bottom: 10px;">🖼️</div>
+        <h4 style="margin: 0; color: var(--color-primary);">Creator Coin</h4>
+        <p style="margin: 5px 0; font-size: 0.9em;">Digital ownership & value accrual</p>
+      </div>
+      
+      <div style="background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 10px; width: 200px; text-align: center;">
+        <div style="font-size: 2em; margin-bottom: 10px;">🎨</div>
+        <h4 style="margin: 0; color: var(--color-primary);">Content Coin NFT</h4>
+        <p style="margin: 5px 0; font-size: 0.9em;">Community identity & engagement</p>
+      </div>
+      
+      <div style="background: rgba(139, 90, 43, 0.1); padding: 15px; border-radius: 10px; width: 200px; text-align: center;">
+        <div style="font-size: 2em; margin-bottom: 10px;">💰</div>
+        <h4 style="margin: 0; color: var(--color-primary);">$REBL Token</h4>
+        <p style="margin: 5px 0; font-size: 0.9em;">Rewards & utility across chains</p>
+      </div>
+    </div>
+  </div>
+  
+  <p style="font-style: italic; max-width: 700px; margin: 0 auto 25px;">
+    "Inspired by the fearless, rebellious spirit of Shiba Inu, RebelInuX is here to shake up crypto with attitude, memes, and decentralized power."
+  </p>
+  
+  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+    <a href="#community" class="cta-button">JOIN THE REBELLION</a>
+    <a href="#tokenomics" class="cta-button" style="background: var(--color-earth);">EXPLORE TOKENOMICS</a>
+  </div>
 </section>
 
-<!-- About -->
-<section id="about" data-aos="fade-up">
+<!-- About Section -->
+<section id="about" data-aos="fade-up" data-aos-delay="200">
   <h2>What is RebelInuX?</h2>
-  <div class="subsection">
-    <p>More than a meme coin — it's a movement inspired by the fierce spirit of Shiba Inu. Our triple-asset ecosystem links Creator Coins, NFTs, and $REBL tokens across chains, empowering community ownership and utility.</p>
-  </div>
-</section>
-
-<!-- Features -->
-<section id="features" data-aos="fade-up">
-  <h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
-  <div class="features">
-    <div class="feature-card">
-      <i class="fas fa-rocket"></i>
-      <h3>Fast & Fearless</h3>
-      <p>Built on Solana for lightning-fast transactions with a rebellious spirit. No rules, just results.</p>
-    </div>
-    <div class="feature-card">
-      <i class="fas fa-users"></i>
-      <h3>Community of Rebels</h3>
-      <p>A decentralized, vibrant community committed to rebellion and innovation.</p>
-    </div>
-    <div class="feature-card">
-      <i class="fas fa-fire"></i>
-      <h3>Burn Bright</h3>
-      <p>We’re here to set the crypto world ablaze with earthy fire and bold moves.</p>
+  
+  <div class="image-container">
+    <img src="https://i.imgur.com/beM4V8X.png" alt="RebelInuX" style="max-width:300px;">
+    <div class="overlay">
+      <div class="overlay-text">Powerful & Rebellious!</div>
     </div>
   </div>
-</section>
-
-<!-- Tokenomics -->
-<section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;">
-  <h2 style="text-align:center; margin-bottom:30px;">Tokenomics</h2>
-  <div class="subsection">
-    <h3>Max Supply</h3>
-    <p style="font-size:2rem; font-weight:bold;">1,000,000,000 REBL</p>
-    <p>(One Billion, Fixed Supply)</p>
-  </div>
-  <div class="subsection">
-    <h3>Token Distribution</h3>
-    <canvas id="distributionChart"></canvas>
-    <button class="btn" id="toggle-details" style="margin-top:1rem;">Show Details</button>
-    <div id="distribution-details" style="display:none; margin-top:1rem;">
-      <ul>
-        <li><strong>70%</strong> - Bonding Curve (700M REBL)</li>
-        <li><strong>16%</strong> - ZORA Rewards Treasury (160M REBL)</li>
-        <li><strong>7%</strong> - Team Fund (70M REBL)</li>
-        <li><strong>6%</strong> - Ecosystem Fund (60M REBL)</li>
-        <li><strong>1%</strong> - Community DAO Reserve (10M REBL)</li>
+  
+  <div style="max-width: 800px; margin: 0 auto;">
+    <p><strong>RebelInuX</strong> is more than a meme coin — it's a <strong>movement of wild, rebellious crypto warriors</strong> inspired by the fierce spirit of the Shiba Inu. We're breaking rules, shaking norms, and building a decentralized revolution rooted in earthy, natural tones.</p>
+    
+    <div style="background: rgba(139, 90, 43, 0.08); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid var(--color-primary);">
+      <h3 style="color: var(--color-primary); margin-top: 0;">The Triple-Asset Ecosystem</h3>
+      <p>RebelInuX pioneers a novel model with a <strong>triple-asset ecosystem</strong> on ZORA. This creates a direct link between:</p>
+      
+      <ul style="columns: 2; list-style: none; padding: 0;">
+        <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--color-primary);">▸</span>
+          <strong>Digital ownership</strong> of a Creator Coin
+        </li>
+        <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--color-primary);">▸</span>
+          <strong>Community identity</strong> with a Content Coin NFT
+        </li>
+        <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--color-primary);">▸</span>
+          <strong>$REBL token rewards</strong> across chains
+        </li>
       </ul>
+      
+      <p>By acquiring the core duo of assets, holders become <strong>core participants</strong> in our community and gain the ability to claim <strong>$REBL tokens</strong> across chains.</p>
+    </div>
+    
+    <h3>Our Mission</h3>
+    <p>Unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto — making noise, shaking walls, and building a community that refuses to conform.</p>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 30px 0;">
+      <div style="flex: 1; min-width: 250px; background: var(--color-card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">🎯</div>
+        <h4 style="color: var(--color-primary);">Decentralization First</h4>
+        <p>Our ultimate goal is complete decentralization, transferring all control to the community.</p>
+      </div>
+      
+      <div style="flex: 1; min-width: 250px; background: var(--color-card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">⚡</div>
+        <h4 style="color: var(--color-primary);">Innovative Model</h4>
+        <p>We're redefining the meme coin landscape with our triple-asset ecosystem.</p>
+      </div>
+      
+      <div style="flex: 1; min-width: 250px; background: var(--color-card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">🌐</div>
+        <h4 style="color: var(--color-primary);">Cross-Chain Future</h4>
+        <p>Bridging communities and value across multiple blockchain ecosystems.</p>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="#whitepaper" class="cta-button" style="background: var(--color-earth);">READ THE WHITEPAPER</a>
     </div>
   </div>
 </section>
 
-<!-- Roadmap -->
-<section id="roadmap" data-aos="fade-up" style="background-color:#fff;">
-  <h2 style="text-align:center; margin-bottom:30px;">Our Rebellion Roadmap</h2>
-  <div style="max-width:1200px; margin:0 auto;">
-    <div style="display:flex; flex-direction:column; gap:2rem;">
-      <div>
-        <h3>Q2 2025: Foundation & Launch</h3>
+ <!-- Tokenomics Section -->
+<section id="tokenomics" style="background-color:#f9f9f9; padding:40px 20px;" data-aos="fade-up" data-aos-delay="300">
+  <h2 style="text-align:center; margin-bottom: 40px;">Tokenomics</h2>
+  
+  <!-- Supply Overview -->
+  <div class="supply-box" style="position: relative;">
+    <h3>Max Supply</h3>
+    <p class="supply-amount">1,000,000,000</p>
+    <p>(One Billion)</p>
+    <div style="position: absolute; top: 10px; right: 10px; background: var(--accent-color); color: #000; padding: 4px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold;">
+      FIXED SUPPLY
+    </div>
+  </div>
+  
+  <!-- Token Distribution -->
+  <div class="tokenomics-card">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+      <h3>Token Distribution</h3>
+      <button id="distribution-toggle" style="background: var(--color-primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em;">
+        Show Details
+      </button>
+    </div>
+    
+    <p>The total supply of RebelInuX tokens is fixed at <strong>1 billion (1,000,000,000)</strong> with <strong>6 decimals</strong>. No inflation or additional minting is planned.</p>
+    
+    <div class="chart-container">
+      <canvas id="distributionChart"></canvas>
+    </div>
+    
+    <div id="distribution-details" style="display: none; margin-top: 20px;">
+      <div class="token-grid">
+        <div class="token-grid-item">
+          <span class="tag">70%</span>
+          <h4>Bonding Curve</h4>
+          <p><strong>700M REBL</strong> distributed to the public during the fair launch at progressively increasing prices.</p>
+        </div>
+        
+        <div class="token-grid-item">
+          <span class="tag">16%</span>
+          <h4>ZORA Rewards Treasury</h4>
+          <p><strong>160M REBL</strong> dedicated to rewarding holders of RebelInuX Creator Coin and Content Coins.</p>
+          <a href="https://solscan.io/account/ANjMEXSCmGAkZVjU5VRhfQyTzR9KKhDACNyiVnAQ9Juo" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>View Treasury Wallet
+          </a>
+        </div>
+        
+        <div class="token-grid-item">
+          <span class="tag">7%</span>
+          <h4>Team Fund</h4>
+          <p><strong>70M REBL</strong> for core contributors with multi-stage vesting structure for optimal alignment.</p>
+          <a href="https://solscan.io/account/HWHsxjarK3UpxwkFvaG1WP5X5HJ26xtAyYyY5fyNsdKJ" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>View Vesting Contract
+          </a>
+        </div>
+        
+        <div class="token-grid-item">
+          <span class="tag">6%</span>
+          <h4>Ecosystem Fund</h4>
+          <p><strong>60M REBL</strong> for development, audits, marketing with on-chain vesting and 6-month cliff.</p>
+        </div>
+        
+        <div class="token-grid-item">
+          <span class="tag">1%</span>
+          <h4>Community DAO Reserve</h4>
+          <p><strong>10M REBL</strong> strategic reserves locked until March 31, 2026, then transferred to DAO control.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Key Features Accordion -->
+<div class="tokenomics-card">
+  <h3 style="text-align: center; margin-bottom: 30px;">Key Tokenomics Features</h3>
+  
+  <div class="accordion">
+    <!-- Ecosystem Fund -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-vault" style="margin-right: 10px;"></i>
+        Ecosystem Fund Vesting Schedule & Security
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>The Ecosystem Fund (60M REBL, 6% of total supply) is designated for development, audits, marketing, and operational costs. It is divided into two portions:</p>
+        
         <ul>
-          <li>Token creation & community onboarding</li>
-          <li>Smart contract renouncement</li>
+          <li><strong>Initial Operations (0.5%):</strong> 5,000,000 REBL - Fully allocated at TGE for essential costs during first 6 months</li>
+          <li><strong>Sustained Growth (5.5%):</strong> 55,000,000 REBL - Subject to 6-month cliff, then 20% unlocked followed by linear vesting over 18 months</li>
+        </ul>
+        
+        <h4>On-Chain Verification</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+          <a href="https://solscan.io/account/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7P1" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>Ecosystem Vesting Contract
+          </a>
+          <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>Ecosystem Multi-Sig Wallet
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- NFT Rewards -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-award" style="margin-right: 10px;"></i>
+        NFT Holder Reward Mechanism
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>The ZORA Rewards Treasury (160M REBL) is strategically split into two components:</p>
+        
+        <ul>
+          <li><strong>Asset Holder Rewards (80% | 128M REBL):</strong> Dedicated to rewarding holders of Creator Coins and Content Coin NFTs</li>
+          <li><strong>Community Incentives Pool (20% | 32M REBL):</strong> For grassroots community initiatives, meme contests, and creator giveaways</li>
+        </ul>
+        
+        <div class="highlight">
+          <p><strong>Each RebelInuX Creator Coin represents a foundational claim on future REBL tokens</strong> from the Solana blockchain, drawn directly from the ZORA Rewards Treasury.</p>
+        </div>
+        
+        <h4>Vesting Schedule</h4>
+        <p>The entire treasury is subject to transparent vesting:</p>
+        <ul>
+          <li><strong>40% (64M REBL) Cliff Release:</strong> Released immediately for initial claims</li>
+          <li><strong>60% (96M REBL) Linear Vesting:</strong> Distributed over 2 years (concluding September 14, 2027)</li>
+        </ul>
+        
+        <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" target="_blank" class="contract-link">
+          <i class="fas fa-external-link-alt"></i>View Vesting Contract
+        </a>
+      </div>
+    </div>
+    
+    <!-- Community Reserve -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-users" style="margin-right: 10px;"></i>
+        Community DAO Reserve
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>The Community DAO Reserve (10M REBL, 1% of total supply) is the treasury fund for the RebelInuX DAO, dedicated to its long-term health and growth.</p>
+        
+        <p><strong>Vesting Schedule:</strong> Cliff until July 1, 2026, then 20% (2M REBL) unlocked, followed by linear vesting of the remaining 80% (8M REBL) over 24 months.</p>
+        
+        <h4>On-Chain Verification</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+          <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>Vesting Contract
+          </a>
+          <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" class="contract-link">
+            <i class="fas fa-external-link-alt"></i>Multisig Recipient
+          </a>
+        </div>
+        
+        <p>Upon unlock, control will be transferred to the RebelInuX DAO for community-governed initiatives:</p>
+        
+        <ul>
+          <li>Strategic Partnerships & Collaborations</li>
+          <li>Community Grants & Initiatives</li>
+          <li>Exchange Listings</li>
+          <li>Ecosystem Incentives</li>
+          <li>Security & Audits</li>
         </ul>
       </div>
-      <div>
-        <h3>Q3 2025: Ecosystem Launch</h3>
+    </div>
+    
+    <!-- Cross-Chain -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-link" style="margin-right: 10px;"></i>
+        Cross-Chain Value Acceleration
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>RebelInuX leverages a multi-chain strategy to maximize value for REBL holders:</p>
+        
         <ul>
-          <li>Creator Coins & NFTs on ZORA</li>
-          <li>Token listing on Solana DEX</li>
+          <li><strong>Revenue Generation on ZORA:</strong> Trading fees from Creator Coin and Content Coin NFTs generate ETH income</li>
+          <li><strong>Strategic Allocation:</strong> 80% bridged to Solana to buy back and burn REBL, 15% to Community DAO Reserve, 5% for operational costs</li>
+          <li><strong>Value Distribution:</strong> Purchased REBL tokens are burned, increasing scarcity and value</li>
+        </ul>
+        
+        <div class="highlight">
+          <p>This creates a powerful cross-chain feedback loop where ZORA asset success directly translates into buying pressure and value accumulation for the REBL token on Solana.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Decentralization -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-shield-alt" style="margin-right: 10px;"></i>
+        Decentralization & Security
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>At RebelInuX, our foundational principles are transparency, decentralization, and security. We believe that true empowerment arises when control is distributed across the community.</p>
+        
+        <h4>$REBL Token on Solana:</h4>
+        <ul>
+          <li><strong>Contract Renouncement:</strong> The Freeze Authority, Mint Authority, and Update Authority for the $REBL token smart contract have been permanently renounced.</li>
+          <li><strong>No Rug Pulls:</strong> No single entity can freeze token transfers or mint new $REBL tokens.</li>
+          <li><strong>Immutable Code:</strong> The smart contract code is now immutable.</li>
+          <li><strong>Liquidity Protection:</strong> The initial REBL/SOL pool will have 90% of its LP tokens locked for one year at launch using UNCX Network.</li>
+        </ul>
+        
+        <h4>Creator Coins & Content Coin NFTs on ZORA:</h4>
+        <ul>
+          <li><strong>Founder Commitment:</strong> 50% of the Creator Coins supply is allocated to the founder and subject to a 5-year linear vesting schedule.</li>
+          <li><strong>Decentralized Ownership:</strong> Each asset is owned directly by the holder, secured by the ZORA protocol on Base.</li>
+          <li><strong>Immutable Contracts:</strong> Smart contracts are non-upgradeable.</li>
+          <li><strong>Censorship-Resistant:</strong> Assets cannot be altered, frozen, or seized by any central party.</li>
         </ul>
       </div>
-      <div>
+    </div>
+
+    <!-- Evolving Tokenomics -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-chart-line" style="margin-right: 10px;"></i>
+        Evolving Tokenomics & Community Governance
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>The tokenomics outlined represent the foundational layer of the RebelInuX ecosystem. Our commitment is to evolve these mechanics transparently under community guidance.</p>
+        
+        <h4>Building on a Deflationary Base</h4>
+        <p>The cross-chain buy-back and burn mechanism provides continuous deflationary pressure. Future community governance may vote to augment this with additional burning mechanisms.</p>
+        
+        <h4>Expanding Token Utility</h4>
+        <p>The primary utilities of $REBL are governance and value accrual via burns. The community may propose and vote on additional utilities:</p>
+        <ul>
+          <li>Staking rewards to incentivize long-term holding</li>
+          <li>Using $REBL as a preferred currency for fees within ecosystem products</li>
+          <li>Granting bonus yields or exclusive access to holders of core RebelInuX NFTs</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Governance Framework -->
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <i class="fas fa-vote-yea" style="margin-right: 10px;"></i>
+        Governance and Community Participation
+        <i class="fas fa-chevron-down accordion-icon"></i>
+      </button>
+      <div class="accordion-content">
+        <p>RebelInuX (REBL) is evolving into a community-governed ecosystem powered by the $REBL token and RebelInuX NFT collection.</p>
+        
+        <h4>Future Governance Framework</h4>
+        <p>We aim to implement a governance system using Solana-compatible protocols like SPL Governance or Realms. We are exploring models where ownership of Creator Coins and Content Coin NFTs could grant enhanced voting power.</p>
+        
+        <h4>Proposed DAO Structure</h4>
+        <ul>
+          <li><strong>DAO Name:</strong> RebelInuX Community DAO</li>
+          <li><strong>Governance Token:</strong> $REBL</li>
+          <li><strong>Approval Threshold:</strong> 60% (proposed)</li>
+          <li><strong>Proposal Minimum:</strong> 13M $REBL (proposed)</li>
+          <li><strong>Council Seats:</strong> 5 (proposed)</li>
+          <li><strong>Council Eligibility:</strong> Holders of both Creator Coin + Content Coin NFT</li>
+        </ul>
+        
+        <p><em>Note: This is a preliminary proposal. All parameters are subject to change based on community discussion and ratification.</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+ <!-- Roadmap Section -->
+<section id="roadmap" data-aos="fade-up" data-aos-delay="400">
+  <h2 class="roadmap-title">Our Rebellion Roadmap</h2>
+  <div class="roadmap-timeline">
+    <div class="roadmap-milestone left">
+      <div class="roadmap-circle">Q2</div>
+      <div class="roadmap-content">
+        <h3>Q2 2025: Foundation & Launch (Progress Achieved)</h3>
+        <ul>
+          <li>RebelInuX ($REBL) token creation.</li>
+          <li>Initial community building on X, Telegram, Discord.</li>
+          <li>Renouncement of mint, freeze, and update authority.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="roadmap-milestone right">
+      <div class="roadmap-circle">Q3</div>
+      <div class="roadmap-content">
+        <h3>Q3 2025: Triple-Asset Ecosystem Launch</h3>
+        <ul>
+          <li><strong>LAUNCH:</strong> RebelInuX Creator Coins & Content Coin NFTs on ZORA.</li>
+          <li>New reward mechanism: Hold both assets to claim $REBL.</li>
+          <li>Shift to digital ownership and utility-based distribution.</li>
+          <li><strong>LAUNCH:</strong> RebelInuX ($REBL) token listed on a Solana DEX (PumpSwap).</li>
+          <li>Deployment of the $REBL token claim portal for holders.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="roadmap-milestone left">
+      <div class="roadmap-circle">Q4</div>
+      <div class="roadmap-content">
         <h3>Q4 2025: Expansion & Utility</h3>
         <ul>
-          <li>Community governance discussions</li>
-          <li>Partnerships and liquidity</li>
+          <li>Initiate community governance discussions and planning.</li>
+          <li>Form initial partnerships aligned with the rebel ethos.</li>
+          <li><strong>Research and pursue</strong> additional DEX liquidity and future CEX listing opportunities.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="roadmap-milestone right">
+      <div class="roadmap-circle">Q1-Q3</div>
+      <div class="roadmap-content">
+        <h3>Q1-Q3 2026: Governance & The Future Pack</h3>
+        <ul>
+          <li>Official launch of the RebelInuX DAO on Realms.</li>
+          <li>Grant holders of both core assets enhanced governance rights.</li>
+          <li>Develop further utility for the triple-asset ecosystem.</li>
+          <li>Community-funded initiatives from the treasury.</li>
         </ul>
       </div>
     </div>
   </div>
+  
+  <div class="roadmap-disclaimer">
+    <h3>Note on Timelines:</h3>
+    <p>This roadmap outlines our strategic goals and estimated timeframes. Development is complex and unpredictable. These dates are forecasts, not promises, and may shift based on technical challenges, community feedback, and market conditions. Our commitment is to build a quality ecosystem, not to rush to meet deadlines.</p>
+  </div>
+  
+  <p class="roadmap-evolving-path">The Evolving Path of the Rebellion</p>
+</section>
+  
+<!-- Why RebelInuX -->
+<section id="features" data-aos="fade-up" data-aos-delay="500">
+<h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
+<div class="cards">
+  <div class="card">
+    <i class="fas fa-rocket"></i>
+    <h3>Fast & Fearless</h3>
+    <p>Built on Solana for lightning-fast transactions, security, and that earthy, rebellious spirit. No rules, just results — because rebellion doesn't wait.</p>
+  </div>
+  <div class="card">
+    <i class="fas fa-users"></i>
+    <h3>Community of Rebels</h3>
+    <p>A decentralized, wild family of meme warriors committed to the cause.</p>
+  </div>
+  <div class="card">
+    <i class="fas fa-flame"></i>
+    <div class="burn-bright-symbol">🔥</div>
+    <h3>Burn Bright</h3>
+    <p>With an explosive roadmap, we're here to set the crypto world ablaze with earthy fire.</p>
+  </div>
+</div>
 </section>
 
-<!-- Why RebelInuX -->
-<section id="why" data-aos="fade-up">
-  <h2>Why RebelInuX? Because Rebellion Never Sleeps</h2>
-  <div class="features">
-    <div class="feature-card">
-      <i class="fas fa-bolt"></i>
-      <h3>Fast & Fearless</h3>
-      <p>Powered by Solana, ensuring rapid, secure transactions with earthy rebellion.</p>
+<!-- White Paper Download Section -->
+<section id="whitepaper" style="padding: 40px 20px; background-color: var(--color-section); text-align: center;">
+  <h2>Learn More - Download Our White Paper</h2>
+  <p>Discover the full details about RebelInuX's tokenomics, roadmap, and vision.</p>
+  <a href="RebelInuX_White_Paper.pdf" target="_blank" class="cta-button">
+    <i class="fas fa-download"></i> Download White Paper
+  </a>
+</section>
+
+<!-- REBEL BUILD Artwork Section - Mobile Optimized -->
+<section id="artwork" style="padding: 30px 15px; text-align: center; background: linear-gradient(to bottom, #2c2c2c, #1a1a1a);">
+  <h2 style="color: #ff3366; margin-bottom: 30px; text-align: center; font-size: clamp(1.8rem, 5vw, 2.5rem); text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Rebel Community Artwork</h2>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; max-width: 1200px; margin: 0 auto;">
+    
+    <!-- Original Artwork -->
+    <div style="background: linear-gradient(145deg, #2a2a2a, #333333); border-radius: 12px; padding: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); flex: 1; min-width: min(100%, 350px); max-width: 400px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #444;">
+      <img src="https://i.imgur.com/WOXZaSg.jpg" alt="REBEL BUILD artwork by @DefiMaven5" style="width: 100%; border-radius: 10px; border: 2px solid #555; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+      <p style="margin-top: 15px; font-style: italic; color: #e6e6e6; line-height: 1.5; font-size: clamp(0.9rem, 3vw, 1.1rem);">
+        "REBEL BUILD" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" target="_blank" style="color: #ff3366; text-decoration: none; font-weight: bold;">@DefiMaven5</a>, champion of the inaugural shilling contest.
+      </p>
+      <div style="margin-top: 15px;">
+        <a href="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #ff3366; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 3px 8px rgba(255,51,102,0.4); font-size: clamp(0.8rem, 2.5vw, 1rem);">
+          <i class="fas fa-external-link-alt"></i> View NFT on ZORA
+        </a>
+      </div>
     </div>
-    <div class="feature-card">
-      <i class="fas fa-user-secret"></i>
-      <h3>Community Power</h3>
-      <p>Decentralized, engaged community driving the rebellion forward.</p>
+    
+    <!-- Second Artwork -->
+    <div style="background: linear-gradient(145deg, #2a2a2a, #333333); border-radius: 12px; padding: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); flex: 1; min-width: min(100%, 350px); max-width: 400px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #444;">
+      <img src="https://i.imgur.com/x1kfWUs.jpg" alt="SHIBA ENERGY artwork by @DefiMaven5" style="width: 100%; border-radius: 10px; border: 2px solid #555; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+      <p style="margin-top: 15px; font-style: italic; color: #e6e6e6; line-height: 1.5; font-size: clamp(0.9rem, 3vw, 1.1rem);">
+        "REBEL SPIRIT" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" target="_blank" style="color: #ff3366; text-decoration: none; font-weight: bold;">@DefiMaven5</a>, champion of the inaugural shilling contest.
+      </p>
+      <div style="margin-top: 15px;">
+        <a href="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #ff3366; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 3px 8px rgba(255,51,102,0.4); font-size: clamp(0.8rem, 2.5vw, 1rem);">
+          <i class="fas fa-external-link-alt"></i> View NFT on ZORA
+        </a>
+      </div>
     </div>
-    <div class="feature-card">
-      <i class="fas fa-fire"></i>
-      <h3>Burn Bright</h3>
-      <p>We burn tokens to increase scarcity, fueling value and rebellion.</p>
-    </div>
+    
   </div>
 </section>
 
 <!-- Community & Socials -->
-<section id="community" data-aos="fade-up">
-  <h2>Join the Rebellion</h2>
-  <p>Connect with us and become part of the wildest crypto movement!</p>
-  <div class="social-icons">
-    <a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-    <a href="#" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
-    <a href="#" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+<section id="community" data-aos="fade-up" data-aos-delay="600">
+<h2>Join the Rebellion</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/bfPgAoS.jpg" alt="RebelInuX Unleash the roar" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Unite with Rebels!</div>
   </div>
+</div>
+
+<p>Connect with us on our rebellious platforms and become part of the wildest crypto movement!</p>
+<div class="social-icons">
+  <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+    <i class="fab fa-telegram"></i>
+  </a>
+  <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+    <i class="fab fa-discord"></i>
+  </a>
+  <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora" title="Zora">
+    <i class="fas fa-cube"></i>
+  </a>
+</div>
 </section>
 
 <!-- Contact -->
-<section id="contact" data-aos="fade-up">
-  <h2>Reach Out & Rebel!</h2>
-  <p>Questions? Email us: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
+<section id="contact" data-aos="fade-up" data-aos-delay="700">
+<h2>Rebel Contact</h2>
+<div class="image-container">
+  <img src="https://i.imgur.com/beM4V8X.png" alt="Rebel Contact" style="max-width:300px;">
+  <div class="overlay">
+    <div class="overlay-text">Reach Out & Rebel!</div>
+  </div>
+</div>
+<p>Got questions? Reach out to the rebels: <a href="mailto:RebelInuX@hotmail.com">RebelInuX@hotmail.com</a></p>
 </section>
 
-<!-- Countdown -->
-<section class="countdown" id="launch-countdown" data-aos="fade-up">
-  <h2>🚀 Launch Countdown</h2>
-  <div class="countdown">
-    <div class="countdown-box"><span id="days">00</span><div class="countdown-label">Days</div></div>
-    <div class="countdown-box"><span id="hours">00</span><div class="countdown-label">Hours</div></div>
-    <div class="countdown-box"><span id="minutes">00</span><div class="countdown-label">Minutes</div></div>
-    <div class="countdown-box"><span id="seconds">00</span><div class="countdown-label">Seconds</div></div>
+<!-- Launch Countdown Section -->
+<div class="countdown-container">
+  <h2 class="countdown-title">🚀 Launch Countdown</h2>
+  <div id="countdown">
+    <div class="countdown-unit">
+      <span id="days">00</span>
+      <span class="countdown-label">Days</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="hours">00</span>
+      <span class="countdown-label">Hours</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="minutes">00</span>
+      <span class="countdown-label">Minutes</span>
+    </div>
+    <div class="countdown-unit">
+      <span id="seconds">00</span>
+      <span class="countdown-label">Seconds</span>
+    </div>
   </div>
-</section>
+</div>
 
 <!-- Footer -->
 <footer>
-  <h3>Join the Rebellion & Make Noise!</h3>
-  <p>&copy; 2025 RebelInuX. All rights reserved.</p>
-  <div class="social-icons">
-    <a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-    <a href="#" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
-    <a href="#" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-  </div>
+<h3>Join the Rebellion & Make Noise!</h3>
+<p>© 2025 RebelInuX. All rights reserved.</p>
+<div class="social-icons">
+  <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+  <a href="https://t.me/+bNrP-ozjM501YWVk" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
+  <a href="https://discord.gg/3gBzGY6j" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+  <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora" title="Zora"><i class="fas fa-cube"></i></a>
+</div>
 </footer>
+
+<!-- Legal Disclaimer -->
+<section id="disclaimer" style="padding: 2rem; background: #fff8e1; border-top: 2px solid #ffcc00; font-size: 0.9em; text-align: center; margin-top: 20px;">
+    <h3 style="color: #d32f2f; margin-bottom: 1rem;">⚠️ Important Legal Notice</h3>
+    <p style="margin-bottom: 0.5rem;"><strong>RebelInuX is a meme token for entertainment, not an investment product.</strong> It confers no financial rights or guarantees. Value is driven by community alone.</p>
+    <p style="margin-bottom: 0.5rem;"><strong>Not available to everyone:</strong> Participation is prohibited for residents of the EEA, Switzerland, France, and other restricted jurisdictions.</p>
+    <p style="margin-bottom: 0;"><strong>🚨 High Risk Warning:</strong> Crypto is volatile. You could lose your entire investment. <strong>DYOR</strong> and consult a professional. RebelInuX is not responsible for any financial losses.</p>
+</section>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // Initialize AOS
-  AOS.init({ duration: 1000, once: true, offset: 100 });
-
-  // Mobile menu toggle
-  document.querySelector('.menu-toggle').addEventListener('click', () => {
-    const nav = document.getElementById('navbar');
-    nav.classList.toggle('active');
-    const icon = document.querySelector('.menu-toggle i');
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
+  // Initialize AOS animations
+  AOS.init({ 
+    duration: 1000, 
+    once: true,
+    offset: 100 
   });
 
-  // Show/hide token distribution details
-  document.getElementById('toggle-details').addEventListener('click', () => {
-    const details = document.getElementById('distribution-details');
-    if (details.style.display === 'none') {
-      details.style.display = 'block';
-      document.getElementById('toggle-details').textContent = 'Hide Details';
+  // Loading animation
+  window.addEventListener('load', function() {
+    const loader = document.querySelector('.loader');
+    setTimeout(function() {
+      loader.classList.add('hidden');
+    }, 1000);
+  });
+
+  // Mobile navigation toggle
+  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const navDesktop = document.getElementById('nav-desktop');
+  
+  mobileNavToggle.addEventListener('click', function() {
+    navDesktop.classList.toggle('active');
+    const icon = this.querySelector('i');
+    if (navDesktop.classList.contains('active')) {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
     } else {
-      details.style.display = 'none';
-      document.getElementById('toggle-details').textContent = 'Show Details';
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
     }
   });
 
+  // Close mobile nav when clicking on a link
+  document.querySelectorAll('#nav-desktop a').forEach(link => {
+    link.addEventListener('click', function() {
+      navDesktop.classList.remove('active');
+      mobileNavToggle.querySelector('i').classList.remove('fa-times');
+      mobileNavToggle.querySelector('i').classList.add('fa-bars');
+    });
+  });
+
+  // Back to top button
+  const backToTopButton = document.querySelector('.back-to-top');
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('visible');
+    } else {
+      backToTopButton.classList.remove('visible');
+    }
+  });
+  
+  backToTopButton.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Animate sections when they appear
+  function animateSections() {
+    document.querySelectorAll('section').forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        sec.classList.add('visible');
+      }
+    });
+  }
+  
+  window.addEventListener('scroll', animateSections);
+  window.addEventListener('load', animateSections);
+
+  // Toggle distribution details
+  document.getElementById('distribution-toggle').addEventListener('click', function() {
+    const details = document.getElementById('distribution-details');
+    const isVisible = details.style.display === 'block';
+    
+    details.style.display = isVisible ? 'none' : 'block';
+    this.textContent = isVisible ? 'Show Details' : 'Hide Details';
+  });
+  
   // Accordion functionality
-  document.querySelectorAll('.accordion-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const content = header.nextElementSibling;
-      document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('show'));
-      document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('accordion-active'));
-      if (!content.classList.contains('show')) {
-        content.classList.add('show');
-        header.classList.add('accordion-active');
+  document.querySelectorAll('.accordion-header').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      const isActive = content.classList.contains('active');
+      
+      // Close all accordion items
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.classList.remove('active');
+      });
+      
+      // Open clicked item if it wasn't already active
+      if (!isActive) {
+        content.classList.add('active');
+        button.classList.add('active');
       }
     });
   });
 
-  // Chart for distribution
+// Pie chart for token distribution
+document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('distributionChart').getContext('2d');
   const distributionChart = new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'DAO Reserve (1%)'],
+      labels: ['Bonding Curve (70%)', 'ZORA Rewards Treasury (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO Reserve (1%)'],
       datasets: [{
         data: [70, 16, 7, 6, 1],
         backgroundColor: [
-          'rgba(54, 162, 235, 0.7)',
-          'rgba(153, 102, 255, 0.7)',
-          'rgba(75, 192, 192, 0.7)',
-          'rgba(255, 159, 64, 0.7)',
-          'rgba(75, 192, 86, 0.7)'
+          'rgba(54, 162, 235, 0.7)',      // Blue for Bonding Curve
+          'rgba(153, 102, 255, 0.7)',     // Purple for ZORA Rewards
+          'rgba(75, 192, 192, 0.7)',      // Teal for Team Fund
+          'rgba(255, 159, 64, 0.7)',      // Orange for Ecosystem Fund
+          'rgba(75, 192, 86, 0.7)'        // Green for Community DAO Reserve
         ],
         borderColor: [
           'rgba(54, 162, 235, 1)',
@@ -551,50 +1747,53 @@ footer h3 {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'bottom' },
-        tooltip: { callbacks: { label: function(c) { return c.label + ': ' + c.raw + '%'; } } }
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: {
+              size: 14
+            },
+            padding: 20
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.label + ': ' + context.raw + '%';
+            }
+          }
+        }
       }
     }
   });
+});
 
-  // Countdown timer
-  const launchDate = new Date('2025-09-07T19:00:00').getTime();
-  const countdownElements = {
-    days: document.getElementById('days'),
-    hours: document.getElementById('hours'),
-    minutes: document.getElementById('minutes'),
-    seconds: document.getElementById('seconds')
-  };
-
+  // Improved countdown timer
   function updateCountdown() {
+    const launchDate = new Date("2025-09-07T19:00:00").getTime();
     const now = new Date().getTime();
     const distance = launchDate - now;
-    if (distance < 0) {
-      document.querySelector('#launch-countdown h2').textContent = '🚀 Launched!';
-      clearInterval(countdownInterval);
-      return;
-    }
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
-    countdownElements.days.textContent = String(days).padStart(2, '0');
-    countdownElements.hours.textContent = String(hours).padStart(2, '0');
-    countdownElements.minutes.textContent = String(minutes).padStart(2, '0');
-    countdownElements.seconds.textContent = String(seconds).padStart(2, '0');
-  }
-  const countdownInterval = setInterval(updateCountdown, 1000);
-  updateCountdown();
 
-  // Show/hide mobile menu on window resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      document.getElementById('navbar').classList.remove('active');
-      document.querySelector('.menu-toggle i').classList.remove('fa-times');
-      document.querySelector('.menu-toggle i').classList.add('fa-bars');
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").textContent = days.toString().padStart(2, '0');
+    document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+    document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+    document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("countdown").innerHTML = "<div class='countdown-unit'>🚀 Launched!</div>";
     }
-  });
+  }
+
+  const countdownInterval = setInterval(updateCountdown, 1000);
+  updateCountdown(); // Initial call
 </script>
 </body>
 </html>
