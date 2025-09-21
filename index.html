@@ -881,9 +881,11 @@
       <p style="font-size: 0.9em; color: var(--rebel-gold);">Fixed Supply · No Inflation</p>
     </div>
 
-<!-- Token Distribution Chart -->
 <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) 0;">
   <canvas id="distributionChart" style="max-height: 400px; width: 100%;"></canvas>
+  <div id="labelContainer" style="margin-top:10px; max-height:150px; overflow-y:auto; padding:10px; font-family:Montserrat; font-size:14px; color:white; background: rgba(0,0,0,0.2); border-radius: 8px;">
+    <!-- Labels will be injected here -->
+  </div>
 </div>
 
 <div class="accordion">
@@ -1424,117 +1426,116 @@ document.querySelectorAll('.accordion-header').forEach(header => {
 });
 
   // Register the ChartDataLabels plugin globally
-  Chart.register(ChartDataLabels);
+Chart.register(ChartDataLabels);
 
-  // Pie chart for token distribution
-  document.addEventListener('DOMContentLoaded', function() {
-    const ctx = document.getElementById('distributionChart').getContext('2d');
-    const chart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
-        datasets: [{
-          data: [70, 16, 7, 6, 1],
-          backgroundColor: [
-            'rgba(255, 51, 102, 0.9)',
-            'rgba(255, 159, 64, 0.9)',
-            'rgba(75, 192, 192, 0.9)',
-            'rgba(255, 206, 86, 0.9)',
-            'rgba(75, 192, 86, 0.9)'
-          ],
-          borderColor: [
-            'rgba(255, 255, 255, 1)',
-            'rgba(255, 255, 255, 1)',
-            'rgba(255, 255, 255, 1)',
-            'rgba(255, 255, 255, 1)',
-            'rgba(255, 255, 255, 1)'
-          ],
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              font: {
-                size: 14,
-                family: 'Montserrat',
-                weight: '600'
-              },
-              color: 'white',
-              padding: 20,
-              usePointStyle: true,
-              pointStyle: 'circle'
-            },
-            title: {
-              display: true,
-              text: 'Token Distribution',
-              color: 'white',
-              font: {
-                size: 16,
-                family: 'Montserrat',
-                weight: '700'
-              },
-              padding: 20
-            }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return `${context.label}: ${context.raw}%`;
-              }
-            },
-            bodyFont: {
-              family: 'Montserrat',
-              size: 14
-            },
-            titleFont: {
-              family: 'Montserrat',
-              size: 16,
-              weight: '700'
-            },
-            padding: 12,
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            titleColor: 'white',
-            bodyColor: 'white',
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            borderWidth: 1
-          },
-          // Data labels plugin configuration
-          datalabels: {
-            color: 'white',
+// Pie chart for token distribution
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('distributionChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
+      datasets: [{
+        data: [70, 16, 7, 6, 1],
+        backgroundColor: [
+          'rgba(255, 51, 102, 0.9)',
+          'rgba(255, 159, 64, 0.9)',
+          'rgba(75, 192, 192, 0.9)',
+          'rgba(255, 206, 86, 0.9)',
+          'rgba(75, 192, 86, 0.9)'
+        ],
+        borderColor: [
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
             font: {
-              size: 10, // smaller font size for mobile
+              size: 14,
               family: 'Montserrat',
               weight: '600'
             },
-            formatter: function(value, context) {
-              return context.chart.data.labels[context.dataIndex].split(' ')[0];
+            color: 'white',
+            padding: 20,
+            usePointStyle: true,
+            pointStyle: 'circle'
+          },
+          title: {
+            display: true,
+            text: 'Token Distribution',
+            color: 'white',
+            font: {
+              size: 16,
+              family: 'Montserrat',
+              weight: '700'
             },
-            anchor: 'end',
-            align: 'center', // better alignment on small screens
-            offset: 5, // smaller offset
-            display: function(context) {
-              return context.dataset.data[context.dataIndex] > 3; // show labels only for slices > 3%
+            padding: 20
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.label}: ${context.raw}%`;
             }
+          },
+          bodyFont: {
+            family: 'Montserrat',
+            size: 14
+          },
+          titleFont: {
+            family: 'Montserrat',
+            size: 16,
+            weight: '700'
+          },
+          padding: 12,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: 'white',
+          bodyColor: 'white',
+          borderColor: 'rgba(255, 255, 255, 0.2)',
+          borderWidth: 1
+        },
+        // Data labels plugin configuration
+        datalabels: {
+          color: 'white',
+          font: {
+            size: 10, // smaller font size for mobile
+            family: 'Montserrat',
+            weight: '600'
+          },
+          formatter: function(value, context) {
+            return context.chart.data.labels[context.dataIndex].split(' ')[0];
+          },
+          anchor: 'end',
+          align: 'center', // better alignment on small screens
+          offset: 5, // smaller offset
+          display: function(context) {
+            return context.dataset.data[context.dataIndex] > 3; // show labels only for slices > 3%
           }
         }
       }
-    });
-
-    // Populate the labels below the chart
-    const labels = ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'];
-    const data = [70, 16, 7, 6, 1];
-    const labelContainer = document.getElementById('labelContainer');
-    labelContainer.innerHTML = '';
-    labels.forEach((label, index) => {
-      labelContainer.innerHTML += `<div style="margin-bottom:4px;">${label}: ${data[index]}%</div>`;
-    });
+    }
   });
 
+  // Populate the labels below the chart
+  const labels = ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'];
+  const data = [70, 16, 7, 6, 1];
+  const labelContainer = document.getElementById('labelContainer');
+  labelContainer.innerHTML = '';
+  labels.forEach((label, index) => {
+    labelContainer.innerHTML += `<div style="margin-bottom:4px;">${label}: ${data[index]}%</div>`;
+  });
+});
     // Countdown timer
     function updateCountdown() {
       const launchDate = new Date("2025-09-07T19:00:00").getTime();
