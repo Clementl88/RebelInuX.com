@@ -1504,23 +1504,23 @@ document.addEventListener('DOMContentLoaded', function() {
           borderWidth: 1
         },
         // Data labels plugin configuration
-        datalabels: {
-          color: 'white',
-          font: {
-            size: 14,
-            family: 'Montserrat',
-            weight: '600'
-          },
-          formatter: function(value, context) {
-            return context.chart.data.labels[context.dataIndex].split(' ')[0]; // Show first word of label
-          },
-          anchor: 'end',
-          align: 'top',
-          offset: 10,
-          display: function(context) {
-            return context.dataset.data[context.dataIndex] > 5; // Show labels only for slices > 5%
-          }
-        }
+datalabels: {
+  color: 'white',
+  font: {
+    size: 10, // smaller font size for mobile
+    family: 'Montserrat',
+    weight: '600'
+  },
+  formatter: function(value, context) {
+    return context.chart.data.labels[context.dataIndex].split(' ')[0];
+  },
+  anchor: 'end',
+  align: 'center', // better alignment on small screens
+  offset: 5, // smaller offset
+  display: function(context) {
+    return context.dataset.data[context.dataIndex] > 3; // show labels only for slices > 3%
+  }
+}
       }
     }
   });
