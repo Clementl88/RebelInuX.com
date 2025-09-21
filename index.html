@@ -1423,6 +1423,9 @@ document.querySelectorAll('.accordion-header').forEach(header => {
   });
 });
 
+// Register the ChartDataLabels plugin globally
+Chart.register(ChartDataLabels);
+
 // Pie chart for token distribution
 document.addEventListener('DOMContentLoaded', function() {
   const ctx = document.getElementById('distributionChart').getContext('2d');
@@ -1433,14 +1436,14 @@ document.addEventListener('DOMContentLoaded', function() {
       datasets: [{
         data: [70, 16, 7, 6, 1],
         backgroundColor: [
-          'rgba(255, 51, 102, 0.9)',   // Brighter Bonding Curve
-          'rgba(255, 159, 64, 0.9)',  // Brighter ZORA Rewards
-          'rgba(75, 192, 192, 0.9)',  // Brighter Team Fund
-          'rgba(255, 206, 86, 0.9)',  // Brighter Ecosystem Fund
-          'rgba(75, 192, 86, 0.9)'    // Brighter Community DAO
+          'rgba(255, 51, 102, 0.9)',
+          'rgba(255, 159, 64, 0.9)',
+          'rgba(75, 192, 192, 0.9)',
+          'rgba(255, 206, 86, 0.9)',
+          'rgba(75, 192, 86, 0.9)'
         ],
         borderColor: [
-          'rgba(255, 255, 255, 1)',   // White borders for contrast
+          'rgba(255, 255, 255, 1)',
           'rgba(255, 255, 255, 1)',
           'rgba(255, 255, 255, 1)',
           'rgba(255, 255, 255, 1)',
@@ -1461,10 +1464,10 @@ document.addEventListener('DOMContentLoaded', function() {
               family: 'Montserrat',
               weight: '600'
             },
-            color: 'white',  // White text for contrast
+            color: 'white',
             padding: 20,
-            usePointStyle: true,  // Use point-style legend for better visibility
-            pointStyle: 'circle',
+            usePointStyle: true,
+            pointStyle: 'circle'
           },
           title: {
             display: true,
@@ -1500,7 +1503,7 @@ document.addEventListener('DOMContentLoaded', function() {
           borderColor: 'rgba(255, 255, 255, 0.2)',
           borderWidth: 1
         },
-        // Add data labels plugin for visibility on pie slices
+        // Data labels plugin configuration
         datalabels: {
           color: 'white',
           font: {
@@ -1515,12 +1518,11 @@ document.addEventListener('DOMContentLoaded', function() {
           align: 'top',
           offset: 10,
           display: function(context) {
-            return context.dataset.data[context.dataIndex] > 5; // Only show labels for slices > 5%
+            return context.dataset.data[context.dataIndex] > 5; // Show labels only for slices > 5%
           }
         }
       }
-    },
-    plugins: [ChartDataLabels] // Enable the datalabels plugin
+    }
   });
 });
 
