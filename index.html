@@ -1186,34 +1186,119 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
   </div>
 </section>
 
-<!-- After the #triple-assets section -->
-<div class="countdown-container">
-  <h2 class="countdown-title">⏳ Epoch 1 Countdown (Rebel Key #1)</h2>
-  <p style="text-align: center; margin-bottom: var(--spacing-md);">
-    Time remaining before the end of <strong>Epoch 1</strong> using <strong>Rebel Key #1</strong>:
-  </p>
-  <div id="countdown">
-    <div class="countdown-unit">
-      <span id="days">00</span>
-      <span class="countdown-label">Days</span>
+<!-- Epoch Countdowns -->
+<div style="display: flex; flex-direction: column; gap: var(--spacing-lg); justify-content: center; align-items: center; margin: var(--spacing-xl) auto; max-width: 800px;">
+
+  <!-- Epoch 1 Countdown -->
+  <div class="countdown-container" style="width: 100%;">
+    <h2 class="countdown-title">⏳ Epoch 1 Countdown (Rebel Key #1)</h2>
+    <p style="text-align: center; margin-bottom: var(--spacing-md);">
+      Time remaining before the end of <strong>Epoch 1</strong> using <strong>Rebel Key #1</strong>:
+    </p>
+    <div id="countdown1">
+      <div class="countdown-unit">
+        <span id="days1">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="hours1">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="minutes1">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="seconds1">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
     </div>
-    <div class="countdown-unit">
-      <span id="hours">00</span>
-      <span class="countdown-label">Hours</span>
-    </div>
-    <div class="countdown-unit">
-      <span id="minutes">00</span>
-      <span class="countdown-label">Minutes</span>
-    </div>
-    <div class="countdown-unit">
-      <span id="seconds">00</span>
-      <span class="countdown-label">Seconds</span>
-    </div>
+    <p style="text-align: center; margin-top: var(--spacing-md); font-size: 0.9em;">
+      <strong>Hold a Creator Coin + Rebel Key #1</strong> to claim $REBL during Epoch 1.
+    </p>
   </div>
-  <p style="text-align: center; margin-top: var(--spacing-md); font-size: 0.9em;">
-    <strong>Hold a Creator Coin + Rebel Key #1</strong> to claim $REBL during Epoch 1.
-  </p>
+
+  <!-- Epoch 2 Countdown -->
+  <div class="countdown-container" style="width: 100%;">
+    <h2 class="countdown-title">⏳ Epoch 2 Countdown (Rebel Key #2)</h2>
+    <p style="text-align: center; margin-bottom: var(--spacing-md);">
+      Time remaining before the start of <strong>Epoch 2</strong> using <strong>Rebel Key #2</strong>:
+    </p>
+    <div id="countdown2">
+      <div class="countdown-unit">
+        <span id="days2">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="hours2">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="minutes2">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-unit">
+        <span id="seconds2">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+    <p style="text-align: center; margin-top: var(--spacing-md); font-size: 0.9em;">
+      <strong>Hold a Creator Coin + Rebel Key #2</strong> to claim $REBL during Epoch 2.
+    </p>
+  </div>
 </div>
+
+<script>
+  // Epoch 1 End Date (Example: October 12, 2025, 21:00:00 UTC)
+  function updateCountdown1() {
+    const epoch1EndDate = new Date("2025-10-12T21:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch1EndDate - now;
+
+    if (distance < 0) {
+      document.getElementById('countdown1').innerHTML = '<div class="countdown-unit" style="min-width: 200px; font-size: 1.5rem;">✅ Epoch 1 Ended!</div>';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days1').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
+  }
+
+  // Epoch 2 Start Date (Example: October 19, 2025, 21:00:00 UTC)
+  function updateCountdown2() {
+    const epoch2StartDate = new Date("2025-10-19T21:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch2StartDate - now;
+
+    if (distance < 0) {
+      document.getElementById('countdown2').innerHTML = '<div class="countdown-unit" style="min-width: 200px; font-size: 1.5rem;">🚀 Epoch 2 Started!</div>';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days2').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
+  }
+
+  setInterval(updateCountdown1, 1000);
+  setInterval(updateCountdown2, 1000);
+  updateCountdown1();
+  updateCountdown2();
+</script>
+
 <section id="tokenomics" class="visible">
   <h2>TOKENOMICS: THE REBEL WAY</h2>
   <div style="max-width: 1000px; margin: 0 auto;">
