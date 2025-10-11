@@ -2219,13 +2219,16 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
+// ============ COMPLETE WORKING PRICE WIDGET ============
+
+// Live Price Widget Functionality
 function updatePriceWidget() {
-  console.log('updatePriceWidget called');
+  console.log('🔄 updatePriceWidget called');
   
   fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump')
     .then(response => response.json())
     .then(data => {
-      console.log('API data received:', data);
+      console.log('📊 API data received:', data);
       
       if (data.pairs && data.pairs.length > 0) {
         const pair = data.pairs[0];
@@ -2234,7 +2237,7 @@ function updatePriceWidget() {
         const marketCap = parseFloat(pair.marketCap) || 0;
         const volume = parseFloat(pair.volume?.h24) || 0;
         
-        console.log('Parsed values:', { price, priceChange, marketCap, volume });
+        console.log('📈 Parsed values:', { price, priceChange, marketCap, volume });
         
         // Update the price display
         const priceElement = document.getElementById('current-price');
@@ -2260,12 +2263,17 @@ function updatePriceWidget() {
           volumeElement.textContent = formatVolume(volume);
         }
         
-        console.log('Price widget updated successfully!');
+        console.log('✅ Price widget updated successfully!');
+      } else {
+        console.warn('⚠️ No pair data found');
       }
     })
     .catch(error => {
-      console.error('Error in price widget:', error);
-      document.getElementById('current-price').textContent = 'Error';
+      console.error('❌ Error in price widget:', error);
+      const priceElement = document.getElementById('current-price');
+      if (priceElement) {
+        priceElement.textContent = 'Error';
+      }
     });
 }
 
@@ -2293,10 +2301,38 @@ function formatVolume(volume) {
   return `$${volume.toFixed(2)}`;
 }
 
-// Start the price updates
-console.log('Initializing price widget...');
-updatePriceWidget(); // Initial call
-setInterval(updatePriceWidget, 30000); // Update every 30 seconds
+// ============ CRITICAL: PROPER INITIALIZATION ============
+
+// Method 1: Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 DOM loaded - initializing price widget');
+  updatePriceWidget(); // Initial call
+  setInterval(updatePriceWidget, 30000); // Update every 30 seconds
+});
+
+// Method 2: If DOM is already loaded, run immediately
+if (document.readyState === 'loading') {
+  // DOM is still loading, wait for it
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded (method 2) - starting price widget');
+    updatePriceWidget();
+    setInterval(updatePriceWidget, 30000);
+  });
+} else {
+  // DOM is already ready, run now
+  console.log('⚡ DOM already ready - starting price widget immediately');
+  updatePriceWidget();
+  setInterval(updatePriceWidget, 30000);
+}
+
+// Method 3: Also run on window load (as backup)
+window.addEventListener('load', function() {
+  console.log('🏁 Window fully loaded - ensuring price widget runs');
+  // Just make sure it runs, setInterval might already be set
+  updatePriceWidget();
+});
+
+console.log('🎯 Price widget script loaded successfully!');
   </script>
 </body>
 </html>
