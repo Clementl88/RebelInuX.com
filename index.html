@@ -2219,120 +2219,139 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// ============ COMPLETE WORKING PRICE WIDGET ============
+// ============ GUARANTEED WORKING PRICE WIDGET ============
 
-// Live Price Widget Functionality
-function updatePriceWidget() {
-  console.log('🔄 updatePriceWidget called');
-  
-  fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump')
-    .then(response => response.json())
-    .then(data => {
-      console.log('📊 API data received:', data);
-      
-      if (data.pairs && data.pairs.length > 0) {
-        const pair = data.pairs[0];
-        const price = parseFloat(pair.priceUsd) || 0;
-        const priceChange = parseFloat(pair.priceChange?.h24) || 0;
-        const marketCap = parseFloat(pair.marketCap) || 0;
-        const volume = parseFloat(pair.volume?.h24) || 0;
-        
-        console.log('📈 Parsed values:', { price, priceChange, marketCap, volume });
-        
-        // Update the price display
-        const priceElement = document.getElementById('current-price');
-        if (priceElement) {
-          priceElement.textContent = formatPrice(price);
-        }
-        
-        // Update price change
-        const priceChangeElement = document.getElementById('price-change');
-        if (priceChangeElement) {
-          priceChangeElement.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
-          priceChangeElement.className = priceChange >= 0 ? 'positive' : 'negative';
-        }
-        
-        // Update market stats
-        const marketCapElement = document.getElementById('market-cap-widget');
-        if (marketCapElement) {
-          marketCapElement.textContent = formatMarketCap(marketCap);
-        }
-        
-        const volumeElement = document.getElementById('volume');
-        if (volumeElement) {
-          volumeElement.textContent = formatVolume(volume);
-        }
-        
-        console.log('✅ Price widget updated successfully!');
-      } else {
-        console.warn('⚠️ No pair data found');
-      }
-    })
-    .catch(error => {
-      console.error('❌ Error in price widget:', error);
-      const priceElement = document.getElementById('current-price');
-      if (priceElement) {
-        priceElement.textContent = 'Error';
-      }
-    });
+// Wait for the entire page to be fully loaded
+window.addEventListener('load', function() {
+    console.log('🏁 Page fully loaded - starting price widget');
+    initializePriceWidget();
+});
+
+// Also try DOMContentLoaded as backup
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM content loaded - starting price widget');
+    initializePriceWidget();
+});
+
+// Main initialization function
+function initializePriceWidget() {
+    console.log('🎯 Initializing price widget...');
+    
+    // Check if the price widget elements exist
+    const priceElement = document.getElementById('current-price');
+    if (!priceElement) {
+        console.error('❌ Price element not found! Waiting and retrying...');
+        // Retry after a short delay
+        setTimeout(initializePriceWidget, 1000);
+        return;
+    }
+    
+    console.log('✅ Price widget elements found, starting updates...');
+    
+    // Start the price updates
+    updatePriceWidget(); // Initial call
+    setInterval(updatePriceWidget, 30000); // Update every 30 seconds
+    
+    console.log('✅ Price widget initialized successfully!');
 }
 
+// Price widget functionality
+function updatePriceWidget() {
+    console.log('🔄 Fetching price data...');
+    
+    fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 API response received');
+            
+            if (data.pairs && data.pairs.length > 0) {
+                const pair = data.pairs[0];
+                const price = parseFloat(pair.priceUsd) || 0;
+                const priceChange = parseFloat(pair.priceChange?.h24) || 0;
+                const marketCap = parseFloat(pair.marketCap) || 0;
+                const volume = parseFloat(pair.volume?.h24) || 0;
+                
+                console.log('💰 Updating display with:', { price, priceChange, marketCap, volume });
+                
+                // Update the price display
+                updateElement('current-price', formatPrice(price));
+                
+                // Update price change
+                const priceChangeElement = document.getElementById('price-change');
+                if (priceChangeElement) {
+                    priceChangeElement.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
+                    priceChangeElement.className = priceChange >= 0 ? 'positive' : 'negative';
+                }
+                
+                // Update market stats
+                updateElement('market-cap-widget', formatMarketCap(marketCap));
+                updateElement('volume', formatVolume(volume));
+                
+                console.log('✅ Price widget updated successfully!');
+            } else {
+                console.warn('⚠️ No pair data found in response');
+                updateElement('current-price', 'No Data');
+            }
+        })
+        .catch(error => {
+            console.error('❌ Fetch error:', error);
+            updateElement('current-price', 'Error');
+            updateElement('price-change', '-%');
+            updateElement('market-cap-widget', '-');
+            updateElement('volume', '-');
+        });
+}
+
+// Helper function to safely update elements
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    } else {
+        console.warn(`⚠️ Element with id "${id}" not found`);
+    }
+}
+
+// Formatting functions
 function formatPrice(price) {
-  if (price === 0) return '$0.00';
-  if (price < 0.000001) return `$${price.toFixed(10)}`;
-  if (price < 0.0001) return `$${price.toFixed(8)}`;
-  if (price < 0.01) return `$${price.toFixed(6)}`;
-  if (price < 1) return `$${price.toFixed(4)}`;
-  return `$${price.toFixed(2)}`;
+    if (price === 0) return '$0.00';
+    if (price < 0.000001) return `$${price.toFixed(10)}`;
+    if (price < 0.0001) return `$${price.toFixed(8)}`;
+    if (price < 0.01) return `$${price.toFixed(6)}`;
+    if (price < 1) return `$${price.toFixed(4)}`;
+    return `$${price.toFixed(2)}`;
 }
 
 function formatMarketCap(marketCap) {
-  if (marketCap === 0) return '$0';
-  if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(2)}B`;
-  if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(2)}M`;
-  if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
-  return `$${marketCap.toFixed(2)}`;
+    if (marketCap === 0) return '$0';
+    if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(2)}B`;
+    if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(2)}M`;
+    if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
+    return `$${marketCap.toFixed(2)}`;
 }
 
 function formatVolume(volume) {
-  if (volume === 0) return '$0';
-  if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
-  if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
-  return `$${volume.toFixed(2)}`;
+    if (volume === 0) return '$0';
+    if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
+    if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
+    return `$${volume.toFixed(2)}`;
 }
 
-// ============ CRITICAL: PROPER INITIALIZATION ============
+// Final backup: If nothing else works, try after 3 seconds
+setTimeout(function() {
+    const priceElement = document.getElementById('current-price');
+    if (priceElement && priceElement.textContent === 'Loading...') {
+        console.log('⏰ Backup timer - forcing price widget start');
+        initializePriceWidget();
+    }
+}, 3000);
 
-// Method 1: Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 DOM loaded - initializing price widget');
-  updatePriceWidget(); // Initial call
-  setInterval(updatePriceWidget, 30000); // Update every 30 seconds
-});
-
-// Method 2: If DOM is already loaded, run immediately
-if (document.readyState === 'loading') {
-  // DOM is still loading, wait for it
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM loaded (method 2) - starting price widget');
-    updatePriceWidget();
-    setInterval(updatePriceWidget, 30000);
-  });
-} else {
-  // DOM is already ready, run now
-  console.log('⚡ DOM already ready - starting price widget immediately');
-  updatePriceWidget();
-  setInterval(updatePriceWidget, 30000);
-}
-
-// Method 3: Also run on window load (as backup)
-window.addEventListener('load', function() {
-  console.log('🏁 Window fully loaded - ensuring price widget runs');
-  // Just make sure it runs, setInterval might already be set
-  updatePriceWidget();
-});
-
-console.log('🎯 Price widget script loaded successfully!');
+console.log('🎯 Price widget script loaded - waiting for page...');
   </script>
 </body>
 </html>
