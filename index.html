@@ -1346,6 +1346,137 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
   setInterval(updateCountdown2, 1000);
   updateCountdown1();
   updateCountdown2();
+
+
+
+  // Language Switching Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const languageSelect = document.getElementById('language-select');
+  
+  // Load saved language preference
+  const savedLanguage = localStorage.getItem('rebelinux-language') || 'en';
+  languageSelect.value = savedLanguage;
+  
+  // Apply language on change
+  languageSelect.addEventListener('change', function() {
+    const selectedLanguage = this.value;
+    localStorage.setItem('rebelinux-language', selectedLanguage);
+    applyLanguage(selectedLanguage);
+  });
+  
+  // Apply initial language
+  applyLanguage(savedLanguage);
+});
+
+// Language translations
+const translations = {
+  en: {
+    // Navigation
+    'home': 'Home',
+    'about': 'About',
+    'tokenomics': 'Tokenomics',
+    'epoch-rewards': 'Epoch Rewards',
+    'roadmap': 'Roadmap',
+    'features': 'Features',
+    'artwork': 'Artwork',
+    'community': 'Community',
+    'contact': 'Contact',
+    
+    // Hero Section
+    'heroTitle': '🔥 REBELINUX: THE SHIBA THAT RIPS THE RULES! 🔥',
+    'heroSubtitle': 'TRIPLE-ASSET MEME REVOLUTION',
+    'heroDescription': 'RebelInuX is the first triple-asset meme coin on ZORA, merging collectible art, NFTs, and cross-chain rewards. No rules, just rebellion.',
+    
+    // Add more translations as needed...
+  },
+  es: {
+    // Navigation
+    'home': 'Inicio',
+    'about': 'Acerca de',
+    'tokenomics': 'Tokenómica',
+    'epoch-rewards': 'Recompensas por Época',
+    'roadmap': 'Hoja de Ruta',
+    'features': 'Características',
+    'artwork': 'Arte',
+    'community': 'Comunidad',
+    'contact': 'Contacto',
+    
+    // Hero Section
+    'heroTitle': '🔥 REBELINUX: ¡EL SHIBA QUE ROMPE LAS REGLAS! 🔥',
+    'heroSubtitle': 'REVOLUCIÓN MEME DE TRIPLE ACTIVO',
+    'heroDescription': 'RebelInuX es la primera meme coin de triple activo en ZORA, combinando arte coleccionable, NFTs y recompensas cross-chain. Sin reglas, solo rebelión.',
+  },
+  zh: {
+    // Navigation
+    'home': '首页',
+    'about': '关于',
+    'tokenomics': '代币经济',
+    'epoch-rewards': '周期奖励',
+    'roadmap': '路线图',
+    'features': '功能',
+    'artwork': '艺术品',
+    'community': '社区',
+    'contact': '联系',
+    
+    // Hero Section
+    'heroTitle': '🔥 REBELINUX: 打破规则的柴犬！🔥',
+    'heroSubtitle': '三重资产MEME革命',
+    'heroDescription': 'RebelInuX是ZORA上第一个三重资产meme币，融合了收藏艺术、NFT和跨链奖励。没有规则，只有反叛。',
+  },
+  ja: {
+    // Navigation
+    'home': 'ホーム',
+    'about': '概要',
+    'tokenomics': 'トークンエコノミクス',
+    'epoch-rewards': 'エポック報酬',
+    'roadmap': 'ロードマップ',
+    'features': '特徴',
+    'artwork': 'アートワーク',
+    'community': 'コミュニティ',
+    'contact': 'お問い合わせ',
+    
+    // Hero Section
+    'heroTitle': '🔥 REBELINUX: ルールを破るシバイヌ！🔥',
+    'heroSubtitle': 'トリプルアセットミーム革命',
+    'heroDescription': 'RebelInuXはZORA初のトリプルアセットミームコインで、収集可能なアート、NFT、クロスチェーン報酬を融合しています。ルールはなく、反乱のみ。',
+  }
+};
+
+function applyLanguage(language) {
+  const translation = translations[language] || translations.en;
+  
+  // Update navigation
+  const navLinks = document.querySelectorAll('#nav-desktop a');
+  navLinks[0].textContent = translation['home'];
+  navLinks[1].textContent = translation['about'];
+  navLinks[2].textContent = translation['tokenomics'];
+  navLinks[3].textContent = translation['epoch-rewards'];
+  navLinks[4].textContent = translation['roadmap'];
+  navLinks[5].textContent = translation['features'];
+  navLinks[6].textContent = translation['artwork'];
+  navLinks[7].textContent = translation['community'];
+  navLinks[8].textContent = translation['contact'];
+  
+  // Update hero section (example)
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) {
+    const heroSubtitle = heroTitle.querySelector('.hero-subtitle');
+    if (heroSubtitle) {
+      heroSubtitle.textContent = translation['heroSubtitle'];
+    }
+    heroTitle.innerHTML = `<span class="hero-subtitle">${translation['heroSubtitle']}</span> ${translation['heroTitle']}`;
+  }
+  
+  const heroDescription = document.querySelector('#hero p');
+  if (heroDescription) {
+    heroDescription.textContent = translation['heroDescription'];
+  }
+  
+  // Add more element updates as needed...
+  
+  // Update HTML lang attribute
+  document.documentElement.lang = language;
+}
 </script>
 
 
