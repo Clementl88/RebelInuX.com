@@ -1490,9 +1490,20 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
 <section id="tokenomics" class="visible">
   <h2>TOKENOMICS: THE REBEL WAY</h2>
 
+<!-- Solscan Tokenomics Dashboard -->
 <div class="tokenomics-dashboard">
+  <div class="dashboard-header">
+    <h3>Live Token Metrics</h3>
+    <div class="api-status">
+      <span id="api-status">🟡 Connecting...</span>
+      <button onclick="refreshData()" class="refresh-button">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+  </div>
+  
   <div class="metric-cards">
-    <!-- Live Price Card -->
+    <!-- Your 6 metric cards here -->
     <div class="metric-card">
       <div class="metric-icon">💰</div>
       <h4>Live Price</h4>
@@ -1500,7 +1511,6 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
       <div class="metric-subtitle" id="price-change">-</div>
     </div>
     
-    <!-- Market Cap Card -->
     <div class="metric-card">
       <div class="metric-icon">📊</div>
       <h4>Market Cap</h4>
@@ -1508,7 +1518,6 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
       <div class="metric-subtitle">Live Data</div>
     </div>
     
-    <!-- Volume Card -->
     <div class="metric-card">
       <div class="metric-icon">🔥</div>
       <h4>24h Volume</h4>
@@ -1516,15 +1525,13 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
       <div class="metric-subtitle">Trading Activity</div>
     </div>
     
-    <!-- Holders Card -->
     <div class="metric-card">
       <div class="metric-icon">👥</div>
       <h4>Holders</h4>
       <div class="metric-value" id="holder-count">Loading...</div>
-      <div class="metric-subtitle">Rebel Community</div>
+      <div class="metric-subtitle">From Solscan</div>
     </div>
     
-    <!-- Current Supply Card -->
     <div class="metric-card">
       <div class="metric-icon">⚖️</div>
       <h4>Current Supply</h4>
@@ -1532,7 +1539,6 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
       <div class="metric-subtitle" id="current-percent">-</div>
     </div>
     
-    <!-- Burned Supply Card -->
     <div class="metric-card">
       <div class="metric-icon">♨️</div>
       <h4>Total Burned</h4>
@@ -1540,7 +1546,12 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
       <div class="metric-subtitle" id="burned-percent">-</div>
     </div>
   </div>
+  
+  <div class="data-source">
+    <small>📡 Data sourced from Solscan API & DexScreener</small>
+  </div>
 </div>
+
   
   <div style="max-width: 1000px; margin: 0 auto;">
     <!-- Supply Box -->
@@ -2253,14 +2264,12 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown(); // Initial call
 
-// ============ COMPLETE TOKENOMICS DASHBOARD WITH SOLSCAN API ============
-
-console.log('🎯 Loading enhanced tokenomics dashboard...');
+console.log('🎯 Loading Solscan tokenomics dashboard...');
 
 // Token configuration
 const REBL_CONFIG = {
-  TOTAL_SUPPLY: 1000000000, // 1B total
-  TOKEN_ADDRESS: 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'
+    TOTAL_SUPPLY: 1000000000, // 1B total
+    TOKEN_ADDRESS: 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'
 };
 
 // Main function to update all metrics
@@ -2320,54 +2329,75 @@ async function updateSolscanData() {
     console.log('🔍 Fetching Solscan data...');
     
     try {
-        // Use CORS proxy for Solscan API
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        // Try multiple proxy endpoints
+        const proxies = [
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/',
+            'https://api.codetabs.com/v1/proxy?quest='
+        ];
+        
         const solscanUrl = `https://public-api.solscan.io/token/meta?tokenAddress=${REBL_CONFIG.TOKEN_ADDRESS}`;
         
-        const response = await fetch(proxyUrl + solscanUrl, {
-            headers: {
-                'Accept': 'application/json',
-            }
-        });
+        let success = false;
         
-        if (response.ok) {
-            const data = await response.json();
-            console.log('📊 Solscan data:', data);
-            
-            // Update holders count
-            const holders = data.holder || 0;
-            safeUpdate('holder-count', holders.toLocaleString());
-            
-            // Update supply data
-            const currentSupply = parseFloat(data.supply) || REBL_CONFIG.TOTAL_SUPPLY;
-            const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - currentSupply;
-            const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-            const currentPercent = ((currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-            
-            safeUpdate('current-supply', formatNumber(currentSupply));
-            safeUpdate('current-percent', `${currentPercent}% of total`);
-            
-            safeUpdate('burned-supply', formatNumber(burnedSupply));
-            safeUpdate('burned-percent', `${burnedPercent}% of total`);
-            
-            console.log('✅ Solscan data updated');
-        } else {
-            throw new Error(`Solscan API error: ${response.status}`);
+        for (const proxy of proxies) {
+            try {
+                console.log(`🔄 Trying proxy: ${proxy}`);
+                const response = await fetch(proxy + encodeURIComponent(solscanUrl), {
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    timeout: 10000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('📊 Solscan data received:', data);
+                    
+                    // Update holders count
+                    const holders = data.holder || 0;
+                    safeUpdate('holder-count', holders.toLocaleString());
+                    
+                    // Update supply data
+                    const currentSupply = parseFloat(data.supply) || REBL_CONFIG.TOTAL_SUPPLY;
+                    const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - currentSupply;
+                    const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+                    const currentPercent = ((currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+                    
+                    safeUpdate('current-supply', formatNumber(currentSupply));
+                    safeUpdate('current-percent', `${currentPercent}% of total`);
+                    
+                    safeUpdate('burned-supply', formatNumber(burnedSupply));
+                    safeUpdate('burned-percent', `${burnedPercent}% of total`);
+                    
+                    console.log('✅ Solscan data updated successfully');
+                    success = true;
+                    break;
+                }
+            } catch (proxyError) {
+                console.log(`❌ Proxy failed: ${proxy}`, proxyError);
+                continue;
+            }
         }
+        
+        if (!success) {
+            throw new Error('All proxies failed');
+        }
+        
     } catch (error) {
         console.error('❌ Solscan data error:', error);
         // Fallback to manual data
-        setManualData();
+        setManualDataFallback();
     }
 }
 
-// Fallback manual data if API fails
-function setManualData() {
+// Fallback manual data
+function setManualDataFallback() {
     console.log('🔄 Using manual data fallback...');
     
-    // Update these numbers manually based on Solscan
-    const manualHolders = 29; // ← UPDATE THIS from Solscan
-    const manualCurrentSupply = 997,006,647.923866; // ← UPDATE THIS from Solscan
+    // These will be your current numbers from Solscan
+    const manualHolders = 187;
+    const manualCurrentSupply = 997006647.923866;
     const manualBurnedSupply = REBL_CONFIG.TOTAL_SUPPLY - manualCurrentSupply;
     const burnedPercent = ((manualBurnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
     const currentPercent = ((manualCurrentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
@@ -2377,6 +2407,8 @@ function setManualData() {
     safeUpdate('current-percent', `${currentPercent}% of total`);
     safeUpdate('burned-supply', formatNumber(manualBurnedSupply));
     safeUpdate('burned-percent', `${burnedPercent}% of total`);
+    
+    safeUpdate('current-price', 'Check Console');
 }
 
 // Helper functions
@@ -2409,18 +2441,24 @@ function formatVolume(volume) {
     return `$${volume.toFixed(2)}`;
 }
 
+// Add manual refresh
+window.refreshData = function() {
+    console.log('🔄 Manual refresh triggered');
+    updateAllMetrics();
+};
+
 // Initialize when page loads
 window.addEventListener('load', function() {
-    console.log('🏁 Page loaded - starting tokenomics dashboard');
+    console.log('🏁 Page loaded - starting Solscan dashboard');
     
     setTimeout(function() {
         console.log('🚀 Starting metrics updates...');
         updateAllMetrics(); // First update
-        setInterval(updateAllMetrics, 60000); // Update every 60 seconds
+        setInterval(updateAllMetrics, 120000); // Update every 2 minutes
     }, 1000);
 });
 
-console.log('🎯 Enhanced tokenomics dashboard loaded');
+console.log('🎯 Solscan dashboard loaded');
   </script>
 </body>
 </html>
