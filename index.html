@@ -685,6 +685,98 @@
         padding: 0.4rem 0.8rem;
       }
     }
+
+.price-widget {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: 2px solid var(--rebel-gold);
+  margin: var(--spacing-lg) auto;
+  max-width: 400px;
+  text-align: center;
+}
+
+.price-widget h3 {
+  color: var(--rebel-gold);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.3rem;
+}
+
+.price-ticker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+#current-price {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-light);
+}
+
+#price-change {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid #4CAF50;
+}
+
+#price-change.positive {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+#price-change.negative {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.market-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--spacing-md);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat .label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--rebel-gold);
+  margin-bottom: 0.3rem;
+}
+
+.stat .value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+/* Mobile Responsive for Price Widget */
+@media (max-width: 768px) {
+  .price-ticker {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  #current-price {
+    font-size: 1.7rem;
+  }
+  
+  .market-stats {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+    
 /* Language Selector Styles */
 .language-selector {
   margin-left: var(--spacing-md);
@@ -1397,6 +1489,25 @@ ETH revenue from ZORA encompasses both profits from our NFT sales and fees earne
 
 <section id="tokenomics" class="visible">
   <h2>TOKENOMICS: THE REBEL WAY</h2>
+
+   <div class="price-widget">
+    <h3>Live $REBL Price</h3>
+    <div id="price-ticker" class="price-ticker">
+      <span id="current-price">Loading...</span>
+      <span id="price-change" class="positive">+0.00%</span>
+    </div>
+    <div class="market-stats">
+      <div class="stat">
+        <span class="label">Market Cap</span>
+        <span class="value" id="market-cap-widget">-</span>
+      </div>
+      <div class="stat">
+        <span class="label">24h Volume</span>
+        <span class="value" id="volume">-</span>
+      </div>
+    </div>
+  </div>
+  
   <div style="max-width: 1000px; margin: 0 auto;">
     <!-- Supply Box -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-red); margin-bottom: var(--spacing-lg); text-align: center;">
@@ -2107,6 +2218,79 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+  async function updatePriceWidget() {
+  try {
+    const REBL_TOKEN_ADDRESS = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    const DEXSCREENER_API = `https://api.dexscreener.com/latest/dex/tokens/${REBL_TOKEN_ADDRESS}`;
+    
+    const response = await fetch(DEXSCREENER_API);
+    const data = await response.json();
+    
+    const pair = data.pairs?.[0];
+    
+    if (pair) {
+      const price = parseFloat(pair.priceUsd) || 0;
+      const priceChange = parseFloat(pair.priceChange?.h24) || 0;
+      const marketCap = parseFloat(pair.marketCap) || 0;
+      const volume = parseFloat(pair.volume?.h24) || 0;
+      
+      // Update price display
+      document.getElementById('current-price').textContent = formatPrice(price);
+      
+      // Update price change
+      const priceChangeElement = document.getElementById('price-change');
+      priceChangeElement.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
+      priceChangeElement.className = priceChange >= 0 ? 'positive' : 'negative';
+      
+      // Update market stats
+      document.getElementById('market-cap-widget').textContent = formatMarketCap(marketCap);
+      document.getElementById('volume').textContent = formatVolume(volume);
+    }
+  } catch (error) {
+    console.error('Error updating price widget:', error);
+    document.getElementById('current-price').textContent = 'Error';
+    document.getElementById('price-change').textContent = '-%';
+  }
+}
+
+function formatPrice(price) {
+  if (price < 0.0001) {
+    return `$${price.toFixed(8)}`;
+  } else if (price < 0.01) {
+    return `$${price.toFixed(6)}`;
+  } else if (price < 1) {
+    return `$${price.toFixed(4)}`;
+  } else {
+    return `$${price.toFixed(2)}`;
+  }
+}
+
+function formatMarketCap(marketCap) {
+  if (marketCap >= 1000000) {
+    return `$${(marketCap / 1000000).toFixed(2)}M`;
+  } else if (marketCap >= 1000) {
+    return `$${(marketCap / 1000).toFixed(2)}K`;
+  } else {
+    return `$${marketCap.toFixed(2)}`;
+  }
+}
+
+function formatVolume(volume) {
+  if (volume >= 1000000) {
+    return `$${(volume / 1000000).toFixed(2)}M`;
+  } else if (volume >= 1000) {
+    return `$${(volume / 1000).toFixed(2)}K`;
+  } else {
+    return `$${volume.toFixed(2)}`;
+  }
+}
+
+// Update price widget when page loads and every 30 seconds
+document.addEventListener('DOMContentLoaded', function() {
+  updatePriceWidget();
+  setInterval(updatePriceWidget, 30000);
+});
   </script>
 </body>
 </html>
