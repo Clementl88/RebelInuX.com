@@ -2566,30 +2566,25 @@ document.addEventListener('DOMContentLoaded', function() {
     labelContainer.innerHTML += `<div style="margin-bottom:4px;">${label}: ${data[index]}%</div>`;
   });
 });
-    // Countdown timer
-// FIXED COUNTDOWN FUNCTION
-function updateCountdown() {
-    // Safe element references
+// FIXED COUNTDOWN FUNCTIONS FOR BOTH EPOCHS
+function updateCountdown1() {
     const daysElement = document.getElementById('days1');
     const hoursElement = document.getElementById('hours1'); 
     const minutesElement = document.getElementById('minutes1');
     const secondsElement = document.getElementById('seconds1');
     
-    // Check if elements exist before using them
     if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
-        console.log('⏰ Countdown elements not found yet');
         return;
     }
     
-    const nextEpochDate = new Date("2025-10-12T21:00:00").getTime();
+    const epoch1EndDate = new Date("2025-10-12T21:00:00").getTime();
     const now = new Date().getTime();
-    const distance = nextEpochDate - now;
+    const distance = epoch1EndDate - now;
 
     if (distance < 0) {
-        // Safe way to update countdown container
         const countdownContainer = document.getElementById('countdown1');
         if (countdownContainer) {
-            countdownContainer.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch Ended!</div>';
+            countdownContainer.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 1 Ended!</div>';
         }
         return;
     }
@@ -2599,16 +2594,50 @@ function updateCountdown() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    // Safe updates
     daysElement.textContent = days.toString().padStart(2, '0');
     hoursElement.textContent = hours.toString().padStart(2, '0');
     minutesElement.textContent = minutes.toString().padStart(2, '0');
     secondsElement.textContent = seconds.toString().padStart(2, '0');
 }
 
-// Update countdown every second
-setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call
+function updateCountdown2() {
+    const daysElement = document.getElementById('days2');
+    const hoursElement = document.getElementById('hours2'); 
+    const minutesElement = document.getElementById('minutes2');
+    const secondsElement = document.getElementById('seconds2');
+    
+    if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
+        return;
+    }
+    
+    const epoch2StartDate = new Date("2025-10-12T21:00:00").getTime(); // Same date for demo
+    const now = new Date().getTime();
+    const distance = epoch2StartDate - now;
+
+    if (distance < 0) {
+        const countdownContainer = document.getElementById('countdown2');
+        if (countdownContainer) {
+            countdownContainer.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 2 Started!</div>';
+        }
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysElement.textContent = days.toString().padStart(2, '0');
+    hoursElement.textContent = hours.toString().padStart(2, '0');
+    minutesElement.textContent = minutes.toString().padStart(2, '0');
+    secondsElement.textContent = seconds.toString().padStart(2, '0');
+}
+
+// Update both countdowns every second
+setInterval(updateCountdown1, 1000);
+setInterval(updateCountdown2, 1000);
+updateCountdown1(); // Initial call
+updateCountdown2(); // Initial call
 
 // ============ WORKING TOKENOMICS DASHBOARD ============
 
