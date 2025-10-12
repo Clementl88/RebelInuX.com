@@ -2568,19 +2568,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 // FIXED COUNTDOWN FUNCTIONS FOR BOTH EPOCHS (UTC)
 function updateCountdown1() {
-    const daysElement = document.getElementById('days1');
-    const hoursElement = document.getElementById('hours1');
-    const minutesElement = document.getElementById('minutes1');
-    const secondsElement = document.getElementById('seconds1');
-
-    if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
-        return;
-    }
-
-    // Set target time in UTC
     const epoch1EndDate = new Date("2025-10-12T21:00:00Z").getTime(); // "Z" forces UTC
-
-    // Get current time in UTC
     const now = new Date();
     const utcNow = Date.UTC(
         now.getUTCFullYear(),
@@ -2588,17 +2576,13 @@ function updateCountdown1() {
         now.getUTCDate(),
         now.getUTCHours(),
         now.getUTCMinutes(),
-        now.getUTCSeconds(),
-        now.getUTCMilliseconds()
+        now.getUTCSeconds()
     );
-
     const distance = epoch1EndDate - utcNow;
 
     if (distance < 0) {
-        const countdownContainer = document.getElementById('countdown1');
-        if (countdownContainer) {
-            countdownContainer.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 1 Ended!</div>';
-        }
+        document.getElementById('countdown1').innerHTML =
+            '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 1 Ended!</div>';
         return;
     }
 
@@ -2607,26 +2591,14 @@ function updateCountdown1() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    daysElement.textContent = days.toString().padStart(2, '0');
-    hoursElement.textContent = hours.toString().padStart(2, '0');
-    minutesElement.textContent = minutes.toString().padStart(2, '0');
-    secondsElement.textContent = seconds.toString().padStart(2, '0');
+    document.getElementById('days1').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
 }
 
 function updateCountdown2() {
-    const daysElement = document.getElementById('days2');
-    const hoursElement = document.getElementById('hours2');
-    const minutesElement = document.getElementById('minutes2');
-    const secondsElement = document.getElementById('seconds2');
-
-    if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
-        return;
-    }
-
-    // Set target time in UTC
     const epoch2StartDate = new Date("2025-10-12T21:00:00Z").getTime(); // "Z" forces UTC
-
-    // Get current time in UTC
     const now = new Date();
     const utcNow = Date.UTC(
         now.getUTCFullYear(),
@@ -2634,17 +2606,13 @@ function updateCountdown2() {
         now.getUTCDate(),
         now.getUTCHours(),
         now.getUTCMinutes(),
-        now.getUTCSeconds(),
-        now.getUTCMilliseconds()
+        now.getUTCSeconds()
     );
-
     const distance = epoch2StartDate - utcNow;
 
     if (distance < 0) {
-        const countdownContainer = document.getElementById('countdown2');
-        if (countdownContainer) {
-            countdownContainer.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 2 Started!</div>';
-        }
+        document.getElementById('countdown2').innerHTML =
+            '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 2 Started!</div>';
         return;
     }
 
@@ -2653,10 +2621,10 @@ function updateCountdown2() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    daysElement.textContent = days.toString().padStart(2, '0');
-    hoursElement.textContent = hours.toString().padStart(2, '0');
-    minutesElement.textContent = minutes.toString().padStart(2, '0');
-    secondsElement.textContent = seconds.toString().padStart(2, '0');
+    document.getElementById('days2').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
 }
 
 // Update both countdowns every second
