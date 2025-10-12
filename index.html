@@ -2707,6 +2707,52 @@ function updateSupplyAndHolders() {
     safeUpdate('burned-percent', `${burnedPercent}% of total`);
 }
 
+// Refresh data function - FIXED
+window.refreshData = function() {
+    console.log('🔄 Manual refresh triggered');
+    
+    // Add loading animation to refresh button
+    const refreshBtn = document.querySelector('.refresh-button');
+    const originalHtml = refreshBtn.innerHTML;
+    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+    refreshBtn.disabled = true;
+    
+    updateAllMetrics().finally(() => {
+        // Restore button after 1 second
+        setTimeout(() => {
+            refreshBtn.innerHTML = originalHtml;
+            refreshBtn.disabled = false;
+        }, 1000);
+    });
+};
+
+// Quick update from Solscan - FIXED
+window.quickUpdateFromSolscan = function() {
+    console.log('🔗 Opening Solscan for manual update...');
+    
+    // Open Solscan in new tab
+    window.open(`https://solscan.io/token/${REBL_CONFIG.TOKEN_ADDRESS}`, '_blank');
+    
+    // Show instructions
+    const updateBtn = document.querySelector('.update-button');
+    const originalText = updateBtn.innerHTML;
+    updateBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Opened Solscan!';
+    
+    setTimeout(() => {
+        updateBtn.innerHTML = originalText;
+        
+        // Show prompt for manual update
+        const newHolders = prompt('Enter latest holder count from Solscan:');
+        if (newHolders && !isNaN(newHolders)) {
+            const newSupply = prompt('Enter latest current supply from Solscan:');
+            if (newSupply && !isNaN(newSupply)) {
+                window.updateManualData(parseInt(newHolders), parseFloat(newSupply));
+                alert('✅ Data updated successfully!');
+            }
+        }
+    }, 2000);
+};
+
 // Function to manually update the numbers
 window.updateManualData = function(newHolders, newSupply) {
     console.log('📝 Updating manual data...');
@@ -2762,12 +2808,6 @@ function formatVolume(volume) {
     if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
     return `$${volume.toFixed(2)}`;
 }
-
-// Add manual refresh
-window.refreshData = function() {
-    console.log('🔄 Manual refresh triggered');
-    updateAllMetrics();
-};
 
 // Initialize when page loads
 window.addEventListener('load', function() {
