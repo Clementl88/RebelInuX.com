@@ -741,6 +741,304 @@
     color: var(--rebel-red);
     text-decoration: underline;
 }
+
+.tokenomics-dashboard {
+  background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 2px solid var(--rebel-gold);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) auto;
+  max-width: 1000px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.tokenomics-dashboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+  z-index: 1;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.dashboard-header h3 {
+  color: var(--rebel-gold);
+  font-size: 1.5rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.refresh-button {
+  background: linear-gradient(135deg, var(--rebel-red), #d62828);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(255, 51, 102, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.refresh-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+  background: linear-gradient(135deg, #ff3366, #e52d27);
+}
+
+.update-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.update-button {
+  background: linear-gradient(135deg, var(--rebel-gold), #e6b800);
+  color: var(--dark-bg);
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.update-button:hover {
+  background: linear-gradient(135deg, #ffcc00, #ffd700);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+}
+
+.metric-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: var(--spacing-md);
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 204, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.metric-card:hover::before {
+  opacity: 1;
+}
+
+.metric-icon {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-sm);
+  display: block;
+}
+
+.metric-card h4 {
+  color: var(--rebel-gold);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.metric-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* Specific card enhancements */
+.metric-card:nth-child(1) .metric-icon { color: #4CAF50; } /* Price - Green */
+.metric-card:nth-child(2) .metric-icon { color: #2196F3; } /* Market Cap - Blue */
+.metric-card:nth-child(3) .metric-icon { color: #FF9800; } /* Volume - Orange */
+.metric-card:nth-child(4) .metric-icon { color: #9C27B0; } /* Holders - Purple */
+.metric-card:nth-child(5) .metric-icon { color: var(--rebel-gold); } /* Supply - Gold */
+.metric-card:nth-child(6) .metric-icon { color: var(--rebel-red); } /* Burned - Red */
+
+.data-info {
+  text-align: center;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.data-info small {
+  color: var(--rebel-gold);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.data-info a {
+  color: var(--rebel-red);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.data-info a:hover {
+  color: #ff3366;
+}
+
+/* Price change indicator enhancements */
+#price-change {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid #4CAF50;
+  transition: var(--transition);
+}
+
+#price-change.positive {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: #4CAF50;
+  color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+#price-change.negative {
+  background: rgba(244, 67, 54, 0.15);
+  border-color: #f44336;
+  color: #f44336;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+/* Loading animation */
+.metric-value:empty::before {
+  content: 'Loading...';
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .tokenomics-dashboard {
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) auto;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .controls {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .metric-cards {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  .metric-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .metric-value {
+    font-size: 1.5rem;
+  }
+  
+  .refresh-button,
+  .update-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .update-buttons {
+    width: 100%;
+  }
+  
+  .update-button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .metric-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-value {
+    font-size: 1.3rem;
+  }
+  
+  .dashboard-header h3 {
+    font-size: 1.3rem;
+  }
+}
+
+    
 .price-ticker {
   display: flex;
   justify-content: center;
