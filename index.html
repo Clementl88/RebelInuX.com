@@ -1350,28 +1350,35 @@
       </p>
     </div>
 
-    <!-- REBL Calculator -->
-    <div class="rebl-calculator">
-      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
-      <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
-        Enter your <strong>$rebelinux</strong> balance to see your projected <strong>$REBL</strong> rewards for Epoch 2!
-      </p>
-      <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 500px;">
-        <div style="margin-bottom: var(--spacing-md);">
-          <label for="rebelinux-balance" style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">Your $rebelinux Balance:</label>
-          <input type="number" id="rebelinux-balance" placeholder="Enter your $rebelinux balance">
-        </div>
-        <button onclick="calculateRewards()">
-          CALCULATE REWARDS
-        </button>
-        <div id="reward-result">
-          Enter your balance to see your rewards!
-        </div>
-      </div>
-      <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7);">
-        <strong>Note:</strong> This is a projection based on the current epoch formula. Actual rewards may vary.
-      </p>
+<div class="rebl-calculator">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
+  <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
+    Enter your <strong>$rebelinux</strong> balance to see your projected <strong>$REBL</strong> rewards for Epoch 2!
+  </p>
+  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 500px;">
+    <!-- Display CS and ERP values -->
+    <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
+      <p><strong>Current Creator Supply (CS):</strong> 499,242,047</p>
+      <p><strong>Epoch Reward Pool (ERP):</strong> 51,200,000</p>
     </div>
+    <div style="margin-bottom: var(--spacing-md);">
+      <label for="rebelinux-balance" style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">Your $rebelinux Balance:</label>
+      <input type="number" id="rebelinux-balance" placeholder="Enter your $rebelinux balance">
+    </div>
+    <button onclick="calculateRewards()">
+      CALCULATE REWARDS
+    </button>
+    <div id="reward-result">
+      Enter your balance to see your rewards!
+    </div>
+  </div>
+  <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7);">
+    <strong>Formula:</strong> Your $REBL reward = (Your $rebelinux balance / Current Creator Supply) × Epoch Reward Pool
+  </p>
+  <p style="font-size: 0.9em; margin-top: var(--spacing-sm); color: rgba(255, 255, 255, 0.7);">
+    <strong>Note:</strong> This is a projection based on the current epoch formula. Actual rewards may vary.
+  </p>
+</div>
 
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
@@ -2155,21 +2162,21 @@
     });
 
     // REBL Calculator
-    function calculateRewards() {
-      const rebelinuxBalance = parseFloat(document.getElementById('rebelinux-balance').value);
-      const CS = 499242047.00;
-      const ERP = 51200000.00;
+   function calculateRewards() {
+  const rebelinuxBalance = parseFloat(document.getElementById('rebelinux-balance').value);
+  const CS = 499242047.00; // Current Creator Supply
+  const ERP = 51200000.00; // Epoch Reward Pool
 
-      if (isNaN(rebelinuxBalance) || rebelinuxBalance <= 0) {
-        document.getElementById('reward-result').innerHTML = 'Please enter a valid $rebelinux balance!';
-        document.getElementById('reward-result').style.color = 'var(--rebel-red)';
-        return;
-      }
+  if (isNaN(rebelinuxBalance) || rebelinuxBalance <= 0) {
+    document.getElementById('reward-result').innerHTML = 'Please enter a valid $rebelinux balance!';
+    document.getElementById('reward-result').style.color = 'var(--rebel-red)';
+    return;
+  }
 
-      const reward = (rebelinuxBalance / CS) * ERP;
-      document.getElementById('reward-result').innerHTML = `Your projected $REBL reward: <strong>${reward.toFixed(3)}</strong>`;
-      document.getElementById('reward-result').style.color = 'var(--rebel-gold)';
-    }
+  const reward = (rebelinuxBalance / CS) * ERP;
+  document.getElementById('reward-result').innerHTML = `Your projected $REBL reward: <strong>${reward.toFixed(3)}</strong>`;
+  document.getElementById('reward-result').style.color = 'var(--rebel-gold)';
+}
 
     // Tokenomics Dashboard (simplified for demo)
     window.updateAllMetrics = async function() {
