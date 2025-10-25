@@ -2925,16 +2925,22 @@ addTokenBatch();
     });
   </script>
 
-<script src="/js/tippy.js"></script>
+<script src="js/tippy.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    tippy('[data-tippy-content]', {
-      theme: 'light-border',
-      arrow: true,
-      placement: 'top',
-    });
+    if (typeof tippy !== 'undefined') {
+      tippy('[data-tippy-content]', {
+        theme: 'light-border',
+        arrow: true,
+        placement: 'top',
+      });
+      console.log('✅ Tippy.js initialized!');
+    } else {
+      console.error('❌ Tippy.js failed to load.');
+    }
   });
 </script>
+
 
 </body>
 </html>
