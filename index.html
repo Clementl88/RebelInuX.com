@@ -1504,33 +1504,61 @@
       </p>
     </div>
 
+<!-- Add this to your <head> for Tooltips -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- REBL Calculator Section -->
 <div class="rebl-calculator">
   <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
   <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
     Enter your <strong>$rebelinux</strong> token batches to calculate your projected <strong>$REBL</strong> rewards!
   </p>
 
-<div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 600px;">
-  <!-- Current Supply and ERP -->
-  <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
-    <p><strong>Current Creator Supply (CS):</strong> 499,242,047</p>
-    <p><strong>Epoch Reward Pool (ERP):</strong> 54,079,807.92</p>
-    <p style="font-size: 0.8em; margin-top: 0.5em;">
-      These are the <strong>current values</strong> for the ongoing epoch. <a href="#whitepaper" style="color: var(--rebel-red);">See white paper</a> for details on how rewards are calculated.
-    </p>
-  </div>
+  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 600px;">
+    <!-- Current Supply and ERP -->
+    <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
+      <p>
+        <strong>Current Creator Supply (CS)</strong>:
+        <span data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        499,242,047
+      </p>
+      <p>
+        <strong>Epoch Reward Pool (ERP)</strong>:
+        <span data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        54,079,807.92
+      </p>
+    </div>
 
     <!-- Token Batches Table -->
     <div style="margin-bottom: var(--spacing-md);">
       <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
         Your Token Batches:
+        <span data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
+          <i class="fas fa-question-circle"></i>
+        </span>
       </label>
       <table id="token-batches-table" style="width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-sm);">
         <thead>
           <tr>
             <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Amount</th>
-            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Age (Epochs)</th>
-            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Weighted Value</th>
+            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
+              Age (Epochs)
+              <span data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </th>
+            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
+              Weighted Value
+              <span data-tippy-content="The value of this batch, weighted by how long you've held it.">
+                <i class="fas fa-question-circle"></i>
+              </span>
+            </th>
             <th style="text-align: center; padding: 0.5em; color: var(--rebel-gold);">Action</th>
           </tr>
         </thead>
@@ -1553,28 +1581,70 @@
       CALCULATE REWARDS
     </button>
 
-    <!-- Result -->
-    <div id="reward-result" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
-      Enter your token batches to see your rewards!
+    <!-- Result and Chart -->
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-md); margin-top: var(--spacing-md);">
+      <div id="reward-result" style="padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
+        Enter your token batches to see your rewards!
+      </div>
+      <div style="height: 200px;">
+        <canvas id="rewardChart"></canvas>
+      </div>
     </div>
+  </div>
+
+  <!-- What If Scenarios -->
+  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: var(--spacing-lg) auto; max-width: 600px;">
+    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🔮 What If?</h4>
+    <p style="font-size: 0.9em; margin-bottom: var(--spacing-md);">
+      Simulate how your rewards would change if you held more tokens or held them longer.
+    </p>
+    <div style="margin-bottom: var(--spacing-md);">
+      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
+        Token Amount:
+        <span id="whatIfAmountValue" style="font-weight: normal;">10,000,000</span>
+      </label>
+      <input
+        type="range"
+        id="whatIfAmount"
+        min="1000000"
+        max="50000000"
+        step="1000000"
+        value="10000000"
+        oninput="updateWhatIf()"
+        style="width: 100%;"
+      >
+    </div>
+    <div style="margin-bottom: var(--spacing-md);">
+      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
+        Hold Time (Epochs):
+        <span id="whatIfEpochsValue" style="font-weight: normal;">10</span>
+      </label>
+      <input
+        type="range"
+        id="whatIfEpochs"
+        min="1"
+        max="20"
+        value="10"
+        oninput="updateWhatIf()"
+        style="width: 100%;"
+      >
+    </div>
+    <p style="font-size: 1.1em; font-weight: 700; color: var(--rebel-gold);">
+      Projected Reward: <strong id="whatIfReward">0</strong> $REBL
+    </p>
   </div>
 
   <!-- Formula Explanation -->
   <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7); text-align: center;">
     <strong>Formula:</strong><br>
     Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
-    <strong>Weighted Share (WS):</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
+    <strong>Weighted Share (WS)</strong>:
+    <span data-tippy-content="Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches. Older tokens contribute more to your reward.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
   </p>
-
-  <!-- Example -->
-  <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); border-left: 4px solid var(--rebel-gold); font-size: 0.9em; color: var(--rebel-gold);">
-    <p style="margin: 0; padding: 0.5em;">
-      <strong>Example:</strong> For batches of 5,000,000 tokens (8 epochs) and 2,500,000 tokens (1 epoch), the WS is calculated as:<br>
-      (5,000,000 × 1.56) + (2,500,000 × 1.07) = <strong>10,475,000</strong>
-    </p>
-  </div>
 </div>
-
     
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
@@ -2524,7 +2594,15 @@
       });
     });
 
-// REBL Calculator
+// Initialize Tooltips
+document.addEventListener('DOMContentLoaded', function() {
+  tippy('.fa-question-circle', {
+    theme: 'light-border',
+    arrow: true,
+  });
+});
+
+// Add a new token batch row
 function addTokenBatch(amount = '', age = '') {
   const table = document.querySelector('#token-batches-table tbody');
   const row = document.createElement('tr');
@@ -2588,6 +2666,7 @@ function updateWeightedValue(event) {
   const A_max = 20;
   const weightedValue = amount * (1 + k * Math.min(age, A_max));
   row.querySelector('.batch-weighted-value').textContent = isNaN(weightedValue) ? '-' : weightedValue.toFixed(2);
+  renderRewardChart(); // Update the chart
 }
 
 // Calculate rewards
@@ -2596,6 +2675,7 @@ function calculateRewards() {
   const ERP = 54079807.92; // Updated Epoch Reward Pool
   const rows = document.querySelectorAll('#token-batches-table tbody tr');
   let WS = 0;
+
   // Calculate Weighted Share (WS)
   rows.forEach(row => {
     const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
@@ -2604,8 +2684,10 @@ function calculateRewards() {
     const A_max = 20;
     WS += amount * (1 + k * Math.min(age, A_max));
   });
+
   // Calculate reward
   const reward = (WS / CS) * ERP;
+
   // Display result
   const resultElement = document.getElementById('reward-result');
   if (WS <= 0 || isNaN(reward)) {
@@ -2618,11 +2700,84 @@ function calculateRewards() {
     `;
     resultElement.style.color = 'var(--rebel-gold)';
   }
+  renderRewardChart(); // Update the chart
+}
+
+// Render the reward breakdown chart
+function renderRewardChart() {
+  const rows = document.querySelectorAll('#token-batches-table tbody tr');
+  const batches = Array.from(rows).map(row => ({
+    amount: parseFloat(row.querySelector('.batch-amount').value) || 0,
+    age: parseFloat(row.querySelector('.batch-age').value) || 0,
+    weightedValue: parseFloat(row.querySelector('.batch-weighted-value').textContent.replace('-', '0')) || 0,
+  }));
+
+  const ctx = document.getElementById('rewardChart').getContext('2d');
+
+  // Destroy previous chart if it exists
+  if (window.rewardChart) {
+    window.rewardChart.destroy();
+  }
+
+  // Create new chart
+  window.rewardChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: batches.map((_, i) => `Batch ${i + 1}`),
+      datasets: [{
+        data: batches.map(batch => batch.weightedValue),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+          'rgba(153, 102, 255, 0.7)',
+        ],
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: 'white',
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const batch = batches[context.dataIndex];
+              return [
+                `Amount: ${batch.amount.toLocaleString()}`,
+                `Age: ${batch.age} epochs`,
+                `Weighted Value: ${batch.weightedValue.toFixed(2)}`,
+              ];
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+// Update "What If" scenarios
+function updateWhatIf() {
+  const amount = parseInt(document.getElementById('whatIfAmount').value);
+  const epochs = parseInt(document.getElementById('whatIfEpochs').value);
+  const CS = 499242047.00;
+  const ERP = 54079807.92;
+  const WS = amount * (1 + 0.07 * epochs);
+  const reward = (WS / CS) * ERP;
+
+  document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString();
+  document.getElementById('whatIfEpochsValue').textContent = epochs;
+  document.getElementById('whatIfReward').textContent = reward.toFixed(2);
 }
 
 // Initialize with one empty row
 addTokenBatch();
-
 
     
     // Tokenomics Dashboard (simplified for demo)
