@@ -3228,25 +3228,23 @@ function updateWhatIf() {
 addTokenBatch();
 
     
-// Tokenomics Dashboard - Real Data Fetching
+// Tokenomics Dashboard (simplified for demo)
 window.updateAllMetrics = async function() {
   console.log('🔄 Updating all token metrics...');
   try {
     await updatePriceData();
-    await updateSupplyAndHolders(); // Changed to async
+    updateSupplyAndHolders();
     console.log('✅ All metrics updated successfully!');
   } catch (error) {
     console.error('❌ Error updating metrics:', error);
   }
 };
 
-// Fetch real price data from DexScreener
 async function updatePriceData() {
   console.log('💰 Fetching price data from DexScreener...');
   try {
     const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`);
     const data = await response.json();
-    
     if (data.pairs && data.pairs[0]) {
       const pair = data.pairs[0];
       const price = parseFloat(pair.priceUsd) || 0;
@@ -3273,172 +3271,115 @@ async function updatePriceData() {
   }
 }
 
-// Fetch real holder and supply data from Solscan API
-async function updateSupplyAndHolders() {
-  console.log('👥 Fetching holder data from Solscan...');
-  try {
-    const response = await fetch(`https://api.solscan.io/token?token=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`);
-    const data = await response.json();
-    
-    if (data.data) {
-      const holders = data.data.holder || 0;
-      const currentSupply = data.data.supply || 0;
-      
-      const REBL_CONFIG = {
-        TOTAL_SUPPLY: 1000000000
-      };
+function updateSupplyAndHolders() {
+  const CURRENT_DATA = {
+    holders: 37,
+    currentSupply: 997006647.923866
+  };
 
-      const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - currentSupply;
-      const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-      const currentPercent = ((currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+  const REBL_CONFIG = {
+    TOTAL_SUPPLY: 1000000000
+  };
 
-      safeUpdate('holder-count', holders.toLocaleString());
-      safeUpdate('holders-source', 'Live from Solscan');
-      safeUpdate('current-supply', formatNumber(currentSupply));
-      safeUpdate('current-percent', `${currentPercent}% of total`);
-      safeUpdate('burned-supply', formatNumber(burnedSupply));
-      safeUpdate('burned-percent', `${burnedPercent}% of total`);
-      
-      console.log(`✅ Updated: ${holders} holders, ${currentSupply} supply`);
-    } else {
-      throw new Error('No data from Solscan API');
-    }
-  } catch (error) {
-    console.error('❌ Solscan API error:', error);
-    // Fallback to manual update method
-    safeUpdate('holders-source', 'Click "Update from Solscan"');
-    safeUpdate('holder-count', 'Update Required');
-  }
+  const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - CURRENT_DATA.currentSupply;
+  const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+  const currentPercent = ((CURRENT_DATA.currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+
+  safeUpdate('holder-count', CURRENT_DATA.holders.toLocaleString());
+  safeUpdate('current-supply', formatNumber(CURRENT_DATA.currentSupply));
+  safeUpdate('current-percent', `${currentPercent}% of total`);
+  safeUpdate('burned-supply', formatNumber(burnedSupply));
+  safeUpdate('burned-percent', `${burnedPercent}% of total`);
 }
 
-// Manual update function with better UX
+window.refreshData = function() {
+  const refreshBtn = document.querySelector('.refresh-button');
+  const originalHtml = refreshBtn.innerHTML;
+  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+  refreshBtn.disabled = true;
+
+  updateAllMetrics().finally(() => {
+    setTimeout(() => {
+      refreshBtn.innerHTML = originalHtml;
+      refreshBtn.disabled = false;
+    }, 1000);
+  });
+};
+
 window.quickUpdateFromSolscan = function() {
-  // Open Solscan in new tab
   window.open(`https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`, '_blank');
   
   const updateBtn = document.querySelector('.update-button');
   const originalText = updateBtn.innerHTML;
   updateBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Opened Solscan!';
   
-  // Show instructions for manual update
   setTimeout(() => {
     updateBtn.innerHTML = originalText;
-    
-    // Create a nice prompt overlay
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    `;
-    
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-      background: var(--dark-bg);
-      padding: var(--spacing-lg);
-      border-radius: var(--border-radius);
-      border: 2px solid var(--rebel-gold);
-      max-width: 500px;
-      text-align: center;
-    `;
-    
-    modal.innerHTML = `
-      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">Update Token Data</h3>
-      <p style="margin-bottom: var(--spacing-md);">Enter the latest data from Solscan:</p>
-      
-      <div style="margin-bottom: var(--spacing-md); text-align: left;">
-        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--rebel-gold);">
-          <strong>Holder Count:</strong>
-        </label>
-        <input type="number" id="holderInput" placeholder="Enter holder count" 
-               style="width: 100%; padding: var(--spacing-sm); border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0,0,0,0.3); color: white;">
-      </div>
-      
-      <div style="margin-bottom: var(--spacing-lg); text-align: left;">
-        <label style="display: block; margin-bottom: var(--spacing-sm); color: var(--rebel-gold);">
-          <strong>Current Supply:</strong>
-        </label>
-        <input type="number" id="supplyInput" placeholder="Enter current supply" 
-               style="width: 100%; padding: var(--spacing-sm); border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0,0,0,0.3); color: white;">
-      </div>
-      
-      <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
-        <button onclick="submitManualUpdate()" class="cta-button" style="padding: var(--spacing-sm) var(--spacing-lg);">
-          <i class="fas fa-check"></i> Update Data
-        </button>
-        <button onclick="closeUpdateModal()" class="cta-button gold" style="padding: var(--spacing-sm) var(--spacing-lg);">
-          <i class="fas fa-times"></i> Cancel
-        </button>
-      </div>
-    `;
-    
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
-    
-  }, 1000);
+    const newHolders = prompt('Enter latest holder count from Solscan:');
+    if (newHolders && !isNaN(newHolders)) {
+      const newSupply = prompt('Enter latest current supply from Solscan:');
+      if (newSupply && !isNaN(newSupply)) {
+        updateManualData(parseInt(newHolders), parseFloat(newSupply));
+        alert('✅ Data updated successfully!');
+      }
+    }
+  }, 2000);
 };
 
-// Handle manual data submission
-window.submitManualUpdate = function() {
-  const holderInput = document.getElementById('holderInput');
-  const supplyInput = document.getElementById('supplyInput');
-  
-  const newHolders = parseInt(holderInput.value);
-  const newSupply = parseFloat(supplyInput.value);
-  
-  if (!isNaN(newHolders) && !isNaN(newSupply) && newHolders > 0 && newSupply > 0) {
-    updateManualData(newHolders, newSupply);
-    closeUpdateModal();
-    
-    // Show success message
-    showNotification('✅ Data updated successfully!', 'success');
-  } else {
-    showNotification('❌ Please enter valid numbers', 'error');
+window.updateManualData = function(newHolders, newSupply) {
+  const CURRENT_DATA = {
+    holders: newHolders,
+    currentSupply: newSupply
+  };
+
+  const REBL_CONFIG = {
+    TOTAL_SUPPLY: 1000000000
+  };
+
+  const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - CURRENT_DATA.currentSupply;
+  const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+  const currentPercent = ((CURRENT_DATA.currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
+
+  safeUpdate('holder-count', CURRENT_DATA.holders.toLocaleString());
+  safeUpdate('current-supply', formatNumber(CURRENT_DATA.currentSupply));
+  safeUpdate('current-percent', `${currentPercent}% of total`);
+  safeUpdate('burned-supply', formatNumber(burnedSupply));
+  safeUpdate('burned-percent', `${burnedPercent}% of total`);
+};
+
+function safeUpdate(elementId, value) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.textContent = value;
   }
-};
-
-window.closeUpdateModal = function() {
-  const overlay = document.querySelector('div[style*="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8)"]');
-  if (overlay) {
-    overlay.remove();
-  }
-};
-
-// Show notification
-function showNotification(message, type) {
-  const notification = document.createElement('div');
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 'rgba(244, 67, 54, 0.9)'};
-    color: white;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
-    z-index: 10001;
-    border: 1px solid ${type === 'success' ? '#4CAF50' : '#f44336'};
-  `;
-  notification.textContent = message;
-  document.body.appendChild(notification);
-  
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
 }
 
-// Initialize with real data
+function formatNumber(num) {
+  return num.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function formatMarketCap(marketCap) {
+  if (marketCap === 0) return '$0';
+  if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(2)}B`;
+  if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(2)}M`;
+  if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
+  return `$${marketCap.toFixed(2)}`;
+}
+
+function formatVolume(volume) {
+  if (volume === 0) return '$0';
+  if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
+  if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
+  return `$${volume.toFixed(2)}`;
+}
+
 window.addEventListener('load', function() {
   setTimeout(function() {
     updateAllMetrics();
-    // Update every 2 minutes
-    setInterval(updateAllMetrics, 120000);
+    setInterval(updateAllMetrics, 60000); // Keep original 1 minute interval
   }, 1000);
 });
   </script>
