@@ -2524,23 +2524,46 @@
       });
     });
 
-    // REBL Calculator
+// REBL Calculator
 function addTokenBatch(amount = '', age = '') {
   const table = document.querySelector('#token-batches-table tbody');
   const row = document.createElement('tr');
-
   row.innerHTML = `
     <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
-    <td><input type="number" class="batch-age" value="${age}" placeholder="Age" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+    <td>
+      <input
+        type="number"
+        class="batch-age"
+        value="${age}"
+        placeholder="Age"
+        min="0"
+        max="20"
+        oninput="validateAgeInput(this)"
+        style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"
+      >
+    </td>
     <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
     <td><button onclick="removeTokenBatch(this)" style="background: var(--rebel-red); color: white; border: none; padding: 0.3em 0.6em; border-radius: 4px; cursor: pointer;">×</button></td>
   `;
-
   table.appendChild(row);
-
   // Add event listeners for real-time calculation
   row.querySelector('.batch-amount').addEventListener('input', updateWeightedValue);
   row.querySelector('.batch-age').addEventListener('input', updateWeightedValue);
+}
+
+// Validate age input to ensure it's between 0 and 20
+function validateAgeInput(input) {
+  let value = parseInt(input.value);
+  if (isNaN(value)) {
+    input.value = 0;
+  } else if (value < 0) {
+    input.value = 0;
+  } else if (value > 20) {
+    input.value = 20;
+  }
+  // Trigger the weighted value update
+  const event = new Event('input');
+  input.dispatchEvent(event);
 }
 
 // Remove a token batch row
@@ -2573,7 +2596,6 @@ function calculateRewards() {
   const ERP = 54079807.92; // Updated Epoch Reward Pool
   const rows = document.querySelectorAll('#token-batches-table tbody tr');
   let WS = 0;
-
   // Calculate Weighted Share (WS)
   rows.forEach(row => {
     const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
@@ -2582,10 +2604,8 @@ function calculateRewards() {
     const A_max = 20;
     WS += amount * (1 + k * Math.min(age, A_max));
   });
-
   // Calculate reward
   const reward = (WS / CS) * ERP;
-
   // Display result
   const resultElement = document.getElementById('reward-result');
   if (WS <= 0 || isNaN(reward)) {
@@ -2602,6 +2622,7 @@ function calculateRewards() {
 
 // Initialize with one empty row
 addTokenBatch();
+
 
     
     // Tokenomics Dashboard (simplified for demo)
