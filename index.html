@@ -1507,10 +1507,11 @@
 <div class="rebl-calculator">
   <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
   <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
-    Enter your <strong>$rebelinux</strong> token batches (amount and age in epochs) to see your projected <strong>$REBL</strong> rewards!
+    Enter your <strong>$rebelinux</strong> token batches to calculate your projected <strong>$REBL</strong> rewards!
   </p>
-  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 500px;">
-    <!-- Display CS and ERP values -->
+
+  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 600px;">
+    <!-- Current Supply and ERP -->
     <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
       <p><strong>Current Creator Supply (CS):</strong> 499,242,047</p>
       <p><strong>Epoch Reward Pool (ERP):</strong> 41,600,000</p>
@@ -1518,44 +1519,62 @@
         Example ERP for Week 8, Month 2 (November 20, 2025). <a href="#whitepaper" style="color: var(--rebel-red);">See white paper</a> for details.
       </p>
     </div>
-    <!-- Token Batches Input -->
+
+    <!-- Token Batches Table -->
     <div style="margin-bottom: var(--spacing-md);">
-      <label for="token-batches" style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
-        Your Token Batches (amount,age;amount,age;...):
+      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
+        Your Token Batches:
       </label>
-      <input
-        type="text"
-        id="token-batches"
-        placeholder="e.g., 5000000,8;2500000,1"
-        style="width: 100%; padding: 0.7em; border-radius: 8px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white; font-size: 1em; text-align: center; margin-bottom: var(--spacing-md);"
-      >
-      <p style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7); margin-top: 0.3em;">
-        <strong>Format:</strong> Separate batches with semicolons (<code>;</code>). For each batch, use <code>amount,age</code> (e.g., <code>5000000,8</code>).
-      </p>
+      <table id="token-batches-table" style="width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-sm);">
+        <thead>
+          <tr>
+            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Amount</th>
+            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Age (Epochs)</th>
+            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Weighted Value</th>
+            <th style="text-align: center; padding: 0.5em; color: var(--rebel-gold);">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be added dynamically -->
+        </tbody>
+      </table>
+      <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+        <button onclick="addTokenBatch()" style="flex: 1; background: var(--rebel-red); color: white; border: none; padding: 0.5em; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          + Add Batch
+        </button>
+        <button onclick="clearTokenBatches()" style="flex: 1; background: rgba(255, 255, 255, 0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold); padding: 0.5em; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          Clear All
+        </button>
+      </div>
     </div>
+
     <!-- Calculate Button -->
     <button onclick="calculateRewards()" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); color: var(--dark-bg); border: none; padding: 0.8em 1.5em; border-radius: 25px; font-weight: 700; cursor: pointer; transition: var(--transition); margin: var(--spacing-sm) 0; width: 100%;">
       CALCULATE REWARDS
     </button>
+
     <!-- Result -->
-    <div id="reward-result" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
+    <div id="reward-result" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
       Enter your token batches to see your rewards!
     </div>
   </div>
+
   <!-- Formula Explanation -->
   <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7); text-align: center;">
     <strong>Formula:</strong><br>
     Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
     <strong>Weighted Share (WS):</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
   </p>
+
   <!-- Example -->
   <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); border-left: 4px solid var(--rebel-gold); font-size: 0.9em; color: var(--rebel-gold);">
     <p style="margin: 0; padding: 0.5em;">
-      <strong>Example:</strong> For batches <code>5000000,8;2500000,1</code>, the WS is calculated as:<br>
+      <strong>Example:</strong> For batches of 5,000,000 tokens (8 epochs) and 2,500,000 tokens (1 epoch), the WS is calculated as:<br>
       (5,000,000 × 1.56) + (2,500,000 × 1.07) = <strong>10,475,000</strong>
     </p>
   </div>
 </div>
+
     
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
@@ -2506,34 +2525,62 @@
     });
 
     // REBL Calculator
+function addTokenBatch(amount = '', age = '') {
+  const table = document.querySelector('#token-batches-table tbody');
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+    <td><input type="number" class="batch-age" value="${age}" placeholder="Age" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+    <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
+    <td><button onclick="removeTokenBatch(this)" style="background: var(--rebel-red); color: white; border: none; padding: 0.3em 0.6em; border-radius: 4px; cursor: pointer;">×</button></td>
+  `;
+
+  table.appendChild(row);
+
+  // Add event listeners for real-time calculation
+  row.querySelector('.batch-amount').addEventListener('input', updateWeightedValue);
+  row.querySelector('.batch-age').addEventListener('input', updateWeightedValue);
+}
+
+// Remove a token batch row
+function removeTokenBatch(button) {
+  button.closest('tr').remove();
+  calculateRewards(); // Recalculate rewards
+}
+
+// Clear all token batches
+function clearTokenBatches() {
+  document.querySelectorAll('#token-batches-table tbody tr').forEach(row => row.remove());
+  document.getElementById('reward-result').innerHTML = 'Enter your token batches to see your rewards!';
+  document.getElementById('reward-result').style.color = 'var(--rebel-gold)';
+}
+
+// Update the weighted value for a batch
+function updateWeightedValue(event) {
+  const row = event.target.closest('tr');
+  const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+  const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+  const k = 0.07;
+  const A_max = 20;
+  const weightedValue = amount * (1 + k * Math.min(age, A_max));
+  row.querySelector('.batch-weighted-value').textContent = isNaN(weightedValue) ? '-' : weightedValue.toFixed(2);
+}
+
+// Calculate rewards
 function calculateRewards() {
-  // Get user inputs
-  const batchesInput = document.getElementById('token-batches').value.trim();
   const CS = 499242047.00; // Current Creator Supply
-  const ERP = 41600000; // Epoch Reward Pool (example: Week 8, Month 2)
-  const k = 0.07; // Age multiplier
-  const A_max = 20; // Maximum age cap
-
-  // Parse token batches (format: "amount1,age1;amount2,age2;...")
-  const batches = batchesInput.split(';')
-    .map(batch => batch.trim())
-    .filter(batch => batch.length > 0)
-    .map(batch => {
-      const [amount, age] = batch.split(',').map(Number);
-      return { amount, age: Math.min(age, A_max) };
-    });
-
-  // Validate input
-  if (batches.length === 0 || batches.some(batch => isNaN(batch.amount) || isNaN(batch.age) || batch.amount <= 0 || batch.age < 0)) {
-    document.getElementById('reward-result').innerHTML = 'Please enter valid token batches (e.g., "5000000,8;2500000,1")!';
-    document.getElementById('reward-result').style.color = 'var(--rebel-red)';
-    return;
-  }
+  const ERP = 41600000; // Epoch Reward Pool
+  const rows = document.querySelectorAll('#token-batches-table tbody tr');
+  let WS = 0;
 
   // Calculate Weighted Share (WS)
-  let WS = 0;
-  batches.forEach(batch => {
-    WS += batch.amount * (1 + k * batch.age);
+  rows.forEach(row => {
+    const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+    const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+    const k = 0.07;
+    const A_max = 20;
+    WS += amount * (1 + k * Math.min(age, A_max));
   });
 
   // Calculate reward
@@ -2541,13 +2588,22 @@ function calculateRewards() {
 
   // Display result
   const resultElement = document.getElementById('reward-result');
-  resultElement.innerHTML = `
-    <strong>Weighted Share (WS):</strong> ${WS.toFixed(2)}<br>
-    <strong>Projected $REBL Reward:</strong> ${reward.toFixed(2)}
-  `;
-  resultElement.style.color = 'var(--rebel-gold)';
+  if (WS <= 0 || isNaN(reward)) {
+    resultElement.innerHTML = 'Please enter valid token batches!';
+    resultElement.style.color = 'var(--rebel-red)';
+  } else {
+    resultElement.innerHTML = `
+      <strong>Weighted Share (WS):</strong> ${WS.toFixed(2)}<br>
+      <strong>Projected $REBL Reward:</strong> ${reward.toFixed(2)}
+    `;
+    resultElement.style.color = 'var(--rebel-gold)';
+  }
 }
 
+// Initialize with one empty row
+addTokenBatch();
+
+    
     // Tokenomics Dashboard (simplified for demo)
     window.updateAllMetrics = async function() {
       console.log('🔄 Updating all token metrics...');
