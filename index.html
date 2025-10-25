@@ -1248,60 +1248,366 @@
       transform: translateY(-5px);
     }
 
-    /* REBL Calculator */
-    .rebl-calculator {
-      background: var(--section-bg);
-      padding: var(--spacing-lg);
-      border-radius: var(--border-radius);
-      margin: var(--spacing-lg) auto;
-      max-width: 800px;
-      text-align: center;
-    }
+   /* REBL Calculator Responsive Styles */
+.rebl-calculator {
+  background: var(--section-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-lg) auto;
+  max-width: 100%;
+  text-align: center;
+}
 
-    .rebl-calculator input {
-      width: 100%;
-      padding: 0.7em;
-      border-radius: 8px;
-      border: 1px solid var(--rebel-gold);
-      background: rgba(0, 0, 0, 0.3);
-      color: white;
-      font-size: 1em;
-      text-align: center;
-      margin-bottom: var(--spacing-md);
-    }
+.calculator-container {
+  background: var(--card-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--rebel-gold);
+  margin: 0 auto;
+  max-width: 100%;
+}
 
-    .rebl-calculator button {
-      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-      color: var(--dark-bg);
-      border: none;
-      padding: 0.8em 1.5em;
-      border-radius: 25px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      margin: var(--spacing-sm) 0;
-      width: 100%;
-    }
+.calculator-info {
+  margin-bottom: var(--spacing-md);
+  font-size: 0.9em;
+  color: var(--rebel-gold);
+  text-align: left;
+}
 
-    .rebl-calculator button:hover {
-      transform: translateY(-2px);
-    }
+.calculator-info p {
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
 
-    #reward-result {
-      margin-top: var(--spacing-md);
-      padding: var(--spacing-sm);
-      border-radius: 8px;
-      background: rgba(255, 204, 0, 0.1);
-      border: 1px solid var(--rebel-gold);
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: var(--rebel-gold);
-    }
-  </style>
-</head>
+.info-value {
+  color: white;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.tooltip-icon {
+  color: var(--rebel-gold);
+  cursor: help;
+  margin: 0 0.2em;
+}
+
+.token-batches-section {
+  margin-bottom: var(--spacing-md);
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 0.8em;
+  font-weight: 600;
+  color: var(--rebel-gold);
+  text-align: left;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-sm);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  border-radius: 8px;
+}
+
+#token-batches-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+#token-batches-table th,
+#token-batches-table td {
+  padding: 0.6em;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#token-batches-table th {
+  color: var(--rebel-gold);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.action-column {
+  width: 80px;
+  text-align: center;
+}
+
+.batch-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.batch-btn {
+  flex: 1;
+  border: none;
+  padding: 0.7em;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: var(--transition);
+}
+
+.add-btn {
+  background: var(--rebel-red);
+  color: white;
+}
+
+.clear-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--rebel-gold);
+  border: 1px solid var(--rebel-gold);
+}
+
+.batch-btn:hover {
+  transform: translateY(-2px);
+}
+
+.calculate-btn {
+  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+  color: var(--dark-bg);
+  border: none;
+  padding: 1em 1.5em;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: var(--spacing-sm) 0;
+  width: 100%;
+  font-size: 1em;
+}
+
+.calculate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+}
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+#reward-result {
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  background: rgba(255, 204, 0, 0.1);
+  border: 1px solid var(--rebel-gold);
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--rebel-gold);
+  text-align: center;
+  font-size: 0.95em;
+}
+
+.chart-container {
+  height: 200px;
+  width: 100%;
+}
+
+.what-if-section {
+  background: var(--card-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--rebel-gold);
+  margin: var(--spacing-lg) auto;
+  max-width: 100%;
+  text-align: left;
+}
+
+.what-if-section h4 {
+  color: var(--rebel-gold);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.what-if-section > p {
+  font-size: 0.9em;
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.slider-container label {
+  font-weight: 600;
+  color: var(--rebel-gold);
+  font-size: 0.9em;
+}
+
+.slider-value {
+  font-weight: normal;
+  color: white;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.what-if-result {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--rebel-gold);
+  text-align: center;
+  margin: 0;
+}
+
+.formula-explanation {
+  font-size: 0.8em;
+  margin-top: var(--spacing-md);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .rebl-calculator {
+    padding: var(--spacing-sm);
+    margin: var(--spacing-md) auto;
+  }
+  
+  .calculator-container {
+    padding: var(--spacing-sm);
+  }
+  
+  .calculator-info {
+    font-size: 0.8em;
+  }
+  
+  .calculator-info p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2em;
+  }
+  
+  .info-value {
+    margin-left: 0;
+  }
+  
+  #token-batches-table {
+    font-size: 0.8em;
+  }
+  
+  #token-batches-table th,
+  #token-batches-table td {
+    padding: 0.4em;
+  }
+  
+  .batch-controls {
+    flex-direction: column;
+  }
+  
+  .batch-btn {
+    padding: 0.8em;
+  }
+  
+  .calculate-btn {
+    padding: 0.9em 1.2em;
+    font-size: 0.9em;
+  }
+  
+  #reward-result {
+    padding: var(--spacing-sm);
+    min-height: 70px;
+    font-size: 0.9em;
+  }
+  
+  .chart-container {
+    height: 150px;
+  }
+  
+  .what-if-section {
+    padding: var(--spacing-sm);
+  }
+  
+  .slider-group {
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .rebl-calculator {
+    padding: 0.5rem;
+  }
+  
+  #token-batches-table {
+    font-size: 0.75em;
+  }
+  
+  #token-batches-table th,
+  #token-batches-table td {
+    padding: 0.3em;
+  }
+  
+  .action-column {
+    width: 60px;
+  }
+  
+  .chart-container {
+    height: 120px;
+  }
+}
+
+/* Input field styles */
+input[type="number"], input[type="text"] {
+  width: 100%;
+  padding: 0.6em;
+  border-radius: 4px;
+  border: 1px solid var(--rebel-gold);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 0.9em;
+}
+
+input[type="number"]:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: var(--rebel-red);
+  box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
+}
+
+/* Remove button styles */
+.remove-batch-btn {
+  background: var(--rebel-red);
+  color: white;
+  border: none;
+  padding: 0.4em 0.6em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: var(--transition);
+}
+
+.remove-batch-btn:hover {
+  background: #d62828;
+  transform: scale(1.05);
+}
 
 <body>
   <!-- Loading Animation -->
@@ -1511,129 +1817,149 @@
 
 <!-- REBL Calculator Section -->
 <div class="rebl-calculator">
-  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
-  <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">🧮 $REBL REWARD CALCULATOR</h3>
+  <p style="font-size: 1em; margin-bottom: var(--spacing-lg); text-align: center; max-width: 500px; margin-left: auto; margin-right: auto;">
     Enter your <strong>$rebelinux</strong> token batches to calculate your projected <strong>$REBL</strong> rewards!
   </p>
 
-  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 600px;">
+  <div class="calculator-container">
     <!-- Current Supply and ERP -->
-    <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
+    <div class="calculator-info">
       <p>
-        <strong>Current Creator Supply (CS)</strong>:
-        <i class="fas fa-question-circle" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards."></i>
-        499,242,047
+        <strong>Current Creator Supply (CS):</strong>
+        <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        <span class="info-value">499,242,047</span>
       </p>
       <p>
-        <strong>Epoch Reward Pool (ERP)</strong>:
-        <i class="fas fa-question-circle" data-tippy-content="The total $REBL tokens available for distribution in the current epoch."></i>
-        54,079,807.92
+        <strong>Epoch Reward Pool (ERP):</strong>
+        <span class="tooltip-icon" data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        <span class="info-value">54,079,807.92</span>
       </p>
     </div>
 
     <!-- Token Batches Table -->
-    <div style="margin-bottom: var(--spacing-md);">
-      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
+    <div class="token-batches-section">
+      <label class="section-label">
         Your Token Batches:
-        <i class="fas fa-question-circle" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them."></i>
+        <span class="tooltip-icon" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
+          <i class="fas fa-question-circle"></i>
+        </span>
       </label>
-      <table id="token-batches-table" style="width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-sm);">
-        <thead>
-          <tr>
-            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Amount</th>
-            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
-              Age (Epochs)
-              <i class="fas fa-question-circle" data-tippy-content="The number of epochs you've held this batch of tokens (max 20)."></i>
-            </th>
-            <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
-              Weighted Value
-              <i class="fas fa-question-circle" data-tippy-content="The value of this batch, weighted by how long you've held it."></i>
-            </th>
-            <th style="text-align: center; padding: 0.5em; color: var(--rebel-gold);">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added dynamically -->
-        </tbody>
-      </table>
-      <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
-        <button onclick="addTokenBatch()" style="flex: 1; background: var(--rebel-red); color: white; border: none; padding: 0.5em; border-radius: 8px; cursor: pointer; font-weight: 600;">
+      
+      <div class="table-container">
+        <table id="token-batches-table">
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>
+                Age (Epochs)
+                <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </th>
+              <th>
+                Weighted Value
+                <span class="tooltip-icon" data-tippy-content="The value of this batch, weighted by how long you've held it.">
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be added dynamically -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="batch-controls">
+        <button onclick="addTokenBatch()" class="batch-btn add-btn">
           + Add Batch
         </button>
-        <button onclick="clearTokenBatches()" style="flex: 1; background: rgba(255, 255, 255, 0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold); padding: 0.5em; border-radius: 8px; cursor: pointer; font-weight: 600;">
+        <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
           Clear All
         </button>
       </div>
     </div>
 
     <!-- Calculate Button -->
-    <button onclick="calculateRewards()" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); color: var(--dark-bg); border: none; padding: 0.8em 1.5em; border-radius: 25px; font-weight: 700; cursor: pointer; transition: var(--transition); margin: var(--spacing-sm) 0; width: 100%;">
+    <button onclick="calculateRewards()" class="calculate-btn">
       CALCULATE REWARDS
     </button>
 
     <!-- Result and Chart -->
-    <div style="display: flex; flex-direction: column; gap: var(--spacing-md); margin-top: var(--spacing-md);">
-      <div id="reward-result" style="padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
+    <div class="results-section">
+      <div id="reward-result">
         Enter your token batches to see your rewards!
       </div>
-      <div style="height: 200px;">
+      <div class="chart-container">
         <canvas id="rewardChart"></canvas>
       </div>
     </div>
   </div>
 
   <!-- What If Scenarios -->
-  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: var(--spacing-lg) auto; max-width: 600px;">
-    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🔮 What If?</h4>
-    <p style="font-size: 0.9em; margin-bottom: var(--spacing-md);">
-      Simulate how your rewards would change if you held more tokens or held them longer.
-    </p>
-    <div style="margin-bottom: var(--spacing-md);">
-      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
-        Token Amount:
-        <span id="whatIfAmountValue" style="font-weight: normal;">10,000,000</span>
-      </label>
-      <input
-        type="range"
-        id="whatIfAmount"
-        min="1000000"
-        max="50000000"
-        step="1000000"
-        value="10000000"
-        oninput="updateWhatIf()"
-        style="width: 100%;"
-      >
+  <div class="what-if-section">
+    <h4>🔮 What If?</h4>
+    <p>Simulate how your rewards would change if you held more tokens or held them longer.</p>
+    
+    <div class="slider-group">
+      <div class="slider-container">
+        <label>
+          Token Amount:
+          <span id="whatIfAmountValue" class="slider-value">10,000,000</span>
+        </label>
+        <input
+          type="range"
+          id="whatIfAmount"
+          min="1000000"
+          max="50000000"
+          step="1000000"
+          value="10000000"
+          oninput="updateWhatIf()"
+          class="slider"
+        >
+      </div>
+      
+      <div class="slider-container">
+        <label>
+          Hold Time (Epochs):
+          <span id="whatIfEpochsValue" class="slider-value">10</span>
+        </label>
+        <input
+          type="range"
+          id="whatIfEpochs"
+          min="1"
+          max="20"
+          value="10"
+          oninput="updateWhatIf()"
+          class="slider"
+        >
+      </div>
     </div>
-    <div style="margin-bottom: var(--spacing-md);">
-      <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
-        Hold Time (Epochs):
-        <span id="whatIfEpochsValue" style="font-weight: normal;">10</span>
-      </label>
-      <input
-        type="range"
-        id="whatIfEpochs"
-        min="1"
-        max="20"
-        value="10"
-        oninput="updateWhatIf()"
-        style="width: 100%;"
-      >
-    </div>
-    <p style="font-size: 1.1em; font-weight: 700; color: var(--rebel-gold);">
+    
+    <p class="what-if-result">
       Projected Reward: <strong id="whatIfReward">0</strong> $REBL
     </p>
   </div>
 
   <!-- Formula Explanation -->
-  <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7); text-align: center;">
-    <strong>Formula:</strong><br>
-    Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
-    <strong>Weighted Share (WS)</strong>:
-    <i class="fas fa-question-circle" data-tippy-content="Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches. Older tokens contribute more to your reward."></i>
-    Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
-  </p>
+  <div class="formula-explanation">
+    <p>
+      <strong>Formula:</strong><br>
+      Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
+      <strong>Weighted Share (WS):</strong>
+      <span class="tooltip-icon" data-tippy-content="Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches. Older tokens contribute more to your reward.">
+        <i class="fas fa-question-circle"></i>
+      </span>
+      Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
+    </p>
+  </div>
 </div>
-
     
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
@@ -2592,11 +2918,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Add a new token batch row
+// Add a new token batch row (mobile optimized)
 function addTokenBatch(amount = '', age = '') {
   const table = document.querySelector('#token-batches-table tbody');
   const row = document.createElement('tr');
   row.innerHTML = `
-    <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+    <td>
+      <input 
+        type="number" 
+        class="batch-amount" 
+        value="${amount}" 
+        placeholder="Amount" 
+        oninput="updateWeightedValue(event)"
+      >
+    </td>
     <td>
       <input
         type="number"
@@ -2606,11 +2941,14 @@ function addTokenBatch(amount = '', age = '') {
         min="0"
         max="20"
         oninput="validateAgeInput(this)"
-        style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"
       >
     </td>
-    <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
-    <td><button onclick="removeTokenBatch(this)" style="background: var(--rebel-red); color: white; border: none; padding: 0.3em 0.6em; border-radius: 4px; cursor: pointer;">×</button></td>
+    <td class="batch-weighted-value">-</td>
+    <td class="action-column">
+      <button onclick="removeTokenBatch(this)" class="remove-batch-btn" title="Remove batch">
+        ×
+      </button>
+    </td>
   `;
   table.appendChild(row);
   // Add event listeners for real-time calculation
