@@ -2099,6 +2099,38 @@ input[type="number"]:focus, input[type="text"]:focus {
       <strong>Hold a Creator Coin + <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="color: var(--rebel-gold); text-decoration: underline;">Rebel Key #2</a></strong> to claim $REBL during Epoch 4.
     </p>
   </div>
+
+  <!-- Epoch 5 Countdown -->
+  <div class="countdown-container" style="width: 100%;">
+    <h2 class="countdown-title">⏳ Epoch 5 Countdown (Rebel Key #1)</h2>
+    <p style="text-align: center; margin-bottom: var(--spacing-md); color: var(--rebel-gold);">
+      Time remaining before the start of <strong>Epoch 5</strong> using <strong>Rebel Key #1</strong>:
+    </p>
+    <div id="countdown2" style="display: flex; justify-content: center; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+      <div class="countdown-box">
+        <span id="days2" class="countdown-number">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+      <div class="countdown-box">
+        <span id="hours2" class="countdown-number">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+      <div class="countdown-box">
+        <span id="minutes2" class="countdown-number">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+      <div class="countdown-box">
+        <span id="seconds2" class="countdown-number">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+    <p style="text-align: center; margin-top: var(--spacing-sm); font-size: 0.9em; color: var(--rebel-gold);">
+      <strong>Hold a Creator Coin + <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="color: var(--rebel-gold); text-decoration: underline;">Rebel Key #1</a></strong> to claim $REBL during Epoch 5.
+    </p>
+  </div>
 </div>
 
 <style>
@@ -2179,10 +2211,34 @@ input[type="number"]:focus, input[type="text"]:focus {
     document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
   }
 
+   // Epoch 5 Start Date (Example: November 2, 2025, 21:00:00 UTC)
+  function updateCountdown3() {
+    const epoch3StartDate = new Date("2025-11-2T23:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch3StartDate - now;
+
+    if (distance < 0) {
+      document.getElementById('countdown3').innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 5 Started!</div>';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days3').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours3').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
+  }
   setInterval(updateCountdown1, 1000);
   setInterval(updateCountdown2, 1000);
+  setInterval(updateCountdown3, 1000);
+
   updateCountdown1();
   updateCountdown2();
+  updateCountdown3();
 </script>
   <!-- Tokenomics Section -->
   <section id="tokenomics" class="visible">
