@@ -24,12 +24,10 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-<!-- Tooltips -->
-  <!-- Tippy.js CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<!-- Tippy.js CSS and JS (ensure these are in the <head>) -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<script src="https://unpkg.com/@tippyjs/tippy@6.3.7/dist/tippy-bundle.umd.min.js"></script>
 
-  <!-- Tippy.js JS (direct bundle URL) -->
-<script src="https://cdn.jsdelivr.net/npm/tippy.js@6"></script>
 
   
   <style>
@@ -1525,16 +1523,12 @@
     <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
       <p>
         <strong>Current Creator Supply (CS)</strong>:
-        <span data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
-          <i class="fas fa-question-circle"></i>
-        </span>
+        <i class="fas fa-question-circle" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards."></i>
         499,242,047
       </p>
       <p>
         <strong>Epoch Reward Pool (ERP)</strong>:
-        <span data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
-          <i class="fas fa-question-circle"></i>
-        </span>
+        <i class="fas fa-question-circle" data-tippy-content="The total $REBL tokens available for distribution in the current epoch."></i>
         54,079,807.92
       </p>
     </div>
@@ -1543,9 +1537,7 @@
     <div style="margin-bottom: var(--spacing-md);">
       <label style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
         Your Token Batches:
-        <span data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
-          <i class="fas fa-question-circle"></i>
-        </span>
+        <i class="fas fa-question-circle" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them."></i>
       </label>
       <table id="token-batches-table" style="width: 100%; border-collapse: collapse; margin-bottom: var(--spacing-sm);">
         <thead>
@@ -1553,15 +1545,11 @@
             <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">Amount</th>
             <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
               Age (Epochs)
-              <span data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
-                <i class="fas fa-question-circle"></i>
-              </span>
+              <i class="fas fa-question-circle" data-tippy-content="The number of epochs you've held this batch of tokens (max 20)."></i>
             </th>
             <th style="text-align: left; padding: 0.5em; color: var(--rebel-gold);">
               Weighted Value
-              <span data-tippy-content="The value of this batch, weighted by how long you've held it.">
-                <i class="fas fa-question-circle"></i>
-              </span>
+              <i class="fas fa-question-circle" data-tippy-content="The value of this batch, weighted by how long you've held it."></i>
             </th>
             <th style="text-align: center; padding: 0.5em; color: var(--rebel-gold);">Action</th>
           </tr>
@@ -1643,12 +1631,11 @@
     <strong>Formula:</strong><br>
     Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
     <strong>Weighted Share (WS)</strong>:
-    <span data-tippy-content="Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches. Older tokens contribute more to your reward.">
-      <i class="fas fa-question-circle"></i>
-    </span>
+    <i class="fas fa-question-circle" data-tippy-content="Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches. Older tokens contribute more to your reward."></i>
     Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
   </p>
 </div>
+
     
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
@@ -2942,16 +2929,12 @@ addTokenBatch();
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all tooltips
     tippy('[data-tippy-content]', {
-      content: function(reference) {
-        return reference.getAttribute('data-tippy-content');
-      },
       theme: 'light-border',
       arrow: true,
       placement: 'top',
     });
-    console.log('Tippy.js initialized!'); // Debug: Check if this logs
+    console.log('Tippy.js initialized!');
   });
 </script>
 </body>
