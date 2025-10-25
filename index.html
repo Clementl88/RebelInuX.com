@@ -24,9 +24,8 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-<!-- Tippy.js CSS and JS (ensure these are in the <head>) -->
+<!-- Tippy.js CSS (ensure these are in the <head>) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css" />
-<script src="https://cdn.jsdelivr.net/npm/tippy.js@6"></script>
 
   
   <style>
@@ -2926,28 +2925,38 @@ addTokenBatch();
     });
   </script>
 
-<script>
-  // Wait for DOM and Tippy.js to load
-  function initTippy() {
-    if (typeof tippy !== 'undefined') {
-      tippy('[data-tippy-content]', {
-        theme: 'light-border',
-        arrow: true,
-        placement: 'top',
-      });
-      console.log('✅ Tippy.js initialized!');
-    } else {
-      console.error('❌ Tippy.js failed to load. Retrying in 1s...');
-      setTimeout(initTippy, 1000); // Retry after 1 second
-    }
-  }
+<!-- Load Tippy.js in isolation -->
+<script src="https://cdn.jsdelivr.net/npm/tippy.js@6"></script>
 
-  // Run after DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTippy);
-  } else {
-    initTippy();
-  }
+<!-- Initialize Tippy.js with error handling -->
+<script>
+  (function() {
+    // Wait for DOM to be ready
+    function initTippy() {
+      if (window.tippy) {
+        try {
+          tippy('[data-tippy-content]', {
+            theme: 'light-border',
+            arrow: true,
+            placement: 'top',
+          });
+          console.log('✅ Tippy.js initialized successfully!');
+        } catch (e) {
+          console.error('Tippy.js initialization error:', e);
+        }
+      } else {
+        console.error('Tippy.js is not available. Retrying in 1s...');
+        setTimeout(initTippy, 1000);
+      }
+    }
+
+    // Run after DOM is loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTippy);
+    } else {
+      initTippy();
+    }
+  })();
 </script>
 
 </body>
