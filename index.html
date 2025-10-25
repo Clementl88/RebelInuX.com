@@ -25,7 +25,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
 <!-- Tippy.js CSS (ensure these are in the <head>) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css" />
+<link rel="stylesheet" href="/css/tippy.css" />
 
   
   <style>
@@ -2925,38 +2925,15 @@ addTokenBatch();
     });
   </script>
 
-<!-- Load Tippy.js in isolation -->
-<script src="https://cdn.jsdelivr.net/npm/tippy.js@6"></script>
-
-<!-- Initialize Tippy.js with error handling -->
+<script src="/js/tippy.js"></script>
 <script>
-  (function() {
-    // Wait for DOM to be ready
-    function initTippy() {
-      if (window.tippy) {
-        try {
-          tippy('[data-tippy-content]', {
-            theme: 'light-border',
-            arrow: true,
-            placement: 'top',
-          });
-          console.log('✅ Tippy.js initialized successfully!');
-        } catch (e) {
-          console.error('Tippy.js initialization error:', e);
-        }
-      } else {
-        console.error('Tippy.js is not available. Retrying in 1s...');
-        setTimeout(initTippy, 1000);
-      }
-    }
-
-    // Run after DOM is loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTippy);
-    } else {
-      initTippy();
-    }
-  })();
+  document.addEventListener('DOMContentLoaded', function() {
+    tippy('[data-tippy-content]', {
+      theme: 'light-border',
+      arrow: true,
+      placement: 'top',
+    });
+  });
 </script>
 
 </body>
