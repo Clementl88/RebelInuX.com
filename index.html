@@ -2927,29 +2927,28 @@ addTokenBatch();
   </script>
 
 <script>
-  // Wait for the DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    // Check if Tippy is loaded
-    if (typeof tippy === 'undefined') {
-      console.error('Tippy.js is not loaded!');
-      return;
+  // Wait for DOM and Tippy.js to load
+  function initTippy() {
+    if (typeof tippy !== 'undefined') {
+      tippy('[data-tippy-content]', {
+        theme: 'light-border',
+        arrow: true,
+        placement: 'top',
+      });
+      console.log('✅ Tippy.js initialized!');
+    } else {
+      console.error('❌ Tippy.js failed to load. Retrying in 1s...');
+      setTimeout(initTippy, 1000); // Retry after 1 second
     }
+  }
 
-    // Initialize all tooltips
-    tippy('[data-tippy-content]', {
-      content: function(reference) {
-        return reference.getAttribute('data-tippy-content');
-      },
-      theme: 'light-border',
-      arrow: true,
-      placement: 'top',
-      onShow(instance) {
-        console.log('Tooltip shown for:', instance.reference);
-      }
-    });
-
-    console.log('Tippy.js initialized successfully!');
-  });
+  // Run after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTippy);
+  } else {
+    initTippy();
+  }
 </script>
+
 </body>
 </html>
