@@ -1504,36 +1504,59 @@
       </p>
     </div>
 
-    <div class="rebl-calculator">
-      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
-      <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
-        Enter your <strong>$rebelinux</strong> balance to see your projected <strong>$REBL</strong> rewards!
-      </p>
-      <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 500px;">
-        <!-- Display CS and ERP values -->
-        <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
-          <p><strong>Current Creator Supply (CS):</strong> 499,242,047</p>
-          <p><strong>Epoch Reward Pool (ERP):</strong> 54,079,807.92</p>
-        </div>
-        <div style="margin-bottom: var(--spacing-md);">
-          <label for="rebelinux-balance" style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">Your $rebelinux Balance:</label>
-          <input type="number" id="rebelinux-balance" placeholder="Enter your $rebelinux balance">
-        </div>
-        <button onclick="calculateRewards()">
-          CALCULATE REWARDS
-        </button>
-        <div id="reward-result">
-          Enter your balance to see your rewards!
-        </div>
-      </div>
-      <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7);">
-        <strong>Formula:</strong> Your $REBL reward = (Your $rebelinux balance / Current Creator Supply) × Epoch Reward Pool
-      </p>
-      <p style="font-size: 0.9em; margin-top: var(--spacing-sm); color: rgba(255, 255, 255, 0.7);">
-        <strong>Note:</strong> This is a projection based on the current epoch formula. Actual rewards may vary.
+<div class="rebl-calculator">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">🧮 $REBL REWARD CALCULATOR</h3>
+  <p style="font-size: 1.1em; margin-bottom: var(--spacing-lg);">
+    Enter your <strong>$rebelinux</strong> token batches (amount and age in epochs) to see your projected <strong>$REBL</strong> rewards!
+  </p>
+  <div style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin: 0 auto; max-width: 500px;">
+    <!-- Display CS and ERP values -->
+    <div style="margin-bottom: var(--spacing-md); font-size: 0.9em; color: var(--rebel-gold); text-align: left;">
+      <p><strong>Current Creator Supply (CS):</strong> 499,242,047</p>
+      <p><strong>Epoch Reward Pool (ERP):</strong> 41,600,000</p>
+      <p style="font-size: 0.8em; margin-top: 0.5em; font-style: italic;">
+        Example ERP for Week 8, Month 2 (November 20, 2025). <a href="#whitepaper" style="color: var(--rebel-red);">See white paper</a> for details.
       </p>
     </div>
-
+    <!-- Token Batches Input -->
+    <div style="margin-bottom: var(--spacing-md);">
+      <label for="token-batches" style="display: block; margin-bottom: 0.5em; font-weight: 600; color: var(--rebel-gold);">
+        Your Token Batches (amount,age;amount,age;...):
+      </label>
+      <input
+        type="text"
+        id="token-batches"
+        placeholder="e.g., 5000000,8;2500000,1"
+        style="width: 100%; padding: 0.7em; border-radius: 8px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white; font-size: 1em; text-align: center; margin-bottom: var(--spacing-md);"
+      >
+      <p style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7); margin-top: 0.3em;">
+        <strong>Format:</strong> Separate batches with semicolons (<code>;</code>). For each batch, use <code>amount,age</code> (e.g., <code>5000000,8</code>).
+      </p>
+    </div>
+    <!-- Calculate Button -->
+    <button onclick="calculateRewards()" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); color: var(--dark-bg); border: none; padding: 0.8em 1.5em; border-radius: 25px; font-weight: 700; cursor: pointer; transition: var(--transition); margin: var(--spacing-sm) 0; width: 100%;">
+      CALCULATE REWARDS
+    </button>
+    <!-- Result -->
+    <div id="reward-result" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); border-radius: 8px; background: rgba(255, 204, 0, 0.1); border: 1px solid var(--rebel-gold); min-height: 60px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--rebel-gold); text-align: center;">
+      Enter your token batches to see your rewards!
+    </div>
+  </div>
+  <!-- Formula Explanation -->
+  <p style="font-size: 0.9em; margin-top: var(--spacing-md); color: rgba(255, 255, 255, 0.7); text-align: center;">
+    <strong>Formula:</strong><br>
+    Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
+    <strong>Weighted Share (WS):</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
+  </p>
+  <!-- Example -->
+  <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); border-left: 4px solid var(--rebel-gold); font-size: 0.9em; color: var(--rebel-gold);">
+    <p style="margin: 0; padding: 0.5em;">
+      <strong>Example:</strong> For batches <code>5000000,8;2500000,1</code>, the WS is calculated as:<br>
+      (5,000,000 × 1.56) + (2,500,000 × 1.07) = <strong>10,475,000</strong>
+    </p>
+  </div>
+</div>
+    
     <!-- Rebel Key Rotation -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
       <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">REBEL KEY ROTATION</h3>
@@ -2483,21 +2506,47 @@
     });
 
     // REBL Calculator
-    function calculateRewards() {
-      const rebelinuxBalance = parseFloat(document.getElementById('rebelinux-balance').value);
-      const CS = 499242047.00; // Current Creator Supply
-      const ERP = 54079807.92; // Epoch Reward Pool
+function calculateRewards() {
+  // Get user inputs
+  const batchesInput = document.getElementById('token-batches').value.trim();
+  const CS = 499242047.00; // Current Creator Supply
+  const ERP = 41600000; // Epoch Reward Pool (example: Week 8, Month 2)
+  const k = 0.07; // Age multiplier
+  const A_max = 20; // Maximum age cap
 
-      if (isNaN(rebelinuxBalance) || rebelinuxBalance <= 0) {
-        document.getElementById('reward-result').innerHTML = 'Please enter a valid $rebelinux balance!';
-        document.getElementById('reward-result').style.color = 'var(--rebel-red)';
-        return;
-      }
+  // Parse token batches (format: "amount1,age1;amount2,age2;...")
+  const batches = batchesInput.split(';')
+    .map(batch => batch.trim())
+    .filter(batch => batch.length > 0)
+    .map(batch => {
+      const [amount, age] = batch.split(',').map(Number);
+      return { amount, age: Math.min(age, A_max) };
+    });
 
-      const reward = (rebelinuxBalance / CS) * ERP;
-      document.getElementById('reward-result').innerHTML = `Your projected $REBL reward: <strong>${reward.toFixed(3)}</strong>`;
-      document.getElementById('reward-result').style.color = 'var(--rebel-gold)';
-    }
+  // Validate input
+  if (batches.length === 0 || batches.some(batch => isNaN(batch.amount) || isNaN(batch.age) || batch.amount <= 0 || batch.age < 0)) {
+    document.getElementById('reward-result').innerHTML = 'Please enter valid token batches (e.g., "5000000,8;2500000,1")!';
+    document.getElementById('reward-result').style.color = 'var(--rebel-red)';
+    return;
+  }
+
+  // Calculate Weighted Share (WS)
+  let WS = 0;
+  batches.forEach(batch => {
+    WS += batch.amount * (1 + k * batch.age);
+  });
+
+  // Calculate reward
+  const reward = (WS / CS) * ERP;
+
+  // Display result
+  const resultElement = document.getElementById('reward-result');
+  resultElement.innerHTML = `
+    <strong>Weighted Share (WS):</strong> ${WS.toFixed(2)}<br>
+    <strong>Projected $REBL Reward:</strong> ${reward.toFixed(2)}
+  `;
+  resultElement.style.color = 'var(--rebel-gold)';
+}
 
     // Tokenomics Dashboard (simplified for demo)
     window.updateAllMetrics = async function() {
