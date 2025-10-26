@@ -3362,6 +3362,99 @@ function renderRewardChart() {
   });
 }
 
+
+    function validateTokenInput(input) {
+  let value = parseFloat(input.value);
+  if (isNaN(value) || value < 0) {
+    input.style.borderColor = 'var(--rebel-red)';
+    input.title = 'Please enter a valid positive number';
+    return false;
+  }
+  input.style.borderColor = 'var(--rebel-gold)';
+  input.title = '';
+  return true;
+}
+
+// Add statistics function
+function updateStatistics() {
+  const rows = document.querySelectorAll('#token-batches-table tbody tr');
+  let totalTokens = 0;
+  let totalAge = 0;
+  let validBatches = 0;
+  
+  rows.forEach(row => {
+    const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+    const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+    
+    if (amount > 0) {
+      totalTokens += amount;
+      totalAge += age;
+      validBatches++;
+    }
+  });
+  
+  const statsElement = document.getElementById('calculator-stats');
+  if (validBatches > 0) {
+    document.getElementById('stat-total-tokens').textContent = totalTokens.toLocaleString();
+    document.getElementById('stat-avg-age').textContent = (totalAge / validBatches).toFixed(1);
+    document.getElementById('stat-total-batches').textContent = validBatches;
+    statsElement.style.display = 'block';
+  } else {
+    statsElement.style.display = 'none';
+  }
+}
+
+// Add save/load functionality
+function saveCalculatorState() {
+  const batches = [];
+  document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
+    const amount = row.querySelector('.batch-amount').value;
+    const age = row.querySelector('.batch-age').value;
+    if (amount && age) {
+      batches.push({ amount, age });
+    }
+  });
+  localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
+}
+
+function loadCalculatorState() {
+  const saved = localStorage.getItem('reblCalculatorBatches');
+  if (saved) {
+    const batches = JSON.parse(saved);
+    clearTokenBatches();
+    batches.forEach(batch => addTokenBatch(batch.amount, batch.age));
+  }
+}
+
+// Add example data loader
+function loadExampleData() {
+  clearTokenBatches();
+  // Add realistic example batches
+  addTokenBatch('1000000', '5');
+  addTokenBatch('500000', '12');
+  addTokenBatch('2500000', '1');
+  calculateRewards();
+  
+  // Show brief notification
+  const resultElement = document.getElementById('reward-result');
+  const originalHTML = resultElement.innerHTML;
+  resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-info-circle"></i> Example data loaded!</div>';
+  setTimeout(() => {
+    if (resultElement.innerHTML.includes('Example data loaded')) {
+      calculateRewards(); // Recalculate to show actual results
+    }
+  }, 1500);
+}
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    calculateRewards();
+  }
+});
+
+    
 // Update "What If" scenarios
 function updateWhatIf() {
   const amount = parseInt(document.getElementById('whatIfAmount').value);
