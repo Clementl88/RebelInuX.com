@@ -3570,12 +3570,16 @@ async function updatePriceData() {
 
 // REAL Solscan API Integration
 async function updateSupplyAndHoldersFromSolscan() {
-  console.log('👥 Fetching holder & supply data from Solscan API...');
+  console.log('👥 Fetching holder & supply data...');
   try {
-    // Method 1: Try the main Solscan API endpoint
-    const response = await fetch('https://api.solscan.io/token?token=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', {
+    // Use a CORS proxy or alternative API
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const targetUrl = 'https://api.solscan.io/token?token=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    
+    const response = await fetch(proxyUrl + targetUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'X-Requested-With': 'XMLHttpRequest'
       }
     });
     
@@ -3589,33 +3593,23 @@ async function updateSupplyAndHoldersFromSolscan() {
       const holders = data.data.holder || data.data.holders || 0;
       const currentSupply = data.data.supply || data.data.totalSupply || 0;
       
-      console.log('✅ Solscan API data:', { holders, currentSupply });
-      
-      const REBL_CONFIG = {
-        TOTAL_SUPPLY: 1000000000
-      };
-
-      const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - currentSupply;
-      const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-      const currentPercent = ((currentSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-
-      safeUpdate('holder-count', holders.toLocaleString());
-      safeUpdate('holders-source', 'Live from Solscan API');
-      safeUpdate('current-supply', formatNumber(currentSupply));
-      safeUpdate('current-percent', `${currentPercent}% of total`);
-      safeUpdate('burned-supply', formatNumber(burnedSupply));
-      safeUpdate('burned-percent', `${burnedPercent}% of total`);
+      console.log('✅ API data:', { holders, currentSupply });
+      updateManualData(holders, currentSupply);
+      safeUpdate('holders-source', 'Live from API');
       
     } else {
-      throw new Error('No data in Solscan API response');
+      throw new Error('No data in API response');
     }
     
   } catch (error) {
-    console.error('❌ Solscan API failed, trying backup method...', error);
-    await tryBackupMethod();
+    console.error('❌ API failed, using cached data', error);
+    // Use the current known data as fallback
+    updateManualData(36, 997006647.92);
+    safeUpdate('holders-source', 'Cached data - API unavailable');
   }
 }
 
+    
 // Backup method if main API fails
 async function tryBackupMethod() {
   try {
