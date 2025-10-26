@@ -3448,11 +3448,27 @@ function loadCalculatorState() {
 // Add example data loader
 function loadExampleData() {
   clearTokenBatches();
+  
   // Add realistic example batches
   addTokenBatch('1000000', '5');
-  addTokenBatch('500000', '12');
+  addTokenBatch('500000', '12'); 
   addTokenBatch('2500000', '1');
-  calculateRewards();
+  
+  // Force calculation of weighted values for each row
+  setTimeout(() => {
+    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
+      const amountInput = row.querySelector('.batch-amount');
+      const ageInput = row.querySelector('.batch-age');
+      
+      // Trigger the weighted value calculation
+      if (amountInput && ageInput) {
+        updateWeightedValue({ target: amountInput });
+      }
+    });
+    
+    // Now calculate the rewards
+    calculateRewards();
+  }, 100);
   
   // Show brief notification
   const resultElement = document.getElementById('reward-result');
@@ -3460,7 +3476,7 @@ function loadExampleData() {
   resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-info-circle"></i> Example data loaded!</div>';
   setTimeout(() => {
     if (resultElement.innerHTML.includes('Example data loaded')) {
-      calculateRewards(); // Recalculate to show actual results
+      calculateRewards(); // Final recalculation
     }
   }, 1500);
 }
