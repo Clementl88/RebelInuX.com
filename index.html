@@ -2099,6 +2099,14 @@ input[type="number"]:focus, input[type="text"]:focus {
       </div>
     </div>
 
+    <!-- ADD THIS NEW SECTION HERE -->
+<div style="text-align: center; margin: var(--spacing-sm) 0;">
+  <button onclick="loadExampleData()" class="batch-btn" style="background: rgba(255,255,255,0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold);">
+    <i class="fas fa-vial"></i> Load Example Data
+  </button>
+</div>
+
+    
     <!-- Calculate Button -->
     <button onclick="calculateRewards()" class="calculate-btn">
       CALCULATE REWARDS
@@ -2114,7 +2122,16 @@ input[type="number"]:focus, input[type="text"]:focus {
       </div>
     </div>
   </div>
+  
+<div id="calculator-stats" style="background: rgba(255,255,255,0.05); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); display: none;">
+  <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: var(--spacing-sm); font-size: 0.9em;">
+    <div><strong>Total Tokens:</strong> <span id="stat-total-tokens">0</span></div>
+    <div><strong>Avg. Age:</strong> <span id="stat-avg-age">0</span> epochs</div>
+    <div><strong>Total Batches:</strong> <span id="stat-total-batches">0</span></div>
+  </div>
+</div>
 
+  
   <!-- What If Scenarios -->
   <div class="what-if-section">
     <h4>🔮 What If?</h4>
@@ -3469,9 +3486,13 @@ function updateWhatIf() {
   document.getElementById('whatIfReward').textContent = reward.toFixed(2);
 }
 
-// Initialize with one empty row
-addTokenBatch();
-
+// Initialize calculator
+document.addEventListener('DOMContentLoaded', function() {
+  loadCalculatorState();
+  if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+    addTokenBatch(); // Only add empty row if no saved data
+  }
+});
     
 // Tokenomics Dashboard with REAL Solscan API Integration
 window.updateAllMetrics = async function() {
