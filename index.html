@@ -3454,33 +3454,33 @@ function loadExampleData() {
   addTokenBatch('500000', '12'); 
   addTokenBatch('2500000', '1');
   
-  // Force calculation of weighted values for each row
+  // Force calculation of weighted values for all rows
   setTimeout(() => {
-    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
-      const amountInput = row.querySelector('.batch-amount');
-      const ageInput = row.querySelector('.batch-age');
+    const rows = document.querySelectorAll('#token-batches-table tbody tr');
+    rows.forEach(row => {
+      const amount = row.querySelector('.batch-amount').value;
+      const age = row.querySelector('.batch-age').value;
       
-      // Trigger the weighted value calculation
-      if (amountInput && ageInput) {
-        updateWeightedValue({ target: amountInput });
+      if (amount && age) {
+        // Calculate weighted value directly
+        const k = 0.07;
+        const A_max = 20;
+        const weightedValue = amount * (1 + k * Math.min(age, A_max));
+        row.querySelector('.batch-weighted-value').textContent = weightedValue.toFixed(2);
       }
     });
     
     // Now calculate the rewards
     calculateRewards();
+    
+    // Show the results
+    const resultElement = document.getElementById('reward-result');
+    resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded with weighted values!</div>';
+    
   }, 100);
-  
-  // Show brief notification
-  const resultElement = document.getElementById('reward-result');
-  const originalHTML = resultElement.innerHTML;
-  resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-info-circle"></i> Example data loaded!</div>';
-  setTimeout(() => {
-    if (resultElement.innerHTML.includes('Example data loaded')) {
-      calculateRewards(); // Final recalculation
-    }
-  }, 1500);
 }
 
+    
 // Add keyboard shortcuts
 document.addEventListener('keydown', function(e) {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
