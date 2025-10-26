@@ -1261,40 +1261,29 @@
 }
 
 .calculator-container {
-  margin: 0 auto;
-  max-width: 100%;
-  /* REMOVE background, border, padding from here */
-}
-
-.calculator-info,
-.token-batches-section,
-.results-section {
   background: var(--card-bg);
   padding: var(--spacing-md);
   border-radius: var(--border-radius);
   border: 1px solid var(--rebel-gold);
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.calculator-info {
   margin-bottom: var(--spacing-md);
+  font-size: 0.9em;
+  color: var(--rebel-gold);
+  text-align: left;
 }
 
-/* Make the results section more compact */
-.results-section {
-  margin-bottom: 0; /* Remove bottom margin since What If section follows */
-}
-
-#reward-result {
-  padding: var(--spacing-sm);
-  border-radius: 8px;
-  background: rgba(255, 204, 0, 0.1);
-  border: 1px solid var(--rebel-gold);
-  min-height: 60px;
+.calculator-info p {
+  margin-bottom: 0.5em;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: var(--rebel-gold);
-  text-align: center;
-  font-size: 0.95em;
+  flex-wrap: wrap;
+  gap: 0.5em;
 }
+
 
 .info-value {
   color: white;
@@ -2041,70 +2030,104 @@ input[type="number"]:focus, input[type="text"]:focus {
     </div>
 
 
+<!-- REBL Calculator Section -->
 <div class="rebl-calculator">
   <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">🧮 $REBL REWARD CALCULATOR</h3>
   <p style="font-size: 1em; margin-bottom: var(--spacing-lg); text-align: center; max-width: 500px; margin-left: auto; margin-right: auto;">
     Enter your <strong>$rebelinux</strong> token batches to calculate your projected <strong>$REBL</strong> rewards!
   </p>
 
-  <!-- Current Supply and ERP - SEPARATE BOX -->
-  <div class="calculator-info">
-    <p>
-      <strong>Current Creator Supply (CS):</strong>
-      <span class="info-value">499,242,047</span>
-    </p>
-    <p>
-      <strong>Epoch Reward Pool (ERP):</strong>
-      <span class="info-value">54,079,807.92</span>
-    </p>
-  </div>
-
-  <!-- Token Batches Table - SEPARATE BOX -->
-  <div class="token-batches-section">
-    <label class="section-label">Your Token Batches:</label>
-    
-    <div class="table-container">
-      <table id="token-batches-table">
-        <thead>
-          <tr>
-            <th>Amount</th>
-            <th>Age (Epochs)</th>
-            <th>Weighted Value</th>
-            <th class="action-column">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be added dynamically -->
-        </tbody>
-      </table>
+  <div class="calculator-container">
+    <!-- Current Supply and ERP -->
+    <div class="calculator-info">
+      <p>
+        <strong>Current Creator Supply (CS):</strong>
+        <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        <span class="info-value">499,242,047</span>
+      </p>
+      <p>
+        <strong>Epoch Reward Pool (ERP):</strong>
+        <span class="tooltip-icon" data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+        <span class="info-value">54,079,807.92</span>
+      </p>
+        <p style="background: rgba(255,51,102,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--rebel-red); margin-top: 0.5rem;">
+    <strong>💡 Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> - 
+    your newest tokens (lowest age) are sold first, preserving the age of your older holdings.
+  </p>
     </div>
-    
-    <div class="batch-controls">
-      <button onclick="addTokenBatch()" class="batch-btn add-btn">+ Add Batch</button>
-      <button onclick="clearTokenBatches()" class="batch-btn clear-btn">Clear All</button>
-    </div>
-  </div>
 
-  <!-- Example Data Button - NO BOX -->
-  <div style="text-align: center; margin: var(--spacing-sm) 0;">
-    <button onclick="loadExampleData()" class="batch-btn" style="background: rgba(255,255,255,0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold);">
-      <i class="fas fa-vial"></i> Load Example Data
-    </button>
-  </div>
-
-  <!-- Calculate Button - NO BOX -->
-  <button onclick="calculateRewards()" class="calculate-btn">CALCULATE REWARDS</button>
-
-  <!-- Results Section - SEPARATE BOX -->
-  <div class="results-section">
-    <div id="reward-result">
-      Enter your token batches to see your rewards!
+    <!-- Token Batches Table -->
+    <div class="token-batches-section">
+      <label class="section-label">
+        Your Token Batches:
+        <span class="tooltip-icon" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </label>
+      
+      <div class="table-container">
+        <table id="token-batches-table">
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>
+                Age (Epochs)
+                <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </th>
+              <th>
+                Weighted Value
+                <span class="tooltip-icon" data-tippy-content="The value of this batch, weighted by how long you've held it.">
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be added dynamically -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="batch-controls">
+        <button onclick="addTokenBatch()" class="batch-btn add-btn">
+          + Add Batch
+        </button>
+        <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
+          Clear All
+        </button>
+      </div>
     </div>
-    <div class="chart-container">
-      <canvas id="rewardChart"></canvas>
-    </div>
-  </div>
+
+    <!-- ADD THIS NEW SECTION HERE -->
+<div style="text-align: center; margin: var(--spacing-sm) 0;">
+  <button onclick="loadExampleData()" class="batch-btn" style="background: rgba(255,255,255,0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold);">
+    <i class="fas fa-vial"></i> Load Example Data
+  </button>
 </div>
+
+    
+    <!-- Calculate Button -->
+    <button onclick="calculateRewards()" class="calculate-btn">
+      CALCULATE REWARDS
+    </button>
+
+    <!-- Result and Chart -->
+    <div class="results-section">
+      <div id="reward-result">
+        Enter your token batches to see your rewards!
+      </div>
+      <div class="chart-container">
+        <canvas id="rewardChart"></canvas>
+      </div>
+    </div>
+  </div>
   
 <div id="calculator-stats" style="background: rgba(255,255,255,0.05); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); display: none;">
   <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: var(--spacing-sm); font-size: 0.9em;">
