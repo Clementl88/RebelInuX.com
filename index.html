@@ -3168,7 +3168,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Add a new token batch row
 function addTokenBatch(amount = '', age = '') {
   const table = document.querySelector('#token-batches-table tbody');
   const row = document.createElement('tr');
@@ -3187,12 +3186,26 @@ function addTokenBatch(amount = '', age = '') {
       >
     </td>
     <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
-    <td><button onclick="removeTokenBatch(this)" style="background: var(--rebel-red); color: white; border: none; padding: 0.3em 0.6em; border-radius: 4px; cursor: pointer;">×</button></td>
+    <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
   `;
   table.appendChild(row);
-  // Add event listeners for real-time calculation
-  row.querySelector('.batch-amount').addEventListener('input', updateWeightedValue);
-  row.querySelector('.batch-age').addEventListener('input', updateWeightedValue);
+  
+  // Add enhanced event listeners
+  const amountInput = row.querySelector('.batch-amount');
+  const ageInput = row.querySelector('.batch-age');
+  
+  amountInput.addEventListener('input', function() {
+    validateTokenInput(this);
+    updateWeightedValue({ target: this });
+  });
+  
+  ageInput.addEventListener('input', function() {
+    updateWeightedValue({ target: this });
+  });
+  
+  amountInput.addEventListener('blur', function() {
+    validateTokenInput(this);
+  });
 }
 
 // Validate age input to ensure it's between 0 and 20
