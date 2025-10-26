@@ -3235,7 +3235,6 @@ function updateWeightedValue(event) {
   renderRewardChart(); // Update the chart
 }
 
-// Calculate rewards
 function calculateRewards() {
   const CS = 499242047.00; // Current Creator Supply
   const ERP = 54079807.92; // Updated Epoch Reward Pool
@@ -3254,19 +3253,41 @@ function calculateRewards() {
   // Calculate reward
   const reward = (WS / CS) * ERP;
 
-  // Display result
+  // Display enhanced result
   const resultElement = document.getElementById('reward-result');
   if (WS <= 0 || isNaN(reward)) {
     resultElement.innerHTML = 'Please enter valid token batches!';
     resultElement.style.color = 'var(--rebel-red)';
   } else {
-    resultElement.innerHTML = `
-      <strong>Weighted Share (WS):</strong> ${WS.toFixed(2)}<br>
-      <strong>Projected $REBL Reward:</strong> ${reward.toFixed(2)}
-    `;
+    resultElement.innerHTML = formatRewardResult(reward, WS);
     resultElement.style.color = 'var(--rebel-gold)';
   }
+  
+  updateStatistics(); // Add this line
   renderRewardChart(); // Update the chart
+  saveCalculatorState(); // Save user input
+}
+
+// Add this new function after calculateRewards()
+function formatRewardResult(reward, WS) {
+  const CS = 499242047.00;
+  const sharePercentage = ((WS / CS) * 100).toFixed(4);
+  
+  return `
+    <div style="text-align: left; line-height: 1.6;">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+        <span><strong>Your Weighted Share:</strong></span>
+        <span>${WS.toLocaleString()} (${sharePercentage}% of total)</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+        <span><strong>Your Estimated Reward:</strong></span>
+        <span style="color: var(--rebel-gold); font-size: 1.2em;">${reward.toLocaleString()} $REBL</span>
+      </div>
+      <div style="font-size: 0.8em; color: rgba(255,255,255,0.7); margin-top: 0.5em;">
+        Based on current Epoch Reward Pool: 54,079,807.92 $REBL
+      </div>
+    </div>
+  `;
 }
 
 // Render the reward breakdown chart
