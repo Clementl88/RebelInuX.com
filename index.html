@@ -3228,48 +3228,50 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// WORKING DexScreener data retrieval
-async function fetchDexScreenerData() {
+// WORKING Solscan data retrieval
+async function fetchSolscanData() {
     try {
-        console.log('🔍 Fetching from DexScreener...');
+        console.log('🔍 Fetching from Solscan...');
         
-        // Use the correct token address endpoint
         const tokenAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-        const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Get token metadata
+        const metaResponse = await fetch(`https://public-api.solscan.io/token/meta?tokenAddress=${tokenAddress}`);
+        if (!metaResponse.ok) throw new Error('Meta API failed');
         
-        const data = await response.json();
-        console.log('📊 DexScreener response:', data);
+        const meta = await metaResponse.json();
+        console.log('📊 Token metadata:', meta);
         
-        if (!data.pairs || data.pairs.length === 0) {
-            throw new Error('No trading pairs found for this token');
-        }
+        // Get token market data
+        const marketResponse = await fetch(`https://public-api.solscan.io/token/market?tokenAddress=${tokenAddress}`);
+        if (!marketResponse.ok) throw new Error('Market API failed');
         
-        // Find the most liquid pair (highest volume)
-        const mostLiquidPair = data.pairs.reduce((highest, current) => {
-            const currentVolume = parseFloat(current.volume?.h24) || 0;
-            const highestVolume = parseFloat(highest.volume?.h24) || 0;
-            return currentVolume > highestVolume ? current : highest;
-        });
+        const market = await marketResponse.json();
+        console.log('📈 Market data:', market);
         
-        console.log('🎯 Using pair:', mostLiquidPair.pairAddress);
+        // Get holder count
+        const holderResponse = await fetch(`https://public-api.solscan.io/token/holders?tokenAddress=${tokenAddress}&limit=1&offset=0`);
+        if (!holderResponse.ok) throw new Error('Holder API failed');
+        
+        const holderData = await holderResponse.json();
+        const holderCount = holderData.total || 0;
         
         return {
-            price: parseFloat(mostLiquidPair.priceUsd) || 0,
-            priceChange: parseFloat(mostLiquidPair.priceChange?.h24) || 0,
-            marketCap: parseFloat(mostLiquidPair.fdv) || 0,
-            volume: parseFloat(mostLiquidPair.volume?.h24) || 0,
-            liquidity: parseFloat(mostLiquidPair.liquidity?.usd) || 0,
-            pairAddress: mostLiquidPair.pairAddress,
-            dexId: mostLiquidPair.dexId,
+            symbol: meta.symbol || 'REBL',
+            name: meta.name || 'RebelInuX',
+            decimals: meta.decimals || 9,
+            supply: meta.supply || 0,
+            price: market.priceUsdt || 0,
+            priceChange24h: market.priceChange24h || 0,
+            volume24h: market.volume24h || 0,
+            marketCap: market.marketCapUsdt || 0,
+            liquidity: market.liquidity || 0,
+            holderCount: holderCount,
             success: true
         };
         
     } catch (error) {
-        console.error('❌ DexScreener fetch failed:', error);
+        console.error('❌ Solscan fetch failed:', error);
         return {
             success: false,
             error: error.message
@@ -3279,13 +3281,13 @@ async function fetchDexScreenerData() {
 
 // Update all metrics in the UI
 async function updateAllMetrics() {
-    console.log('🔄 Updating all metrics...');
+    console.log('🔄 Updating all metrics from Solscan...');
     
     // Show loading state
     showLoadingState();
     
     try {
-        const tokenData = await fetchDexScreenerData();
+        const tokenData = await fetchSolscanData();
         
         if (tokenData.success) {
             // Update price
@@ -3297,9 +3299,9 @@ async function updateAllMetrics() {
             // Update price change with color
             const changeElement = document.getElementById('price-change');
             if (changeElement) {
-                const changeText = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
+                const changeText = `${tokenData.priceChange24h >= 0 ? '+' : ''}${tokenData.priceChange24h.toFixed(2)}%`;
                 changeElement.textContent = changeText;
-                changeElement.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+                changeElement.className = tokenData.priceChange24h >= 0 ? 'positive' : 'negative';
             }
             
             // Update market cap
@@ -3311,16 +3313,25 @@ async function updateAllMetrics() {
             // Update volume
             const volumeElement = document.getElementById('volume');
             if (volumeElement) {
-                volumeElement.textContent = formatVolume(tokenData.volume);
+                volumeElement.textContent = formatVolume(tokenData.volume24h);
+            }
+            
+            // Update holders
+            const holdersElement = document.getElementById('holder-count');
+            if (holdersElement) {
+                holdersElement.textContent = tokenData.holderCount.toLocaleString();
             }
             
             // Update source indicator
             const sourceElement = document.getElementById('holders-source');
             if (sourceElement) {
-                sourceElement.textContent = `Live from ${tokenData.dexId || 'DexScreener'} ✅`;
+                sourceElement.textContent = 'Live from Solscan ✅';
             }
             
-            console.log('✅ All metrics updated successfully');
+            // Update supply information
+            updateSupplyData(tokenData.supply);
+            
+            console.log('✅ All metrics updated successfully from Solscan');
         } else {
             console.warn('⚠️ Using fallback data due to API error');
             showStaticData();
@@ -3329,23 +3340,20 @@ async function updateAllMetrics() {
         console.error('❌ Error updating metrics:', error);
         showStaticData();
     }
-    
-    // Always update supply data (this is static for now)
-    updateSupplyData();
 }
 
-// Update supply information
-function updateSupplyData() {
+// Update supply information with real data
+function updateSupplyData(currentSupply) {
     const maxSupply = 1000000000;
-    const currentSupply = 500000000; // This would come from your contract
-    const burnedSupply = maxSupply - currentSupply;
+    const supply = currentSupply || 500000000; // Fallback if not provided
+    const burnedSupply = maxSupply - supply;
     const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
-    const currentPercent = ((currentSupply / maxSupply) * 100).toFixed(2);
+    const currentPercent = ((supply / maxSupply) * 100).toFixed(2);
     
     // Update current supply
     const currentSupplyElement = document.getElementById('current-supply');
     if (currentSupplyElement) {
-        currentSupplyElement.textContent = currentSupply.toLocaleString();
+        currentSupplyElement.textContent = supply.toLocaleString();
     }
     
     // Update current percent
@@ -3364,12 +3372,6 @@ function updateSupplyData() {
     const burnedPercentElement = document.getElementById('burned-percent');
     if (burnedPercentElement) {
         burnedPercentElement.textContent = `${burnedPercent}% burned`;
-    }
-    
-    // Update holders (static for now, would need API call)
-    const holdersElement = document.getElementById('holder-count');
-    if (holdersElement) {
-        holdersElement.textContent = '1,250+';
     }
 }
 
@@ -3493,7 +3495,7 @@ window.quickUpdateFromSolscan = function() {
     
     updateAllMetrics().finally(() => {
         setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-external-link-alt"></i> Get Latest from DexScreener';
+            btn.innerHTML = '<i class="fas fa-external-link-alt"></i> Get Latest from Solscan';
             btn.disabled = false;
         }, 1000);
     });
@@ -3501,7 +3503,7 @@ window.quickUpdateFromSolscan = function() {
 
 // Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM loaded, initializing data...');
+    console.log('🚀 DOM loaded, initializing Solscan data...');
     
     // Initial load
     showLoadingState();
@@ -3513,7 +3515,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Set up auto-refresh every 30 seconds
     setInterval(() => {
-        console.log('⏰ Auto-refreshing data...');
+        console.log('⏰ Auto-refreshing data from Solscan...');
         updateAllMetrics();
     }, 30000);
 });
@@ -3526,7 +3528,7 @@ window.addEventListener('load', function() {
     setTimeout(() => {
         const priceElement = document.getElementById('current-price');
         if (priceElement && priceElement.textContent === 'Loading...') {
-            console.log('🔄 Retrying data load...');
+            console.log('🔄 Retrying Solscan data load...');
             updateAllMetrics();
         }
     }, 2000);
