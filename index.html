@@ -3752,21 +3752,33 @@ window.updateManualData = function(newHolders, newSupply) {
   safeUpdate('burned-percent', `${burnedPercent}% of total`);
 };
 
-// Refresh button
+// ENHANCED Refresh button with rate limit protection
 window.refreshData = function() {
   const refreshBtn = document.querySelector('.refresh-button');
+  
+  // Prevent rapid clicking (rate limit protection)
+  if (refreshBtn.disabled) {
+    console.log('⏳ Refresh already in progress...');
+    return;
+  }
+  
   const originalHtml = refreshBtn.innerHTML;
   refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
   refreshBtn.disabled = true;
 
+  console.log('🔄 Manual refresh triggered by user');
+  
   updateAllMetrics().finally(() => {
+    // Always re-enable button after 1 second (smooth UX)
     setTimeout(() => {
       refreshBtn.innerHTML = originalHtml;
       refreshBtn.disabled = false;
+      console.log('✅ Refresh button re-enabled');
     }, 1000);
   });
 };
 
+    
 // Utility functions (keep these the same)
 function safeUpdate(elementId, value) {
   const element = document.getElementById(elementId);
