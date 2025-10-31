@@ -3228,31 +3228,41 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Get real data from Solscan API
-async function getRealTokenData() {
+// Working Solscan API call based on your example
+async function getTokenMarketData() {
     const tokenAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
     
+    const requestOptions = {
+        method: "GET",
+    };
+    
     try {
-        // Get token market data from Solscan
-        const response = await fetch(`https://public-api.solscan.io/token/market?tokenAddress=${tokenAddress}`);
+        console.log('🔍 Fetching token market data from Solscan...');
+        
+        const response = await fetch(`https://public-api.solscan.io/token/market?tokenAddress=${tokenAddress}`, requestOptions);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const data = await response.json();
-        console.log('📊 Real token data:', data);
+        const result = await response.json();
+        console.log('📊 Token market response:', result);
         
-        return {
-            price: data.priceUsdt || 0,
-            priceChange: data.priceChange24h || 0,
-            marketCap: data.marketCapUsdt || 0,
-            volume: data.volume24h || 0,
-            success: true
-        };
+        if (result.success && result.data) {
+            return {
+                success: true,
+                price: result.data.priceUsdt || 0,
+                priceChange: result.data.priceChange24h || 0,
+                marketCap: result.data.marketCapUsdt || 0,
+                volume: result.data.volume24h || 0,
+                liquidity: result.data.liquidity || 0
+            };
+        } else {
+            throw new Error('API returned unsuccessful response');
+        }
         
     } catch (error) {
-        console.error('❌ Failed to fetch real data:', error);
+        console.error('❌ Error fetching token data:', error);
         return {
             success: false,
             error: error.message
@@ -3260,9 +3270,9 @@ async function getRealTokenData() {
     }
 }
 
-// Update the UI with real data
-async function updateWithRealData() {
-    console.log('🔄 Fetching real token data...');
+// Update UI with real data
+async function updateTokenMetrics() {
+    console.log('🔄 Updating token metrics...');
     
     // Show loading state
     document.getElementById('current-price').textContent = 'Loading...';
@@ -3270,7 +3280,7 @@ async function updateWithRealData() {
     document.getElementById('volume').textContent = 'Loading...';
     
     try {
-        const tokenData = await getRealTokenData();
+        const tokenData = await getTokenMarketData();
         
         if (tokenData.success) {
             // Update price
@@ -3279,7 +3289,7 @@ async function updateWithRealData() {
                 priceElement.textContent = `$${formatPrice(tokenData.price)}`;
             }
             
-            // Update price change
+            // Update price change with color
             const changeElement = document.getElementById('price-change');
             if (changeElement) {
                 const changeText = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
@@ -3299,24 +3309,24 @@ async function updateWithRealData() {
                 volumeElement.textContent = formatVolume(tokenData.volume);
             }
             
-            // Update source
+            // Update source indicator
             const sourceElement = document.getElementById('holders-source');
             if (sourceElement) {
                 sourceElement.textContent = 'Live from Solscan ✅';
             }
             
-            console.log('✅ Real data updated successfully');
+            console.log('✅ Token metrics updated successfully');
         } else {
-            // If API fails, show N/A
+            console.warn('⚠️ Failed to get token data:', tokenData.error);
             showNoData();
         }
     } catch (error) {
-        console.error('❌ Error updating data:', error);
+        console.error('❌ Error updating metrics:', error);
         showNoData();
     }
     
-    // Keep supply data as N/A since we can't get it from this API
-    updateSupplyData(null);
+    // Update supply data as N/A (not available from this endpoint)
+    updateSupplyData();
 }
 
 // Show N/A when data is not available
@@ -3346,8 +3356,8 @@ function showNoData() {
     }
 }
 
-// Update supply data (show N/A)
-function updateSupplyData(supply) {
+// Update supply data (N/A)
+function updateSupplyData() {
     const elements = {
         'current-supply': 'N/A',
         'burned-supply': 'N/A',
@@ -3397,7 +3407,7 @@ window.refreshData = function() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
     btn.disabled = true;
     
-    updateWithRealData().finally(() => {
+    updateTokenMetrics().finally(() => {
         setTimeout(() => {
             btn.innerHTML = originalHtml;
             btn.disabled = false;
@@ -3413,7 +3423,7 @@ window.quickUpdateFromSolscan = function() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
     btn.disabled = true;
     
-    updateWithRealData().finally(() => {
+    updateTokenMetrics().finally(() => {
         setTimeout(() => {
             btn.innerHTML = '<i class="fas fa-external-link-alt"></i> View on Solscan';
             btn.disabled = false;
@@ -3423,11 +3433,17 @@ window.quickUpdateFromSolscan = function() {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM loaded, fetching real token data...');
-    updateWithRealData();
+    console.log('🚀 DOM loaded, initializing Solscan token data...');
+    updateTokenMetrics();
     
     // Auto-refresh every 60 seconds
-    setInterval(updateWithRealData, 60000);
+    setInterval(updateTokenMetrics, 60000);
+});
+
+// Also initialize on window load as backup
+window.addEventListener('load', function() {
+    console.log('📄 Window fully loaded');
+    updateTokenMetrics();
 });
   </script>
 </body>
