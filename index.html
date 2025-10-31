@@ -3228,120 +3228,52 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Remove all data fetching - use clean static data instead
+// Remove all fake data - show N/A or hide sections
 function initializeTokenMetrics() {
-    console.log('📊 Initializing token metrics with static data...');
+    console.log('📊 Initializing token metrics - no live data available');
     
-    // Set realistic static values for REBL token
-    const staticData = {
-        price: 0.00000123,
-        priceChange: 2.45,
-        marketCap: 1230000,
-        volume: 45600,
-        currentSupply: 500000000,
-        burnedSupply: 500000000,
-        holders: 1250
+    // Hide or show N/A for all metrics
+    const elements = {
+        'current-price': 'N/A',
+        'market-cap-widget': 'N/A',
+        'volume': 'N/A',
+        'holder-count': 'N/A',
+        'current-supply': 'N/A',
+        'burned-supply': 'N/A'
     };
     
-    // Update price
-    const priceElement = document.getElementById('current-price');
-    if (priceElement) {
-        priceElement.textContent = `$${formatPrice(staticData.price)}`;
-    }
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    });
     
-    // Update price change with color
+    // Remove price change indicator
     const changeElement = document.getElementById('price-change');
     if (changeElement) {
-        const changeText = `${staticData.priceChange >= 0 ? '+' : ''}${staticData.priceChange.toFixed(2)}%`;
-        changeElement.textContent = changeText;
-        changeElement.className = staticData.priceChange >= 0 ? 'positive' : 'negative';
-    }
-    
-    // Update market cap
-    const marketCapElement = document.getElementById('market-cap-widget');
-    if (marketCapElement) {
-        marketCapElement.textContent = formatMarketCap(staticData.marketCap);
-    }
-    
-    // Update volume
-    const volumeElement = document.getElementById('volume');
-    if (volumeElement) {
-        volumeElement.textContent = formatVolume(staticData.volume);
-    }
-    
-    // Update holders
-    const holdersElement = document.getElementById('holder-count');
-    if (holdersElement) {
-        holdersElement.textContent = staticData.holders.toLocaleString();
+        changeElement.textContent = 'N/A';
+        changeElement.className = '';
     }
     
     // Update source indicator
     const sourceElement = document.getElementById('holders-source');
     if (sourceElement) {
-        sourceElement.textContent = 'Token contract data';
+        sourceElement.textContent = 'Data not available';
     }
     
-    // Update supply information
-    updateSupplyData(staticData.currentSupply);
-    
-    console.log('✅ Token metrics initialized successfully');
-}
-
-// Update supply information
-function updateSupplyData(currentSupply) {
-    const maxSupply = 1000000000;
-    const supply = currentSupply || 500000000;
-    const burnedSupply = maxSupply - supply;
-    const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
-    const currentPercent = ((supply / maxSupply) * 100).toFixed(2);
-    
-    // Update current supply
-    const currentSupplyElement = document.getElementById('current-supply');
-    if (currentSupplyElement) {
-        currentSupplyElement.textContent = supply.toLocaleString();
-    }
-    
-    // Update current percent
+    // Update percentages
     const currentPercentElement = document.getElementById('current-percent');
     if (currentPercentElement) {
-        currentPercentElement.textContent = `${currentPercent}% of total`;
+        currentPercentElement.textContent = 'N/A';
     }
     
-    // Update burned supply
-    const burnedSupplyElement = document.getElementById('burned-supply');
-    if (burnedSupplyElement) {
-        burnedSupplyElement.textContent = burnedSupply.toLocaleString();
-    }
-    
-    // Update burned percent
     const burnedPercentElement = document.getElementById('burned-percent');
     if (burnedPercentElement) {
-        burnedPercentElement.textContent = `${burnedPercent}% burned`;
+        burnedPercentElement.textContent = 'N/A';
     }
-}
-
-// Formatting functions
-function formatPrice(price) {
-    if (!price || price === 0) return '0.000000';
-    if (price < 0.000001) return price.toFixed(10);
-    if (price < 0.001) return price.toFixed(8);
-    if (price < 1) return price.toFixed(6);
-    return price.toFixed(4);
-}
-
-function formatMarketCap(marketCap) {
-    if (!marketCap || marketCap === 0) return '$0';
-    if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(2)}B`;
-    if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(2)}M`;
-    if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
-    return `$${marketCap.toFixed(2)}`;
-}
-
-function formatVolume(volume) {
-    if (!volume || volume === 0) return '$0';
-    if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
-    if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
-    return `$${volume.toFixed(2)}`;
+    
+    console.log('✅ Token metrics initialized with no data');
 }
 
 // Simple button handlers that just show a message
@@ -3350,16 +3282,13 @@ window.refreshData = function() {
     if (!btn) return;
     
     const originalHtml = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check"></i> Data Updated';
+    btn.innerHTML = '<i class="fas fa-times"></i> No Data Available';
     btn.disabled = true;
-    
-    // Just reinitialize the static data
-    initializeTokenMetrics();
     
     setTimeout(() => {
         btn.innerHTML = originalHtml;
         btn.disabled = false;
-    }, 1000);
+    }, 2000);
 };
 
 window.quickUpdateFromSolscan = function() {
@@ -3367,27 +3296,24 @@ window.quickUpdateFromSolscan = function() {
     if (!btn) return;
     
     const originalHtml = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check"></i> Data Updated';
+    btn.innerHTML = '<i class="fas fa-times"></i> No Data Available';
     btn.disabled = true;
-    
-    // Just reinitialize the static data
-    initializeTokenMetrics();
     
     setTimeout(() => {
         btn.innerHTML = '<i class="fas fa-external-link-alt"></i> View on Solscan';
         btn.disabled = false;
-    }, 1000);
+    }, 2000);
 };
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM loaded, initializing static token data...');
+    console.log('🚀 DOM loaded - no live data available');
     initializeTokenMetrics();
 });
 
 // Also initialize on window load as backup
 window.addEventListener('load', function() {
-    console.log('📄 Window fully loaded');
+    console.log('📄 Window fully loaded - no live data available');
     initializeTokenMetrics();
 });
   </script>
