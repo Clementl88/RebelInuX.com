@@ -3563,155 +3563,197 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
     
-// REAL DATA ONLY with Rate Limit Management
+// DEBUG VERSION - Comprehensive error tracking
 const SOLSCAN_API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3NjE3NjU5ODE2NzIsImVtYWlsIjoicmViZWxpbnV4Lm9mZmljaWFsQGdtYWlsLmNvbSIsImFjdGlvbiI6InRva2VuLWFwaSIsImFwaVZlcnNpb24iOiJ2MiIsImlhdCI6MTc2MTc2NTk4MX0.da1S6pZPqVYvgNyCpkRBlS7mg8kLgHju0Gwixa6EEFc';
 
-// Rate limiting - track last API call time
-let lastAPICallTime = 0;
-const MIN_TIME_BETWEEN_CALLS = 1000; // 1 second between calls (60 RPM = 1 per second)
+console.log('🚀 Tokenomics script loaded - Debug mode');
 
 window.updateAllMetrics = async function() {
-  console.log('🔄 Fetching real token metrics...');
+  console.log('🔄 updateAllMetrics() called');
   
-  // Show loading states
-  const elements = ['current-price', 'holder-count', 'current-supply', 'burned-supply', 'market-cap-widget', 'volume'];
-  elements.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = 'Loading...';
-  });
-  
-  const priceChangeElement = document.getElementById('price-change');
-  if (priceChangeElement) {
-    priceChangeElement.textContent = '-';
-    priceChangeElement.className = '';
-  }
-
   try {
-    // Get REAL price data (no rate limit concerns)
+    // Show loading states
+    const elements = ['current-price', 'holder-count', 'current-supply', 'burned-supply', 'market-cap-widget', 'volume'];
+    elements.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        console.log(`📝 Setting ${id} to Loading...`);
+        el.textContent = 'Loading...';
+      } else {
+        console.error(`❌ Element #${id} not found!`);
+      }
+    });
+    
+    const priceChangeElement = document.getElementById('price-change');
+    if (priceChangeElement) {
+      priceChangeElement.textContent = '-';
+      priceChangeElement.className = '';
+    }
+
+    // Get data
+    console.log('💰 Starting price data fetch...');
     await updateRealPriceData();
     
-    // Get REAL data from Solscan with rate limiting
-    await updateFromSolscanWithRateLimit();
+    console.log('👥 Starting Solscan data fetch...');
+    await updateFromSolscan();
     
-    console.log('✅ Real metrics updated');
+    console.log('✅ updateAllMetrics completed successfully');
   } catch (error) {
-    console.error('❌ Error fetching real data:', error);
+    console.error('❌ updateAllMetrics failed:', error);
     showDataUnavailable();
   }
 };
 
-// Get REAL price data or show nothing
 async function updateRealPriceData() {
-  console.log('💰 Fetching real price data...');
+  console.log('🔍 updateRealPriceData() called');
   try {
+    console.log('🌐 Fetching from DexScreener...');
     const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
     
-    if (!response.ok) throw new Error('DexScreener API failed');
+    console.log('📊 DexScreener response status:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`DexScreener HTTP error: ${response.status}`);
+    }
     
     const data = await response.json();
-    if (!data.pairs || !data.pairs[0]) throw new Error('No pair data available');
+    console.log('📈 DexScreener data received:', data);
+    
+    if (!data.pairs || !data.pairs[0]) {
+      throw new Error('No pair data in response');
+    }
     
     const pair = data.pairs[0];
+    console.log('🎯 Pair data:', pair);
+    
     updatePriceDisplay(pair);
     
   } catch (error) {
-    console.log('❌ Real price data unavailable:', error);
+    console.error('💥 Price data error:', error);
     showPriceDataUnavailable();
     throw error;
   }
 }
 
-// Get REAL data from Solscan with rate limiting
-async function updateFromSolscanWithRateLimit() {
-  console.log('👥 Fetching real data from Solscan...');
-  
-  // Rate limiting: ensure we don't make calls too frequently
-  const now = Date.now();
-  const timeSinceLastCall = now - lastAPICallTime;
-  
-  if (timeSinceLastCall < MIN_TIME_BETWEEN_CALLS) {
-    console.log(`⏳ Rate limiting: waiting ${MIN_TIME_BETWEEN_CALLS - timeSinceLastCall}ms`);
-    await new Promise(resolve => setTimeout(resolve, MIN_TIME_BETWEEN_CALLS - timeSinceLastCall));
-  }
+async function updateFromSolscan() {
+  console.log('🔍 updateFromSolscan() called');
   
   try {
-    lastAPICallTime = Date.now();
-    
     const headers = {
       'Authorization': `Bearer ${SOLSCAN_API_TOKEN}`,
       'Content-Type': 'application/json'
     };
 
-    // Single API call to get both holders and supply data
+    console.log('🔑 Making Solscan API calls with token...');
+    
+    // Make both requests in parallel
     const [holdersResponse, supplyResponse] = await Promise.all([
       fetch('https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1&offset=0', { headers }),
       fetch('https://public-api.solscan.io/token/meta?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', { headers })
     ]);
 
-    // Check both responses
-    if (!holdersResponse.ok) throw new Error(`Solscan holders API: ${holdersResponse.status}`);
-    if (!supplyResponse.ok) throw new Error(`Solscan supply API: ${supplyResponse.status}`);
+    console.log('📊 Solscan responses - Holders:', holdersResponse.status, 'Supply:', supplyResponse.status);
+
+    if (!holdersResponse.ok) throw new Error(`Holders API: ${holdersResponse.status}`);
+    if (!supplyResponse.ok) throw new Error(`Supply API: ${supplyResponse.status}`);
 
     const [holdersData, supplyData] = await Promise.all([
       holdersResponse.json(),
       supplyResponse.json()
     ]);
 
+    console.log('📈 Solscan data - Holders:', holdersData, 'Supply:', supplyData);
+
     const holders = holdersData.total;
     const currentSupply = supplyData.supply;
     
-    console.log('✅ Real Solscan data:', { holders, currentSupply });
+    console.log('🎯 Parsed data - Holders:', holders, 'Supply:', currentSupply);
     
-    // Validate and update data
     if (holders && !isNaN(holders) && currentSupply && !isNaN(currentSupply)) {
       updateManualData(holders, currentSupply);
       safeUpdate('holders-source', 'Live from Solscan API');
+      console.log('✅ Solscan data updated successfully');
     } else {
-      throw new Error('Invalid data from Solscan');
+      throw new Error('Invalid Solscan data received');
     }
     
   } catch (error) {
-    console.error('❌ Real Solscan data unavailable:', error);
+    console.error('💥 Solscan data error:', error);
     showSolscanDataUnavailable();
     throw error;
   }
 }
 
-// Helper function to update price display
 function updatePriceDisplay(pair) {
+  console.log('🎨 Updating price display with:', pair);
+  
   const price = parseFloat(pair.priceUsd);
   const change = parseFloat(pair.priceChange?.h24);
   const marketCap = parseFloat(pair.marketCap);
   const volume = parseFloat(pair.volume?.h24);
 
-  // Only update if we have real numbers
+  console.log('📊 Parsed values - Price:', price, 'Change:', change, 'MarketCap:', marketCap, 'Volume:', volume);
+
   if (price && !isNaN(price)) {
     safeUpdate('current-price', `$${price.toFixed(8)}`);
+    console.log('✅ Price updated');
   } else {
     safeUpdate('current-price', 'Data unavailable');
+    console.log('❌ Price unavailable');
   }
   
   const changeElement = document.getElementById('price-change');
   if (changeElement && change && !isNaN(change)) {
     changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
     changeElement.className = change >= 0 ? 'positive' : 'negative';
+    console.log('✅ Price change updated');
   }
   
   if (marketCap && !isNaN(marketCap)) {
     safeUpdate('market-cap-widget', formatMarketCap(marketCap));
+    console.log('✅ Market cap updated');
   } else {
     safeUpdate('market-cap-widget', 'Data unavailable');
+    console.log('❌ Market cap unavailable');
   }
   
   if (volume && !isNaN(volume)) {
     safeUpdate('volume', formatVolume(volume));
+    console.log('✅ Volume updated');
   } else {
     safeUpdate('volume', 'Data unavailable');
+    console.log('❌ Volume unavailable');
   }
 }
 
-// Show data unavailable states
+// Enhanced refresh with debug
+window.refreshData = function() {
+  console.log('🔄 refreshData() called by button click');
+  
+  const refreshBtn = document.querySelector('.refresh-button');
+  if (!refreshBtn) {
+    console.error('❌ Refresh button not found!');
+    return;
+  }
+  
+  console.log('✅ Refresh button found, starting update...');
+  const originalHtml = refreshBtn.innerHTML;
+  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+  refreshBtn.disabled = true;
+
+  updateAllMetrics().finally(() => {
+    console.log('✅ Update completed, re-enabling button...');
+    setTimeout(() => {
+      refreshBtn.innerHTML = originalHtml;
+      refreshBtn.disabled = false;
+      console.log('✅ Button re-enabled');
+    }, 1000);
+  });
+};
+
+// Keep your existing utility functions
 function showPriceDataUnavailable() {
+  console.log('🚨 Showing price data unavailable');
   safeUpdate('current-price', 'Data unavailable');
   safeUpdate('market-cap-widget', 'Data unavailable');
   safeUpdate('volume', 'Data unavailable');
@@ -3724,6 +3766,7 @@ function showPriceDataUnavailable() {
 }
 
 function showSolscanDataUnavailable() {
+  console.log('🚨 Showing Solscan data unavailable');
   safeUpdate('holder-count', 'Data unavailable');
   safeUpdate('current-supply', 'Data unavailable');
   safeUpdate('burned-supply', 'Data unavailable');
@@ -3731,41 +3774,19 @@ function showSolscanDataUnavailable() {
 }
 
 function showDataUnavailable() {
+  console.log('🚨 Showing all data unavailable');
   showPriceDataUnavailable();
   showSolscanDataUnavailable();
 }
 
-// Keep your existing manual update function
-window.updateManualData = function(newHolders, newSupply) {
-  const REBL_CONFIG = {
-    TOTAL_SUPPLY: 1000000000
-  };
-
-  const burnedSupply = REBL_CONFIG.TOTAL_SUPPLY - newSupply;
-  const burnedPercent = ((burnedSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-  const currentPercent = ((newSupply / REBL_CONFIG.TOTAL_SUPPLY) * 100).toFixed(2);
-
-  safeUpdate('holder-count', newHolders.toLocaleString());
-  safeUpdate('current-supply', formatNumber(newSupply));
-  safeUpdate('current-percent', `${currentPercent}% of total`);
-  safeUpdate('burned-supply', formatNumber(burnedSupply));
-  safeUpdate('burned-percent', `${burnedPercent}% of total`);
+// Test function - call this in browser console
+window.debugUpdate = function() {
+  console.log('🐛 Manual debug trigger');
+  updateAllMetrics();
 };
 
-// Refresh button - THIS WORKS FINE
-window.refreshData = function() {
-  const refreshBtn = document.querySelector('.refresh-button');
-  const originalHtml = refreshBtn.innerHTML;
-  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-  refreshBtn.disabled = true;
-
-  updateAllMetrics().finally(() => {
-    setTimeout(() => {
-      refreshBtn.innerHTML = originalHtml;
-      refreshBtn.disabled = false;
-    }, 1000);
-  });
-};
+console.log('✅ Debug tokenomics script fully loaded');
+console.log('💡 Test by calling: debugUpdate() in console');
     
 // Utility functions (keep these the same)
 function safeUpdate(elementId, value) {
