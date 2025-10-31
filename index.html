@@ -3563,10 +3563,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
     
-// Enhanced tokenomics data fetching with Birdeye
-const SOLSCAN_API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3NjE3NjU5ODE2NzIsImVtYWlsIjoicmViZWxpbnV4Lm9mZmljaWFsQGdtYWlsLmNvbSIsImFjdGlvbiI6InRva2VuLWFwaSIsImFwaVZlcnNpb24iOiJ2MiIsImlhdCI6MTc2MTc2NTk4MX0.da1S6pZPqVYvgNyCpkRBlS7mg8kLgHju0Gwixa6EEFc';
-
-console.log('🚀 Tokenomics script loaded - Enhanced with Birdeye');
+// Fixed tokenomics data fetching with working APIs
+console.log('🚀 Tokenomics script loaded - Fixed version');
 
 // Main function to update all metrics
 window.updateAllMetrics = async function() {
@@ -3576,11 +3574,11 @@ window.updateAllMetrics = async function() {
     // Show loading states
     showLoadingStates();
     
-    // Get data from multiple sources with priority
+    // Get data from multiple sources
     await Promise.allSettled([
-      updateFromBirdeye(),        // Primary source - most reliable
-      updateRealPriceData(),      // Secondary - DexScreener
-      updateFromSolscan()         // Fallback - Solscan
+      updateFromDexScreener(),    // Primary - most reliable
+      updateFromSolscan(),        // Secondary - holders/supply
+      updateFromBirdeye()         // Optional - if we get API key
     ]);
     
     console.log('✅ updateAllMetrics completed');
@@ -3590,112 +3588,70 @@ window.updateAllMetrics = async function() {
   }
 };
 
-// PRIMARY DATA SOURCE - Birdeye API
-async function updateFromBirdeye() {
-  try {
-    console.log('🦅 Fetching from Birdeye...');
-    
-    const response = await fetch('https://public-api.birdeye.so/defi/token_overview?address=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
-    
-    if (!response.ok) {
-      throw new Error(`Birdeye HTTP error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    console.log('📊 Birdeye data received:', data);
-    
-    if (data.success && data.data) {
-      updateFromBirdeyeData(data.data);
-      safeUpdate('holders-source', 'Live from Birdeye 🦅');
-      console.log('✅ Birdeye data processed successfully');
-    } else {
-      throw new Error('Invalid Birdeye data structure');
-    }
-    
-  } catch (error) {
-    console.error('💥 Birdeye data error:', error);
-    // Don't show error - let fallback sources handle it
-  }
-}
-
-// Process Birdeye data
-function updateFromBirdeyeData(birdeyeData) {
-  // Price data
-  if (birdeyeData.price) {
-    const price = birdeyeData.price;
-    safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
-    
-    // Price change
-    const changeElement = document.getElementById('price-change');
-    if (changeElement && birdeyeData.price_change_24h_percent) {
-      const change = birdeyeData.price_change_24h_percent;
-      changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-      changeElement.className = change >= 0 ? 'positive' : 'negative';
-    }
-  }
-  
-  // Market cap
-  if (birdeyeData.mc) {
-    safeUpdate('market-cap-widget', formatMarketCap(birdeyeData.mc));
-  }
-  
-  // Volume
-  if (birdeyeData.v24h) {
-    safeUpdate('volume', formatVolume(birdeyeData.v24h));
-  }
-  
-  // Liquidity
-  if (birdeyeData.liquidity) {
-    // You could add a liquidity metric if needed
-    console.log('💰 Liquidity:', birdeyeData.liquidity);
-  }
-  
-  // Holders (if available in Birdeye)
-  if (birdeyeData.holder) {
-    safeUpdate('holder-count', birdeyeData.holder.toLocaleString());
-  }
-  
-  // Supply data
-  if (birdeyeData.supply) {
-    const maxSupply = 1000000000; // 1B
-    const currentSupply = birdeyeData.supply;
-    const burnedSupply = maxSupply - currentSupply;
-    const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
-    const currentPercent = ((currentSupply / maxSupply) * 100).toFixed(2);
-    
-    safeUpdate('current-supply', currentSupply.toLocaleString());
-    safeUpdate('current-percent', `${currentPercent}% of total`);
-    safeUpdate('burned-supply', burnedSupply.toLocaleString());
-    safeUpdate('burned-percent', `${burnedPercent}% burned`);
-  }
-}
-
-// SECONDARY SOURCE - DexScreener (for backup)
-async function updateRealPriceData() {
+// PRIMARY DATA SOURCE - DexScreener (most reliable)
+async function updateFromDexScreener() {
   try {
     console.log('🌐 Fetching from DexScreener...');
     const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
     
-    if (!response.ok) return; // Silent fail - Birdeye is primary
-    
-    const data = await response.json();
-    
-    if (!data.pairs || !data.pairs[0]) return;
-    
-    const pair = data.pairs[0];
-    
-    // Only update if Birdeye data is missing
-    const currentPrice = document.getElementById('current-price').textContent;
-    if (currentPrice.includes('Loading') || currentPrice.includes('unavailable')) {
-      updatePriceDisplay(pair);
+    if (!response.ok) {
+      throw new Error(`DexScreener HTTP error: ${response.status}`);
     }
     
+    const data = await response.json();
+    console.log('📊 DexScreener data received:', data);
+    
+    if (!data.pairs || !data.pairs[0]) {
+      throw new Error('No pair data in response');
+    }
+    
+    const pair = data.pairs[0];
+    updateFromDexScreenerData(pair);
+    safeUpdate('holders-source', 'Live from DexScreener 🌐');
+    console.log('✅ DexScreener data processed successfully');
+    
   } catch (error) {
-    console.log('DexScreener backup unavailable');
+    console.error('💥 DexScreener data error:', error);
   }
 }
 
-// FALLBACK SOURCE - Solscan (for holders data)
+// Process DexScreener data
+function updateFromDexScreenerData(pair) {
+  // Price data
+  const price = parseFloat(pair.priceUsd);
+  const change = parseFloat(pair.priceChange?.h24);
+  const marketCap = parseFloat(pair.marketCap);
+  const volume = parseFloat(pair.volume?.h24);
+  const liquidity = parseFloat(pair.liquidity?.usd);
+
+  if (price && !isNaN(price)) {
+    safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
+  }
+  
+  // Price change
+  const changeElement = document.getElementById('price-change');
+  if (changeElement && change && !isNaN(change)) {
+    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+    changeElement.className = change >= 0 ? 'positive' : 'negative';
+  }
+  
+  // Market cap
+  if (marketCap && !isNaN(marketCap)) {
+    safeUpdate('market-cap-widget', formatMarketCap(marketCap));
+  }
+  
+  // Volume
+  if (volume && !isNaN(volume)) {
+    safeUpdate('volume', formatVolume(volume));
+  }
+  
+  // Liquidity (optional - you could display this too)
+  if (liquidity && !isNaN(liquidity)) {
+    console.log('💰 Liquidity:', formatMarketCap(liquidity));
+  }
+}
+
+// SECONDARY SOURCE - Solscan (for holders and supply)
 async function updateFromSolscan() {
   try {
     console.log('🔍 Fetching from Solscan...');
@@ -3712,25 +3668,24 @@ async function updateFromSolscan() {
     if (holdersResponse.status === 'fulfilled' && holdersResponse.value.ok) {
       const holdersData = await holdersResponse.value.json();
       holders = holdersData.total;
+      console.log('👥 Holders data:', holders);
     }
 
     // Process supply response
     if (supplyResponse.status === 'fulfilled' && supplyResponse.value.ok) {
       const supplyData = await supplyResponse.value.json();
       supply = supplyData.supply;
+      console.log('⚖️ Supply data:', supply);
     }
 
-    // Only update if data is missing from primary sources
-    const currentHolders = document.getElementById('holder-count').textContent;
-    const currentSupply = document.getElementById('current-supply').textContent;
-    
-    if ((currentHolders.includes('Loading') || currentHolders.includes('unavailable')) && holders !== null) {
+    // Update holders if available
+    if (holders !== null && !isNaN(holders)) {
       safeUpdate('holder-count', holders.toLocaleString());
-      safeUpdate('holders-source', 'Live from Solscan');
     }
-    
-    if ((currentSupply.includes('Loading') || currentSupply.includes('unavailable')) && supply !== null) {
-      const maxSupply = 1000000000;
+
+    // Update supply data if available
+    if (supply !== null && !isNaN(supply)) {
+      const maxSupply = 1000000000; // 1B
       const burnedSupply = maxSupply - supply;
       const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
       const currentPercent = ((supply / maxSupply) * 100).toFixed(2);
@@ -3739,40 +3694,36 @@ async function updateFromSolscan() {
       safeUpdate('current-percent', `${currentPercent}% of total`);
       safeUpdate('burned-supply', burnedSupply.toLocaleString());
       safeUpdate('burned-percent', `${burnedPercent}% burned`);
+      
+      safeUpdate('holders-source', 'Live from Solscan 🔍');
     }
     
   } catch (error) {
-    console.log('Solscan fallback unavailable');
+    console.error('💥 Solscan data error:', error);
   }
 }
 
-// Display price data from DexScreener (for backup)
-function updatePriceDisplay(pair) {
-  const price = parseFloat(pair.priceUsd);
-  const change = parseFloat(pair.priceChange?.h24);
-  const marketCap = parseFloat(pair.marketCap);
-  const volume = parseFloat(pair.volume?.h24);
-
-  if (price && !isNaN(price)) {
-    safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
-  }
-  
-  const changeElement = document.getElementById('price-change');
-  if (changeElement && change && !isNaN(change)) {
-    changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-    changeElement.className = change >= 0 ? 'positive' : 'negative';
-  }
-  
-  if (marketCap && !isNaN(marketCap)) {
-    safeUpdate('market-cap-widget', formatMarketCap(marketCap));
-  }
-  
-  if (volume && !isNaN(volume)) {
-    safeUpdate('volume', formatVolume(volume));
+// OPTIONAL SOURCE - Birdeye (if we get API access)
+async function updateFromBirdeye() {
+  try {
+    console.log('🦅 Trying Birdeye...');
+    
+    // Note: Birdeye requires API key for most endpoints
+    // This is a placeholder for when you get API access
+    const response = await fetch('https://public-api.birdeye.so/defi/token_overview?address=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log('📊 Birdeye data available');
+      // Process Birdeye data if successful
+    }
+    
+  } catch (error) {
+    console.log('Birdeye not available without API key');
   }
 }
 
-// Utility functions (keep these the same)
+// Utility functions
 function showLoadingStates() {
   const elements = ['current-price', 'holder-count', 'current-supply', 'burned-supply', 'market-cap-widget', 'volume'];
   elements.forEach(id => {
@@ -3784,21 +3735,29 @@ function showLoadingStates() {
     changeElement.textContent = '-';
     changeElement.className = '';
   }
+  
+  safeUpdate('holders-source', 'Loading data...');
 }
 
 function showDataUnavailable() {
   const elements = ['current-price', 'holder-count', 'current-supply', 'burned-supply', 'market-cap-widget', 'volume'];
   elements.forEach(id => {
-    safeUpdate(id, 'Data unavailable');
+    // Only show unavailable if still loading after all attempts
+    const currentValue = document.getElementById(id).textContent;
+    if (currentValue === 'Loading...') {
+      safeUpdate(id, 'Data unavailable');
+    }
   });
   
   const changeElement = document.getElementById('price-change');
-  if (changeElement) {
+  if (changeElement && changeElement.textContent === '-') {
     changeElement.textContent = '-';
-    changeElement.className = '';
   }
   
-  safeUpdate('holders-source', 'Data unavailable');
+  const sourceElement = document.getElementById('holders-source');
+  if (sourceElement && sourceElement.textContent === 'Loading data...') {
+    safeUpdate('holders-source', 'Data unavailable');
+  }
 }
 
 function safeUpdate(elementId, value) {
@@ -3842,6 +3801,11 @@ window.refreshData = function() {
   });
 };
 
+// Quick update from Solscan
+window.quickUpdateFromSolscan = function() {
+  updateFromSolscan();
+};
+
 // Initialize on page load
 window.addEventListener('load', function() {
   setTimeout(function() {
@@ -3851,7 +3815,13 @@ window.addEventListener('load', function() {
   }, 2000);
 });
 
-console.log('✅ Enhanced tokenomics with Birdeye loaded');
+// Test function
+window.debugUpdate = function() {
+  console.log('🐛 Manual debug trigger');
+  updateAllMetrics();
+};
+
+console.log('✅ Fixed tokenomics script loaded');
   </script>
 
 <script src="https://unpkg.com/@popperjs/core@2"></script>
