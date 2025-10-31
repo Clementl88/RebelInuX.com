@@ -2163,11 +2163,11 @@
           <button onclick="refreshData()" class="refresh-button">
             <i class="fas fa-sync-alt"></i> Refresh Prices
           </button>
-          <div class="update-buttons">
-            <button onclick="quickUpdateFromSolscan()" class="update-button">
-              <i class="fas fa-external-link-alt"></i> Get Latest from Solscan
-            </button>
-          </div>
+<div class="update-buttons">
+    <button onclick="quickUpdateFromSolscan()" class="update-button">
+        <i class="fas fa-external-link-alt"></i> Get Latest from Solscan
+    </button>
+</div>
         </div>
       </div>
       <div class="metric-cards">
@@ -3228,230 +3228,198 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-    // Utility functions
-    function safeUpdate(elementId, value) {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.textContent = value;
-      }
-    }
-
-    function formatMarketCap(marketCap) {
-      if (!marketCap || marketCap === 0) return '$0';
-      if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(3)}B`;
-      if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(3)}M`;
-      if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
-      return `$${marketCap.toFixed(2)}`;
-    }
-
-    function formatVolume(volume) {
-      if (!volume || volume === 0) return '$0';
-      if (volume >= 1000000) return `$${(volume / 1000000).toFixed(3)}M`;
-      if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
-      return `$${volume.toFixed(2)}`;
-    }
-
-    function showLoadingStates() {
-      const elements = ['current-price', 'holder-count', 'current-supply', 'burned-supply', 'market-cap-widget', 'volume'];
-      elements.forEach(id => {
-        safeUpdate(id, 'Loading...');
-      });
-
-      const changeElement = document.getElementById('price-change');
-      if (changeElement) {
-        changeElement.textContent = '-';
-        changeElement.className = '';
-      }
-
-      safeUpdate('holders-source', 'Loading data...');
-    }
-
-    function showStaticFallback() {
-      safeUpdate('current-price', '$0.000001');
-      safeUpdate('price-change', '+0.00%');
-      document.getElementById('price-change').className = 'positive';
-      safeUpdate('market-cap-widget', '$100K');
-      safeUpdate('volume', '$50K');
-      safeUpdate('holder-count', '1,234');
-      safeUpdate('current-supply', '500,000,000');
-      safeUpdate('current-percent', '50% of total');
-      safeUpdate('burned-supply', '500,000,000');
-      safeUpdate('burned-percent', '50% burned');
-      safeUpdate('holders-source', 'Static fallback data');
-    }
-
-    // Data fetching functions
-    async function updateFromDexScreener() {
-      try {
-        console.log('🌐 Fetching from DexScreener via proxy...');
-        const proxyUrl = `https://api.allorigins.win/get?url=https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`;
-        const response = await fetch(proxyUrl);
-        if (!response.ok) {
-          throw new Error(`Proxy error: ${response.status}`);
+    // Corrected data fetching functions
+async function fetchFromSolscan() {
+    try {
+        console.log('🔍 Fetching token data from Solscan...');
+        
+        // Use Solscan API directly for token metrics
+        const tokenAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+        
+        // Fetch token metadata for supply and holders
+        const metadataResponse = await fetch(`https://api.solscan.io/token/meta?token=${tokenAddress}`);
+        if (!metadataResponse.ok) {
+            throw new Error(`Solscan API error: ${metadataResponse.status}`);
         }
-        const proxyData = await response.json();
-        const data = JSON.parse(proxyData.contents);
-        console.log('📊 DexScreener data received:', data);
-        if (!data.pairs || !data.pairs[0]) {
-          throw new Error('No pair data in response');
+        
+        const metadata = await metadataResponse.json();
+        console.log('📊 Solscan metadata:', metadata);
+        
+        // Fetch token market data for price and volume
+        const marketResponse = await fetch(`https://api.solscan.io/token/market?token=${tokenAddress}`);
+        let marketData = null;
+        
+        if (marketResponse.ok) {
+            marketData = await marketResponse.json();
+            console.log('💰 Solscan market data:', marketData);
         }
-        const pair = data.pairs[0];
-        updateFromDexScreenerData(pair);
-        safeUpdate('holders-source', 'Live from DexScreener 🌐');
-        console.log('✅ DexScreener data processed successfully');
-      } catch (error) {
-        console.error('💥 DexScreener data error:', error);
-      }
+        
+        return { metadata, marketData };
+        
+    } catch (error) {
+        console.error('💥 Solscan fetch error:', error);
+        throw error;
     }
+}
 
-    function updateFromDexScreenerData(pair) {
-      // Price data
-      const price = parseFloat(pair.priceUsd);
-      const change = parseFloat(pair.priceChange?.h24);
-      const marketCap = parseFloat(pair.marketCap);
-      const volume = parseFloat(pair.volume?.h24);
-      console.log('💰 Parsed data - Price:', price, 'Change:', change, 'MarketCap:', marketCap, 'Volume:', volume);
-      if (price && !isNaN(price)) {
-        safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
-      }
-
-      // Price change
-      const changeElement = document.getElementById('price-change');
-      if (changeElement && change && !isNaN(change)) {
-        changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-        changeElement.className = change >= 0 ? 'positive' : 'negative';
-      }
-
-      // Market cap
-      if (marketCap && !isNaN(marketCap)) {
-        safeUpdate('market-cap-widget', formatMarketCap(marketCap));
-      }
-
-      // Volume
-      if (volume && !isNaN(volume)) {
-        safeUpdate('volume', formatVolume(volume));
-      }
-
-      // Calculate supply from market cap and price
-      if (marketCap && price && price > 0) {
-        const calculatedSupply = marketCap / price;
-        const maxSupply = 1000000000; // 1B
-        const burnedSupply = maxSupply - calculatedSupply;
-        const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
-        const currentPercent = ((calculatedSupply / maxSupply) * 100).toFixed(2);
-
-        safeUpdate('current-supply', Math.round(calculatedSupply).toLocaleString());
-        safeUpdate('current-percent', `${currentPercent}% of total`);
-        safeUpdate('burned-supply', Math.round(burnedSupply).toLocaleString());
-        safeUpdate('burned-percent', `${burnedPercent}% burned`);
-      }
-    }
-
-    async function updateFromSolscan() {
-      try {
-        console.log('🔍 Fetching from Solscan via proxy...');
-        const holdersProxyUrl = `https://api.allorigins.win/get?url=https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1&offset=0`;
-        const supplyProxyUrl = `https://api.allorigins.win/get?url=https://public-api.solscan.io/token/meta?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`;
-
-        const [holdersResponse, supplyResponse] = await Promise.allSettled([
-          fetch(holdersProxyUrl),
-          fetch(supplyProxyUrl)
-        ]);
-
-        // Process holders response
-        if (holdersResponse.status === 'fulfilled' && holdersResponse.value.ok) {
-          const holdersProxyData = await holdersResponse.value.json();
-          const holdersData = JSON.parse(holdersProxyData.contents);
-          if (holdersData.total) {
-            safeUpdate('holder-count', holdersData.total.toLocaleString());
+async function updateFromSolscan() {
+    try {
+        const { metadata, marketData } = await fetchFromSolscan();
+        
+        // Update holders count
+        if (metadata.data && metadata.data.holder) {
+            safeUpdate('holder-count', parseInt(metadata.data.holder).toLocaleString());
             safeUpdate('holders-source', 'Live from Solscan 🔍');
-          }
         }
-
-        // Process supply response
-        if (supplyResponse.status === 'fulfilled' && supplyResponse.value.ok) {
-          const supplyProxyData = await supplyResponse.value.json();
-          const supplyData = JSON.parse(supplyProxyData.contents);
-          if (supplyData.supply) {
-            const supply = parseFloat(supplyData.supply);
+        
+        // Update supply data
+        if (metadata.data && metadata.data.supply) {
+            const supply = parseFloat(metadata.data.supply);
             const maxSupply = 1000000000; // 1B
             const burnedSupply = maxSupply - supply;
             const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
             const currentPercent = ((supply / maxSupply) * 100).toFixed(2);
 
-            safeUpdate('current-supply', supply.toLocaleString());
+            safeUpdate('current-supply', Math.round(supply).toLocaleString());
             safeUpdate('current-percent', `${currentPercent}% of total`);
-            safeUpdate('burned-supply', burnedSupply.toLocaleString());
+            safeUpdate('burned-supply', Math.round(burnedSupply).toLocaleString());
             safeUpdate('burned-percent', `${burnedPercent}% burned`);
-          }
         }
-      } catch (error) {
-        console.error('💥 Solscan data error:', error);
-      }
-    }
-
-    async function updateFromPumpFun() {
-      try {
-        console.log('🎯 Trying Jupiter fallback via proxy...');
-        const proxyUrl = `https://api.allorigins.win/get?url=https://price.jup.ag/v4/price?ids=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump`;
-        const response = await fetch(proxyUrl);
-        if (response.ok) {
-          const proxyData = await response.json();
-          const data = JSON.parse(proxyData.contents);
-          if (data.data && data.data['F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump']) {
-            const priceData = data.data['F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'];
-            const price = priceData.price;
-            // Only update if no price data exists
-            const currentPrice = document.getElementById('current-price').textContent;
-            if (currentPrice.includes('Loading') || currentPrice.includes('unavailable')) {
-              safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
+        
+        // Update price and market data if available
+        if (marketData && marketData.data) {
+            const price = parseFloat(marketData.data.priceUsdt);
+            const volume = parseFloat(marketData.data.volumeUsdt);
+            
+            if (price && !isNaN(price)) {
+                safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
             }
-          }
+            
+            if (volume && !isNaN(volume)) {
+                safeUpdate('volume', formatVolume(volume));
+            }
+            
+            // Calculate market cap from price and supply
+            if (metadata.data && metadata.data.supply && price) {
+                const supply = parseFloat(metadata.data.supply);
+                const marketCap = supply * price;
+                safeUpdate('market-cap-widget', formatMarketCap(marketCap));
+            }
         }
-      } catch (error) {
-        console.log('Jupiter fallback unavailable');
-      }
+        
+    } catch (error) {
+        console.error('💥 Error updating from Solscan:', error);
+        // Fallback to DexScreener if Solscan fails
+        await updateFromDexScreenerFallback();
     }
+}
 
-    window.updateAllMetrics = async function() {
-      console.log('🔄 updateAllMetrics() called');
-      try {
+async function updateFromDexScreenerFallback() {
+    try {
+        console.log('🔄 Trying DexScreener as fallback...');
+        const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+        
+        if (!response.ok) {
+            throw new Error(`DexScreener error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('📊 DexScreener fallback data:', data);
+        
+        if (data.pairs && data.pairs[0]) {
+            const pair = data.pairs[0];
+            
+            // Update price
+            if (pair.priceUsd) {
+                const price = parseFloat(pair.priceUsd);
+                safeUpdate('current-price', `$${price < 0.001 ? price.toFixed(8) : price.toFixed(6)}`);
+            }
+            
+            // Update price change
+            const changeElement = document.getElementById('price-change');
+            if (changeElement && pair.priceChange && pair.priceChange.h24) {
+                const change = parseFloat(pair.priceChange.h24);
+                changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+                changeElement.className = change >= 0 ? 'positive' : 'negative';
+            }
+            
+            // Update market cap
+            if (pair.marketCap) {
+                safeUpdate('market-cap-widget', formatMarketCap(parseFloat(pair.marketCap)));
+            }
+            
+            // Update volume
+            if (pair.volume && pair.volume.h24) {
+                safeUpdate('volume', formatVolume(parseFloat(pair.volume.h24)));
+            }
+            
+            safeUpdate('holders-source', 'Live from DexScreener 🌐');
+        }
+        
+    } catch (error) {
+        console.error('💥 DexScreener fallback failed:', error);
+        showStaticFallback();
+    }
+}
+
+// Update the quick update function to use Solscan directly
+window.quickUpdateFromSolscan = async function() {
+    const updateBtn = document.querySelector('.update-button');
+    if (!updateBtn) return;
+    
+    const originalHtml = updateBtn.innerHTML;
+    updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
+    updateBtn.disabled = true;
+    
+    try {
+        await updateFromSolscan();
+        console.log('✅ Solscan data updated successfully');
+    } catch (error) {
+        console.error('❌ Solscan update failed:', error);
+    } finally {
+        setTimeout(() => {
+            updateBtn.innerHTML = originalHtml;
+            updateBtn.disabled = false;
+        }, 1000);
+    }
+};
+
+// Update the main metrics function to prioritize Solscan
+window.updateAllMetrics = async function() {
+    console.log('🔄 updateAllMetrics() called - Using Solscan');
+    try {
         showLoadingStates();
-        await Promise.allSettled([
-          updateFromDexScreener(),
-          updateFromSolscan(),
-          updateFromPumpFun()
-        ]);
+        await updateFromSolscan();
+        
+        // Verify we have price data, if not try fallback
         const price = document.getElementById('current-price').textContent;
         if (price.includes('Loading') || price.includes('unavailable')) {
-          showStaticFallback();
+            await updateFromDexScreenerFallback();
         }
+        
         console.log('✅ updateAllMetrics completed');
-      } catch (error) {
+    } catch (error) {
         console.error('❌ updateAllMetrics failed:', error);
         showStaticFallback();
-      }
-    };
+    }
+};
 
-    window.refreshData = function() {
-      const refreshBtn = document.querySelector('.refresh-button');
-      if (!refreshBtn) return;
-      const originalHtml = refreshBtn.innerHTML;
-      refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-      refreshBtn.disabled = true;
-      updateAllMetrics().finally(() => {
+// Update the refresh function
+window.refreshData = function() {
+    const refreshBtn = document.querySelector('.refresh-button');
+    if (!refreshBtn) return;
+    
+    const originalHtml = refreshBtn.innerHTML;
+    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+    refreshBtn.disabled = true;
+    
+    updateAllMetrics().finally(() => {
         setTimeout(() => {
-          refreshBtn.innerHTML = originalHtml;
-          refreshBtn.disabled = false;
+            refreshBtn.innerHTML = originalHtml;
+            refreshBtn.disabled = false;
         }, 1000);
-      });
-    };
-
-    // Initialize on page load
-    window.addEventListener('load', function() {
-      setTimeout(updateAllMetrics, 2000);
-      setInterval(updateAllMetrics, 120000);
     });
+};
   </script>
 </body>
 </html>
