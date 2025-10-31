@@ -3228,39 +3228,43 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Corrected DexScreener data retrieval
+// WORKING DexScreener data retrieval
 async function fetchDexScreenerData() {
     try {
         console.log('🔍 Fetching from DexScreener...');
         
-        // Use the token address instead of pair address
+        // Use the correct token address endpoint
         const tokenAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
         const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
         
         if (!response.ok) {
-            throw new Error(`DexScreener error: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        console.log('📊 DexScreener data:', data);
+        console.log('📊 DexScreener response:', data);
         
-        if (!data.pairs || !data.pairs[0]) {
-            throw new Error('No pair data found');
+        if (!data.pairs || data.pairs.length === 0) {
+            throw new Error('No trading pairs found for this token');
         }
         
-        // Get the most liquid pair
-        const pair = data.pairs.reduce((mostLiquid, current) => 
-            (current.liquidity?.usd || 0) > (mostLiquid.liquidity?.usd || 0) ? current : mostLiquid
-        );
+        // Find the most liquid pair (highest volume)
+        const mostLiquidPair = data.pairs.reduce((highest, current) => {
+            const currentVolume = parseFloat(current.volume?.h24) || 0;
+            const highestVolume = parseFloat(highest.volume?.h24) || 0;
+            return currentVolume > highestVolume ? current : highest;
+        });
+        
+        console.log('🎯 Using pair:', mostLiquidPair.pairAddress);
         
         return {
-            price: parseFloat(pair.priceNative) || 0,
-            priceUsd: parseFloat(pair.priceUsd) || 0,
-            priceChange: parseFloat(pair.priceChange?.h24) || 0,
-            marketCap: parseFloat(pair.fdv) || 0,
-            volume: parseFloat(pair.volume?.h24) || 0,
-            liquidity: parseFloat(pair.liquidity?.usd) || 0,
-            pairAddress: pair.pairAddress,
+            price: parseFloat(mostLiquidPair.priceUsd) || 0,
+            priceChange: parseFloat(mostLiquidPair.priceChange?.h24) || 0,
+            marketCap: parseFloat(mostLiquidPair.fdv) || 0,
+            volume: parseFloat(mostLiquidPair.volume?.h24) || 0,
+            liquidity: parseFloat(mostLiquidPair.liquidity?.usd) || 0,
+            pairAddress: mostLiquidPair.pairAddress,
+            dexId: mostLiquidPair.dexId,
             success: true
         };
         
@@ -3268,87 +3272,174 @@ async function fetchDexScreenerData() {
         console.error('❌ DexScreener fetch failed:', error);
         return {
             success: false,
-            price: 0.000001,
-            priceChange: 0,
-            marketCap: 500000,
-            volume: 50000
+            error: error.message
         };
     }
 }
 
-// Update all metrics with DexScreener data
+// Update all metrics in the UI
 async function updateAllMetrics() {
-    console.log('🔄 Updating metrics from DexScreener...');
+    console.log('🔄 Updating all metrics...');
     
     // Show loading state
     showLoadingState();
     
-    const tokenData = await fetchDexScreenerData();
-    
-    if (tokenData.success) {
-        // Update price (showing USD price)
-        document.getElementById('current-price').textContent = `$${formatPrice(tokenData.priceUsd)}`;
+    try {
+        const tokenData = await fetchDexScreenerData();
         
-        // Update price change
-        const changeElement = document.getElementById('price-change');
-        if (changeElement) {
-            changeElement.textContent = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
-            changeElement.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+        if (tokenData.success) {
+            // Update price
+            const priceElement = document.getElementById('current-price');
+            if (priceElement) {
+                priceElement.textContent = `$${formatPrice(tokenData.price)}`;
+            }
+            
+            // Update price change with color
+            const changeElement = document.getElementById('price-change');
+            if (changeElement) {
+                const changeText = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
+                changeElement.textContent = changeText;
+                changeElement.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+            }
+            
+            // Update market cap
+            const marketCapElement = document.getElementById('market-cap-widget');
+            if (marketCapElement) {
+                marketCapElement.textContent = formatMarketCap(tokenData.marketCap);
+            }
+            
+            // Update volume
+            const volumeElement = document.getElementById('volume');
+            if (volumeElement) {
+                volumeElement.textContent = formatVolume(tokenData.volume);
+            }
+            
+            // Update source indicator
+            const sourceElement = document.getElementById('holders-source');
+            if (sourceElement) {
+                sourceElement.textContent = `Live from ${tokenData.dexId || 'DexScreener'} ✅`;
+            }
+            
+            console.log('✅ All metrics updated successfully');
+        } else {
+            console.warn('⚠️ Using fallback data due to API error');
+            showStaticData();
         }
-        
-        // Update market cap
-        document.getElementById('market-cap-widget').textContent = formatMarketCap(tokenData.marketCap);
-        
-        // Update volume
-        document.getElementById('volume').textContent = formatVolume(tokenData.volume);
-        
-        // Update source
-        document.getElementById('holders-source').textContent = 'Live from DexScreener ✅';
-        
-        console.log('✅ DexScreener data updated successfully');
-    } else {
-        // Fallback to static data
+    } catch (error) {
+        console.error('❌ Error updating metrics:', error);
         showStaticData();
     }
     
-    // Update supply and holders (using estimated/static data)
+    // Always update supply data (this is static for now)
     updateSupplyData();
 }
 
 // Update supply information
 function updateSupplyData() {
     const maxSupply = 1000000000;
-    const currentSupply = 500000000;
+    const currentSupply = 500000000; // This would come from your contract
     const burnedSupply = maxSupply - currentSupply;
     const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
     const currentPercent = ((currentSupply / maxSupply) * 100).toFixed(2);
     
-    document.getElementById('current-supply').textContent = currentSupply.toLocaleString();
-    document.getElementById('current-percent').textContent = `${currentPercent}% of total`;
-    document.getElementById('burned-supply').textContent = burnedSupply.toLocaleString();
-    document.getElementById('burned-percent').textContent = `${burnedPercent}% burned`;
-    document.getElementById('holder-count').textContent = '1,250+';
+    // Update current supply
+    const currentSupplyElement = document.getElementById('current-supply');
+    if (currentSupplyElement) {
+        currentSupplyElement.textContent = currentSupply.toLocaleString();
+    }
+    
+    // Update current percent
+    const currentPercentElement = document.getElementById('current-percent');
+    if (currentPercentElement) {
+        currentPercentElement.textContent = `${currentPercent}% of total`;
+    }
+    
+    // Update burned supply
+    const burnedSupplyElement = document.getElementById('burned-supply');
+    if (burnedSupplyElement) {
+        burnedSupplyElement.textContent = burnedSupply.toLocaleString();
+    }
+    
+    // Update burned percent
+    const burnedPercentElement = document.getElementById('burned-percent');
+    if (burnedPercentElement) {
+        burnedPercentElement.textContent = `${burnedPercent}% burned`;
+    }
+    
+    // Update holders (static for now, would need API call)
+    const holdersElement = document.getElementById('holder-count');
+    if (holdersElement) {
+        holdersElement.textContent = '1,250+';
+    }
 }
 
-// Show loading state
+// Show loading state for all metrics
 function showLoadingState() {
-    document.getElementById('current-price').textContent = 'Loading...';
-    document.getElementById('market-cap-widget').textContent = 'Loading...';
-    document.getElementById('volume').textContent = 'Loading...';
-    document.getElementById('holder-count').textContent = 'Loading...';
-    document.getElementById('current-supply').textContent = 'Loading...';
-    document.getElementById('burned-supply').textContent = 'Loading...';
+    const elements = {
+        'current-price': 'Loading...',
+        'market-cap-widget': 'Loading...',
+        'volume': 'Loading...',
+        'holder-count': 'Loading...',
+        'current-supply': 'Loading...',
+        'burned-supply': 'Loading...'
+    };
+    
+    Object.entries(elements).forEach(([id, text]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = text;
+        }
+    });
+    
+    // Reset price change
+    const changeElement = document.getElementById('price-change');
+    if (changeElement) {
+        changeElement.textContent = '-';
+        changeElement.className = '';
+    }
 }
 
 // Show static fallback data
 function showStaticData() {
-    document.getElementById('current-price').textContent = '$0.000001';
-    document.getElementById('price-change').textContent = '+0.00%';
-    document.getElementById('price-change').className = 'positive';
-    document.getElementById('market-cap-widget').textContent = '$500K';
-    document.getElementById('volume').textContent = '$50K';
-    document.getElementById('holder-count').textContent = '1,234';
-    document.getElementById('holders-source').textContent = 'Static data';
+    const staticData = {
+        'current-price': '$0.000001',
+        'market-cap-widget': '$500K',
+        'volume': '$50K',
+        'holder-count': '1,234',
+        'current-supply': '500,000,000',
+        'burned-supply': '500,000,000'
+    };
+    
+    Object.entries(staticData).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    });
+    
+    // Update price change
+    const changeElement = document.getElementById('price-change');
+    if (changeElement) {
+        changeElement.textContent = '+0.00%';
+        changeElement.className = 'positive';
+    }
+    
+    // Update percentages
+    const currentPercentElement = document.getElementById('current-percent');
+    if (currentPercentElement) {
+        currentPercentElement.textContent = '50.00% of total';
+    }
+    
+    const burnedPercentElement = document.getElementById('burned-percent');
+    if (burnedPercentElement) {
+        burnedPercentElement.textContent = '50.00% burned';
+    }
+    
+    // Update source
+    const sourceElement = document.getElementById('holders-source');
+    if (sourceElement) {
+        sourceElement.textContent = 'Static data';
+    }
 }
 
 // Formatting functions
@@ -3362,24 +3453,25 @@ function formatPrice(price) {
 
 function formatMarketCap(marketCap) {
     if (!marketCap || marketCap === 0) return '$0';
-    if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(3)}B`;
-    if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(3)}M`;
+    if (marketCap >= 1000000000) return `$${(marketCap / 1000000000).toFixed(2)}B`;
+    if (marketCap >= 1000000) return `$${(marketCap / 1000000).toFixed(2)}M`;
     if (marketCap >= 1000) return `$${(marketCap / 1000).toFixed(2)}K`;
     return `$${marketCap.toFixed(2)}`;
 }
 
 function formatVolume(volume) {
     if (!volume || volume === 0) return '$0';
-    if (volume >= 1000000) return `$${(volume / 1000000).toFixed(3)}M`;
+    if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
     if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
     return `$${volume.toFixed(2)}`;
 }
 
-// Button handlers
+// Button handlers with loading states
 window.refreshData = function() {
     const btn = document.querySelector('.refresh-button');
-    const originalHtml = btn.innerHTML;
+    if (!btn) return;
     
+    const originalHtml = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
     btn.disabled = true;
     
@@ -3393,8 +3485,9 @@ window.refreshData = function() {
 
 window.quickUpdateFromSolscan = function() {
     const btn = document.querySelector('.update-button');
-    const originalHtml = btn.innerHTML;
+    if (!btn) return;
     
+    const originalHtml = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
     btn.disabled = true;
     
@@ -3406,16 +3499,37 @@ window.quickUpdateFromSolscan = function() {
     });
 };
 
-// Initialize when page loads
-window.addEventListener('load', function() {
-    console.log('🚀 Page loaded, initializing DexScreener data...');
+// Initialize everything when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded, initializing data...');
+    
+    // Initial load
     showLoadingState();
     
-    // Start data fetch after short delay
-    setTimeout(updateAllMetrics, 1000);
+    // Wait a moment then fetch data
+    setTimeout(() => {
+        updateAllMetrics();
+    }, 500);
     
-    // Auto-refresh every 30 seconds
-    setInterval(updateAllMetrics, 30000);
+    // Set up auto-refresh every 30 seconds
+    setInterval(() => {
+        console.log('⏰ Auto-refreshing data...');
+        updateAllMetrics();
+    }, 30000);
+});
+
+// Also initialize on window load as backup
+window.addEventListener('load', function() {
+    console.log('📄 Window fully loaded');
+    
+    // If data hasn't loaded yet, try again
+    setTimeout(() => {
+        const priceElement = document.getElementById('current-price');
+        if (priceElement && priceElement.textContent === 'Loading...') {
+            console.log('🔄 Retrying data load...');
+            updateAllMetrics();
+        }
+    }, 2000);
 });
   </script>
 </body>
