@@ -3228,40 +3228,23 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Simple working price data fetch
-async function updateAllMetrics() {
+// Try to get data from pump.fun page
+async function getPumpFunData() {
     try {
-        const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
-        const data = await response.json();
+        const response = await fetch('https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+        const html = await response.text();
+        console.log('Pump.fun HTML:', html);
         
-        if (data.pairs && data.pairs[0]) {
-            const pair = data.pairs[0];
-            
-            // Update price
-            document.getElementById('current-price').textContent = `$${parseFloat(pair.priceUsd).toFixed(8)}`;
-            
-            // Update price change
-            const changeElement = document.getElementById('price-change');
-            const priceChange = parseFloat(pair.priceChange?.h24) || 0;
-            changeElement.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
-            changeElement.className = priceChange >= 0 ? 'positive' : 'negative';
-        }
+        // Try to extract price from the HTML
+        const priceMatch = html.match(/\$[\d.,]+/g);
+        console.log('Price matches:', priceMatch);
+        
+        return priceMatch ? priceMatch[0] : null;
     } catch (error) {
-        console.log('Price fetch completed');
+        console.error('Pump.fun fetch failed:', error);
+        return null;
     }
 }
-
-// Button handlers
-window.refreshData = function() {
-    updateAllMetrics();
-};
-
-window.quickUpdateFromSolscan = function() {
-    updateAllMetrics();
-};
-
-// Start
-updateAllMetrics();
   </script>
 </body>
 </html>
