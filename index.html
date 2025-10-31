@@ -3660,54 +3660,42 @@ function updateFromDexScreenerData(pair) {
 async function updateFromSolscan() {
   try {
     console.log('🔍 Fetching from Solscan...');
-    
+
+    // Fetch holders and supply data
     const [holdersResponse, supplyResponse] = await Promise.allSettled([
       fetch('https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1&offset=0'),
       fetch('https://public-api.solscan.io/token/meta?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump')
     ]);
 
-    let holders = null;
-    let supply = null;
-
     // Process holders response
     if (holdersResponse.status === 'fulfilled' && holdersResponse.value.ok) {
       const holdersData = await holdersResponse.value.json();
-      holders = holdersData.total;
-      console.log('👥 Holders data:', holders);
+      if (holdersData.total) {
+        safeUpdate('holder-count', holdersData.total.toLocaleString());
+        safeUpdate('holders-source', 'Live from Solscan 🔍');
+      }
     }
 
     // Process supply response
     if (supplyResponse.status === 'fulfilled' && supplyResponse.value.ok) {
       const supplyData = await supplyResponse.value.json();
-      supply = supplyData.supply;
-      console.log('⚖️ Supply data:', supply);
-    }
-
-    // Update holders if available
-    if (holders !== null && !isNaN(holders)) {
-      safeUpdate('holder-count', holders.toLocaleString());
-    }
-
-    // Update supply data if available and not already set
-    if (supply !== null && !isNaN(supply)) {
-      const currentSupplyElement = document.getElementById('current-supply');
-      if (currentSupplyElement.textContent.includes('Loading') || currentSupplyElement.textContent.includes('unavailable')) {
-        const maxSupply = 1000000000;
+      if (supplyData.supply) {
+        const supply = parseFloat(supplyData.supply);
+        const maxSupply = 1000000000; // 1B
         const burnedSupply = maxSupply - supply;
         const burnedPercent = ((burnedSupply / maxSupply) * 100).toFixed(2);
         const currentPercent = ((supply / maxSupply) * 100).toFixed(2);
-        
+
         safeUpdate('current-supply', supply.toLocaleString());
         safeUpdate('current-percent', `${currentPercent}% of total`);
         safeUpdate('burned-supply', burnedSupply.toLocaleString());
         safeUpdate('burned-percent', `${burnedPercent}% burned`);
-        
-        safeUpdate('holders-source', 'Live from Solscan 🔍');
       }
     }
-    
+
   } catch (error) {
     console.error('💥 Solscan data error:', error);
+    safeUpdate('holders-source', 'Solscan data unavailable');
   }
 }
 
