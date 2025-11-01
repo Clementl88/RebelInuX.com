@@ -3241,8 +3241,6 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Replace your existing token metrics code with this:
-
 // Token contract address
 const TOKEN_ADDRESS = "F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump";
 
@@ -3253,16 +3251,25 @@ const API_ENDPOINTS = {
     birdeye: `https://public-api.birdeye.so/defi/token_overview?address=${TOKEN_ADDRESS}`
 };
 
+// Static fallback data (your current known values)
+const STATIC_DATA = {
+    holders: 37,
+    currentSupply: 997006648,
+    burnedSupply: 2993352,
+    maxSupply: 1000000000
+};
+
 // Token data with fallback values
 const tokenData = {
     price: 0,
     priceChange: 0,
     marketCap: 0,
     volume: 0,
-    holders: 0,
-    currentSupply: 0,
-    burnedSupply: 0,
-    lastUpdate: 'Never'
+    holders: STATIC_DATA.holders,
+    currentSupply: STATIC_DATA.currentSupply,
+    burnedSupply: STATIC_DATA.burnedSupply,
+    lastUpdate: 'Never',
+    usingStaticData: false
 };
 
 // Fetch data from DexScreener
@@ -3316,7 +3323,7 @@ async function fetchSupplyData() {
         if (data.data) {
             return {
                 currentSupply: parseFloat(data.data.supply),
-                burnedSupply: 1000000000 - parseFloat(data.data.supply) // Assuming 1B max supply
+                burnedSupply: STATIC_DATA.maxSupply - parseFloat(data.data.supply)
             };
         }
     } catch (error) {
@@ -3325,9 +3332,21 @@ async function fetchSupplyData() {
     return null;
 }
 
+// Apply static fallback data
+function applyStaticData() {
+    console.log('🛡️ Applying static fallback data');
+    
+    tokenData.holders = STATIC_DATA.holders;
+    tokenData.currentSupply = STATIC_DATA.currentSupply;
+    tokenData.burnedSupply = STATIC_DATA.burnedSupply;
+    tokenData.usingStaticData = true;
+}
+
 // Main function to fetch all data
 async function fetchAllTokenData() {
     console.log('🔄 Fetching live token data...');
+    
+    let usingStaticData = false;
     
     try {
         const [priceData, holderData, supplyData] = await Promise.all([
@@ -3339,22 +3358,43 @@ async function fetchAllTokenData() {
         // Update tokenData with fetched values
         if (priceData) {
             Object.assign(tokenData, priceData);
+        } else {
+            console.log('⚠️ Using static price data (API failed)');
         }
         
         if (holderData) {
             Object.assign(tokenData, holderData);
+            tokenData.usingStaticData = false;
+        } else {
+            console.log('⚠️ Using static holder data (API failed)');
+            tokenData.holders = STATIC_DATA.holders;
+            usingStaticData = true;
         }
         
         if (supplyData) {
             Object.assign(tokenData, supplyData);
+            tokenData.usingStaticData = false;
+        } else {
+            console.log('⚠️ Using static supply data (API failed)');
+            tokenData.currentSupply = STATIC_DATA.currentSupply;
+            tokenData.burnedSupply = STATIC_DATA.burnedSupply;
+            usingStaticData = true;
         }
         
         tokenData.lastUpdate = new Date().toLocaleTimeString();
+        tokenData.usingStaticData = usingStaticData;
         
-        console.log('✅ Live data fetched successfully:', tokenData);
-        return true;
+        console.log('✅ Data fetch completed:', {
+            success: !usingStaticData,
+            usingStaticData: usingStaticData,
+            data: tokenData
+        });
+        
+        return !usingStaticData;
     } catch (error) {
         console.error('❌ Error fetching token data:', error);
+        applyStaticData();
+        tokenData.lastUpdate = new Date().toLocaleTimeString();
         return false;
     }
 }
@@ -3363,18 +3403,28 @@ async function fetchAllTokenData() {
 function updateAllDisplays(source = 'Live Data') {
     console.log('Updating displays from:', source);
     
+    const isStaticData = tokenData.usingStaticData;
+    const dataSource = isStaticData ? 'Static Data' : source;
+    
+    // Calculate percentages
+    const currentPercent = tokenData.currentSupply ? 
+        `${((tokenData.currentSupply / STATIC_DATA.maxSupply) * 100).toFixed(2)}% of total` : '-';
+    
+    const burnedPercent = tokenData.burnedSupply ? 
+        `${((tokenData.burnedSupply / STATIC_DATA.maxSupply) * 100).toFixed(2)}% burned` : '-';
+    
     // Update all elements
     const elements = {
         'current-price': tokenData.price ? `$${tokenData.price.toFixed(8)}` : 'Loading...',
         'price-change': tokenData.priceChange ? `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%` : '-',
         'market-cap-widget': tokenData.marketCap ? `$${(tokenData.marketCap / 1000).toFixed(1)}K` : '-',
         'volume': tokenData.volume ? `$${tokenData.volume.toFixed(2)}` : '-',
-        'holder-count': tokenData.holders ? tokenData.holders.toLocaleString() : 'Loading...',
-        'current-supply': tokenData.currentSupply ? tokenData.currentSupply.toLocaleString() : 'Loading...',
-        'burned-supply': tokenData.burnedSupply ? tokenData.burnedSupply.toLocaleString() : 'Loading...',
-        'current-percent': tokenData.currentSupply ? `${((tokenData.currentSupply / 1000000000) * 100).toFixed(2)}% of total` : '-',
-        'burned-percent': tokenData.burnedSupply ? `${((tokenData.burnedSupply / 1000000000) * 100).toFixed(2)}% burned` : '-',
-        'holders-source': `${source} • ${tokenData.lastUpdate}`
+        'holder-count': tokenData.holders ? tokenData.holders.toLocaleString() : STATIC_DATA.holders.toLocaleString(),
+        'current-supply': tokenData.currentSupply ? tokenData.currentSupply.toLocaleString() : STATIC_DATA.currentSupply.toLocaleString(),
+        'burned-supply': tokenData.burnedSupply ? tokenData.burnedSupply.toLocaleString() : STATIC_DATA.burnedSupply.toLocaleString(),
+        'current-percent': currentPercent,
+        'burned-percent': burnedPercent,
+        'holders-source': `${isStaticData ? 'Static Data' : dataSource} • ${tokenData.lastUpdate}${isStaticData ? ' (Fallback)' : ''}`
     };
     
     for (const [id, value] of Object.entries(elements)) {
@@ -3383,6 +3433,15 @@ function updateAllDisplays(source = 'Live Data') {
             element.textContent = value;
             if (id === 'price-change') {
                 element.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+            }
+            
+            // Add visual indicator for static data
+            if (isStaticData && ['holder-count', 'current-supply', 'burned-supply'].includes(id)) {
+                element.style.color = 'var(--rebel-gold)';
+                element.style.fontStyle = 'italic';
+            } else {
+                element.style.color = '';
+                element.style.fontStyle = '';
             }
         }
     }
@@ -3405,17 +3464,23 @@ window.refreshData = async function() {
     const success = await fetchAllTokenData();
     
     // Update display
-    updateAllDisplays(success ? 'Live Data' : 'Error - Using Cache');
+    updateAllDisplays(success ? 'Live Data' : 'Static Data');
     
     // Show result state
-    button.innerHTML = success ? 
-        '<i class="fas fa-check"></i> Updated!' : 
-        '<i class="fas fa-exclamation-triangle"></i> Error';
+    if (success) {
+        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+        button.classList.add('button-success');
+    } else {
+        button.innerHTML = '<i class="fas fa-shield-alt"></i> Using Static';
+        button.style.background = 'var(--rebel-gold)';
+    }
     
     // Reset button after delay
     setTimeout(() => {
         button.innerHTML = originalHTML;
         button.disabled = false;
+        button.classList.remove('button-success');
+        button.style.background = '';
     }, 2000);
 };
 
@@ -3423,6 +3488,23 @@ window.refreshData = async function() {
 window.quickUpdateFromSolscan = function() {
     console.log('📊 Manual update clicked');
     window.refreshData();
+};
+
+// Manual data update (you can still update static values if needed)
+window.updateStaticData = function(newStaticData) {
+    console.log('🔧 Updating static data:', newStaticData);
+    
+    if (newStaticData.holders !== undefined) STATIC_DATA.holders = newStaticData.holders;
+    if (newStaticData.currentSupply !== undefined) STATIC_DATA.currentSupply = newStaticData.currentSupply;
+    if (newStaticData.burnedSupply !== undefined) STATIC_DATA.burnedSupply = newStaticData.burnedSupply;
+    
+    // If we're currently using static data, update the display
+    if (tokenData.usingStaticData) {
+        applyStaticData();
+        updateAllDisplays('Updated Static Data');
+    }
+    
+    console.log('✅ Static data updated:', STATIC_DATA);
 };
 
 // Initialize function
@@ -3433,8 +3515,13 @@ async function initializeMetrics() {
     updateAllDisplays('Loading...');
     
     // Fetch initial data
-    await fetchAllTokenData();
-    updateAllDisplays('Live Data');
+    const success = await fetchAllTokenData();
+    updateAllDisplays(success ? 'Live Data' : 'Static Data');
+    
+    // If API failed, show static data immediately
+    if (!success) {
+        console.log('🚨 API failed, using static data as fallback');
+    }
 }
 
 // Auto-refresh every 30 seconds
@@ -3443,6 +3530,8 @@ setInterval(() => {
         fetchAllTokenData().then(success => {
             if (success) {
                 updateAllDisplays('Live Data (Auto)');
+            } else {
+                updateAllDisplays('Static Data (Auto)');
             }
         });
     }
@@ -3453,6 +3542,15 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM loaded, initializing metrics...');
     setTimeout(initializeMetrics, 1000);
 });
+
+// Debug function to check current data
+window.getCurrentTokenData = function() {
+    return {
+        liveData: tokenData,
+        staticData: STATIC_DATA,
+        usingStatic: tokenData.usingStaticData
+    };
+};
 </script>
 </body>
 </html>
