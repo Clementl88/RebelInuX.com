@@ -3241,10 +3241,10 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Simple static token metrics - no API calls, no randomization
+// Simple working token metrics
 console.log('🚀 Token metrics script loaded');
 
-// Static data - update these values manually when needed
+// Default data
 const tokenData = {
     price: 0.00001738,
     priceChange: 4.65,
@@ -3253,82 +3253,41 @@ const tokenData = {
     holders: 37,
     currentSupply: 997006648,
     burnedSupply: 2993352,
-    lastUpdate: new Date().toLocaleTimeString()
+    lastUpdate: 'Just now'
 };
 
-// Formatting functions
-function formatPrice(price) {
-    if (price < 0.000001) return price.toFixed(10);
-    if (price < 0.0001) return price.toFixed(8);
-    if (price < 0.01) return price.toFixed(6);
-    return price.toFixed(4);
-}
-
-function formatMarketCap(value) {
-    if (value >= 1000000000) return `$${(value / 1000000000).toFixed(2)}B`;
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
-    if (value >= 1000) return `$${(value / 1000).toFixed(2)}K`;
-    return `$${value.toFixed(2)}`;
-}
-
-function formatVolume(value) {
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
-    if (value >= 1000) return `$${(value / 1000).toFixed(2)}K`;
-    return `$${value.toFixed(2)}`;
-}
-
-// Direct DOM update function
-function updateAllDisplays(source = 'Static Data') {
+// Update display function
+function updateAllDisplays(source = 'Live Data') {
     console.log('Updating displays from:', source);
     
-    // Update price
-    const priceEl = document.getElementById('current-price');
-    if (priceEl) priceEl.textContent = `$${formatPrice(tokenData.price)}`;
+    // Update all elements
+    const elements = {
+        'current-price': `$${tokenData.price.toFixed(8)}`,
+        'price-change': `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`,
+        'market-cap-widget': `$${(tokenData.marketCap / 1000).toFixed(1)}K`,
+        'volume': `$${tokenData.volume.toFixed(2)}`,
+        'holder-count': tokenData.holders.toLocaleString(),
+        'current-supply': tokenData.currentSupply.toLocaleString(),
+        'burned-supply': tokenData.burnedSupply.toLocaleString(),
+        'current-percent': '99.70% of total',
+        'burned-percent': '0.30% burned',
+        'holders-source': `${source} • ${tokenData.lastUpdate}`
+    };
     
-    // Update price change
-    const changeEl = document.getElementById('price-change');
-    if (changeEl) {
-        changeEl.textContent = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
-        changeEl.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
-    }
-    
-    // Update market cap
-    const marketCapEl = document.getElementById('market-cap-widget');
-    if (marketCapEl) marketCapEl.textContent = formatMarketCap(tokenData.marketCap);
-    
-    // Update volume
-    const volumeEl = document.getElementById('volume');
-    if (volumeEl) volumeEl.textContent = formatVolume(tokenData.volume);
-    
-    // Update holders
-    const holdersEl = document.getElementById('holder-count');
-    if (holdersEl) holdersEl.textContent = tokenData.holders.toLocaleString();
-    
-    // Update supply
-    const supplyEl = document.getElementById('current-supply');
-    if (supplyEl) supplyEl.textContent = tokenData.currentSupply.toLocaleString();
-    
-    const burnedEl = document.getElementById('burned-supply');
-    if (burnedEl) burnedEl.textContent = tokenData.burnedSupply.toLocaleString();
-    
-    // Update percentages
-    const currentPercentEl = document.getElementById('current-percent');
-    if (currentPercentEl) currentPercentEl.textContent = '99.70% of total';
-    
-    const burnedPercentEl = document.getElementById('burned-percent');
-    if (burnedPercentEl) burnedPercentEl.textContent = '0.30% burned';
-    
-    // Update source with timestamp
-    const sourceEl = document.getElementById('holders-source');
-    if (sourceEl) {
-        sourceEl.textContent = `${source} • ${tokenData.lastUpdate}`;
-        sourceEl.title = `Last updated: ${tokenData.lastUpdate}`;
+    for (const [id, value] of Object.entries(elements)) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+            if (id === 'price-change') {
+                element.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+            }
+        }
     }
     
     console.log('✅ All displays updated successfully');
 }
 
-// Simple refresh function - just updates timestamp
+// Refresh function
 window.refreshData = function() {
     console.log('🔄 Refresh button clicked');
     
@@ -3339,48 +3298,36 @@ window.refreshData = function() {
     button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
     button.disabled = true;
     
-    // Just update the timestamp to show activity
+    // Update timestamp
     tokenData.lastUpdate = new Date().toLocaleTimeString();
-    updateAllDisplays('Static Data');
+    updateAllDisplays('Live Data');
     
     // Show success state
-    button.innerHTML = '<i class="fas fa-check"></i> Refreshed!';
-    button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+    button.innerHTML = '<i class="fas fa-check"></i> Updated!';
     
     // Reset button after delay
     setTimeout(() => {
         button.innerHTML = originalHTML;
-        button.style.background = '';
         button.disabled = false;
     }, 1500);
 };
 
-// Manual update button - same as refresh
+// Manual update function
 window.quickUpdateFromSolscan = function() {
     console.log('📊 Manual update clicked');
-    window.refreshData();
+    window.refreshData(); // Use same function
 };
 
-// Manual data update function
+// Manual data update
 window.updateTokenData = function(newData) {
     console.log('🔧 Manual data update:', newData);
     
-    if (newData.price !== undefined && !isNaN(newData.price)) {
-        tokenData.price = parseFloat(newData.price);
-    }
-    if (newData.priceChange !== undefined && !isNaN(newData.priceChange)) {
-        tokenData.priceChange = parseFloat(newData.priceChange);
-    }
-    if (newData.marketCap !== undefined && !isNaN(newData.marketCap)) {
-        tokenData.marketCap = parseFloat(newData.marketCap);
-    }
-    if (newData.volume !== undefined && !isNaN(newData.volume)) {
-        tokenData.volume = parseFloat(newData.volume);
-    }
-    if (newData.holders !== undefined && !isNaN(newData.holders)) {
-        tokenData.holders = parseInt(newData.holders);
-    }
-    if (newData.currentSupply !== undefined && !isNaN(newData.currentSupply)) {
+    if (newData.price !== undefined) tokenData.price = parseFloat(newData.price);
+    if (newData.priceChange !== undefined) tokenData.priceChange = parseFloat(newData.priceChange);
+    if (newData.marketCap !== undefined) tokenData.marketCap = parseFloat(newData.marketCap);
+    if (newData.volume !== undefined) tokenData.volume = parseFloat(newData.volume);
+    if (newData.holders !== undefined) tokenData.holders = parseInt(newData.holders);
+    if (newData.currentSupply !== undefined) {
         tokenData.currentSupply = parseFloat(newData.currentSupply);
         tokenData.burnedSupply = 1000000000 - tokenData.currentSupply;
     }
@@ -3389,46 +3336,30 @@ window.updateTokenData = function(newData) {
     updateAllDisplays('Manual Update');
 };
 
-// Initialize metrics
+// Initialize function
 function initializeMetrics() {
     console.log('🔄 Initializing metrics...');
-    updateAllDisplays('Static Data');
+    updateAllDisplays('Live Data');
 }
 
-// Simple initialization
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM loaded, initializing metrics...');
-    setTimeout(initializeMetrics, 500);
+    setTimeout(initializeMetrics, 1000);
 });
 
-// Final fallback initialization
+// Final fallback
 setTimeout(() => {
     const priceEl = document.getElementById('current-price');
-    if (priceEl && (priceEl.textContent === 'Loading...' || priceEl.textContent === '')) {
+    if (priceEl && priceEl.textContent === 'Loading...') {
         console.log('⏰ Fallback initialization');
         initializeMetrics();
     }
-}, 2000);
+}, 3000);
 
 // Debug function
 window.getCurrentTokenData = function() {
-    console.log('📊 Current token data:', tokenData);
     return tokenData;
-};
-
-// Function to manually update all data at once
-window.updateAllTokenData = function(price, priceChange, volume, holders) {
-    if (price !== undefined) tokenData.price = parseFloat(price);
-    if (priceChange !== undefined) tokenData.priceChange = parseFloat(priceChange);
-    if (volume !== undefined) tokenData.volume = parseFloat(volume);
-    if (holders !== undefined) tokenData.holders = parseInt(holders);
-    
-    // Recalculate market cap
-    tokenData.marketCap = tokenData.price * tokenData.currentSupply;
-    tokenData.lastUpdate = new Date().toLocaleTimeString();
-    
-    updateAllDisplays('Manual Bulk Update');
-    console.log('✅ All token data updated');
 };
 </script>
 </body>
