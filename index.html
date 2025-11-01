@@ -3241,7 +3241,7 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Simple guaranteed working token metrics
+// Working token metrics with proper initialization
 console.log('🚀 Token metrics script loaded');
 
 // Default data
@@ -3316,9 +3316,10 @@ window.refreshData = function() {
     
     // Show visual feedback
     const button = document.querySelector('.refresh-button');
+    const originalHTML = button.innerHTML;
     button.innerHTML = '<i class="fas fa-check"></i> Updated!';
     setTimeout(() => {
-        button.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Prices';
+        button.innerHTML = originalHTML;
     }, 1500);
 };
 
@@ -3336,69 +3337,74 @@ window.quickUpdateFromSolscan = function() {
     
     // Show visual feedback
     const button = document.querySelector('.update-button');
+    const originalHTML = button.innerHTML;
     button.innerHTML = '<i class="fas fa-check"></i> Data Loaded!';
     setTimeout(() => {
-        button.innerHTML = '<i class="fas fa-external-link-alt"></i> Get Latest from DexScreener';
+        button.innerHTML = originalHTML;
     }, 1500);
 };
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📊 Initializing token metrics...');
-    setTimeout(() => {
-        updateAllDisplays();
-        console.log('✅ Token metrics initialized');
-    }, 500);
-});
-
-// Force initialization after 2 seconds as backup
-setTimeout(() => {
-    if (document.getElementById('current-price')?.textContent === 'Loading...') {
-        console.log('🔄 Force initializing metrics...');
-        updateAllDisplays();
-    }
-}, 2000);
-</script>
-
-  <script>
-// Direct initialization - put this right before </body>
-console.log('🔄 Direct initialization...');
-
-function initializeMetricsNow() {
-    const elements = {
-        price: document.getElementById('current-price'),
-        change: document.getElementById('price-change'),
-        marketCap: document.getElementById('market-cap-widget'),
-        volume: document.getElementById('volume'),
-        holders: document.getElementById('holder-count'),
-        supply: document.getElementById('current-supply'),
-        burned: document.getElementById('burned-supply'),
-        currentPercent: document.getElementById('current-percent'),
-        burnedPercent: document.getElementById('burned-percent'),
-        source: document.getElementById('holders-source')
-    };
+// Initialize when the section becomes visible
+function initializeMetrics() {
+    console.log('🔄 Initializing metrics...');
     
-    if (elements.price) {
-        elements.price.textContent = '$0.00001738';
-        elements.change.textContent = '+4.65%';
-        elements.change.className = 'positive';
-        elements.marketCap.textContent = '$17.10K';
-        elements.volume.textContent = '$2.86';
-        elements.holders.textContent = '37';
-        elements.supply.textContent = '997,006,648';
-        elements.burned.textContent = '2,993,352';
-        elements.currentPercent.textContent = '99.70% of total';
-        elements.burnedPercent.textContent = '0.30% burned';
-        elements.source.textContent = 'Live Data ✅';
-        console.log('✅ Metrics manually initialized!');
+    // Check if elements exist
+    const priceEl = document.getElementById('current-price');
+    if (!priceEl) {
+        console.log('❌ Elements not found, retrying...');
+        setTimeout(initializeMetrics, 500);
+        return;
+    }
+    
+    // Check if elements already have data (not "Loading...")
+    if (priceEl.textContent === 'Loading...' || !priceEl.textContent.includes('$')) {
+        console.log('📊 Setting initial data...');
+        updateAllDisplays();
     } else {
-        console.log('❌ Elements not found yet, retrying...');
-        setTimeout(initializeMetricsNow, 500);
+        console.log('✅ Metrics already initialized');
     }
 }
 
-// Start initialization
-setTimeout(initializeMetricsNow, 1000);
+// Multiple initialization strategies
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM loaded, initializing metrics...');
+    setTimeout(initializeMetrics, 1000);
+});
+
+// Also initialize when the section scrolls into view
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            console.log('👀 Tokenomics section visible, initializing...');
+            setTimeout(initializeMetrics, 500);
+        }
+    });
+});
+
+// Start observing the tokenomics section when DOM is ready
+setTimeout(() => {
+    const tokenomicsSection = document.getElementById('tokenomics');
+    if (tokenomicsSection) {
+        observer.observe(tokenomicsSection);
+        console.log('👁️ Observer started for tokenomics section');
+    }
+}, 2000);
+
+// Final fallback - initialize after 3 seconds no matter what
+setTimeout(() => {
+    const priceEl = document.getElementById('current-price');
+    if (priceEl && (priceEl.textContent === 'Loading...' || priceEl.textContent === '')) {
+        console.log('⏰ Fallback initialization after 3 seconds');
+        updateAllDisplays();
+    }
+}, 3000);
+
+// Manual initialization function
+window.forceInitializeMetrics = function() {
+    console.log('🔄 Force initializing metrics...');
+    updateAllDisplays();
+    return 'Metrics force initialized!';
+};
 </script>
 </body>
 </html>
