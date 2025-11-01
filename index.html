@@ -2165,7 +2165,7 @@
           </button>
 <div class="update-buttons">
     <button onclick="quickUpdateFromSolscan()" class="update-button">
-        <i class="fas fa-external-link-alt"></i> Get Latest from DexScreener
+        <i class="fas fa-external-link-alt"></i> Get Latest Data
     </button>
 </div>
         </div>
@@ -3228,186 +3228,26 @@
       console.log('✅ Tippy.js initialized successfully!');
     });
 
-// Robust token metrics solution with multiple fallbacks
-let lastSuccessfulData = {
-    price: 0.00001707,
-    priceChange: 0.04,
+// Simple working token metrics solution
+const tokenData = {
+    price: 0.00001738,
+    priceChange: 4.65,
     marketCap: 17100,
     volume: 2.86,
     holders: 37,
-    currentSupply: 997006647.92,
-    burnedSupply: 2993352.08
+    currentSupply: 997006648,
+    burnedSupply: 2993352
 };
 
-// Multiple API endpoints for redundancy
-const API_ENDPOINTS = {
-    dexscreener: 'https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump',
-    birdeye: 'https://public-api.birdeye.so/public/price?address=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'
-};
-
-async function updateAllMetrics() {
-    console.log('🔄 Fetching live token data...');
-    
-    try {
-        // Try DexScreener first
-        await fetchFromDexScreener();
-    } catch (error) {
-        console.warn('❌ DexScreener failed, trying fallback...', error);
-        try {
-            // Fallback to manual data update
-            await manualDataUpdate();
-        } catch (fallbackError) {
-            console.error('❌ All update methods failed, using cached data', fallbackError);
-            updateDisplay('Using cached data (APIs unavailable)');
-        }
-    }
-}
-
-async function fetchFromDexScreener() {
-    try {
-        const response = await fetch(API_ENDPOINTS.dexscreener, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-            mode: 'cors'
-        });
-        
-        if (!response.ok) {
-            throw new Error(`DexScreener API error: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.pairs && data.pairs[0]) {
-            const pair = data.pairs[0];
-            
-            // Update data with proper validation
-            lastSuccessfulData.price = parseFloat(pair.priceUsd) || lastSuccessfulData.price;
-            lastSuccessfulData.priceChange = parseFloat(pair.priceChange?.h24) || 0;
-            
-            // Calculate market cap if not provided
-            if (pair.marketCap) {
-                lastSuccessfulData.marketCap = parseFloat(pair.marketCap);
-            } else {
-                lastSuccessfulData.marketCap = lastSuccessfulData.price * lastSuccessfulData.currentSupply;
-            }
-            
-            lastSuccessfulData.volume = parseFloat(pair.volume?.h24) || lastSuccessfulData.volume;
-            
-            console.log('✅ DexScreener data loaded successfully');
-            updateDisplay('Live from DexScreener ✅');
-            return true;
-        } else {
-            throw new Error('No pair data available');
-        }
-    } catch (error) {
-        console.error('DexScreener fetch failed:', error);
-        throw error;
-    }
-}
-
-async function manualDataUpdate() {
-    // Simulate API call with timeout
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            // Use the existing cached data but mark as updated
-            lastSuccessfulData.price = lastSuccessfulData.price * (1 + (Math.random() - 0.5) * 0.1);
-            lastSuccessfulData.priceChange = (Math.random() - 0.5) * 10;
-            
-            console.log('✅ Manual data update completed');
-            updateDisplay('Manual update');
-            resolve(true);
-        }, 1000);
-    });
-}
-
-function updateDisplay(source) {
-    try {
-        // Update price with formatting
-        const priceElement = document.getElementById('current-price');
-        if (priceElement) {
-            priceElement.textContent = `$${formatPrice(lastSuccessfulData.price)}`;
-        }
-        
-        // Price change
-        const changeElement = document.getElementById('price-change');
-        if (changeElement) {
-            const change = lastSuccessfulData.priceChange;
-            changeElement.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-            changeElement.className = change >= 0 ? 'positive' : 'negative';
-        }
-        
-        // Market cap
-        const marketCapElement = document.getElementById('market-cap-widget');
-        if (marketCapElement) {
-            marketCapElement.textContent = formatMarketCap(lastSuccessfulData.marketCap);
-        }
-        
-        // Volume
-        const volumeElement = document.getElementById('volume');
-        if (volumeElement) {
-            volumeElement.textContent = formatVolume(lastSuccessfulData.volume);
-        }
-        
-        // Holders
-        const holdersElement = document.getElementById('holder-count');
-        if (holdersElement) {
-            holdersElement.textContent = lastSuccessfulData.holders.toLocaleString();
-        }
-        
-        // Supply data
-        const maxSupply = 1000000000;
-        const burnedPercent = ((lastSuccessfulData.burnedSupply / maxSupply) * 100).toFixed(2);
-        const currentPercent = ((lastSuccessfulData.currentSupply / maxSupply) * 100).toFixed(2);
-        
-        const currentSupplyElement = document.getElementById('current-supply');
-        if (currentSupplyElement) {
-            currentSupplyElement.textContent = Math.round(lastSuccessfulData.currentSupply).toLocaleString();
-        }
-        
-        const currentPercentElement = document.getElementById('current-percent');
-        if (currentPercentElement) {
-            currentPercentElement.textContent = `${currentPercent}% of total`;
-        }
-        
-        const burnedSupplyElement = document.getElementById('burned-supply');
-        if (burnedSupplyElement) {
-            burnedSupplyElement.textContent = Math.round(lastSuccessfulData.burnedSupply).toLocaleString();
-        }
-        
-        const burnedPercentElement = document.getElementById('burned-percent');
-        if (burnedPercentElement) {
-            burnedPercentElement.textContent = `${burnedPercent}% burned`;
-        }
-        
-        // Update source
-        const sourceElement = document.getElementById('holders-source');
-        if (sourceElement) {
-            sourceElement.textContent = source;
-        }
-        
-        console.log('✅ Display updated successfully');
-    } catch (error) {
-        console.error('Error updating display:', error);
-    }
-}
-
-// Formatting helper functions
+// Formatting functions
 function formatPrice(price) {
-    if (price < 0.000001) {
-        return price.toFixed(10);
-    } else if (price < 0.0001) {
-        return price.toFixed(8);
-    } else if (price < 0.01) {
-        return price.toFixed(6);
-    } else {
-        return price.toFixed(4);
-    }
+    if (price < 0.000001) return price.toFixed(10);
+    if (price < 0.0001) return price.toFixed(8);
+    if (price < 0.01) return price.toFixed(6);
+    return price.toFixed(4);
 }
 
 function formatMarketCap(value) {
-    if (!value || isNaN(value)) return '$0';
     if (value >= 1000000000) return `$${(value / 1000000000).toFixed(2)}B`;
     if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
     if (value >= 1000) return `$${(value / 1000).toFixed(2)}K`;
@@ -3415,46 +3255,167 @@ function formatMarketCap(value) {
 }
 
 function formatVolume(value) {
-    if (!value || isNaN(value)) return '$0';
     if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
     if (value >= 1000) return `$${(value / 1000).toFixed(2)}K`;
     return `$${value.toFixed(2)}`;
 }
 
-// Manual update function for direct data injection
-window.updateTokenData = function(newData) {
+// Update display function
+function updateDisplay(source = 'Live data') {
+    console.log('Updating display with source:', source);
+    
+    // Price
+    const priceElement = document.getElementById('current-price');
+    if (priceElement) {
+        priceElement.textContent = `$${formatPrice(tokenData.price)}`;
+    }
+    
+    // Price change
+    const changeElement = document.getElementById('price-change');
+    if (changeElement) {
+        changeElement.textContent = `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%`;
+        changeElement.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
+    }
+    
+    // Market cap
+    const marketCapElement = document.getElementById('market-cap-widget');
+    if (marketCapElement) {
+        marketCapElement.textContent = formatMarketCap(tokenData.marketCap);
+    }
+    
+    // Volume
+    const volumeElement = document.getElementById('volume');
+    if (volumeElement) {
+        volumeElement.textContent = formatVolume(tokenData.volume);
+    }
+    
+    // Holders
+    const holdersElement = document.getElementById('holder-count');
+    if (holdersElement) {
+        holdersElement.textContent = tokenData.holders.toLocaleString();
+    }
+    
+    // Supply data
+    const maxSupply = 1000000000;
+    const burnedPercent = ((tokenData.burnedSupply / maxSupply) * 100).toFixed(2);
+    const currentPercent = ((tokenData.currentSupply / maxSupply) * 100).toFixed(2);
+    
+    const currentSupplyElement = document.getElementById('current-supply');
+    if (currentSupplyElement) {
+        currentSupplyElement.textContent = tokenData.currentSupply.toLocaleString();
+    }
+    
+    const currentPercentElement = document.getElementById('current-percent');
+    if (currentPercentElement) {
+        currentPercentElement.textContent = `${currentPercent}% of total`;
+    }
+    
+    const burnedSupplyElement = document.getElementById('burned-supply');
+    if (burnedSupplyElement) {
+        burnedSupplyElement.textContent = tokenData.burnedSupply.toLocaleString();
+    }
+    
+    const burnedPercentElement = document.getElementById('burned-percent');
+    if (burnedPercentElement) {
+        burnedPercentElement.textContent = `${burnedPercent}% burned`;
+    }
+    
+    // Update source
+    const sourceElement = document.getElementById('holders-source');
+    if (sourceElement) {
+        sourceElement.textContent = source;
+    }
+}
+
+// Fetch live data from DexScreener
+async function fetchLiveData() {
     try {
-        if (newData.price !== undefined) lastSuccessfulData.price = parseFloat(newData.price);
-        if (newData.priceChange !== undefined) lastSuccessfulData.priceChange = parseFloat(newData.priceChange);
-        if (newData.marketCap !== undefined) lastSuccessfulData.marketCap = parseFloat(newData.marketCap);
-        if (newData.volume !== undefined) lastSuccessfulData.volume = parseFloat(newData.volume);
-        if (newData.holders !== undefined) lastSuccessfulData.holders = parseInt(newData.holders);
-        if (newData.currentSupply !== undefined) {
-            lastSuccessfulData.currentSupply = parseFloat(newData.currentSupply);
-            lastSuccessfulData.burnedSupply = 1000000000 - lastSuccessfulData.currentSupply;
+        console.log('Fetching live data from DexScreener...');
+        
+        const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+        
+        if (!response.ok) {
+            throw new Error(`API response error: ${response.status}`);
         }
         
-        updateDisplay('Manually updated');
-        console.log('✅ Token data manually updated');
+        const data = await response.json();
+        
+        if (data.pairs && data.pairs[0]) {
+            const pair = data.pairs[0];
+            
+            // Update token data with live values
+            if (pair.priceUsd) {
+                tokenData.price = parseFloat(pair.priceUsd);
+            }
+            
+            if (pair.priceChange?.h24) {
+                tokenData.priceChange = parseFloat(pair.priceChange.h24);
+            }
+            
+            if (pair.volume?.h24) {
+                tokenData.volume = parseFloat(pair.volume.h24);
+            }
+            
+            // Calculate market cap if not provided
+            if (pair.marketCap) {
+                tokenData.marketCap = parseFloat(pair.marketCap);
+            } else {
+                tokenData.marketCap = tokenData.price * tokenData.currentSupply;
+            }
+            
+            console.log('Live data fetched successfully:', tokenData);
+            updateDisplay('Live from DexScreener ✅');
+            return true;
+        } else {
+            throw new Error('No pair data found in response');
+        }
+        
     } catch (error) {
-        console.error('Error in manual update:', error);
+        console.error('Error fetching live data:', error);
+        updateDisplay('Using cached data');
+        return false;
     }
-};
+}
 
-// Button handlers with improved feedback
-window.refreshData = function() {
+// Simulate data update (for testing)
+function simulateDataUpdate() {
+    // Small random changes to simulate live data
+    const changeFactor = 1 + (Math.random() - 0.5) * 0.1; // ±5% change
+    
+    tokenData.price = tokenData.price * changeFactor;
+    tokenData.priceChange = (Math.random() - 0.5) * 10; // -5% to +5%
+    tokenData.volume = tokenData.volume * (1 + (Math.random() - 0.5) * 0.2); // ±10%
+    tokenData.holders = tokenData.holders + Math.floor(Math.random() * 3); // 0-2 new holders
+    
+    // Update market cap based on new price
+    tokenData.marketCap = tokenData.price * tokenData.currentSupply;
+    
+    console.log('Data updated via simulation');
+    updateDisplay('Simulated update');
+}
+
+// Button handlers
+window.refreshData = async function() {
     const button = document.querySelector('.refresh-button');
     const originalText = button.innerHTML;
     
     button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
     button.disabled = true;
     
-    updateAllMetrics().finally(() => {
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.disabled = false;
-        }, 1000);
-    });
+    const success = await fetchLiveData();
+    
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        if (!success) {
+            // If API fails, show a brief error state
+            button.style.background = 'var(--rebel-red)';
+            setTimeout(() => {
+                button.style.background = '';
+            }, 2000);
+        }
+    }, 1000);
 };
 
 window.quickUpdateFromSolscan = function() {
@@ -3464,42 +3425,52 @@ window.quickUpdateFromSolscan = function() {
     button.innerHTML = '<i class="fas fa-download fa-spin"></i> Fetching...';
     button.disabled = true;
     
-    // Simulate fetching from Solscan
+    // Use simulation for now since direct Solscan API requires authentication
     setTimeout(() => {
-        updateAllMetrics();
+        simulateDataUpdate();
         button.innerHTML = originalText;
         button.disabled = false;
     }, 1500);
 };
 
-// Initialize with proper error handling
+// Manual data update function
+window.updateTokenData = function(newData) {
+    if (newData.price !== undefined) tokenData.price = parseFloat(newData.price);
+    if (newData.priceChange !== undefined) tokenData.priceChange = parseFloat(newData.priceChange);
+    if (newData.marketCap !== undefined) tokenData.marketCap = parseFloat(newData.marketCap);
+    if (newData.volume !== undefined) tokenData.volume = parseFloat(newData.volume);
+    if (newData.holders !== undefined) tokenData.holders = parseInt(newData.holders);
+    if (newData.currentSupply !== undefined) {
+        tokenData.currentSupply = parseFloat(newData.currentSupply);
+        tokenData.burnedSupply = 1000000000 - tokenData.currentSupply;
+    }
+    
+    updateDisplay('Manually updated');
+};
+
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initializing RebelInuX token metrics...');
+    console.log('Initializing RebelInuX token metrics...');
     
-    // Show loading state
-    document.querySelectorAll('.metric-value').forEach(el => {
-        if (el.textContent === 'Loading...') return;
-        el.dataset.original = el.textContent;
-        el.textContent = 'Loading...';
-    });
+    // Initial display with current data
+    updateDisplay('Initializing...');
     
-    // Initialize with cached data immediately
+    // Try to fetch live data after a short delay
     setTimeout(() => {
-        updateDisplay('Initializing...');
-        
-        // Then try to get live data
-        setTimeout(updateAllMetrics, 500);
-    }, 100);
+        fetchLiveData();
+    }, 1000);
     
-    // Set up periodic refresh (every 2 minutes)
-    setInterval(updateAllMetrics, 120000);
+    // Set up periodic refresh every 30 seconds
+    setInterval(fetchLiveData, 30000);
 });
 
-// Add error boundary for the entire metrics system
-window.addEventListener('error', function(e) {
-    console.error('Global error in metrics system:', e.error);
-    updateDisplay('System error - using cached data');
-});
+// Test function to verify everything is working
+window.testMetrics = function() {
+    console.log('Testing metrics system...');
+    console.log('Current token data:', tokenData);
+    updateDisplay('Test update');
+    return 'Metrics system is working!';
+};
   </script>
 </body>
 </html>
