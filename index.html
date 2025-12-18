@@ -3109,970 +3109,538 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
-  <script src="https://unpkg.com/tippy.js@6"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
 
-  <!-- Main Application Script -->
-  <script>
-    // Initialize AOS animations
+<script>
+// Fix the very first line of your HTML - it should start with DOCTYPE
+// Remove "it does not load : " from the beginning
+
+// Initialize AOS animations
+document.addEventListener('DOMContentLoaded', function() {
     AOS.init({
-      duration: 1000,
-      once: true,
-      offset: 100
+        duration: 1000,
+        once: true,
+        offset: 100
     });
-    // Initialize chart variable
-    window.rewardChart = null;
-
-    // Loading animation
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1000);
+    
+    // Initialize Tippy.js
+    tippy('[data-tippy-content]', {
+        theme: 'light-border',
+        arrow: true,
+        placement: 'top',
+        allowHTML: true,
     });
-// Mobile navigation
-document.getElementById('mobileNavToggle').addEventListener('click', function() {
-  const nav = document.getElementById('nav-desktop');
-  const icon = this.querySelector('i');
-  
-  nav.classList.toggle('active');
-  if (nav.classList.contains('active')) {
-    icon.classList.remove('fa-bars');
-    icon.classList.add('fa-times');
-  } else {
-    icon.classList.remove('fa-times');
-    icon.classList.add('fa-bars');
-    // Close all mobile dropdowns when closing the main menu
-    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-      dropdown.classList.remove('active');
-    });
-  }
+    
+    // Initial section animation
+    animateSections();
+    
+    // Initialize calculator
+    loadCalculatorState();
+    if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+        addTokenBatch();
+    }
+    
+    // Initialize metrics
+    setTimeout(initializeMetrics, 1000);
+    
+    // Start countdowns
+    updateCountdown1();
+    updateCountdown2();
+    updateCountdown3();
+    setInterval(updateCountdown1, 1000);
+    setInterval(updateCountdown2, 1000);
+    setInterval(updateCountdown3, 1000);
 });
+
+// Loading animation
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const loader = document.getElementById('loader');
+        if (loader) loader.classList.add('hidden');
+    }, 1000);
+});
+
+// Mobile navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+            const nav = document.getElementById('nav-desktop');
+            const icon = this.querySelector('i');
+            
+            nav.classList.toggle('active');
+            if (nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+    }
+    
     // Close mobile nav when clicking on a link
     document.querySelectorAll('#nav-desktop a').forEach(link => {
-      link.addEventListener('click', function() {
-        document.getElementById('nav-desktop').classList.remove('active');
-        document.getElementById('mobileNavToggle').querySelector('i').classList.remove('fa-times');
-        document.getElementById('mobileNavToggle').querySelector('i').classList.add('fa-bars');
-      });
+        link.addEventListener('click', function() {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
+            }
+        });
     });
-    // Back to top button
-    window.addEventListener('scroll', function() {
-      const backToTop = document.getElementById('backToTop');
-      if (window.pageYOffset > 300) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
+    
+    // Mobile dropdown functionality
+    document.querySelectorAll('.nav-dropdown > a').forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = this.parentElement;
+                const isActive = dropdown.classList.contains('active');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.nav-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+                
+                // Toggle this dropdown
+                dropdown.classList.toggle('active');
+            }
+        });
     });
-    document.getElementById('backToTop').addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    // Animate sections on scroll
-    function animateSections() {
-      document.querySelectorAll('section').forEach(section => {
+});
+
+// Back to top button
+window.addEventListener('scroll', function() {
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    }
+});
+
+document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Animate sections on scroll
+function animateSections() {
+    document.querySelectorAll('section').forEach(section => {
         const rect = section.getBoundingClientRect();
         if (rect.top < window.innerHeight - 100) {
-          section.classList.add('visible');
+            section.classList.add('visible');
         }
-      });
-    }
-    window.addEventListener('scroll', animateSections);
-    window.addEventListener('load', animateSections);
-    // Accordion functionality
-    document.querySelectorAll('.accordion-header').forEach(header => {
-      header.addEventListener('click', () => {
+    });
+}
+window.addEventListener('scroll', animateSections);
+
+// Accordion functionality
+document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
         const content = header.nextElementSibling;
         const isActive = content.classList.contains('active');
 
         // Close all accordion items
         document.querySelectorAll('.accordion-content').forEach(item => {
-          item.classList.remove('active');
-          item.style.maxHeight = null;
-          item.style.padding = '0 var(--spacing-md)';
+            item.classList.remove('active');
+            item.style.maxHeight = null;
+            item.style.padding = '0 var(--spacing-md)';
         });
         document.querySelectorAll('.accordion-header').forEach(h => {
-          h.classList.remove('active');
+            h.classList.remove('active');
         });
 
         // Open clicked item if it wasn't already active
         if (!isActive) {
-          content.classList.add('active');
-          content.style.maxHeight = content.scrollHeight + 100 + 'px'; // Extra space for buttons
-          header.classList.add('active');
+            content.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 100 + 'px';
+            header.classList.add('active');
         }
-      });
     });
-    // Register the ChartDataLabels plugin globally
-    Chart.register(ChartDataLabels);
-    // Pie chart for token distribution
-    document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('distributionChart').getContext('2d');
-      const chart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
-          datasets: [{
-            data: [70, 16, 7, 6, 1],
-            backgroundColor: [
-              'rgba(255, 51, 102, 0.9)',
-              'rgba(255, 159, 64, 0.9)',
-              'rgba(75, 192, 192, 0.9)',
-              'rgba(255, 206, 86, 0.9)',
-              'rgba(75, 192, 86, 0.9)'
-            ],
-            borderColor: [
-              'rgba(255, 255, 255, 1)',
-              'rgba(255, 255, 255, 1)',
-              'rgba(255, 255, 255, 1)',
-              'rgba(255, 255, 255, 1)',
-              'rgba(255, 255, 255, 1)'
-            ],
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                font: {
-                  size: 20,
-                  family: 'Montserrat',
-                  weight: '600'
-                },
-                color: 'white',
-                padding: 20,
-                usePointStyle: true,
-                pointStyle: 'circle'
-              },
-              title: {
-                display: true,
-                text: 'Token Distribution',
-                color: 'white',
-                font: {
-                  size: 17,
-                  family: 'Montserrat',
-                  weight: '700'
-                },
-                padding: 20
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return `${context.label}: ${context.raw}%`;
-                }
-              },
-              bodyFont: {
-                family: 'Montserrat',
-                size: 15
-              },
-              titleFont: {
-                family: 'Montserrat',
-                size: 17,
-                weight: '700'
-              },
-              padding: 12,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleColor: 'white',
-              bodyColor: 'white',
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-              borderWidth: 1
-            },
-            datalabels: {
-              color: 'white',
-              font: {
-                size: 16,
-                family: 'Montserrat',
-                weight: '600'
-              },
-              formatter: function(value, context) {
-                return context.chart.data.labels[context.dataIndex].split(' ')[0];
-              },
-              anchor: 'end',
-              align: 'center',
-              offset: 5,
-              display: function(context) {
-                return context.dataset.data[context.dataIndex] > 3;
-              }
-            }
-          }
-        }
-      });
-    });
-
-    // REBL Calculator Functions
-    function addTokenBatch(amount = '', age = '') {
-      const table = document.querySelector('#token-batches-table tbody');
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
-        <td>
-          <input
-            type="number"
-            class="batch-age"
-            value="${age}"
-            placeholder="Age"
-            min="0"
-            max="20"
-            oninput="validateAgeInput(this)"
-            style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"
-          >
-        </td>
-        <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
-        <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
-      `;
-      table.appendChild(row);
-
-      // Add enhanced event listeners
-      const amountInput = row.querySelector('.batch-amount');
-      const ageInput = row.querySelector('.batch-age');
-
-      amountInput.addEventListener('input', function() {
-        validateTokenInput(this);
-        updateWeightedValue({ target: this });
-      });
-
-      ageInput.addEventListener('input', function() {
-        updateWeightedValue({ target: this });
-      });
-
-      amountInput.addEventListener('blur', function() {
-        validateTokenInput(this);
-      });
-    }
-
-    // Validate age input to ensure it's between 0 and 20
-    function validateAgeInput(input) {
-      let value = parseInt(input.value);
-      if (isNaN(value)) {
-        input.value = 0;
-      } else if (value < 0) {
-        input.value = 0;
-      } else if (value > 20) {
-        input.value = 20;
-      }
-      // Trigger the weighted value update
-      const event = new Event('input');
-      input.dispatchEvent(event);
-    }
-
-    // Remove a token batch row
-    function removeTokenBatch(button) {
-      button.closest('tr').remove();
-      calculateRewards(); // Recalculate rewards
-    }
-
-    // Clear all token batches
-    function clearTokenBatches() {
-      document.querySelectorAll('#token-batches-table tbody tr').forEach(row => row.remove());
-      document.getElementById('reward-result').innerHTML = 'Enter your token batches to see your rewards!';
-      document.getElementById('reward-result').style.color = 'var(--rebel-gold)';
-    }
-
-    // Update the weighted value for a batch
-    function updateWeightedValue(event) {
-      const row = event.target.closest('tr');
-      const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-      const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-      const k = 0.07;
-      const A_max = 20;
-      const weightedValue = amount * (1 + k * Math.min(age, A_max));
-      row.querySelector('.batch-weighted-value').textContent = isNaN(weightedValue) ? '-' : weightedValue.toFixed(2);
-      renderRewardChart(); // Update the chart
-    }
-
-    function calculateRewards() {
-      const CS = 499242047.00; // Current Creator Supply
-      const ERP = 56301289.99074; // Updated Epoch Reward Pool
-      const rows = document.querySelectorAll('#token-batches-table tbody tr');
-      let WS = 0;
-      // Calculate Weighted Share (WS)
-      rows.forEach(row => {
-        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-        const k = 0.07;
-        const A_max = 20;
-        WS += amount * (1 + k * Math.min(age, A_max));
-      });
-      // Calculate reward
-      const reward = (WS / CS) * ERP;
-      // Display enhanced result
-      const resultElement = document.getElementById('reward-result');
-      if (WS <= 0 || isNaN(reward)) {
-        resultElement.innerHTML = 'Please enter valid token batches!';
-        resultElement.style.color = 'var(--rebel-red)';
-      } else {
-        resultElement.innerHTML = formatRewardResult(reward, WS);
-        resultElement.style.color = 'var(--rebel-gold)';
-      }
-
-      updateStatistics(); // Add this line
-      renderRewardChart(); // Update the chart
-      saveCalculatorState(); // Save user input
-    }
-
-    // Add this new function after calculateRewards()
-    function formatRewardResult(reward, WS) {
-      const CS = 499242047.00;
-      const sharePercentage = ((WS / CS) * 100).toFixed(4);
-
-      return `
-        <div style="text-align: left; line-height: 1.6;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-            <span><strong>Your Weighted Share:</strong></span>
-            <span>${WS.toLocaleString()} (${sharePercentage}% of total)</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-            <span><strong>Your Estimated Reward:</strong></span>
-            <span style="color: var(--rebel-gold); font-size: 1.2em;">${reward.toLocaleString()} $REBL</span>
-          </div>
-          <div style="font-size: 0.8em; color: rgba(255,255,255,0.7); margin-top: 0.5em;">
-            Based on current Epoch Reward Pool: 56,301,289.99074 $REBL
-          </div>
-        </div>
-      `;
-    }
-
-    // Render the reward breakdown chart
-    function renderRewardChart() {
-      const rows = document.querySelectorAll('#token-batches-table tbody tr');
-      const batches = Array.from(rows).map(row => ({
-        amount: parseFloat(row.querySelector('.batch-amount').value) || 0,
-        age: parseFloat(row.querySelector('.batch-age').value) || 0,
-        weightedValue: parseFloat(row.querySelector('.batch-weighted-value').textContent.replace('-', '0')) || 0,
-      }));
-      const ctx = document.getElementById('rewardChart').getContext('2d');
-      // Destroy previous chart if it exists and is a Chart instance
-      if (window.rewardChart && typeof window.rewardChart.destroy === 'function') {
-        window.rewardChart.destroy();
-      }
-      // Create new chart
-      window.rewardChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: batches.map((_, i) => `Batch ${i + 1}`),
-          datasets: [{
-            data: batches.map(batch => batch.weightedValue),
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.7)',
-              'rgba(54, 162, 235, 0.7)',
-              'rgba(255, 206, 86, 0.7)',
-              'rgba(75, 192, 192, 0.7)',
-              'rgba(153, 102, 255, 0.7)',
-            ],
-          }],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: 'white',
-              },
-            },
-            tooltip: {
-              callbacks: {
-                label: (context) => {
-                  const batch = batches[context.dataIndex];
-                  return [
-                    `Amount: ${batch.amount.toLocaleString()}`,
-                    `Age: ${batch.age} epochs`,
-                    `Weighted Value: ${batch.weightedValue.toFixed(2)}`,
-                  ];
-                },
-              },
-            },
-          },
-        },
-      });
-    }
-
-    // Add input validation for token amounts
-    function validateTokenInput(input) {
-      let value = parseFloat(input.value);
-      if (isNaN(value) || value < 0) {
-        input.style.borderColor = 'var(--rebel-red)';
-        input.title = 'Please enter a valid positive number';
-        return false;
-      }
-      input.style.borderColor = 'var(--rebel-gold)';
-      input.title = '';
-      return true;
-    }
-
-    // Add statistics function
-    function updateStatistics() {
-      const rows = document.querySelectorAll('#token-batches-table tbody tr');
-      let totalTokens = 0;
-      let totalAge = 0;
-      let validBatches = 0;
-
-      rows.forEach(row => {
-        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-
-        if (amount > 0) {
-          totalTokens += amount;
-          totalAge += age;
-          validBatches++;
-        }
-      });
-
-      const statsElement = document.getElementById('calculator-stats');
-      if (validBatches > 0) {
-        document.getElementById('stat-total-tokens').textContent = totalTokens.toLocaleString();
-        document.getElementById('stat-avg-age').textContent = (totalAge / validBatches).toFixed(1);
-        document.getElementById('stat-total-batches').textContent = validBatches;
-        statsElement.style.display = 'block';
-      } else {
-        statsElement.style.display = 'none';
-      }
-    }
-
-    // Add save/load functionality
-    function saveCalculatorState() {
-      const batches = [];
-      document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
-        const amount = row.querySelector('.batch-amount').value;
-        const age = row.querySelector('.batch-age').value;
-        if (amount && age) {
-          batches.push({ amount, age });
-        }
-      });
-      localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
-    }
-
-    function loadCalculatorState() {
-      const saved = localStorage.getItem('reblCalculatorBatches');
-      if (saved) {
-        const batches = JSON.parse(saved);
-        clearTokenBatches();
-        batches.forEach(batch => addTokenBatch(batch.amount, batch.age));
-      }
-    }
-
-    // Add example data loader
-    function loadExampleData() {
-      clearTokenBatches();
-
-      // Add realistic example batches
-      addTokenBatch('1000000', '5');
-      addTokenBatch('500000', '12');
-      addTokenBatch('2500000', '1');
-
-      // Force calculation of weighted values for all rows
-      setTimeout(() => {
-        const rows = document.querySelectorAll('#token-batches-table tbody tr');
-        rows.forEach(row => {
-          const amount = row.querySelector('.batch-amount').value;
-          const age = row.querySelector('.batch-age').value;
-
-          if (amount && age) {
-            // Calculate weighted value directly
-            const k = 0.07;
-            const A_max = 20;
-            const weightedValue = amount * (1 + k * Math.min(age, A_max));
-            row.querySelector('.batch-weighted-value').textContent = weightedValue.toFixed(2);
-          }
-        });
-
-        // Now calculate the rewards
-        calculateRewards();
-
-        // Show the results
-        const resultElement = document.getElementById('reward-result');
-        resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded with weighted values!</div>';
-
-      }, 100);
-    }
-
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        calculateRewards();
-      }
-    });
-
-    // Update "What If" scenarios
-    function updateWhatIf() {
-      const amount = parseInt(document.getElementById('whatIfAmount').value);
-      const epochs = parseInt(document.getElementById('whatIfEpochs').value);
-      const CS = 499242047.00;
-      const ERP = 56301289.99074;
-      const WS = amount * (1 + 0.07 * epochs);
-      const reward = (WS / CS) * ERP;
-      document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString();
-      document.getElementById('whatIfEpochsValue').textContent = epochs;
-      document.getElementById('whatIfReward').textContent = reward.toFixed(2);
-    }
-
-    // Initialize calculator
-    document.addEventListener('DOMContentLoaded', function() {
-      loadCalculatorState();
-      if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
-        addTokenBatch(); // Only add empty row if no saved data
-      }
-    });
-
-    // Countdown Timers
-    // Epoch 11 End Date (Example: December 21, 2025, 21:00:00 UTC)
-    function updateCountdown1() {
-      const epoch4EndDate = new Date("2025-12-21T22:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = epoch4EndDate - now;
-      if (distance < 0) {
-        document.getElementById('countdown1').innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 11 Ended!</div>';
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById('days1').textContent = days.toString().padStart(2, '0');
-      document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
-      document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
-      document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
-    }
-    // Epoch 12 Start Date (Example: December 21, 2025, 21:00:00 UTC)
-    function updateCountdown2() {
-      const epoch5StartDate = new Date("2025-12-21T22:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = epoch5StartDate - now;
-      if (distance < 0) {
-        document.getElementById('countdown2').innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 12 Started!</div>';
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById('days2').textContent = days.toString().padStart(2, '0');
-      document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
-      document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
-      document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
-    }
-    // Epoch 13 Start Date (Example: December 28, 2025, 21:00:00 UTC)
-    function updateCountdown3() {
-      const epoch6StartDate = new Date("2025-12-28T22:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = epoch6StartDate - now;
-      if (distance < 0) {
-        document.getElementById('countdown3').innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 13 Started!</div>';
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById('days3').textContent = days.toString().padStart(2, '0');
-      document.getElementById('hours3').textContent = hours.toString().padStart(2, '0');
-      document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
-      document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
-    }
-    setInterval(updateCountdown1, 1000);
-    setInterval(updateCountdown2, 1000);
-    setInterval(updateCountdown3, 1000);
-    updateCountdown1();
-    updateCountdown2();
-    updateCountdown3();
-
-    // Initialize Tippy.js after DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      tippy('[data-tippy-content]', {
-        theme: 'light-border',
-        arrow: true,
-        placement: 'top',
-        allowHTML: true,
-      });
-      console.log('✅ Tippy.js initialized successfully!');
-    });
-
-// Token contract address
-const TOKEN_ADDRESS = "F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump";
-
-// API endpoints
-const API_ENDPOINTS = {
-    dexscreener: `https://api.dexscreener.com/latest/dex/tokens/${TOKEN_ADDRESS}`,
-    solscan: `https://public-api.solscan.io/token/holders?tokenAddress=${TOKEN_ADDRESS}&limit=1`,
-};
-
-// Static fallback data (your current known values)
-const STATIC_DATA = {
-    holders: 109,
-    currentSupply: 944920617
-,
-    burnedSupply: 55079383,
-    maxSupply: 1000000000
-};
-
-// Token data with fallback values
-const tokenData = {
-    price: 0,
-    priceChange: 0,
-    marketCap: 0,
-    volume: 0,
-    holders: STATIC_DATA.holders,
-    currentSupply: STATIC_DATA.currentSupply,
-    burnedSupply: STATIC_DATA.burnedSupply,
-    lastUpdate: 'Never',
-    usingStaticData: false
-};
-
-
-  
-  // ALSO UPDATE NEW LIVE STATS ELEMENTS (this is the key part!)
-  const newElements = {
-    'live-price': tokenData.price ? `$${tokenData.price.toFixed(8)}` : '—',
-    'price-change-display': tokenData.priceChange ? `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%` : '—',
-    'live-market-cap': tokenData.marketCap ? `$${(tokenData.marketCap / 1000).toFixed(1)}K` : '—',
-    'live-volume': tokenData.volume ? `$${tokenData.volume.toLocaleString()}` : '—',
-    'live-liquidity': tokenData.liquidity ? `$${tokenData.liquidity.toLocaleString()}` : '—',
-    'live-holders': tokenData.holders ? tokenData.holders.toLocaleString() : STATIC_DATA.holders.toLocaleString(),
-    'live-supply': tokenData.currentSupply ? tokenData.currentSupply.toLocaleString() : STATIC_DATA.currentSupply.toLocaleString(),
-    'live-burned': tokenData.burnedSupply ? tokenData.burnedSupply.toLocaleString() : STATIC_DATA.burnedSupply.toLocaleString(),
-    'supply-percent': currentPercent,
-    'burned-percent-display': burnedPercent,
-    'holders-source-display': tokenData.holdersSource || 'Static Data',
-    'last-updated-time': tokenData.lastUpdate || '—'
-  };
-  
-  for (const [id, value] of Object.entries(newElements)) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = value;
-      if (id === 'price-change-display') {
-        element.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
-        element.style.padding = '0.3rem 0.8rem';
-        element.style.borderRadius = '20px';
-        element.style.display = 'inline-block';
-      }
-    }
-  }
-  
-  console.log('✅ All displays updated (both old and new)');
-}
-// UPDATE your existing refreshData() function
-window.refreshData = async function() {
-  console.log('🔄 Refresh button clicked');
-  
-  const button = document.querySelector('.refresh-button');
-  const originalHTML = button.innerHTML;
-  
-  // Show loading state
-  button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
-  button.disabled = true;
-  
-// Fetch new data
-const data = await fetchLiveStatsData();
-
-// Update the display
-updateLiveStatsDisplay(data);;
-  
-  // Update all displays (both old and new)
-updateLiveStatsDisplay(result.tokenData);
-  
-  // ALSO update the combined dashboard specifically
-  updateLiveStatsDisplay(result.tokenData); 
-  
-  // Show result state
-  if (result.success) {
-    button.innerHTML = '<i class="fas fa-check"></i> Updated!';
-    button.classList.add('button-success');
-  } else {
-    button.innerHTML = '<i class="fas fa-shield-alt"></i> Using Static';
-    button.style.background = 'var(--rebel-gold)';
-  }
-  
-  // Reset button after delay
-  setTimeout(() => {
-    button.innerHTML = originalHTML;
-    button.disabled = false;
-    button.classList.remove('button-success');
-    button.style.background = '';
-  }, 2000);
-};
-// Manual update function
-window.quickUpdateFromSolscan = function() {
-    console.log('📊 Manual update clicked');
-    window.refreshData();
-};
-
-// Manual data update (you can still update static values if needed)
-window.updateStaticData = function(newStaticData) {
-    console.log('🔧 Updating static data:', newStaticData);
-    
-    if (newStaticData.holders !== undefined) STATIC_DATA.holders = newStaticData.holders;
-    if (newStaticData.currentSupply !== undefined) STATIC_DATA.currentSupply = newStaticData.currentSupply;
-    if (newStaticData.burnedSupply !== undefined) STATIC_DATA.burnedSupply = newStaticData.burnedSupply;
-    
-    console.log('✅ Static data updated:', STATIC_DATA);
-};
-
-// UPDATE your existing initializeMetrics() function
-async function initializeMetrics() {
-  console.log('🔄 Initializing metrics...');
-  
-  // Show loading state
-  updateLiveStatsDisplay({
-    price: 0,
-    priceChange: 0,
-    marketCap: 0,
-    volume: 0,
-    liquidity: 0,
-    holders: STATIC_DATA.holders,
-    currentSupply: STATIC_DATA.currentSupply,
-    burnedSupply: STATIC_DATA.burnedSupply,
-    maxSupply: 1000000000,
-    holdersSource: 'Loading...',
-    lastUpdate: 'Loading...',
-    success: false
-  });
-  
-  // Fetch initial data
-  const data = await fetchLiveStatsData();
-  
-  // Update the display
-  updateLiveStatsDisplay(data);
-  
-  // Set up auto-refresh
-  setInterval(async () => {
-    if (document.visibilityState === 'visible') {
-      const newData = await fetchLiveStatsData();
-      updateLiveStatsDisplay(newData);
-    }
-  }, 30000);
-}
-
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM loaded, initializing metrics...');
-    setTimeout(initializeMetrics, 1000);
 });
 
-
-
-       // Add this function to your existing JavaScript section
-    function copyContract() {
-      const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-      navigator.clipboard.writeText(contractAddress).then(() => {
-        // Show a success message or change button text briefly
+// Contract copy function
+function copyContract() {
+    const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    navigator.clipboard.writeText(contractAddress).then(() => {
         const button = event.target.closest('button') || event.target;
         const originalText = button.innerHTML;
         button.innerHTML = '<i class="fas fa-check"></i> Copied!';
         button.style.background = '#4CAF50';
         
         setTimeout(() => {
-          button.innerHTML = originalText;
-          button.style.background = 'var(--rebel-red)';
+            button.innerHTML = originalText;
+            button.style.background = 'var(--rebel-red)';
         }, 2000);
-      }).catch(err => {
+    }).catch(err => {
         console.error('Failed to copy: ', err);
-      });
-    }
-
-    // Mobile dropdown functionality
-document.addEventListener('DOMContentLoaded', function() {
-  // For mobile: make dropdowns clickable
-  document.querySelectorAll('.nav-dropdown > a').forEach(trigger => {
-    trigger.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const dropdown = this.parentElement;
-        const isActive = dropdown.classList.contains('active');
-        
-        // Close all other dropdowns
-        document.querySelectorAll('.nav-dropdown').forEach(d => {
-          if (d !== dropdown) {
-            d.classList.remove('active');
-          }
-        });
-        
-        // Toggle this dropdown
-        dropdown.classList.toggle('active');
-      }
     });
-  });
+}
 
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.nav-dropdown') && !e.target.closest('#mobileNavToggle')) {
-      document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-        dropdown.classList.remove('active');
-      });
-      
-      // Also close mobile menu if clicking outside
-      if (window.innerWidth <= 768 && !e.target.closest('#nav-desktop')) {
-        document.getElementById('nav-desktop').classList.remove('active');
-        const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
-        toggleIcon.classList.remove('fa-times');
-        toggleIcon.classList.add('fa-bars');
-      }
-    }
-  });
-
-  // Close mobile dropdowns when clicking a link
-  document.querySelectorAll('#nav-desktop a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        // Close mobile menu
-        document.getElementById('nav-desktop').classList.remove('active');
-        document.getElementById('mobileNavToggle').querySelector('i').classList.remove('fa-times');
-        document.getElementById('mobileNavToggle').querySelector('i').classList.add('fa-bars');
-        
-        // Close all dropdowns
-        document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-          dropdown.classList.remove('active');
-        });
-      }
-    });
-  });
-});
-
-// Close dropdowns on window resize (when switching from mobile to desktop)
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 768) {
-    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-      dropdown.classList.remove('active');
-    });
-  }
-});
+// Countdown Timers
+function updateCountdown1() {
+    const element = document.getElementById('countdown1');
+    if (!element) return;
     
+    const epoch4EndDate = new Date("2025-12-21T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch4EndDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 11 Ended!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days1').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
+}
+
+function updateCountdown2() {
+    const element = document.getElementById('countdown2');
+    if (!element) return;
+    
+    const epoch5StartDate = new Date("2025-12-21T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch5StartDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 12 Started!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days2').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
+}
+
+function updateCountdown3() {
+    const element = document.getElementById('countdown3');
+    if (!element) return;
+    
+    const epoch6StartDate = new Date("2025-12-28T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch6StartDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 13 Started!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days3').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours3').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
+}
+
+// Live Stats Data
+const STATIC_DATA = {
+    holders: 109,
+    currentSupply: 944920617,
+    burnedSupply: 55079383,
+    maxSupply: 1000000000
+};
+
 async function fetchLiveStatsData() {
-  try {
-    console.log('📊 Fetching combined live stats...');
-    
-    // Fetch market data from DexScreener
-    const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
-    const dexscreenerData = await dexscreenerResponse.json();
-    
-    // Fetch holder data from Solscan
-    const solscanResponse = await fetch(`https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1`);
-    const solscanData = await solscanResponse.json();
-    
-    let marketData = {};
-    if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
-      const pair = dexscreenerData.pairs.find(p => p.chainId === 'solana') || dexscreenerData.pairs[0];
-      
-      marketData = {
-        price: parseFloat(pair.priceUsd) || 0,
-        priceChange: pair.priceChange?.h24 || 0,
-        marketCap: pair.fdv || 0,
-        volume: pair.volume?.h24 || 0,
-        liquidity: pair.liquidity?.usd || 0,
-        success: true
-      };
+    try {
+        // Fetch market data from DexScreener
+        const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+        const dexscreenerData = await dexscreenerResponse.json();
+        
+        // Fetch holder data from Solscan
+        const solscanResponse = await fetch(`https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1`);
+        const solscanData = await solscanResponse.json();
+        
+        let marketData = {
+            price: 0,
+            priceChange: 0,
+            marketCap: 0,
+            volume: 0,
+            liquidity: 0,
+            success: false
+        };
+        
+        if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
+            const pair = dexscreenerData.pairs.find(p => p.chainId === 'solana') || dexscreenerData.pairs[0];
+            
+            marketData = {
+                price: parseFloat(pair.priceUsd) || 0,
+                priceChange: pair.priceChange?.h24 || 0,
+                marketCap: pair.fdv || 0,
+                volume: pair.volume?.h24 || 0,
+                liquidity: pair.liquidity?.usd || 0,
+                success: true
+            };
+        }
+        
+        return {
+            ...marketData,
+            holders: solscanData?.total || STATIC_DATA.holders,
+            currentSupply: STATIC_DATA.currentSupply,
+            burnedSupply: STATIC_DATA.burnedSupply,
+            maxSupply: 1000000000,
+            holdersSource: solscanData?.total ? 'Solscan API' : 'Static Data',
+            lastUpdate: new Date().toLocaleTimeString(),
+            success: marketData.success
+        };
+        
+    } catch (error) {
+        console.error('Error fetching live stats:', error);
+        return {
+            price: 0,
+            priceChange: 0,
+            marketCap: 0,
+            volume: 0,
+            liquidity: 0,
+            holders: STATIC_DATA.holders,
+            currentSupply: STATIC_DATA.currentSupply,
+            burnedSupply: STATIC_DATA.burnedSupply,
+            maxSupply: 1000000000,
+            holdersSource: 'Static Data (API Failed)',
+            lastUpdate: new Date().toLocaleTimeString(),
+            success: false
+        };
     }
-    
-    return {
-      ...marketData,
-      holders: solscanData?.total || STATIC_DATA.holders,
-      currentSupply: STATIC_DATA.currentSupply,
-      burnedSupply: STATIC_DATA.burnedSupply,
-      maxSupply: 1000000000,
-      holdersSource: solscanData?.total ? 'Solscan API' : 'Static Data',
-      lastUpdate: new Date().toLocaleTimeString(),
-      success: true
-    };
-    
-  } catch (error) {
-    console.error('❌ Error fetching live stats:', error);
-    
-    // Return fallback data
-    return {
-      price: 0,
-      priceChange: 0,
-      marketCap: 0,
-      volume: 0,
-      liquidity: 0,
-      holders: STATIC_DATA.holders,
-      currentSupply: STATIC_DATA.currentSupply,
-      burnedSupply: STATIC_DATA.burnedSupply,
-      maxSupply: 1000000000,
-      holdersSource: 'Static Data (API Failed)',
-      lastUpdate: new Date().toLocaleTimeString(),
-      success: false
-    };
-  }
 }
+
 function updateLiveStatsDisplay(data) {
-  // Update price
-  const priceElement = document.getElementById('live-price');
-  const priceChangeElement = document.getElementById('price-change-display');
-  
-  if (data.price > 0) {
-    priceElement.textContent = `$${data.price.toFixed(8)}`;
-    priceChangeElement.textContent = `${data.priceChange >= 0 ? '+' : ''}${data.priceChange.toFixed(2)}%`;
-    priceChangeElement.className = data.priceChange >= 0 ? 'positive' : 'negative';
-    priceChangeElement.style.padding = '0.3rem 0.8rem';
-    priceChangeElement.style.borderRadius = '20px';
-    priceChangeElement.style.display = 'inline-block';
-  } else {
-    priceElement.textContent = '—';
-    priceChangeElement.textContent = 'API Error';
-    priceChangeElement.className = '';
-  }
-  
-  // Update market cap
-  document.getElementById('live-market-cap').textContent = data.marketCap > 0 ? 
-    `$${(data.marketCap / 1000).toFixed(1)}K` : '—';
-  
-  // Update volume
-  document.getElementById('live-volume').textContent = data.volume > 0 ? 
-    `$${data.volume.toLocaleString()}` : '—';
-  
-  // Update liquidity
-  document.getElementById('live-liquidity').textContent = data.liquidity > 0 ? 
-    `$${data.liquidity.toLocaleString()}` : '—';
-  
-  // Update holders
-  document.getElementById('live-holders').textContent = data.holders.toLocaleString();
-  document.getElementById('holders-source-display').textContent = data.holdersSource;
-  
-  // Update supply data
-  document.getElementById('live-supply').textContent = data.currentSupply.toLocaleString();
-  document.getElementById('live-burned').textContent = data.burnedSupply.toLocaleString();
-  
-  // Update percentages
-  const currentPercent = ((data.currentSupply / data.maxSupply) * 100).toFixed(2);
-  const burnedPercent = ((data.burnedSupply / data.maxSupply) * 100).toFixed(2);
-  
-  document.getElementById('supply-percent').textContent = `${currentPercent}% of total`;
-  document.getElementById('burned-percent-display').textContent = `${burnedPercent}% burned`;
-  
-  // Update timestamp
-  document.getElementById('last-updated-time').textContent = data.lastUpdate;
-}
-
-
-// Auto-refresh every 30 seconds
-let liveStatsInterval;
-function startLiveStatsAutoRefresh() {
-  // Clear any existing interval
-  if (liveStatsInterval) clearInterval(liveStatsInterval);
-  
-  // Initial load
-  fetchLiveStatsData().then(updateLiveStatsDisplay);
-  
-  // Set up interval
-  liveStatsInterval = setInterval(async () => {
-    if (document.visibilityState === 'visible') {
-      const data = await fetchLiveStatsData();
-      updateLiveStatsDisplay(data);
+    // Update price
+    const priceElement = document.getElementById('live-price');
+    const priceChangeElement = document.getElementById('price-change-display');
+    
+    if (priceElement && priceChangeElement) {
+        if (data.price > 0) {
+            priceElement.textContent = `$${data.price.toFixed(8)}`;
+            priceChangeElement.textContent = `${data.priceChange >= 0 ? '+' : ''}${data.priceChange.toFixed(2)}%`;
+            priceChangeElement.className = data.priceChange >= 0 ? 'positive' : 'negative';
+        } else {
+            priceElement.textContent = '—';
+            priceChangeElement.textContent = 'API Error';
+            priceChangeElement.className = '';
+        }
     }
-  }, 30000); // 30 seconds
+    
+    // Update other elements
+    const updates = {
+        'live-market-cap': data.marketCap > 0 ? `$${(data.marketCap / 1000).toFixed(1)}K` : '—',
+        'live-volume': data.volume > 0 ? `$${data.volume.toLocaleString()}` : '—',
+        'live-liquidity': data.liquidity > 0 ? `$${data.liquidity.toLocaleString()}` : '—',
+        'live-holders': data.holders.toLocaleString(),
+        'holders-source-display': data.holdersSource,
+        'live-supply': data.currentSupply.toLocaleString(),
+        'live-burned': data.burnedSupply.toLocaleString(),
+        'last-updated-time': data.lastUpdate
+    };
+    
+    for (const [id, value] of Object.entries(updates)) {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    }
+    
+    // Update percentages
+    const currentPercent = ((data.currentSupply / data.maxSupply) * 100).toFixed(2);
+    const burnedPercent = ((data.burnedSupply / data.maxSupply) * 100).toFixed(2);
+    
+    const supplyPercent = document.getElementById('supply-percent');
+    const burnedPercentDisplay = document.getElementById('burned-percent-display');
+    
+    if (supplyPercent) supplyPercent.textContent = `${currentPercent}% of total`;
+    if (burnedPercentDisplay) burnedPercentDisplay.textContent = `${burnedPercent}% burned`;
 }
 
+async function initializeMetrics() {
+    const data = await fetchLiveStatsData();
+    updateLiveStatsDisplay(data);
+    
+    // Set up auto-refresh
+    setInterval(async () => {
+        if (document.visibilityState === 'visible') {
+            const newData = await fetchLiveStatsData();
+            updateLiveStatsDisplay(newData);
+        }
+    }, 30000);
+}
+
+window.refreshData = async function() {
+    const button = document.querySelector('.refresh-button');
+    if (!button) return;
+    
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+    button.disabled = true;
+    
+    const data = await fetchLiveStatsData();
+    updateLiveStatsDisplay(data);
+    
+    if (data.success) {
+        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+        button.classList.add('button-success');
+    } else {
+        button.innerHTML = '<i class="fas fa-shield-alt"></i> Using Static';
+        button.style.background = 'var(--rebel-gold)';
+    }
+    
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+        button.classList.remove('button-success');
+        button.style.background = '';
+    }, 2000);
+};
+
+window.quickUpdateFromSolscan = function() {
+    window.refreshData();
+};
+
+// REBL Calculator Functions
+function addTokenBatch(amount = '', age = '') {
+    const table = document.querySelector('#token-batches-table tbody');
+    if (!table) return;
+    
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+        <td>
+            <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="validateAgeInput(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
+        </td>
+        <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
+        <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
+    `;
+    table.appendChild(row);
+}
+
+function validateAgeInput(input) {
+    let value = parseInt(input.value);
+    if (isNaN(value)) input.value = 0;
+    else if (value < 0) input.value = 0;
+    else if (value > 20) input.value = 20;
+}
+
+function removeTokenBatch(button) {
+    button.closest('tr').remove();
+    calculateRewards();
+}
+
+function clearTokenBatches() {
+    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => row.remove());
+    const resultElement = document.getElementById('reward-result');
+    if (resultElement) {
+        resultElement.innerHTML = 'Enter your token batches to see your rewards!';
+        resultElement.style.color = 'var(--rebel-gold)';
+    }
+}
+
+function calculateRewards() {
+    const CS = 499242047.00;
+    const ERP = 56301289.99074;
+    const rows = document.querySelectorAll('#token-batches-table tbody tr');
+    let WS = 0;
+    
+    rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+        const k = 0.07;
+        const A_max = 20;
+        WS += amount * (1 + k * Math.min(age, A_max));
+    });
+    
+    const reward = (WS / CS) * ERP;
+    const resultElement = document.getElementById('reward-result');
+    
+    if (!resultElement) return;
+    
+    if (WS <= 0 || isNaN(reward)) {
+        resultElement.innerHTML = 'Please enter valid token batches!';
+        resultElement.style.color = 'var(--rebel-red)';
+    } else {
+        const sharePercentage = ((WS / CS) * 100).toFixed(4);
+        resultElement.innerHTML = `
+            <div style="text-align: left; line-height: 1.6;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+                    <span><strong>Your Weighted Share:</strong></span>
+                    <span>${WS.toLocaleString()} (${sharePercentage}% of total)</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+                    <span><strong>Your Estimated Reward:</strong></span>
+                    <span style="color: var(--rebel-gold); font-size: 1.2em;">${reward.toLocaleString()} $REBL</span>
+                </div>
+                <div style="font-size: 0.8em; color: rgba(255,255,255,0.7); margin-top: 0.5em;">
+                    Based on current Epoch Reward Pool: 56,301,289.99074 $REBL
+                </div>
+            </div>
+        `;
+        resultElement.style.color = 'var(--rebel-gold)';
+    }
+}
+
+function loadExampleData() {
+    clearTokenBatches();
+    addTokenBatch('1000000', '5');
+    addTokenBatch('500000', '12');
+    addTokenBatch('2500000', '1');
+    
+    setTimeout(() => {
+        calculateRewards();
+        const resultElement = document.getElementById('reward-result');
+        if (resultElement) {
+            resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded!</div>';
+        }
+    }, 100);
+}
+
+function loadCalculatorState() {
+    const saved = localStorage.getItem('reblCalculatorBatches');
+    if (saved) {
+        const batches = JSON.parse(saved);
+        clearTokenBatches();
+        batches.forEach(batch => addTokenBatch(batch.amount, batch.age));
+    }
+}
+
+// Save calculator state on input
+document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('batch-amount') || e.target.classList.contains('batch-age')) {
+        const batches = [];
+        document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
+            const amount = row.querySelector('.batch-amount').value;
+            const age = row.querySelector('.batch-age').value;
+            if (amount && age) {
+                batches.push({ amount, age });
+            }
+        });
+        localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
+    }
+});
 </script>
 </body>
 </html>
