@@ -2541,90 +2541,95 @@
   </div>
 
 <!-- UPDATED Tokenomics Dashboard (Combined with Live Stats) -->
-<div class="tokenomics-dashboard">
-  <div class="dashboard-header">
-    <h3><i class="fas fa-chart-line"></i> $REBL LIVE STATS & TOKEN METRICS</h3>
-    <div class="controls">
-      <button onclick="refreshData()" class="refresh-button">
-        <i class="fas fa-sync-alt"></i> Refresh All Data
-      </button>
-      <div class="update-buttons">
-        <button onclick="quickUpdateFromSolscan()" class="update-button">
-          <i class="fas fa-external-link-alt"></i> Get Latest
+<section id="tokenomics" class="visible">
+  <h2>$REBL LIVE STATS & TOKEN METRICS</h2>
+  
+  <div class="tokenomics-dashboard">
+    <div class="dashboard-header">
+      <h3><i class="fas fa-chart-line"></i> $REBL LIVE STATS & TOKEN METRICS</h3>
+      <div class="controls">
+        <button onclick="refreshData()" class="refresh-button">
+          <i class="fas fa-sync-alt"></i> Refresh All Data
         </button>
+        <div class="update-buttons">
+          <button onclick="quickUpdateFromSolscan()" class="update-button">
+            <i class="fas fa-external-link-alt"></i> Get Latest
+          </button>
+        </div>
       </div>
     </div>
+    
+    <!-- Combined Stats Grid -->
+    <div class="metric-cards">
+      <!-- Price Card -->
+      <div class="metric-card">
+        <i class="fas fa-dollar-sign metric-icon" style="color: var(--rebel-gold);"></i>
+        <h4>Price (USD)</h4>
+        <div class="metric-value" id="live-price">—</div>
+        <div id="price-change-display" class="metric-subtitle" style="margin-top: 0.5rem; font-weight: 600;">Loading...</div>
+      </div>
+      
+      <!-- Market Cap Card -->
+      <div class="metric-card">
+        <i class="fas fa-fire metric-icon" style="color: #ff6600;"></i>
+        <h4>Market Cap</h4>
+        <div class="metric-value" id="live-market-cap">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Fully Diluted</div>
+      </div>
+      
+      <!-- Volume Card -->
+      <div class="metric-card">
+        <i class="fas fa-exchange-alt metric-icon" style="color: var(--rebel-red);"></i>
+        <h4>24H Volume</h4>
+        <div class="metric-value" id="live-volume">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Trading Activity</div>
+      </div>
+      
+      <!-- Liquidity Card -->
+      <div class="metric-card">
+        <i class="fas fa-tint metric-icon" style="color: #00ccff;"></i>
+        <h4>Liquidity</h4>
+        <div class="metric-value" id="live-liquidity">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Pooled Value</div>
+      </div>
+      
+      <!-- Holders Card -->
+      <div class="metric-card">
+        <i class="fas fa-users metric-icon" style="color: #9C27B0;"></i>
+        <h4>Holders</h4>
+        <div class="metric-value" id="live-holders">Loading...</div>
+        <div class="metric-subtitle" id="holders-source-display">From Solscan</div>
+      </div>
+      
+      <!-- Current Supply Card -->
+      <div class="metric-card">
+        <i class="fas fa-coins metric-icon" style="color: var(--rebel-gold);"></i>
+        <h4>Current Supply</h4>
+        <div class="metric-value" id="live-supply">Loading...</div>
+        <div class="metric-subtitle" id="supply-percent">—</div>
+      </div>
+      
+      <!-- Burned Supply Card -->
+      <div class="metric-card">
+        <i class="fas fa-fire-alt metric-icon" style="color: var(--rebel-red);"></i>
+        <h4>Total Burned</h4>
+        <div class="metric-value" id="live-burned">Loading...</div>
+        <div class="metric-subtitle" id="burned-percent-display">—</div>
+      </div>
+    </div>
+    
+    <!-- Data Source Info -->
+    <div class="data-info">
+      <small>
+        <i class="fas fa-sync-alt"></i> Live data updates every 30 seconds via 
+        <a href="https://dexscreener.com" target="_blank" style="color: var(--rebel-gold);">DexScreener API</a> • 
+        Pool: <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">Fyak2SY4vx2...7kyv</code> • 
+        Last updated: <span id="last-updated-time">—</span>
+      </small>
+    </div>
   </div>
+</section>
   
-  <!-- Combined Stats Grid -->
-  <div class="metric-cards">
-    <!-- Price Card -->
-    <div class="metric-card">
-      <i class="fas fa-dollar-sign metric-icon" style="color: var(--rebel-gold);"></i>
-      <h4>Price (USD)</h4>
-      <div class="metric-value" id="live-price">—</div>
-      <div id="price-change-display" class="metric-subtitle" style="margin-top: 0.5rem; font-weight: 600;">Loading...</div>
-    </div>
-    
-    <!-- Market Cap Card -->
-    <div class="metric-card">
-      <i class="fas fa-fire metric-icon" style="color: #ff6600;"></i>
-      <h4>Market Cap</h4>
-      <div class="metric-value" id="live-market-cap">—</div>
-      <div class="metric-subtitle" style="color: var(--rebel-gold);">Fully Diluted</div>
-    </div>
-    
-    <!-- Volume Card -->
-    <div class="metric-card">
-      <i class="fas fa-exchange-alt metric-icon" style="color: var(--rebel-red);"></i>
-      <h4>24H Volume</h4>
-      <div class="metric-value" id="live-volume">—</div>
-      <div class="metric-subtitle" style="color: var(--rebel-gold);">Trading Activity</div>
-    </div>
-    
-    <!-- Liquidity Card -->
-    <div class="metric-card">
-      <i class="fas fa-tint metric-icon" style="color: #00ccff;"></i>
-      <h4>Liquidity</h4>
-      <div class="metric-value" id="live-liquidity">—</div>
-      <div class="metric-subtitle" style="color: var(--rebel-gold);">Pooled Value</div>
-    </div>
-    
-    <!-- Holders Card -->
-    <div class="metric-card">
-      <i class="fas fa-users metric-icon" style="color: #9C27B0;"></i>
-      <h4>Holders</h4>
-      <div class="metric-value" id="live-holders">Loading...</div>
-      <div class="metric-subtitle" id="holders-source-display">From Solscan</div>
-    </div>
-    
-    <!-- Current Supply Card -->
-    <div class="metric-card">
-      <i class="fas fa-coins metric-icon" style="color: var(--rebel-gold);"></i>
-      <h4>Current Supply</h4>
-      <div class="metric-value" id="live-supply">Loading...</div>
-      <div class="metric-subtitle" id="supply-percent">—</div>
-    </div>
-    
-    <!-- Burned Supply Card -->
-    <div class="metric-card">
-      <i class="fas fa-fire-alt metric-icon" style="color: var(--rebel-red);"></i>
-      <h4>Total Burned</h4>
-      <div class="metric-value" id="live-burned">Loading...</div>
-      <div class="metric-subtitle" id="burned-percent-display">—</div>
-    </div>
-  </div>
-  
-  <!-- Data Source Info -->
-  <div class="data-info">
-    <small>
-      <i class="fas fa-sync-alt"></i> Live data updates every 30 seconds via 
-      <a href="https://dexscreener.com" target="_blank" style="color: var(--rebel-gold);">DexScreener API</a> • 
-      Pool: <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">Fyak2SY4vx2...7kyv</code> • 
-      Last updated: <span id="last-updated-time">—</span>
-    </small>
-  </div>
-</div>
     <!-- Supply Box -->
     <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-red); margin-bottom: var(--spacing-lg); text-align: center;">
       <h3>MAX SUPPLY: 1,000,000,000 $REBL</h3>
@@ -3366,8 +3371,7 @@ function updateCountdown3() {
     document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
     document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
 }
-
-// Live Stats Data
+// Live Stats Data - FIXED VERSION
 const STATIC_DATA = {
     holders: 109,
     currentSupply: 944920617,
@@ -3495,6 +3499,44 @@ async function initializeMetrics() {
     }, 30000);
 }
 
+// Refresh function for the button
+window.refreshData = async function() {
+    const button = document.querySelector('.refresh-button');
+    if (!button) return;
+    
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+    button.disabled = true;
+    
+    const data = await fetchLiveStatsData();
+    updateLiveStatsDisplay(data);
+    
+    if (data.success) {
+        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+        button.classList.add('button-success');
+    } else {
+        button.innerHTML = '<i class="fas fa-shield-alt"></i> Using Static';
+        button.style.background = 'var(--rebel-gold)';
+    }
+    
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+        button.classList.remove('button-success');
+        button.style.background = '';
+    }, 2000);
+};
+
+window.quickUpdateFromSolscan = function() {
+    window.refreshData();
+};
+
+// Initialize metrics when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initializeMetrics, 1000);
+});
+
+  
 // Tokenomics Pie Chart - ADD THIS FUNCTION
 function initializeTokenomicsChart() {
     const ctx = document.getElementById('distributionChart');
