@@ -1226,22 +1226,58 @@ function copyContract() {
   });
 }
 
-// Simple price ticker (optional - you can remove if not needed)
-function updatePriceTicker() {
-  // This is a placeholder - in production, connect to an API
-  const price = '$0.0001234';
-  const mcap = '$1.23M';
-  const volume = '$456K';
-  const liquidity = '$789K';
-  
-  document.getElementById('live-price').textContent = price;
-  document.getElementById('market-cap').textContent = mcap;
-  document.getElementById('daily-volume').textContent = volume;
-  document.getElementById('liquidity').textContent = liquidity;
+// Add to your existing JavaScript
+async function fetchDexScreenerData() {
+  try {
+    const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv');
+    const data = await response.json();
+    
+    if (data.pairs && data.pairs[0]) {
+      const pair = data.pairs[0];
+      
+      // Format price with proper decimals
+      const price = parseFloat(pair.priceUsd).toFixed(8);
+      const priceChange = parseFloat(pair.priceChange.h24).toFixed(2);
+      const volume = parseFloat(pair.volume.h24).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+      const liquidity = parseFloat(pair.liquidity.usd).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+      
+      // Update DOM
+      document.getElementById('live-price').textContent = `$${price}`;
+      document.getElementById('market-cap').textContent = volume; // Using volume as proxy for now
+      document.getElementById('daily-volume').textContent = volume;
+      document.getElementById('liquidity').textContent = liquidity;
+      
+      // Add color coding for price change
+      const changeElement = document.querySelector('#price-change') || createPriceChangeElement();
+      changeElement.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange}%`;
+      changeElement.style.color = priceChange >= 0 ? '#4CAF50' : '#ff3366';
+    }
+  } catch (error) {
+    console.error('Error fetching DexScreener data:', error);
+    // Fallback to showing links
+    document.getElementById('live-price').innerHTML = '<a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" style="color: var(--rebel-gold);">View Live Chart</a>';
+  }
 }
 
-// Update on load
-document.addEventListener('DOMContentLoaded', updatePriceTicker);
+function createPriceChangeElement() {
+  const container = document.querySelector('#live-stats .card:first-child');
+  const changeElement = document.createElement('div');
+  changeElement.id = 'price-change';
+  changeElement.style.fontSize = '0.8em';
+  changeElement.style.marginTop = '0.3rem';
+  container.appendChild(changeElement);
+  return changeElement;
+}
   </script>
 </body>
 </html>
