@@ -3115,7 +3115,6 @@
 
   <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
@@ -3159,6 +3158,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCountdown1, 1000);
     setInterval(updateCountdown2, 1000);
     setInterval(updateCountdown3, 1000);
+    setTimeout(initializeTokenomicsChart, 1500); // Wait 1.5 seconds for everything to load
 });
 
 // Loading animation
@@ -3496,6 +3496,79 @@ async function initializeMetrics() {
     }, 30000);
 }
 
+// Tokenomics Pie Chart - ADD THIS FUNCTION
+function initializeTokenomicsChart() {
+    const ctx = document.getElementById('distributionChart');
+    if (!ctx) {
+        console.error('Chart canvas not found!');
+        return;
+    }
+    
+    // Wait for Chart.js to be fully loaded
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js not loaded!');
+        return;
+    }
+    
+    try {
+        // Create the chart
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
+                datasets: [{
+                    data: [70, 16, 7, 6, 1],
+                    backgroundColor: [
+                        'rgba(255, 51, 102, 0.9)',
+                        'rgba(255, 159, 64, 0.9)',
+                        'rgba(75, 192, 192, 0.9)',
+                        'rgba(255, 206, 86, 0.9)',
+                        'rgba(75, 192, 86, 0.9)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Montserrat',
+                                weight: '600'
+                            },
+                            color: 'white',
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        console.log('✅ Tokenomics chart initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error creating chart:', error);
+    }
+}
 window.refreshData = async function() {
     const button = document.querySelector('.refresh-button');
     if (!button) return;
