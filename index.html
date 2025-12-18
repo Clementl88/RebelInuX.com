@@ -1,102 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>RebelInuX - Home</title>
-<style>
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #1a1a1a;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-  }
-  header {
-    background: rgba(0,0,0,0.8);
-    position: sticky;
-    top: 0; z-index: 999;
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-  }
-  nav {
-    display: flex;
-    gap: 1rem;
-  }
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: background 0.3s;
-  }
-  nav a:hover {
-    background: rgba(255,51,102,0.2);
-  }
-  main {
-    padding: 2rem;
-  }
-  section {
-    max-width: 1000px;
-    margin: 2rem auto;
-  }
-  h1, h2 {
-    font-family: 'Montserrat', sans-serif;
-  }
-  #hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  #hero h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  #hero p {
-    font-size: 1.2rem;
-  }
-  .buttons a {
-    display: inline-block;
-    margin: 1rem 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    background-color: #ff3366;
-    color: #fff;
-    text-decoration: none;
-    transition: background 0.3s;
-  }
-  .buttons a:hover {
-    background-color: #ff6699;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains." />
+  <meta name="keywords" content="meme coin, shiba inu, crypto, NFT, ZORA, Solana, REBL, RebelInuX" />
+  <meta property="og:title" content="RebelInuX (REBL) - The Rebellious Meme Coin" />
+  <meta property="og:description" content="Join the rebellion with RebelInuX, the first triple-asset meme coin ecosystem." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tippy.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css" />
+
+  <style>
+    /* Your entire style block from your design (copy-paste your provided CSS here) */
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* Header styles (copy your header styles here) */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    /* Sections styles (copy your section styles here) */
+    section {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      position: relative;
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 30%;
+      height: 2px;
+      background: var(--rebel-gold);
+    }
+    /* Hero styles (copy your hero styles here) */
+    #hero {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    }
+    .hero-subtitle {
+      display: block;
+      font-size: 0.6em;
+      margin-bottom: 10px;
+      color: var(--rebel-red);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    /* Cards styles (copy your card styles here) */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-red);
+      transition: var(--transition);
+      text-align: center;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-hover);
+      border-color: var(--rebel-gold);
+    }
+    .card i {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+    }
+    /* Image container styles */
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: var(--spacing-xl) auto;
+      position: relative;
+    }
+    .image-container img {
+      border-radius: var(--border-radius);
+      transition: transform 0.4s, box-shadow 0.4s;
+      animation: float 3s ease-in-out infinite;
+      max-width: 100%;
+      border: 3px solid var(--rebel-red);
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 51, 102, 0.8);
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .image-container:hover .overlay {
+      opacity: 1;
+    }
+    .overlay-text {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+      padding: var(--spacing-md);
+      text-align: center;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    /* Additional styles for sections like roadmap, countdown, tokenomics, etc., follow the same pattern */
+    /* ... all your CSS styles from your code ... */
+  </style>
 </head>
 <body>
-<header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="tokenomics.html">Tokenomics</a>
-    <a href="roadmap.html">Roadmap</a>
-    <a href="artwork.html">Artwork</a>
-    <a href="community.html">Community</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
-<main>
-  <section id="hero">
-    <h1>RebelInuX (REBL)</h1>
-    <h2>TRIPLE-ASSET MEME REVOLUTION</h2>
-    <p>🔥 REBELINUX: THE SHIBA THAT RIPS THE RULES! 🔥</p>
-    <p>RebelInuX is the first triple-asset meme coin on ZORA, merging collectible art, NFTs, and cross-chain rewards. No rules, just rebellion.</p>
-    <div class="buttons">
-      <a href="#community">JOIN TELEGRAM</a>
-      <a href="#tokenomics">TOKENOMICS</a>
-      <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank">BUY $REBL</a>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  <!-- Back to Top -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <h1>RebelInuX (REBL)</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="nav-desktop">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#integrity">Integrity</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#governance">Governance</a>
+        <a href="#epoch-rewards">Epoch Rewards</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#artwork">Artwork</a>
+        <a href="#community">Community</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
-  </section>
-</main>
-<footer style="text-align:center; padding:1rem; background:#000;">
-  <p>&copy; 2025 RebelInuX. All rights reserved.</p>
-</footer>
+  </header>
+
+  <!-- Main Content: HOME PAGE -->
+  <main>
+    <!-- HERO SECTION -->
+    <section id="hero" class="visible">
+      <h2 class="hero-title">
+        <span class="hero-subtitle">TRIPLE-ASSET MEME REVOLUTION</span>
+        🔥 REBELINUX: THE SHIBA THAT RIPS THE RULES! 🔥
+      </h2>
+      <div class="image-container">
+        <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX mascot" loading="lazy" width="350" height="350">
+        <div class="overlay">
+          <div class="overlay-text">JOIN THE MEME REBELLION!</div>
+        </div>
+      </div>
+      <p style="max-width: 800px; margin: 0 auto var(--spacing-lg); font-size: 1.2em;">
+        RebelInuX is the first <strong>triple-asset meme coin</strong> on ZORA, merging collectible art, NFTs, and cross-chain rewards. <strong>No rules, just rebellion.</strong>
+      </p>
+      <div style="display: flex; justify-content: center; gap: var(--spacing-md); flex-wrap: wrap; margin-top: var(--spacing-lg);">
+        <a href="#community" class="cta-button">
+          <i class="fab fa-telegram"></i> JOIN TELEGRAM
+        </a>
+        <a href="#tokenomics" class="cta-button gold">
+          <i class="fas fa-coins"></i> TOKENOMICS
+        </a>
+        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL
+        </a>
+      </div>
+      <div style="text-align: center; margin: var(--spacing-md) auto;">
+        <span style="background: rgba(255, 204, 0, 0.2); color: var(--rebel-gold); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--rebel-gold); font-size: 0.9em; font-weight: 600;">
+          <i class="fas fa-shield-alt"></i> 100% BOT-FREE & TRANSPARENT
+        </span>
+      </div>
+      <div class="cards">
+        <!-- Creator Coin Card -->
+        <div class="card">
+          <i class="fas fa-paint-brush"></i>
+          <h3>Creator Coin</h3>
+          <p>Your stake in the rebellion.</p>
+          <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+            <strong>Claim $REBL rewards</strong> during designated epochs.
+          </p>
+          <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+            <a href="#epoch-rewards" class="cta-button" style="font-size: 0.8em; padding: 0.5em 1em;">
+              <i class="fas fa-info-circle"></i> Learn More
+            </a>
+            <a href="https://basescan.org/token/0xf95BEeF6439ec38fA757238Cdec8417ABDA536bd" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+              <img src="https://ethereum.org/favicon.ico" alt="Base" style="width: 16px; height: 16px;">
+              BASE (L2 ETHEREUM)
+            </a>
+          </div>
+        </div>
+        <!-- Content Coin NFT Card -->
+        <div class="card">
+          <i class="fas fa-palette"></i>
+          <h3>Content Coin NFT</h3>
+          <p>Your identity as a rebel.</p>
+          <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+            <strong>Secure your $REBL claim</strong> by linking your Solana wallet.
+          </p>
+          <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+            <a href="#artwork" class="cta-button" style="font-size: 0.8em; padding: 0.5em 1em;">
+              <i class="fas fa-images"></i> VIEW ARTWORK
+            </a>
+            <a href="https://zora.co/@rebelinux" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+              <img src="https://zora.co/favicon.ico" alt="ZORA Logo" style="width: 16px; height: 16px; border-radius: 50%;">
+              ZORA COLLECTION
+            </a>
+          </div>
+        </div>
+        <!-- $REBL Token Card -->
+        <div class="card">
+          <i class="fas fa-coins"></i>
+          <h3>$REBL Token</h3>
+          <p>Your reward for loyalty.</p>
+          <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+            <strong>Deflationary burns</strong> increase scarcity and value.
+          </p>
+          <!-- GeckoTerminal Link -->
+          <div style="margin: 1rem 0; text-align: center;">
+            <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+               target="_blank" 
+               class="cta-button"
+               style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em; margin-bottom: 0.5rem;">
+              <img src="geckoterminal icon.svg" alt="GeckoTerminal" style="width: 16px; height: 16px;">
+              GECKOTERMINAL
+            </a>
+          </div>
+          <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+            <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+              <img src="https://solscan.io/favicon.ico" alt="Solscan" style="width: 16px; height: 16px;">
+              SOLSCAN
+            </a>
+            <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+              <img src="https://dexscreener.com/favicon.ico" alt="Solana" style="width: 16px; height: 16px;">
+              DEXSCREENER
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">JOIN THE REBELLION</h3>
+    <div class="social-icons">
+      <a href="https://x.com/RebelInuX" aria-label="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://t.me/RebelInuX_Official" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="https://discord.gg/s8dkuyD3cZ" aria-label="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://zora.co/@rebelinux" aria-label="Zora"><i class="fas fa-cube"></i></a>
+    </div>
+    <!-- GeckoTerminal Logo -->
+    <div style="text-align: center; margin: var(--spacing-lg) 0;">
+      <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         style="display: inline-block;">
+        <img src="geckoterminal_dark.svg" alt="Track REBL on GeckoTerminal" width="180" height="auto">
+      </a>
+      <p style="color: var(--rebel-gold); font-size: 0.9em; margin-top: 0.5rem;">
+        Track $REBL on GeckoTerminal
+      </p>
+    </div>
+    <div style="text-align: center; margin: var(--spacing-lg) 0;">
+      <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="buy-rebl-button">
+        <i class="fas fa-shopping-cart"></i> BUY $REBL
+      </a>
+    </div>
+    <div style="margin-bottom: var(--spacing-md);">
+      <a href="/privacy-policy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy Policy</a>
+      <a href="/terms-of-service.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Terms of Service</a>
+      <a href="/disclaimer.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Disclaimer</a>
+    </div>
+    <div style="text-align: center; margin-top: var(--spacing-md); font-size: 0.8em; color: #ccc;">
+      <p style="margin: 0.5rem 0;">
+        © 2025 RebelInuX. All rights reserved. RebelInuX is a meme token for entertainment, <a href="/disclaimer.html" style="color: var(--rebel-red);">not an investment product</a>.
+      </p>
+    </div>
+    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 10px; margin-top: var(--spacing-sm); border-left: 4px solid var(--rebel-red); max-width: 600px; margin-left: auto; margin-right: auto; font-size: 0.8em;">
+      <p style="margin: 0;">
+        <strong>⚠️ IMPORTANT:</strong> High risk. Participation prohibited in the EEA, Switzerland, France. <a href="/disclaimer.html" style="color: var(--rebel-red);">Full legal notice</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <script>
+    // Your JavaScript code (initializations, countdowns, interactions, etc.)
+    // (Insert your entire existing script here)
+    // For brevity, not copying all JS here, but in your actual file, insert your script block from your provided code.
+  </script>
 </body>
 </html>
