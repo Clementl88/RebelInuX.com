@@ -3703,7 +3703,6 @@ const TOKEN_ADDRESS = "F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump";
 const API_ENDPOINTS = {
     dexscreener: `https://api.dexscreener.com/latest/dex/tokens/${TOKEN_ADDRESS}`,
     solscan: `https://public-api.solscan.io/token/holders?tokenAddress=${TOKEN_ADDRESS}&limit=1`,
-    birdeye: `https://public-api.birdeye.so/defi/token_overview?address=${TOKEN_ADDRESS}`
 };
 
 // Static fallback data (your current known values)
@@ -3729,44 +3728,6 @@ const tokenData = {
 };
 
 
-
-// UPDATE your existing updateAllDisplays() function
-function updateAllDisplays(source = 'Live Data') {
-  console.log('Updating all displays from:', source);
-  
-  const isStaticData = tokenData.usingStaticData;
-  const dataSource = isStaticData ? 'Static Data' : source;
-  
-  // Calculate percentages
-  const currentPercent = tokenData.currentSupply ? 
-    `${((tokenData.currentSupply / STATIC_DATA.maxSupply) * 100).toFixed(2)}% of total` : '-';
-  
-  const burnedPercent = tokenData.burnedSupply ? 
-    `${((tokenData.burnedSupply / STATIC_DATA.maxSupply) * 100).toFixed(2)}% burned` : '-';
-  
-  // Update OLD elements (keep these for compatibility)
-  const oldElements = {
-    'current-price': tokenData.price ? `$${tokenData.price.toFixed(8)}` : 'Loading...',
-    'price-change': tokenData.priceChange ? `${tokenData.priceChange >= 0 ? '+' : ''}${tokenData.priceChange.toFixed(2)}%` : '-',
-    'market-cap-widget': tokenData.marketCap ? `$${(tokenData.marketCap / 1000).toFixed(1)}K` : '-',
-    'volume': tokenData.volume ? `$${tokenData.volume.toFixed(2)}` : '-',
-    'holder-count': tokenData.holders ? tokenData.holders.toLocaleString() : STATIC_DATA.holders.toLocaleString(),
-    'current-supply': tokenData.currentSupply ? tokenData.currentSupply.toLocaleString() : STATIC_DATA.currentSupply.toLocaleString(),
-    'burned-supply': tokenData.burnedSupply ? tokenData.burnedSupply.toLocaleString() : STATIC_DATA.burnedSupply.toLocaleString(),
-    'current-percent': currentPercent,
-    'burned-percent': burnedPercent,
-    'holders-source': `${isStaticData ? 'Static Data' : dataSource} • ${tokenData.lastUpdate}${isStaticData ? ' (Fallback)' : ''}`
-  };
-  
-  for (const [id, value] of Object.entries(oldElements)) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = value;
-      if (id === 'price-change') {
-        element.className = tokenData.priceChange >= 0 ? 'positive' : 'negative';
-      }
-    }
-  }
   
   // ALSO UPDATE NEW LIVE STATS ELEMENTS (this is the key part!)
   const newElements = {
@@ -3810,11 +3771,11 @@ window.refreshData = async function() {
   button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
   button.disabled = true;
   
-  // Fetch new data using existing function
-  const result = await fetchAllTokenData();
-  
-  // Update tokenData object
-  Object.assign(tokenData, result.tokenData);
+// Fetch new data
+const data = await fetchLiveStatsData();
+
+// Update the display
+updateLiveStatsDisplay(data);;
   
   // Update all displays (both old and new)
 updateLiveStatsDisplay(result.tokenData);
@@ -3853,12 +3814,6 @@ window.updateStaticData = function(newStaticData) {
     if (newStaticData.currentSupply !== undefined) STATIC_DATA.currentSupply = newStaticData.currentSupply;
     if (newStaticData.burnedSupply !== undefined) STATIC_DATA.burnedSupply = newStaticData.burnedSupply;
     
-    // If we're currently using static data, update the display
-    if (tokenData.usingStaticData) {
-        applyStaticData();
-        updateAllDisplays('Updated Static Data');
-    }
-    
     console.log('✅ Static data updated:', STATIC_DATA);
 };
 
@@ -3867,32 +3822,32 @@ async function initializeMetrics() {
   console.log('🔄 Initializing metrics...');
   
   // Show loading state
-updateLiveStatsDisplay(result.tokenData);
+  updateLiveStatsDisplay({
+    price: 0,
+    priceChange: 0,
+    marketCap: 0,
+    volume: 0,
+    liquidity: 0,
+    holders: STATIC_DATA.holders,
+    currentSupply: STATIC_DATA.currentSupply,
+    burnedSupply: STATIC_DATA.burnedSupply,
+    maxSupply: 1000000000,
+    holdersSource: 'Loading...',
+    lastUpdate: 'Loading...',
+    success: false
+  });
   
-  // Fetch initial data using existing function
-  const result = await fetchAllTokenData();
+  // Fetch initial data
+  const data = await fetchLiveStatsData();
   
-  // Update tokenData object
-  Object.assign(tokenData, result.tokenData);
-  
-  // Update all displays
-updateLiveStatsDisplay(result.tokenData);
-  
-  // ALSO update the combined dashboard
-  updateLiveStatsDisplay(result.tokenData); // ADD THIS LINE
-  
-  // If API failed, show static data
-  if (!result.success) {
-    console.log('🚨 API failed, using static data as fallback');
-  }
+  // Update the display
+  updateLiveStatsDisplay(data);
   
   // Set up auto-refresh
   setInterval(async () => {
     if (document.visibilityState === 'visible') {
-      const refreshResult = await fetchAllTokenData();
-      Object.assign(tokenData, refreshResult.tokenData);
-      updateAllDisplays(refreshResult.success ? 'Live Data (Auto)' : 'Static Data (Auto)');
-      updateLiveStatsDisplay(refreshResult.tokenData); // ADD THIS LINE
+      const newData = await fetchLiveStatsData();
+      updateLiveStatsDisplay(newData);
     }
   }, 30000);
 }
@@ -3903,14 +3858,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initializeMetrics, 1000);
 });
 
-// Debug function to check current data
-window.getCurrentTokenData = function() {
-    return {
-        liveData: tokenData,
-        staticData: STATIC_DATA,
-        usingStatic: tokenData.usingStaticData
-    };
-};
+
 
        // Add this function to your existing JavaScript section
     function copyContract() {
