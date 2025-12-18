@@ -3728,75 +3728,7 @@ const tokenData = {
     usingStaticData: false
 };
 
-// Fetch data from DexScreener
-async function fetchPriceData() {
-    try {
-        const response = await fetch(API_ENDPOINTS.dexscreener);
-        const data = await response.json();
-        
-        if (data.pairs && data.pairs.length > 0) {
-            const pair = data.pairs[0];
-            return {
-                price: parseFloat(pair.priceUsd),
-                priceChange: parseFloat(pair.priceChange.h24),
-                volume: parseFloat(pair.volume.h24),
-                marketCap: parseFloat(pair.fdv)
-            };
-        }
-    } catch (error) {
-        console.error('Error fetching price data:', error);
-    }
-    return null;
-}
 
-// Fetch holder count from Solscan
-async function fetchHolderData() {
-    try {
-        const response = await fetch(API_ENDPOINTS.solscan);
-        const data = await response.json();
-        
-        if (data && data.total) {
-            return {
-                holders: data.total
-            };
-        }
-    } catch (error) {
-        console.error('Error fetching holder data:', error);
-    }
-    return null;
-}
-
-// Fetch supply data from BirdEye
-async function fetchSupplyData() {
-    try {
-        const response = await fetch(API_ENDPOINTS.birdeye, {
-            headers: {
-                'X-API-KEY': 'YOUR_BIRDEYE_API_KEY' // You need to get this from birdeye.so
-            }
-        });
-        const data = await response.json();
-        
-        if (data.data) {
-            return {
-                currentSupply: parseFloat(data.data.supply),
-                burnedSupply: STATIC_DATA.maxSupply - parseFloat(data.data.supply)
-            };
-        }
-    } catch (error) {
-        console.error('Error fetching supply data:', error);
-    }
-    return null;
-}
-
-// Apply static fallback data
-function applyStaticData() {
-    console.log('🛡️ Applying static fallback data');
-    
-    tokenData.holders = STATIC_DATA.holders;
-    tokenData.currentSupply = STATIC_DATA.currentSupply;
-    tokenData.burnedSupply = STATIC_DATA.burnedSupply;
-    tokenData.usingStaticData = true;
-}
 
 // UPDATE your existing updateAllDisplays() function
 function updateAllDisplays(source = 'Live Data') {
@@ -3885,7 +3817,7 @@ window.refreshData = async function() {
   Object.assign(tokenData, result.tokenData);
   
   // Update all displays (both old and new)
-  updateAllDisplays(result.success ? 'Live Data' : 'Static Data');
+updateLiveStatsDisplay(result.tokenData);
   
   // ALSO update the combined dashboard specifically
   updateLiveStatsDisplay(result.tokenData); 
@@ -3935,7 +3867,7 @@ async function initializeMetrics() {
   console.log('🔄 Initializing metrics...');
   
   // Show loading state
-  updateAllDisplays('Loading...');
+updateLiveStatsDisplay(result.tokenData);
   
   // Fetch initial data using existing function
   const result = await fetchAllTokenData();
@@ -3944,7 +3876,7 @@ async function initializeMetrics() {
   Object.assign(tokenData, result.tokenData);
   
   // Update all displays
-  updateAllDisplays(result.success ? 'Live Data' : 'Static Data');
+updateLiveStatsDisplay(result.tokenData);
   
   // ALSO update the combined dashboard
   updateLiveStatsDisplay(result.tokenData); // ADD THIS LINE
@@ -4067,7 +3999,7 @@ window.addEventListener('resize', function() {
     });
   }
 });
-      // Combined Live Stats Functions
+    
 async function fetchLiveStatsData() {
   try {
     console.log('📊 Fetching combined live stats...');
@@ -4085,7 +4017,7 @@ async function fetchLiveStatsData() {
       const pair = dexscreenerData.pairs.find(p => p.chainId === 'solana') || dexscreenerData.pairs[0];
       
       marketData = {
-        price: parseFloat(pair.priceUsd),
+        price: parseFloat(pair.priceUsd) || 0,
         priceChange: pair.priceChange?.h24 || 0,
         marketCap: pair.fdv || 0,
         volume: pair.volume?.h24 || 0,
@@ -4094,26 +4026,15 @@ async function fetchLiveStatsData() {
       };
     }
     
-    let holderData = {};
-    if (solscanData && solscanData.total) {
-      holderData = {
-        holders: solscanData.total,
-        holdersSource: 'Solscan API'
-      };
-    } else {
-      holderData = {
-        holders: 109, // Fallback static data
-        holdersSource: 'Static Data'
-      };
-    }
-    
     return {
       ...marketData,
-      ...holderData,
-      currentSupply: 944920617, // Your static data
-      burnedSupply: 55079383,   // Your static data
+      holders: solscanData?.total || STATIC_DATA.holders,
+      currentSupply: STATIC_DATA.currentSupply,
+      burnedSupply: STATIC_DATA.burnedSupply,
       maxSupply: 1000000000,
-      lastUpdate: new Date().toLocaleTimeString()
+      holdersSource: solscanData?.total ? 'Solscan API' : 'Static Data',
+      lastUpdate: new Date().toLocaleTimeString(),
+      success: true
     };
     
   } catch (error) {
@@ -4126,9 +4047,9 @@ async function fetchLiveStatsData() {
       marketCap: 0,
       volume: 0,
       liquidity: 0,
-      holders: 109,
-      currentSupply: 944920617,
-      burnedSupply: 55079383,
+      holders: STATIC_DATA.holders,
+      currentSupply: STATIC_DATA.currentSupply,
+      burnedSupply: STATIC_DATA.burnedSupply,
       maxSupply: 1000000000,
       holdersSource: 'Static Data (API Failed)',
       lastUpdate: new Date().toLocaleTimeString(),
@@ -4136,7 +4057,6 @@ async function fetchLiveStatsData() {
     };
   }
 }
-
 function updateLiveStatsDisplay(data) {
   // Update price
   const priceElement = document.getElementById('live-price');
