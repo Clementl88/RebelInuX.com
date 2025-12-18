@@ -581,6 +581,170 @@
     /* [All your existing CSS from the original code remains here] */
     
   </style>
+  /* Accordion Styles */
+.accordion-item {
+  border-bottom: 1px solid var(--rebel-red);
+  margin-bottom: var(--spacing-sm);
+}
+.accordion-header {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+.accordion-header.active {
+  background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+  color: var(--dark-bg);
+  border-color: transparent;
+}
+.accordion-content {
+  padding: 0 var(--spacing-md);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 8px 8px;
+}
+.accordion-content.active {
+  padding: var(--spacing-md) var(--spacing-md) 2rem;
+  max-height: 2000px;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+}
+
+/* Roadmap Styles */
+.roadmap-timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) 0;
+}
+.roadmap-timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold));
+  transform: translateX(-50%);
+}
+.roadmap-milestone {
+  width: 50%;
+  padding: var(--spacing-sm);
+  position: relative;
+  margin-bottom: var(--spacing-xl);
+}
+.roadmap-milestone.left {
+  margin-left: 0;
+  margin-right: auto;
+}
+.roadmap-milestone.right {
+  margin-left: auto;
+  margin-right: 0;
+}
+.roadmap-content {
+  background: var(--card-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  border: 2px solid var(--rebel-red);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+}
+
+/* Artwork Slider Styles */
+.artwork-slider {
+  display: flex;
+  overflow-x: hidden;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+  max-width: 100%;
+  margin: var(--spacing-lg) auto;
+  position: relative;
+}
+.artwork-slide-container {
+  display: flex;
+  gap: var(--spacing-md);
+  animation: slide 20s linear infinite;
+}
+.artwork-item {
+  background: var(--card-bg);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--rebel-red);
+  transition: var(--transition);
+  text-align: center;
+  min-width: 250px;
+  max-width: 300px;
+}
+@keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Countdown Styles */
+.countdown-container {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-lg) auto;
+  max-width: 800px;
+  text-align: center;
+}
+.countdown-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  padding: 0.5em;
+  min-width: 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.countdown-number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--rebel-gold);
+  display: block;
+}
+.countdown-label {
+  font-size: 0.7rem;
+  color: white;
+  margin-top: 0.2em;
+}
+
+/* Calculator Styles */
+.rebl-calculator {
+  background: var(--section-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  margin: var(--spacing-lg) auto;
+  max-width: 800px;
+  text-align: center;
+}
+.calculator-container {
+  background: var(--card-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--rebel-gold);
+  margin: 0 auto;
+  max-width: 100%;
+}
+.table-container {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-sm);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  border-radius: 8px;
+}
 </head>
 <body>
   <!-- Loading Animation -->
@@ -728,51 +892,6 @@
       </p>
     </div>
   </section>
-
-  <!-- Live Stats Ticker -->
-<section id="live-stats" class="visible">
-  <h2><i class="fas fa-chart-line"></i> $REBL LIVE STATS</h2>
-
-  <!-- Stats Cards Grid -->
-  <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 1000px;">
-    <div class="card">
-      <i class="fas fa-dollar-sign" style="color: var(--rebel-gold);"></i>
-      <h3>Price (USD)</h3>
-      <div id="live-price" style="font-size: 1.8rem; font-weight: bold; color: #fff; margin: 0.5rem 0;">—</div>
-      <div id="price-change" style="font-size: 0.9em; font-weight: 600;">Loading...</div>
-    </div>
-
-    <div class="card">
-      <i class="fas fa-tint" style="color: #00ccff;"></i>
-      <h3>Liquidity</h3>
-      <div id="liquidity" style="font-size: 1.5rem; font-weight: bold; color: #fff; margin: 0.5rem 0;">—</div>
-      <p style="font-size: 0.9em; color: var(--rebel-gold);">Pooled Value</p>
-    </div>
-
-    <div class="card">
-      <i class="fas fa-exchange-alt" style="color: var(--rebel-red);"></i>
-      <h3>24H Volume</h3>
-      <div id="daily-volume" style="font-size: 1.5rem; font-weight: bold; color: #fff; margin: 0.5rem 0;">—</div>
-      <p style="font-size: 0.9em; color: var(--rebel-gold);">Trading Activity</p>
-    </div>
-
-    <div class="card">
-      <i class="fas fa-fire" style="color: #ff6600;"></i>
-      <h3>Market Cap</h3>
-      <div id="market-cap" style="font-size: 1.5rem; font-weight: bold; color: #fff; margin: 0.5rem 0;">—</div>
-      <p style="font-size: 0.9em; color: var(--rebel-gold);">Fully Diluted</p>
-    </div>
-  </div>
-
-  <!-- Data Source and Refresh -->
-  <div style="margin-top: var(--spacing-md); font-size: 0.8em; color: #aaa;">
-    <p>
-      <i class="fas fa-sync-alt"></i> Data updates every 30 seconds via
-      <a href="https://dexscreener.com" target="_blank" style="color: var(--rebel-gold);">DexScreener API</a>
-      • Pool: <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">Fyak2SY4vx2...7kyv</code>
-    </p>
-  </div>
-</section>
   
 <!-- Simplified Tokenomics Section -->
 <section id="simple-tokenomics" class="visible">
@@ -895,58 +1014,7 @@
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="visible">
-    <h2>WHAT IS REBELINUX?</h2>
-    <div class="image-container">
-      <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX mascot" loading="lazy" width="300" height="300">
-      <div class="overlay">
-        <div class="overlay-text">Powered by Rebels!</div>
-      </div>
-    </div>
-    <div style="max-width: 900px; margin: 0 auto;">
-      <p style="font-size: 1.2em; line-height: 1.8; margin-bottom: var(--spacing-lg);">
-        <strong>RebelInuX</strong> is a <strong>wild, decentralized meme movement</strong> inspired by the fearless Shiba Inu. We're here to <strong>break crypto norms</strong> with our triple-asset ecosystem: <strong>Creator Coin, Content Coin NFT, and $REBL token</strong>.
-      </p>
-      <!-- Vision Statement -->
-      <p class="vision-statement" style="font-size: 1.3em; font-style: italic; color: var(--rebel-gold); margin: var(--spacing-lg) 0; text-align: center;">
-        To unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto—making noise, shaking walls, and building a community that refuses to conform.
-      </p>
-      <!-- Key Features Section -->
-      <div style="margin-top: var(--spacing-lg);">
-        <h3 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">WHY REBELINUX?</h3>
-        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-md);">
-          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
-            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🔥 Triple-Asset Ecosystem</h4>
-            <p style="font-size: 0.95em; line-height: 1.5;">
-              Merge collectible art, NFTs, and cross-chain rewards into a single, powerful ecosystem.
-            </p>
-          </div>
-          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
-            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🔄 Cross-Chain Value</h4>
-            <p style="font-size: 0.95em; line-height: 1.5;">
-              Revenue from ZORA assets is used to buy back and burn $REBL, increasing scarcity and value.
-            </p>
-          </div>
-          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
-            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🛡️ Community Governance</h4>
-            <p style="font-size: 0.95em; line-height: 1.5;">
-              Future DAO governance will let the community shape the project's evolution.
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- Call-to-Action -->
-      <div style="text-align: center; margin-top: var(--spacing-lg);">
-        <a href="#whitepaper" class="cta-button">
-          <i class="fas fa-file-alt"></i> READ THE WHITEPAPER
-        </a>
-        <a href="#roadmap" class="cta-button gold">
-          <i class="fas fa-rocket"></i> VIEW ROADMAP
-        </a>
-      </div>
-    </div>
-  </section>
+
 <section id="trade" class="visible" style="background: rgba(26, 26, 26, 0.9); padding: var(--spacing-xl) var(--spacing-md); text-align: center; border-top: 3px solid var(--rebel-red); border-bottom: 3px solid var(--rebel-gold);">
   
   <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-transform: uppercase; letter-spacing: 1px; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
@@ -1091,39 +1159,7 @@
 
 </section>
   
-<!-- Contract Verification Section -->
-<section id="contract-verify" class="visible">
-  <h2><i class="fas fa-shield-alt"></i> VERIFY CONTRACT</h2>
-  
-  <div class="card" style="max-width: 800px; margin: 0 auto; border: 2px solid var(--rebel-red); background: rgba(255,51,102,0.05);">
-    <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 2rem; margin-bottom: var(--spacing-md);"></i>
-    <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">ALWAYS VERIFY BEFORE BUYING</h3>
-    
-    <div style="background: rgba(0,0,0,0.7); padding: var(--spacing-md); border-radius: 8px; margin: var(--spacing-md) 0; border: 1px solid var(--rebel-gold);">
-      <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.5rem;">Official $REBL Contract:</div>
-      <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap;">
-        <code style="flex-grow: 1; font-family: monospace; font-size: 0.85rem; word-break: break-all; background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 6px; border: 1px solid rgba(255,51,102,0.3);">
-          F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
-        </code>
-        <button onclick="copyContract()" class="cta-button" style="background: var(--rebel-red); padding: 0.8rem 1.2rem;">
-          <i class="fas fa-copy"></i> Copy
-        </button>
-      </div>
-    </div>
-    
-    <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-sm); margin-top: var(--spacing-md);">
-      <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(0,0,0,0.5);">
-        <i class="fas fa-search"></i> Solscan
-      </a>
-      <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button gold" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,204,0,0.1);">
-        <i class="fas fa-chart-bar"></i> DexScreener
-      </a>
-      <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,51,102,0.1);">
-        <i class="fas fa-shield-check"></i> RugCheck
-      </a>
-    </div>
-  </div>
-</section>
+
 
   <!-- JavaScript for hover effects -->
 <script>
