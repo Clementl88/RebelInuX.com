@@ -2618,15 +2618,15 @@
       </div>
     </div>
     
-    <!-- Data Source Info -->
-    <div class="data-info">
-      <small>
+<!-- Data Source Info -->
+<div class="data-info">
+    <small>
         <i class="fas fa-sync-alt"></i> Live data updates every 30 seconds via 
-        <a href="https://dexscreener.com" target="_blank" style="color: var(--rebel-gold);">DexScreener API</a> • 
+        <a href="https://jup.ag/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" style="color: var(--rebel-gold);">Jupiter API</a> • 
         Pool: <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em;">Fyak2SY4vx2...7kyv</code> • 
         Last updated: <span id="last-updated-time">—</span>
-      </small>
-    </div>
+    </small>
+</div>
   </div>
 </section>
   
@@ -3371,7 +3371,7 @@ function updateCountdown3() {
     document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
     document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
 }
-// Live Stats Data - FIXED VERSION
+// Live Stats Data - UPDATED with Jupiter API
 const STATIC_DATA = {
     holders: 109,
     currentSupply: 944920617,
@@ -3381,59 +3381,73 @@ const STATIC_DATA = {
 
 async function fetchLiveStatsData() {
     try {
-        // Use DexScreener API (CORS-friendly)
-        const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', {
-            headers: {
-                'Accept': 'application/json',
-                'User-Agent': 'Mozilla/5.0'
-            }
-        });
+        // 1. Fetch price from Jupiter API
+        let price = 0;
+        let priceSuccess = false;
         
-        if (!dexscreenerResponse.ok) {
-            throw new Error(`DexScreener API error: ${dexscreenerResponse.status}`);
+        try {
+            // Jupiter price API endpoint for REBL token
+            const jupiterResponse = await fetch('https://api.jup.ag/price/v2?ids=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+            if (jupiterResponse.ok) {
+                const jupiterData = await jupiterResponse.json();
+                if (jupiterData.data && jupiterData.data['F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump']) {
+                    price = jupiterData.data['F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'].price || 0;
+                    priceSuccess = true;
+                    console.log('✅ Jupiter price data:', price);
+                }
+            }
+        } catch (jupiterError) {
+            console.log('Jupiter API failed, trying DexScreener...', jupiterError);
         }
         
-        const dexscreenerData = await dexscreenerResponse.json();
-        
+        // 2. Fallback to DexScreener if Jupiter fails
         let marketData = {
-            price: 0,
+            price: price,
             priceChange: 0,
             marketCap: 0,
             volume: 0,
             liquidity: 0,
-            success: false
+            success: priceSuccess
         };
         
-        if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
-            // Find the main Solana pair
-            const pair = dexscreenerData.pairs.find(p => 
-                p.chainId === 'solana' && 
-                p.baseToken && 
-                p.baseToken.address === 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'
-            ) || dexscreenerData.pairs[0];
-            
-            marketData = {
-                price: parseFloat(pair.priceUsd) || 0,
-                priceChange: pair.priceChange?.h24 || 0,
-                marketCap: pair.fdv || 0,
-                volume: pair.volume?.h24 || 0,
-                liquidity: pair.liquidity?.usd || 0,
-                success: true
-            };
-            
-            console.log('DexScreener data:', marketData);
+        if (!priceSuccess) {
+            try {
+                const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
+                if (dexscreenerResponse.ok) {
+                    const dexscreenerData = await dexscreenerResponse.json();
+                    
+                    if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
+                        const pair = dexscreenerData.pairs.find(p => p.chainId === 'solana') || dexscreenerData.pairs[0];
+                        
+                        marketData = {
+                            price: parseFloat(pair.priceUsd) || 0,
+                            priceChange: pair.priceChange?.h24 || 0,
+                            marketCap: pair.fdv || 0,
+                            volume: pair.volume?.h24 || 0,
+                            liquidity: pair.liquidity?.usd || 0,
+                            success: true
+                        };
+                    }
+                }
+            } catch (dexscreenerError) {
+                console.error('DexScreener also failed:', dexscreenerError);
+            }
         }
         
-        // For holders, use an alternative API or static fallback
+        // 3. Calculate market cap if we have price but no market cap from API
+        if (marketData.price > 0 && marketData.marketCap === 0) {
+            marketData.marketCap = marketData.price * STATIC_DATA.currentSupply;
+        }
+        
+        // 4. Try to get holder count (using your existing approach with fallback)
         let holders = STATIC_DATA.holders;
         let holdersSource = 'Static Data';
         
         try {
-            // Try Birdeye API as alternative
+            // Try Birdeye API for holder count
             const birdeyeResponse = await fetch('https://public-api.birdeye.so/public/holder_count?address=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', {
                 headers: {
                     'Accept': 'application/json',
-                    'X-API-KEY': '' // Add API key if available
                 }
             });
             
@@ -3456,7 +3470,7 @@ async function fetchLiveStatsData() {
             maxSupply: 1000000000,
             holdersSource: holdersSource,
             lastUpdate: new Date().toLocaleTimeString(),
-            success: marketData.success
+            success: marketData.success || priceSuccess
         };
         
     } catch (error) {
