@@ -3381,13 +3381,19 @@ const STATIC_DATA = {
 
 async function fetchLiveStatsData() {
     try {
-        // Fetch market data from DexScreener
-        const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump');
-        const dexscreenerData = await dexscreenerResponse.json();
+        // Use DexScreener API (CORS-friendly)
+        const dexscreenerResponse = await fetch('https://api.dexscreener.com/latest/dex/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'Mozilla/5.0'
+            }
+        });
         
-        // Fetch holder data from Solscan
-        const solscanResponse = await fetch(`https://public-api.solscan.io/token/holders?tokenAddress=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&limit=1`);
-        const solscanData = await solscanResponse.json();
+        if (!dexscreenerResponse.ok) {
+            throw new Error(`DexScreener API error: ${dexscreenerResponse.status}`);
+        }
+        
+        const dexscreenerData = await dexscreenerResponse.json();
         
         let marketData = {
             price: 0,
@@ -3399,7 +3405,12 @@ async function fetchLiveStatsData() {
         };
         
         if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
-            const pair = dexscreenerData.pairs.find(p => p.chainId === 'solana') || dexscreenerData.pairs[0];
+            // Find the main Solana pair
+            const pair = dexscreenerData.pairs.find(p => 
+                p.chainId === 'solana' && 
+                p.baseToken && 
+                p.baseToken.address === 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump'
+            ) || dexscreenerData.pairs[0];
             
             marketData = {
                 price: parseFloat(pair.priceUsd) || 0,
@@ -3409,38 +3420,68 @@ async function fetchLiveStatsData() {
                 liquidity: pair.liquidity?.usd || 0,
                 success: true
             };
+            
+            console.log('DexScreener data:', marketData);
+        }
+        
+        // For holders, use an alternative API or static fallback
+        let holders = STATIC_DATA.holders;
+        let holdersSource = 'Static Data';
+        
+        try {
+            // Try Birdeye API as alternative
+            const birdeyeResponse = await fetch('https://public-api.birdeye.so/public/holder_count?address=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-API-KEY': '' // Add API key if available
+                }
+            });
+            
+            if (birdeyeResponse.ok) {
+                const birdeyeData = await birdeyeResponse.json();
+                if (birdeyeData.success && birdeyeData.data) {
+                    holders = birdeyeData.data;
+                    holdersSource = 'Birdeye API';
+                }
+            }
+        } catch (holderError) {
+            console.log('Using static holder data:', holderError);
         }
         
         return {
             ...marketData,
-            holders: solscanData?.total || STATIC_DATA.holders,
+            holders: holders,
             currentSupply: STATIC_DATA.currentSupply,
             burnedSupply: STATIC_DATA.burnedSupply,
             maxSupply: 1000000000,
-            holdersSource: solscanData?.total ? 'Solscan API' : 'Static Data',
+            holdersSource: holdersSource,
             lastUpdate: new Date().toLocaleTimeString(),
             success: marketData.success
         };
         
     } catch (error) {
         console.error('Error fetching live stats:', error);
-        return {
-            price: 0,
-            priceChange: 0,
-            marketCap: 0,
-            volume: 0,
-            liquidity: 0,
-            holders: STATIC_DATA.holders,
-            currentSupply: STATIC_DATA.currentSupply,
-            burnedSupply: STATIC_DATA.burnedSupply,
-            maxSupply: 1000000000,
-            holdersSource: 'Static Data (API Failed)',
-            lastUpdate: new Date().toLocaleTimeString(),
-            success: false
-        };
+        return getStaticData();
     }
 }
 
+function getStaticData() {
+    return {
+        price: 0,
+        priceChange: 0,
+        marketCap: 0,
+        volume: 0,
+        liquidity: 0,
+        holders: STATIC_DATA.holders,
+        currentSupply: STATIC_DATA.currentSupply,
+        burnedSupply: STATIC_DATA.burnedSupply,
+        maxSupply: 1000000000,
+        holdersSource: 'Static Data (API Failed)',
+        lastUpdate: new Date().toLocaleTimeString(),
+        success: false
+    };
+}
+  
 function updateLiveStatsDisplay(data) {
     // Update price
     const priceElement = document.getElementById('live-price');
