@@ -1169,10 +1169,10 @@
       font-weight: 600;
       white-space: nowrap;
     }
-    .action-column {
-      width: 80px;
-      text-align: center;
-    }
+.action-column {
+  width: 60px;
+  text-align: center;
+}
     .batch-controls {
       display: flex;
       gap: var(--spacing-sm);
@@ -2230,29 +2230,35 @@
             </span>
           </label>
           <div class="table-container">
-            <table id="token-batches-table">
-              <thead>
-                <tr>
-                  <th>Amount</th>
-                  <th>
-                    Age (Epochs)
-                    <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
-                      <i class="fas fa-question-circle"></i>
-                    </span>
-                  </th>
-                  <th>
-                    Weighted Value
-                    <span class="tooltip-icon" data-tippy-content="The value of this batch, weighted by how long you've held it.">
-                      <i class="fas fa-question-circle"></i>
-                    </span>
-                  </th>
-                  <th class="action-column">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Rows will be added dynamically -->
-              </tbody>
-            </table>
+<table id="token-batches-table">
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>
+        Age (Epochs)
+        <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th>
+        Weighted Value
+        <span class="tooltip-icon" data-tippy-content="The value of this batch, weighted by how long you've held it.">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th>
+        Estimated Reward
+        <span class="tooltip-icon" data-tippy-content="Estimated $REBL reward for this batch">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th class="action-column">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Rows will be added dynamically -->
+  </tbody>
+</table>
           </div>
           <div class="batch-controls">
             <button onclick="addTokenBatch()" class="batch-btn add-btn">
@@ -3795,96 +3801,129 @@ function addTokenBatch(amount = '', age = '') {
     
     const row = document.createElement('tr');
     row.innerHTML = `
-        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateWeightedValue(this)"></td>
+        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateRowCalculations(this)"></td>
         <td>
-            <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateWeightedValue(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
+            <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateRowCalculations(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
         </td>
-        <td class="batch-weighted-value" style="color: var(--rebel-gold);">0</td>
+        <td class="batch-weighted-value" style="color: var(--rebel-gold); font-size: 0.9em;">0</td>
+        <td class="batch-estimated-reward" style="color: var(--rebel-red); font-weight: bold; font-size: 0.9em;">0 $REBL</td>
         <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
     `;
     table.appendChild(row);
     
-    // Calculate weighted value for this new row
-    updateWeightedValue(row.querySelector('.batch-amount'));
+    // Update calculations for this new row
+    updateRowCalculations(row.querySelector('.batch-amount'));
 }
 
-// Add this new function to calculate weighted value for each row
-function updateWeightedValue(input) {
+
+
+// New function to update all calculations for a row
+function updateRowCalculations(input) {
     const row = input.closest('tr');
     if (!row) return;
     
     const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
     const age = parseFloat(row.querySelector('.batch-age').value) || 0;
     
-    // Formula: amount × (1 + 0.07 × min(age, 20))
+    // Constants
+    const CS = 499242047.00; // Current Creator Supply
+    const ERP = 56301289.99074; // Epoch Reward Pool
     const k = 0.07;
     const A_max = 20;
+    
+    // Calculate weighted value: amount × (1 + 0.07 × min(age, 20))
     const weightedValue = amount * (1 + k * Math.min(age, A_max));
     
+    // Calculate estimated reward: (weightedValue / CS) × ERP
+    const estimatedReward = (weightedValue / CS) * ERP;
+    
+    // Update display
     const weightedValueCell = row.querySelector('.batch-weighted-value');
+    const estimatedRewardCell = row.querySelector('.batch-estimated-reward');
+    
     if (weightedValueCell) {
-        weightedValueCell.textContent = weightedValue.toLocaleString();
+        weightedValueCell.textContent = weightedValue.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
         weightedValueCell.style.color = 'var(--rebel-gold)';
     }
+    
+    if (estimatedRewardCell) {
+        estimatedRewardCell.textContent = estimatedReward.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + ' $REBL';
+        estimatedRewardCell.style.color = estimatedReward > 0 ? 'var(--rebel-red)' : '#ccc';
+    }
+    
+    // Also update the total calculation
+    calculateRewards();
 }
 
-// Also update your validateAgeInput function to recalc weighted value
+// Update validateAgeInput to use new function
 function validateAgeInput(input) {
     let value = parseInt(input.value);
     if (isNaN(value)) input.value = 0;
     else if (value < 0) input.value = 0;
     else if (value > 20) input.value = 20;
     
-    // Update weighted value after validation
-    updateWeightedValue(input);
+    // Update calculations after validation
+    updateRowCalculations(input);
 }
 
-
-function clearTokenBatches() {
-    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => row.remove());
-    const resultElement = document.getElementById('reward-result');
-    if (resultElement) {
-        resultElement.innerHTML = 'Enter your token batches to see your rewards!';
-        resultElement.style.color = 'var(--rebel-gold)';
-    }
-}
-  
+// Update calculateRewards function to show totals
 function calculateRewards() {
     const CS = 499242047.00;
     const ERP = 56301289.99074;
     const rows = document.querySelectorAll('#token-batches-table tbody tr');
     let WS = 0;
+    let totalAmount = 0;
+    let totalReward = 0;
     
     rows.forEach(row => {
         const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
         const age = parseFloat(row.querySelector('.batch-age').value) || 0;
         const k = 0.07;
         const A_max = 20;
-        WS += amount * (1 + k * Math.min(age, A_max));
+        
+        const weightedValue = amount * (1 + k * Math.min(age, A_max));
+        WS += weightedValue;
+        totalAmount += amount;
+        
+        const rowReward = (weightedValue / CS) * ERP;
+        totalReward += rowReward;
     });
     
-    const reward = (WS / CS) * ERP;
     const resultElement = document.getElementById('reward-result');
     
     if (!resultElement) return;
     
-    if (WS <= 0 || isNaN(reward)) {
+    if (WS <= 0 || isNaN(totalReward)) {
         resultElement.innerHTML = 'Please enter valid token batches!';
         resultElement.style.color = 'var(--rebel-red)';
     } else {
-        const sharePercentage = ((WS / CS) * 100).toFixed(4);
+        const sharePercentage = ((WS / CS) * 100).toFixed(6);
         resultElement.innerHTML = `
             <div style="text-align: left; line-height: 1.6;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                    <span><strong>Your Weighted Share:</strong></span>
-                    <span>${WS.toLocaleString()} (${sharePercentage}% of total)</span>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Total Tokens:</strong></span>
+                    <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                    <span><strong>Your Estimated Reward:</strong></span>
-                    <span style="color: var(--rebel-gold); font-size: 1.2em;">${reward.toLocaleString()} $REBL</span>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Total Weighted Share:</strong></span>
+                    <span style="color: var(--rebel-gold);">${WS.toLocaleString()}</span>
                 </div>
-                <div style="font-size: 0.8em; color: rgba(255,255,255,0.7); margin-top: 0.5em;">
-                    Based on current Epoch Reward Pool: 56,301,289.99074 $REBL
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Your Share of Pool:</strong></span>
+                    <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 1.2em;">
+                    <span><strong>Total Estimated Reward:</strong></span>
+                    <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })} $REBL</span>
                 </div>
             </div>
         `;
@@ -3892,21 +3931,25 @@ function calculateRewards() {
     }
 }
 
+// Update loadExampleData to show proper examples
 function loadExampleData() {
     clearTokenBatches();
-    addTokenBatch('1000000', '5');
-    addTokenBatch('500000', '12');
-    addTokenBatch('2500000', '1');
+    // Add realistic example batches
+    addTokenBatch('1000000', '5');  // 1M tokens held for 5 epochs
+    addTokenBatch('500000', '12');  // 500K tokens held for 12 epochs  
+    addTokenBatch('2500000', '1');  // 2.5M tokens held for 1 epoch
     
     setTimeout(() => {
         calculateRewards();
         const resultElement = document.getElementById('reward-result');
         if (resultElement) {
-            resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded!</div>';
+            resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded! Calculations updated.</div>';
         }
     }, 100);
 }
 
+
+  
 function loadCalculatorState() {
     const saved = localStorage.getItem('reblCalculatorBatches');
     if (saved) {
