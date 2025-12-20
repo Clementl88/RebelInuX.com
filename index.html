@@ -3794,7 +3794,8 @@ window.quickUpdateFromSolscan = function() {
     window.refreshData();
 };
 
-// REBL Calculator Functions
+// ========== REBL CALCULATOR FUNCTIONS ==========
+
 function addTokenBatch(amount = '', age = '') {
     const table = document.querySelector('#token-batches-table tbody');
     if (!table) return;
@@ -3815,9 +3816,27 @@ function addTokenBatch(amount = '', age = '') {
     updateRowCalculations(row.querySelector('.batch-amount'));
 }
 
+function removeTokenBatch(button) {
+    const row = button.closest('tr');
+    if (row) {
+        row.remove();
+        calculateRewards();
+        saveCalculatorState();
+    }
+}
 
+function clearTokenBatches() {
+    const table = document.querySelector('#token-batches-table tbody');
+    if (table) {
+        table.innerHTML = '';
+        calculateRewards();
+        localStorage.removeItem('reblCalculatorBatches');
+        
+        // Add one empty row back
+        setTimeout(() => addTokenBatch(), 100);
+    }
+}
 
-// New function to update all calculations for a row
 function updateRowCalculations(input) {
     const row = input.closest('tr');
     if (!row) return;
@@ -3857,22 +3876,11 @@ function updateRowCalculations(input) {
         estimatedRewardCell.style.color = estimatedReward > 0 ? 'var(--rebel-red)' : '#ccc';
     }
     
-    // Also update the total calculation
+    // Also update the total calculation and save state
     calculateRewards();
+    saveCalculatorState();
 }
 
-// Update validateAgeInput to use new function
-function validateAgeInput(input) {
-    let value = parseInt(input.value);
-    if (isNaN(value)) input.value = 0;
-    else if (value < 0) input.value = 0;
-    else if (value > 20) input.value = 20;
-    
-    // Update calculations after validation
-    updateRowCalculations(input);
-}
-
-// Update calculateRewards function to show totals
 function calculateRewards() {
     const CS = 499242047.00;
     const ERP = 56301289.99074;
@@ -3931,7 +3939,6 @@ function calculateRewards() {
     }
 }
 
-// Update loadExampleData to show proper examples
 function loadExampleData() {
     clearTokenBatches();
     // Add realistic example batches
@@ -3948,8 +3955,6 @@ function loadExampleData() {
     }, 100);
 }
 
-
-  
 function loadCalculatorState() {
     const saved = localStorage.getItem('reblCalculatorBatches');
     if (saved) {
@@ -3959,18 +3964,22 @@ function loadCalculatorState() {
     }
 }
 
+function saveCalculatorState() {
+    const batches = [];
+    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
+        const amount = row.querySelector('.batch-amount').value;
+        const age = row.querySelector('.batch-age').value;
+        if (amount || age) {
+            batches.push({ amount, age });
+        }
+    });
+    localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
+}
+
 // Save calculator state on input
 document.addEventListener('input', function(e) {
     if (e.target.classList.contains('batch-amount') || e.target.classList.contains('batch-age')) {
-        const batches = [];
-        document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
-            const amount = row.querySelector('.batch-amount').value;
-            const age = row.querySelector('.batch-age').value;
-            if (amount && age) {
-                batches.push({ amount, age });
-            }
-        });
-        localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
+        saveCalculatorState();
     }
 });
 </script>
