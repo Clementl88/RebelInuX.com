@@ -3795,27 +3795,50 @@ function addTokenBatch(amount = '', age = '') {
     
     const row = document.createElement('tr');
     row.innerHTML = `
-        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;"></td>
+        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateWeightedValue(this)"></td>
         <td>
-            <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="validateAgeInput(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
+            <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateWeightedValue(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
         </td>
-        <td class="batch-weighted-value" style="color: var(--rebel-gold);">-</td>
+        <td class="batch-weighted-value" style="color: var(--rebel-gold);">0</td>
         <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
     `;
     table.appendChild(row);
+    
+    // Calculate weighted value for this new row
+    updateWeightedValue(row.querySelector('.batch-amount'));
 }
 
+// Add this new function to calculate weighted value for each row
+function updateWeightedValue(input) {
+    const row = input.closest('tr');
+    if (!row) return;
+    
+    const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+    const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+    
+    // Formula: amount × (1 + 0.07 × min(age, 20))
+    const k = 0.07;
+    const A_max = 20;
+    const weightedValue = amount * (1 + k * Math.min(age, A_max));
+    
+    const weightedValueCell = row.querySelector('.batch-weighted-value');
+    if (weightedValueCell) {
+        weightedValueCell.textContent = weightedValue.toLocaleString();
+        weightedValueCell.style.color = 'var(--rebel-gold)';
+    }
+}
+
+// Also update your validateAgeInput function to recalc weighted value
 function validateAgeInput(input) {
     let value = parseInt(input.value);
     if (isNaN(value)) input.value = 0;
     else if (value < 0) input.value = 0;
     else if (value > 20) input.value = 20;
+    
+    // Update weighted value after validation
+    updateWeightedValue(input);
 }
 
-function removeTokenBatch(button) {
-    button.closest('tr').remove();
-    calculateRewards();
-}
 
 function clearTokenBatches() {
     document.querySelectorAll('#token-batches-table tbody tr').forEach(row => row.remove());
@@ -3825,7 +3848,7 @@ function clearTokenBatches() {
         resultElement.style.color = 'var(--rebel-gold)';
     }
 }
-
+  
 function calculateRewards() {
     const CS = 499242047.00;
     const ERP = 56301289.99074;
