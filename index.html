@@ -3404,12 +3404,12 @@ const STATIC_DATA = {
     burnedSupply: 55079383,
     maxSupply: 1000000000
 };
-// Fixed fetchLiveStatsData function
+// Fixed fetchLiveStatsData function WITHOUT static fallback
 async function fetchLiveStatsData() {
     try {
         console.log("🔄 Fetching live data...");
         
-        // 1. Try DexScreener API first (primary source)
+        // 1. Get DexScreener API data (primary source)
         let marketData = {
             price: 0,
             priceChange: 0,
@@ -3452,31 +3452,17 @@ async function fetchLiveStatsData() {
             }
         } catch (dexscreenerError) {
             console.error("❌ DexScreener error:", dexscreenerError);
+            // NO STATIC FALLBACK HERE - just return what we have
         }
         
-        // 2. Fallback to static data if API fails
-        if (!marketData.success || marketData.price === 0) {
-            console.log("⚠️ Using fallback data");
-            marketData = {
-                price: 0.0003224,
-                priceChange: 5.67,
-                marketCap: 304500,
-                volume: 125000,
-                liquidity: 75000,
-                success: false
-            };
-        }
+        // 2. Get supply and holder data (keep your existing STATIC_DATA for these)
+        const holders = STATIC_DATA.holders || 0;
+        const holdersSource = 'Static Reference';
+        const currentSupply = STATIC_DATA.currentSupply || 0;
+        const burnedSupply = STATIC_DATA.burnedSupply || 0;
+        const maxSupply = STATIC_DATA.maxSupply || 0;
         
-        // 3. Get holder count (using your existing static data for now)
-        const holders = 109; // From your STATIC_DATA
-        const holdersSource = 'Static Data';
-        
-        // 4. Supply data (from your STATIC_DATA)
-        const currentSupply = 944920617;
-        const burnedSupply = 55079383;
-        const maxSupply = 1000000000;
-        
-        // 5. Prepare final data
+        // 3. Prepare final data
         const finalData = {
             price: marketData.price,
             priceChange: marketData.priceChange,
@@ -3501,8 +3487,40 @@ async function fetchLiveStatsData() {
         
     } catch (error) {
         console.error("💥 Critical error in fetchLiveStatsData:", error);
-        return getStaticData();
+        // Return minimal data structure if everything fails
+        return {
+            price: 0,
+            priceChange: 0,
+            marketCap: 0,
+            volume: 0,
+            liquidity: 0,
+            holders: 0,
+            currentSupply: 0,
+            burnedSupply: 0,
+            maxSupply: 0,
+            holdersSource: 'Error',
+            lastUpdate: 'Error',
+            success: false
+        };
     }
+}
+
+// Also update the getStaticData function to just return zeros or remove it entirely
+function getStaticData() {
+    return {
+        price: 0,
+        priceChange: 0,
+        marketCap: 0,
+        volume: 0,
+        liquidity: 0,
+        holders: STATIC_DATA.holders || 0,
+        currentSupply: STATIC_DATA.currentSupply || 0,
+        burnedSupply: STATIC_DATA.burnedSupply || 0,
+        maxSupply: STATIC_DATA.maxSupply || 0,
+        holdersSource: 'Offline',
+        lastUpdate: 'Offline',
+        success: false
+    };
 }
 
 // Fixed updateLiveStatsDisplay function
@@ -3650,17 +3668,17 @@ window.quickUpdateFromSolscan = function() {
 // Static data fallback
 function getStaticData() {
     return {
-        price: 0.0003224,
-        priceChange: 5.67,
-        marketCap: 304500,
-        volume: 125000,
-        liquidity: 75000,
-        holders: 109,
-        currentSupply: 944920617,
-        burnedSupply: 55079383,
-        maxSupply: 1000000000,
-        holdersSource: 'Static Data',
-        lastUpdate: new Date().toLocaleTimeString(),
+        price: 0,
+        priceChange: 0,
+        marketCap: 0,
+        volume: 0,
+        liquidity: 0,
+        holders: STATIC_DATA.holders || 0,
+        currentSupply: STATIC_DATA.currentSupply || 0,
+        burnedSupply: STATIC_DATA.burnedSupply || 0,
+        maxSupply: STATIC_DATA.maxSupply || 0,
+        holdersSource: 'Offline',
+        lastUpdate: 'Offline',
         success: false
     };
 }
