@@ -1247,10 +1247,16 @@
       background: rgba(255, 204, 0, 0.05);
       border: 1px dashed var(--rebel-gold);
     }
-    .chart-container {
-      height: 200px;
-      width: 100%;
-    }
+.chart-container {
+  height: 250px;
+  width: 100%;
+  margin-top: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  position: relative;
+}
     .what-if-section {
       background: var(--card-bg);
       padding: var(--spacing-md);
@@ -2208,25 +2214,25 @@
       <div class="calculator-container">
         <!-- Current Supply and ERP -->
         <div class="calculator-info">
-          <p>
-            <strong>Current Creator Supply (CS):</strong>
-            <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
-              <i class="fas fa-question-circle"></i>
-            </span>
-            <span class="info-value">499,242,047</span>
-          </p>
-          <p>
-            <strong>Epoch Reward Pool (ERP):</strong>
-            <span class="tooltip-icon" data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
-              <i class="fas fa-question-circle"></i>
-            </span>
-            <span class="info-value">56,301,289.99074</span>
-          </p>
-          <p style="background: rgba(255,51,102,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--rebel-red); margin-top: 0.5rem;">
-            <strong>💡 Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> -
-            your newest tokens (lowest age) are sold first, preserving the age of your older holdings.
-          </p>
-        </div>
+  <p>
+    <strong>Current $rebelinux Supply (CS):</strong>
+    <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">499,242,047 $rebelinux</span>
+  </p>
+  <p>
+    <strong>Epoch Reward Pool (ERP):</strong>
+    <span class="tooltip-icon" data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">56,301,289.99074 $REBL</span>
+  </p>
+  <p style="background: rgba(255,51,102,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--rebel-red); margin-top: 0.5rem;">
+    <strong>💡 Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> -
+    your newest $rebelinux tokens (lowest age) are sold first, preserving the age of your older holdings.
+  </p>
+</div>
         <!-- Token Batches Table -->
         <div class="token-batches-section">
           <label class="section-label">
@@ -2239,22 +2245,27 @@
 <table id="token-batches-table">
   <thead>
     <tr>
-      <th>Amount</th>
+      <th>
+        $rebelinux Amount
+        <span class="tooltip-icon" data-tippy-content="Amount of $rebelinux tokens you hold">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
       <th>
         Age (Epochs)
-        <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of tokens (max 20).">
+        <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of $rebelinux tokens (max 20)">
           <i class="fas fa-question-circle"></i>
         </span>
       </th>
       <th>
         Weighted Value
-        <span class="tooltip-icon" data-tippy-content="The value of this batch, weighted by how long you've held it.">
+        <span class="tooltip-icon" data-tippy-content="The value of this $rebelinux batch, weighted by how long you've held it">
           <i class="fas fa-question-circle"></i>
         </span>
       </th>
       <th>
-        Estimated Reward
-        <span class="tooltip-icon" data-tippy-content="Estimated $REBL reward for this batch">
+        Estimated $REBL Reward
+        <span class="tooltip-icon" data-tippy-content="Estimated $REBL reward for this $rebelinux batch">
           <i class="fas fa-question-circle"></i>
         </span>
       </th>
@@ -3808,7 +3819,12 @@ function addTokenBatch(amount = '', age = '') {
     
     const row = document.createElement('tr');
     row.innerHTML = `
-        <td><input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateRowCalculations(this)"></td>
+        <td>
+            <div style="position: relative;">
+                <input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateRowCalculations(this)">
+                <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--rebel-gold); font-weight: bold; pointer-events: none;">$rebelinux</div>
+            </div>
+        </td>
         <td>
             <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateRowCalculations(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
         </td>
@@ -3827,6 +3843,7 @@ function removeTokenBatch(button) {
     if (row) {
         row.remove();
         calculateRewards();
+        updateWhatIf(); // Update what-if after removing
         saveCalculatorState();
     }
 }
@@ -3836,6 +3853,7 @@ function clearTokenBatches() {
     if (table) {
         table.innerHTML = '';
         calculateRewards();
+        updateWhatIf(); // Update what-if after clearing
         localStorage.removeItem('reblCalculatorBatches');
         
         // Add one empty row back
@@ -3884,6 +3902,7 @@ function updateRowCalculations(input) {
     
     // Also update the total calculation and save state
     calculateRewards();
+    updateWhatIf(); // Update what-if slider
     saveCalculatorState();
 }
 
@@ -3894,6 +3913,9 @@ function calculateRewards() {
     let WS = 0;
     let totalAmount = 0;
     let totalReward = 0;
+    
+    // Store data for chart
+    const batchData = [];
     
     rows.forEach(row => {
         const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
@@ -3907,6 +3929,15 @@ function calculateRewards() {
         
         const rowReward = (weightedValue / CS) * ERP;
         totalReward += rowReward;
+        
+        // Store data for chart
+        if (amount > 0) {
+            batchData.push({
+                amount: amount,
+                age: age,
+                reward: rowReward
+            });
+        }
     });
     
     const resultElement = document.getElementById('reward-result');
@@ -3921,8 +3952,8 @@ function calculateRewards() {
         resultElement.innerHTML = `
             <div style="text-align: left; line-height: 1.6;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <span><strong>Total Tokens:</strong></span>
-                    <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()}</span>
+                    <span><strong>Total $rebelinux:</strong></span>
+                    <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
                     <span><strong>Total Weighted Share:</strong></span>
@@ -3943,17 +3974,176 @@ function calculateRewards() {
         `;
         resultElement.style.color = 'var(--rebel-gold)';
     }
+    
+    // Update the chart
+    updateRewardChart(batchData, totalReward);
+}
+
+// Update What If function
+function updateWhatIf() {
+    const amountSlider = document.getElementById('whatIfAmount');
+    const epochsSlider = document.getElementById('whatIfEpochs');
+    const amountValue = document.getElementById('whatIfAmountValue');
+    const epochsValue = document.getElementById('whatIfEpochsValue');
+    const rewardElement = document.getElementById('whatIfReward');
+    
+    if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+    
+    // Update display values
+    const amount = parseInt(amountSlider.value);
+    const epochs = parseInt(epochsSlider.value);
+    
+    amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+    epochsValue.textContent = epochs;
+    
+    // Calculate what-if reward
+    const CS = 499242047.00;
+    const ERP = 56301289.99074;
+    const k = 0.07;
+    const A_max = 20;
+    
+    const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
+    const estimatedReward = (weightedValue / CS) * ERP;
+    
+    // Update display
+    rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+// Initialize What If sliders
+function initializeWhatIf() {
+    const amountSlider = document.getElementById('whatIfAmount');
+    const epochsSlider = document.getElementById('whatIfEpochs');
+    
+    if (amountSlider && epochsSlider) {
+        // Set initial values
+        amountSlider.value = 10000000;
+        epochsSlider.value = 10;
+        
+        // Add event listeners
+        amountSlider.addEventListener('input', updateWhatIf);
+        epochsSlider.addEventListener('input', updateWhatIf);
+        
+        // Initial update
+        updateWhatIf();
+    }
+}
+
+// Chart functions
+let rewardChart = null;
+
+function updateRewardChart(batchData, totalReward) {
+    const canvas = document.getElementById('rewardChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (rewardChart) {
+        rewardChart.destroy();
+    }
+    
+    if (batchData.length === 0 || totalReward <= 0) {
+        // Show empty chart message
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'var(--rebel-gold)';
+        ctx.font = '14px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.fillText('Add $rebelinux token batches to see the chart', canvas.width / 2, canvas.height / 2);
+        return;
+    }
+    
+    // Prepare data for chart
+    const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+    const rewards = batchData.map(batch => batch.reward);
+    const percentages = batchData.map(batch => (batch.reward / totalReward * 100).toFixed(1));
+    
+    // Colors for the chart
+    const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(153, 102, 255, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 99, 132, 0.8)'
+    ];
+    
+    const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)'
+    ];
+    
+    // Create chart
+    rewardChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: rewards,
+                backgroundColor: backgroundColors.slice(0, batchData.length),
+                borderColor: borderColors.slice(0, batchData.length),
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: 'white',
+                        font: {
+                            family: 'Montserrat',
+                            size: 11
+                        },
+                        padding: 15,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const batch = batchData[context.dataIndex];
+                            const percentage = percentages[context.dataIndex];
+                            return [
+                                `Batch ${context.dataIndex + 1}: ${batch.reward.toLocaleString()} $REBL`,
+                                `$rebelinux: ${batch.amount.toLocaleString()}`,
+                                `Age: ${batch.age} epochs`,
+                                `Share: ${percentage}% of total`
+                            ];
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: 'var(--rebel-gold)',
+                    bodyColor: 'white',
+                    borderColor: 'var(--rebel-gold)',
+                    borderWidth: 1
+                }
+            }
+        }
+    });
 }
 
 function loadExampleData() {
     clearTokenBatches();
     // Add realistic example batches
-    addTokenBatch('1000000', '5');  // 1M tokens held for 5 epochs
-    addTokenBatch('500000', '12');  // 500K tokens held for 12 epochs  
-    addTokenBatch('2500000', '1');  // 2.5M tokens held for 1 epoch
+    addTokenBatch('1000000', '5');  // 1M $rebelinux held for 5 epochs
+    addTokenBatch('500000', '12');  // 500K $rebelinux held for 12 epochs  
+    addTokenBatch('2500000', '1');  // 2.5M $rebelinux held for 1 epoch
     
     setTimeout(() => {
         calculateRewards();
+        updateWhatIf();
         const resultElement = document.getElementById('reward-result');
         if (resultElement) {
             resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded! Calculations updated.</div>';
@@ -3987,6 +4177,21 @@ document.addEventListener('input', function(e) {
     if (e.target.classList.contains('batch-amount') || e.target.classList.contains('batch-age')) {
         saveCalculatorState();
     }
+});
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize calculator
+    loadCalculatorState();
+    if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+        addTokenBatch();
+    }
+    
+    // Initialize what-if sliders
+    initializeWhatIf();
+    
+    // Initialize chart
+    setTimeout(updateRewardChart, 500);
 });
 </script>
 </body>
