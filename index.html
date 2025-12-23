@@ -2970,31 +2970,7 @@
         <span id="api-status" style="margin-left: 10px; font-size: 0.8em;"></span>
     </small>
 </div>
-    <div style="text-align: center; margin-top: 20px;">
-    <button onclick="testDataFetch()" style="background: var(--rebel-red); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-        Test Data Fetch
-    </button>
-    <div id="test-result" style="margin-top: 10px; font-size: 0.9em;"></div>
-</div>
 
-<script>
-async function testDataFetch() {
-    const resultDiv = document.getElementById('test-result');
-    resultDiv.innerHTML = '<span style="color: var(--rebel-gold)">Testing API connection...</span>';
-    
-    try {
-        const testResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv');
-        if (testResponse.ok) {
-            resultDiv.innerHTML = '<span style="color: #4CAF50">✅ API connection successful!</span>';
-            initializeMetrics(); // Start the real data fetch
-        } else {
-            resultDiv.innerHTML = `<span style="color: var(--rebel-red)">❌ API error: ${testResponse.status}</span>`;
-        }
-    } catch (error) {
-        resultDiv.innerHTML = `<span style="color: var(--rebel-red)">❌ Network error: ${error.message}</span>`;
-    }
-}
-</script>
   </div>
 </section>
   
