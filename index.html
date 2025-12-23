@@ -1008,6 +1008,25 @@
       outline: none;
       box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
     }
+
+    @media (max-width: 768px) {
+  /* Chart containers */
+  div[style*="max-width: 1000px"] {
+    padding: var(--spacing-md) !important;
+    margin: var(--spacing-md) auto !important;
+  }
+  
+  /* Chart heights */
+  div[style*="height: 400px"] {
+    height: 300px !important;
+  }
+  
+  /* Chart titles */
+  h3[style*="color: var(--rebel-gold)"] {
+    font-size: 1.3rem !important;
+    margin-bottom: var(--spacing-sm) !important;
+  }
+}
     /* Mobile Styles for Language Selector */
     @media (max-width: 768px) {
       .language-selector {
@@ -3101,31 +3120,41 @@
   
 
 
-        <!-- Live Chart -->
-    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 1000px;">
-      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
-        <i class="fas fa-chart-line" style="margin-right: 10px;"></i>
-        Live $REBL Chart
-      </h3>
-      <div style="height: 400px; border-radius: var(--border-radius); overflow: hidden;">
-        <iframe
-          id="geckoterminal-embed"
-          title="GeckoTerminal Embed"
-          src="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv"
-          frameborder="0"
-          allow="clipboard-write"
-          allowfullscreen
-          style="width: 100%; height: 100%;"
-        ></iframe>
-      </div>
-      <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
-        Live chart powered by <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" target="_blank" style="color: var(--rebel-gold);">GeckoTerminal</a>
-      </p>
-    </div>
-    <!-- Chart -->
-    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) 0;">
-      <canvas id="distributionChart" style="width: 200%; max-height: 400px;"></canvas>
-    </div>
+<!-- Live Price Chart -->
+<div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 1000px;">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+    <i class="fas fa-chart-line" style="margin-right: 10px;"></i>
+    Live $REBL Chart
+  </h3>
+  <div style="height: 400px; border-radius: var(--border-radius); overflow: hidden;">
+    <iframe
+      id="geckoterminal-embed"
+      title="GeckoTerminal Embed"
+      src="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv"
+      frameborder="0"
+      allow="clipboard-write"
+      allowfullscreen
+      style="width: 100%; height: 100%;"
+    ></iframe>
+  </div>
+  <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
+    Live chart powered by <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" target="_blank" style="color: var(--rebel-gold);">GeckoTerminal</a>
+  </p>
+</div>
+
+<!-- Pie Chart -->
+<div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 1000px;">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+    <i class="fas fa-chart-pie" style="margin-right: 10px;"></i>
+    Token Distribution
+  </h3>
+  <div style="height: 400px; position: relative;">
+    <canvas id="distributionChart"></canvas>
+  </div>
+  <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
+    $REBL token allocation breakdown
+  </p>
+</div>
   
     <!-- Accordion with proper width constraint -->
 <div class="accordion" style="max-width: 900px; margin: 0 auto;">
@@ -4116,10 +4145,19 @@ function initializeTokenomicsChart() {
     // Wait for Chart.js to be fully loaded
     if (typeof Chart === 'undefined') {
         console.error('Chart.js not loaded!');
+        setTimeout(initializeTokenomicsChart, 100);
         return;
     }
     
     try {
+        // Get the container div
+        const container = ctx.closest('div');
+        if (container) {
+            // Set canvas to match container size
+            ctx.style.width = '100%';
+            ctx.style.height = '400px';
+        }
+        
         // Create the chart
         new Chart(ctx, {
             type: 'pie',
@@ -4146,7 +4184,7 @@ function initializeTokenomicsChart() {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: false, // ← THIS FIXES THE WIDTH ISSUE
                 plugins: {
                     legend: {
                         position: 'bottom',
