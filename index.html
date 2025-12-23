@@ -4186,36 +4186,44 @@ function updateLiveStatsDisplay(data) {
 
 }
 
-// Simplified initializeMetrics function
+// Fixed initializeMetrics function with proper auto-refresh
 async function initializeMetrics() {
     console.log("🚀 Initializing metrics...");
     
     // Show loading state
     document.querySelectorAll('.metric-value').forEach(el => {
-        if (el.textContent === '—') {
+        if (el.textContent === '—' || el.textContent === 'Loading...') {
             el.innerHTML = '<span style="color: var(--rebel-gold); font-style: italic;">Loading...</span>';
         }
     });
     
     try {
+        // Initial data fetch
         const data = await fetchLiveStatsData();
         updateLiveStatsDisplay(data);
         
-        // Start auto-refresh
+        // Start auto-refresh (EVERY 30 SECONDS)
+        console.log("🔄 Setting up auto-refresh every 30 seconds...");
         setInterval(async () => {
             if (document.visibilityState === 'visible') {
-                console.log("🔄 Auto-refreshing data...");
+                console.log("🔄 Auto-refresh triggered at:", new Date().toLocaleTimeString());
                 const newData = await fetchLiveStatsData();
                 updateLiveStatsDisplay(newData);
+            } else {
+                console.log("⏸️ Page not visible, skipping refresh");
             }
-        }, 30000); // Every 30 seconds
+        }, 30000); // 30 seconds = 30000 milliseconds
+        
+        console.log("✅ Auto-refresh interval started");
         
     } catch (error) {
-        console.error("Failed to initialize metrics:", error);
+        console.error("❌ Failed to initialize metrics:", error);
         updateLiveStatsDisplay(getStaticData());
     }
 }
 
+
+  
 // Refresh button handler
 window.refreshData = async function() {
     const button = document.querySelector('.refresh-button');
