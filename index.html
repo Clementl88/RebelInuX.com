@@ -4222,43 +4222,69 @@ async function initializeMetrics() {
     }
 }
 
+// Add this function to manually start auto-refresh
+function startAutoRefresh() {
+    console.log("▶️ Starting auto-refresh system...");
+    
+    // Clear any existing intervals first
+    if (window.refreshInterval) {
+        clearInterval(window.refreshInterval);
+    }
+    
+    // Initial refresh
+    refreshData();
+    
+    // Set up interval
+    window.refreshInterval = setInterval(() => {
+        console.log("⏰ Auto-refresh cycle at:", new Date().toLocaleTimeString());
+        refreshData();
+    }, 30000); // 30 seconds
+    
+    console.log("✅ Auto-refresh system started");
+}
 
-  
-// Refresh button handler
+// Update the refreshData function to be more robust
 window.refreshData = async function() {
     const button = document.querySelector('.refresh-button');
-    if (!button) return;
+    const isManualClick = button && event && event.type === 'click';
     
-    const originalHTML = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
-    button.disabled = true;
+    if (isManualClick) {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+        button.disabled = true;
+    }
     
     try {
         const data = await fetchLiveStatsData();
         updateLiveStatsDisplay(data);
         
-        // Show success feedback
-        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
-        button.style.background = '#4CAF50';
-        
-        setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.disabled = false;
-            button.style.background = '';
-        }, 1500);
+        if (isManualClick) {
+            // Show success feedback for manual clicks only
+            button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+            button.style.background = '#4CAF50';
+            
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+                button.style.background = '';
+            }, 1500);
+        }
         
     } catch (error) {
-        button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
-        button.style.background = 'var(--rebel-red)';
+        console.error("❌ Error refreshing data:", error);
         
-        setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.disabled = false;
-            button.style.background = '';
-        }, 2000);
+        if (isManualClick) {
+            button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+            button.style.background = 'var(--rebel-red)';
+            
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+                button.style.background = '';
+            }, 2000);
+        }
     }
 };
-
 // Quick update button
 window.quickUpdateFromSolscan = function() {
     window.refreshData();
