@@ -4100,17 +4100,19 @@ function updateLiveStatsDisplay(data) {
     document.getElementById('supply-percent').textContent = `${currentPercent}% of total`;
     document.getElementById('burned-percent-display').textContent = `${burnedPercent}% burned`;
     
-    // Update API status indicator
-    const apiStatus = document.getElementById('api-status');
-    if (apiStatus) {
-        if (data.success) {
-            apiStatus.textContent = '✅ Live Data';
-            apiStatus.style.color = '#4CAF50';
-        } else {
-            apiStatus.textContent = '⚠️ Static Data';
-            apiStatus.style.color = '#FF9800';
-        }
+    // Update timestamp
+    const timeElement = document.getElementById('last-updated-time');
+    if (timeElement) {
+        timeElement.textContent = data.lastUpdate || new Date().toLocaleTimeString();
     }
+    
+    // Update API status
+    const statusElement = document.getElementById('api-status');
+    if (statusElement) {
+        statusElement.textContent = data.success ? '✅ Live' : '⚠️ Cached';
+        statusElement.style.color = data.success ? '#4CAF50' : '#FF9800';
+    }
+}
     
     console.log("✅ Display updated successfully!");
 }
