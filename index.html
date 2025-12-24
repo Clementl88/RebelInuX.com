@@ -1571,42 +1571,6 @@
   </style>
 </head>
 <body>
-
-  <script>
-// URGENT: Service Worker Cleanup
-if ('serviceWorker' in navigator) {
-    // 1. Unregister ALL service workers
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for(let registration of registrations) {
-            registration.unregister();
-            console.log('Unregistered:', registration.scope);
-        }
-    });
-    
-    // 2. Clear ALL caches
-    caches.keys().then(function(cacheNames) {
-        return Promise.all(
-            cacheNames.map(function(cacheName) {
-                return caches.delete(cacheName);
-            })
-        );
-    });
-    
-    // 3. Clear storage
-    localStorage.clear();
-    sessionStorage.clear();
-    indexedDB && indexedDB.databases && indexedDB.databases().then(function(dbs) {
-        dbs.forEach(function(db) {
-            indexedDB.deleteDatabase(db.name);
-        });
-    });
-}
-
-// 4. Prevent future service worker registration
-navigator.serviceWorker.register = function() {
-    return Promise.reject('Service workers disabled for this site');
-};
-</script>
   <!-- Loading Animation -->
   <div class="loader" id="loader">
     <div class="loader-spinner"></div>
