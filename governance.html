@@ -1,70 +1,1171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Governance</title>
-  <!-- Same CSS as above -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Governance - Community-led DAO structure, voting mechanisms, and decentralized decision-making" />
+  <meta name="keywords" content="RebelInuX governance, DAO, voting, community, $REBL token" />
+  <meta property="og:title" content="RebelInuX Governance - Community-Led Rebellion" />
+  <meta property="og:description" content="Learn about RebelInuX's dual-governance architecture and community-led decision-making." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.fun/governance.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Governance - Community-Led Rebellion">
+  <meta name="twitter:description" content="Learn about RebelInuX's dual-governance architecture and community-led decision-making.">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
+  <title>RebelInuX Governance - Community-Led Rebellion</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
-    /* Copy CSS from previous pages */
-    :root { /* ... same as above ... */ }
-    body { /* ... same as above ... */ }
-    /* Dropdown styles and navigation styles same as above */
-    .dropdown { position: relative; display: inline-block; }
-    .dropdown-toggle { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); cursor: pointer; text-decoration: none; color: inherit; }
-    .dropdown-toggle:hover { background: rgba(255, 51, 102, 0.1); transform: translateY(-2px); }
-    .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: rgba(0, 0, 0, 0.8); min-width: 200px; border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); z-index: 1001; flex-direction: column; }
-    .dropdown-menu a { padding: var(--spacing-sm); border-bottom: 1px solid rgba(255,255,255,0.2); transition: var(--transition); color: var(--white); text-decoration: none; }
-    .dropdown-menu a:hover { background: rgba(255, 51, 102, 0.2); }
-    #nav-desktop { display: flex; flex-wrap: wrap; gap: 10px; background: #222; padding: 10px; }
-    #nav-desktop a { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); text-decoration: none; color: var(--white); }
-    #nav-desktop a:hover { background: rgba(255, 51, 102, 0.1); }
-    main { padding: 20px; }
-    section { max-width: 800px; margin: 0 auto; }
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    main {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    section {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+    
+    /* Hero Section */
+    .page-hero {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-xl) 0;
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Stats Overview */
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--rebel-gold);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-red);
+      transition: var(--transition);
+      text-align: center;
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-hover);
+      border-color: var(--rebel-gold);
+    }
+    
+    .card i {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+    }
+    
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: var(--spacing-xl) auto;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold));
+      transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+      width: 50%;
+      padding: var(--spacing-lg);
+      position: relative;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .timeline-item:nth-child(odd) {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    
+    .timeline-item:nth-child(even) {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: var(--spacing-lg);
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      background: var(--rebel-red);
+      border: 3px solid var(--rebel-gold);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    
+    .timeline-content {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+    }
+    
+    /* Buttons */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
+      margin-top: var(--spacing-xl);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: var(--spacing-md);
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .timeline::before {
+        left: 30px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+      }
+      
+      .timeline-dot {
+        left: 30px;
+      }
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+
+    /* Accordion Styles */
+    .accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .accordion-item {
+      border-bottom: 1px solid var(--rebel-red);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .accordion-header {
+      width: 100%;
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+    
+    .accordion-header:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--rebel-gold);
+    }
+    
+    .accordion-header.active {
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      border-color: transparent;
+    }
+    
+    .accordion-header .accordion-icon {
+      transition: transform 0.3s;
+    }
+    
+    .accordion-header.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    .accordion-content {
+      padding: 0 var(--spacing-md);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .accordion-content.active {
+      padding: var(--spacing-md) var(--spacing-md) 2rem;
+      max-height: 2000px;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    
+    .accordion-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .accordion-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #ff3366, #ffcc00);
+    }
+    
+    .accordion-button i {
+      margin-right: 0.5rem;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header -->
   <header>
-    <nav id="nav-desktop">
-      <a href="index.html">Home</a>
-      <a href="#about">About</a>
-      
-      <!-- Governance Dropdown -->
-      <div class="dropdown">
-        <a href="governance.html" class="dropdown-toggle">Governance</a>
-        <div class="dropdown-menu">
-          <a href="governance.html">Governance Principles</a>
-          <a href="#dualgov">Dual Governance</a>
+    <div class="header-container">
+      <h1>RebelInuX Governance</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="nav-desktop" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="trade.html">Trade</a>
+        <a href="tokenomics.html">Tokenomics</a>
+        <a href="governance.html" class="active">Governance</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="artwork.html">Artwork</a>
+        <a href="community.html">Community</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <h1>COMMUNITY-LED GOVERNANCE</h1>
+      <p>Discover RebelInuX's dual-governance architecture, where cultural curation and financial decisions are democratically controlled by the community.</p>
+      <div style="margin-top: var(--spacing-lg);">
+        <a href="#dual-governance" class="cta-button">
+          <i class="fas fa-balance-scale"></i> Dual Governance
+        </a>
+        <a href="#dao-structure" class="cta-button gold">
+          <i class="fas fa-vote-yea"></i> DAO Structure
+        </a>
+        <a href="#how-to-participate" class="cta-button">
+          <i class="fas fa-users"></i> How to Participate
+        </a>
+      </div>
+    </section>
+    
+    <!-- Governance Stats -->
+    <section id="governance-stats">
+      <h2>Governance Overview</h2>
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-gavel"></i>
+          </div>
+          <div class="stat-value">Dual</div>
+          <div class="stat-label">Governance Model</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Cultural + Financial
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-vote-yea"></i>
+          </div>
+          <div class="stat-value">2 Systems</div>
+          <div class="stat-label">Active Voting</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            RebelJudges + Future DAO
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-value">67</div>
+          <div class="stat-label">Governance Participants</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            <i class="fas fa-arrow-up"></i> Growing
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="stat-value">2026</div>
+          <div class="stat-label">DAO Launch</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Planned Transition
+          </div>
         </div>
       </div>
-
-      <!-- Other menu items -->
-      <a href="tokenomics.html">Tokenomics</a>
-      <a href="roadmap.html">Roadmap</a>
-      <a href="epoch-rewards.html">Epoch Rewards</a>
-      <a href="#artwork">Artwork</a>
-      <a href="#community">Community</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <section id="governance">
-      <h1>Governance</h1>
-      <p>Details about governance go here.</p>
+    </section>
+    
+    <!-- Dual Governance Architecture -->
+    <section id="dual-governance">
+      <h2>Dual-Governance Architecture</h2>
+      <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <p style="font-size: 1.2em; line-height: 1.6; margin-bottom: var(--spacing-lg); text-align: center;">
+          RebelInuX implements a sophisticated dual-governance model that separates cultural curation from financial governance, ensuring both community fun and fiscal responsibility.
+        </p>
+        
+        <div class="cards">
+          <!-- Cultural Governance Card -->
+          <div class="card">
+            <i class="fas fa-gavel"></i>
+            <h3>Cultural Governance</h3>
+            <p style="font-size: 1.1em; color: var(--rebel-red); font-weight: 600;">RebelJudges Voting Key</p>
+            <p style="margin-top: var(--spacing-sm);">Community-led meme contest judging and cultural curation</p>
+            <div style="margin-top: var(--spacing-md);">
+              <span style="background: rgba(255, 51, 102, 0.2); color: var(--rebel-red); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-check-circle"></i> LIVE NOW
+              </span>
+            </div>
+          </div>
+          
+          <!-- Financial Governance Card -->
+          <div class="card">
+            <i class="fas fa-landmark"></i>
+            <h3>Financial Governance</h3>
+            <p style="font-size: 1.1em; color: var(--rebel-gold); font-weight: 600;">RebelInuX DAO</p>
+            <p style="margin-top: var(--spacing-sm);">Treasury management, partnerships, and protocol decisions</p>
+            <div style="margin-top: var(--spacing-md);">
+              <span style="background: rgba(255, 204, 0, 0.2); color: var(--rebel-gold); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-clock"></i> COMING 2026
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg); border-left: 4px solid var(--rebel-red);">
+          <p style="margin: 0; font-size: 1.1em; color: var(--rebel-gold); text-align: center;">
+            <strong>Key Innovation:</strong> This separation prevents any single group from having excessive control while allowing specialized governance for different aspects of our ecosystem.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Cultural Governance Details -->
+    <section id="cultural-governance">
+      <h2>Cultural Governance: RebelJudges</h2>
+      <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
+        <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+          <div style="width: 200px; height: 200px; margin: 0 auto var(--spacing-md); border-radius: var(--border-radius); overflow: hidden; border: 3px solid var(--rebel-red);">
+            <img src="https://i.imgur.com/LG3Ovwi.jpg" alt="RebelJudges Voting Key" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">RebelJudges Voting Key</h3>
+          <p style="font-style: italic; color: var(--rebel-gold);">
+            "RebelJudges Voting Key" – Governance NFT for community-led meme contest judging. 1 Voting Key = 1 Vote with $REBL reward incentives.
+          </p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+          <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-info-circle"></i> Key Details
+            </h4>
+            <ul style="text-align: left; color: white; font-size: 0.95em;">
+              <li><strong>Token Name:</strong> RebelJudges Voting Key</li>
+              <li><strong>Token Details:</strong> 1,000,000,000 supply on ZORA (Base)</li>
+              <li><strong>Governance Power:</strong> 1 Voting Key = 1 Vote in all meme contests</li>
+              <li><strong>Voting Rights:</strong> Holders decide winners of community meme contests</li>
+              <li><strong>Reward Mechanism:</strong> Voters who select winning entries earn proportional $REBL rewards</li>
+            </ul>
+          </div>
+          
+          <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-award"></i> Founding Judge
+            </h4>
+            <p style="margin-bottom: var(--spacing-sm);">
+              <a href="https://x.com/issa_abdulrazaq" style="color: var(--rebel-red); font-weight: 600;">@issa_abdulrazaq</a> awarded 10,000,000 Voting Keys (1% supply) for creating the winning meme that inspired the RebelJudges system.
+            </p>
+            <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px;">
+              <p style="font-size: 0.9em; color: var(--rebel-gold); margin: 0;">
+                This system replaces team-led judging with transparent, community-controlled curation.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center;">
+          <a href="https://zora.co/coin/base:0x0ea28d8b2f45fa45b3a13a9d0869263f6b41f5e6?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="cta-button" style="background: var(--rebel-red);">
+            <i class="fas fa-external-link-alt"></i> VIEW ON ZORA
+          </a>
+          <a href="https://zora.co/@rebelinux" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="cta-button gold">
+            <i class="fas fa-cube"></i> EXPLORE COLLECTION
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Financial Governance Details -->
+    <section id="financial-governance">
+      <h2>Financial Governance: Future DAO</h2>
+      <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <p style="font-size: 1.2em; line-height: 1.6; margin-bottom: var(--spacing-lg); text-align: center;">
+          The RebelInuX DAO ($REBL) will manage treasury, partnerships, and protocol decisions, ensuring sound financial management and strategic growth.
+        </p>
+        
+        <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg);">
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+            <i class="fas fa-cogs"></i> Proposed DAO Parameters
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+            <div style="text-align: center;">
+              <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
+                $REBL
+              </div>
+              <div style="color: var(--rebel-gold); font-weight: 600;">Governance Token</div>
+            </div>
+            
+            <div style="text-align: center;">
+              <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
+                60%
+              </div>
+              <div style="color: var(--rebel-gold); font-weight: 600;">Approval Threshold</div>
+            </div>
+            
+            <div style="text-align: center;">
+              <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
+                13M
+              </div>
+              <div style="color: var(--rebel-gold); font-weight: 600;">Proposal Minimum</div>
+            </div>
+            
+            <div style="text-align: center;">
+              <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
+                5
+              </div>
+              <div style="color: var(--rebel-gold); font-weight: 600;">Council Seats</div>
+            </div>
+          </div>
+          
+          <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg);">
+            <p style="margin: 0; text-align: center; color: var(--rebel-red); font-weight: 600;">
+              <i class="fas fa-lightbulb"></i> Council Eligibility: Holders of both Creator Coin + Content Coin NFT (subject to community vote)
+            </p>
+          </div>
+        </div>
+        
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
+          <p style="font-size: 0.9em; color: var(--rebel-red); text-align: center; margin: 0;">
+            <strong>Note:</strong> DAO parameters are preliminary proposals and will be finalized through community governance before launch.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Implementation Timeline -->
+    <section id="implementation-timeline">
+      <h2>Implementation Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-check-circle" style="color: #4CAF50; margin-right: var(--spacing-sm);"></i>
+              Phase 1: Cultural Governance Launch
+            </h3>
+            <p style="color: var(--text-light); margin-bottom: var(--spacing-sm);">
+              <strong>Q3 2024 - LIVE</strong><br>
+              RebelJudges NFT system deployed and actively governing meme contests.
+            </p>
+            <div style="background: rgba(76, 175, 80, 0.1); padding: var(--spacing-sm); border-radius: 8px; border-left: 3px solid #4CAF50;">
+              <p style="margin: 0; font-size: 0.9em; color: #4CAF50;">
+                <i class="fas fa-rocket"></i> Community now controls meme contest judging
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-clock" style="color: var(--rebel-gold); margin-right: var(--spacing-sm);"></i>
+              Phase 2: Community Discussions
+            </h3>
+            <p style="color: var(--text-light); margin-bottom: var(--spacing-sm);">
+              <strong>Q4 2024 - Q1 2025</strong><br>
+              Community governance discussions and planning for DAO structure.
+            </p>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-calendar" style="color: var(--rebel-red); margin-right: var(--spacing-sm);"></i>
+              Phase 3: DAO Launch
+            </h3>
+            <p style="color: var(--text-light); margin-bottom: var(--spacing-sm);">
+              <strong>2026</strong><br>
+              Official launch of the RebelInuX DAO on Realms with full treasury management.
+            </p>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; border-left: 3px solid var(--rebel-red);">
+              <p style="margin: 0; font-size: 0.9em; color: var(--rebel-red);">
+                <i class="fas fa-lock"></i> Financial governance transitions to community control
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- How to Participate -->
+    <section id="how-to-participate">
+      <h2>How to Participate in Governance</h2>
+      <div class="cards">
+        <div class="card">
+          <i class="fas fa-vote-yea"></i>
+          <h3>Vote in Meme Contests</h3>
+          <p>Hold RebelJudges Voting Keys to participate in community meme contests and earn $REBL rewards.</p>
+          <div style="margin-top: var(--spacing-md);">
+            <a href="#cultural-governance" class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-info-circle"></i> Learn More
+            </a>
+          </div>
+        </div>
+        
+        <div class="card">
+          <i class="fas fa-coins"></i>
+          <h3>Acquire $REBL Tokens</h3>
+          <p>Hold $REBL tokens to prepare for future DAO voting and governance rights.</p>
+          <div style="margin-top: var(--spacing-md);">
+            <a href="trade.html" class="cta-button gold" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-shopping-cart"></i> Buy $REBL
+            </a>
+          </div>
+        </div>
+        
+        <div class="card">
+          <i class="fas fa-comments"></i>
+          <h3>Join Discussions</h3>
+          <p>Participate in governance discussions on Telegram, Discord, and community forums.</p>
+          <div style="margin-top: var(--spacing-md);">
+            <a href="#community" class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-users"></i> Join Community
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Governance FAQ -->
+    <section id="governance-faq">
+      <h2>Governance FAQ</h2>
+      <div class="accordion">
+        <!-- FAQ 1 -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-question-circle" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              What is the difference between RebelJudges and the DAO?
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p><strong>RebelJudges</strong> handles cultural governance (meme contests, community events) while the <strong>DAO</strong> will handle financial governance (treasury, partnerships, protocol decisions). This separation ensures specialized governance for different aspects of our ecosystem.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ 2 -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-question-circle" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              When will the DAO launch?
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The RebelInuX DAO is planned for launch in <strong>2026</strong>. The exact timeline will be determined through community discussions and voting. This gradual approach ensures proper testing and community preparation.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ 3 -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-question-circle" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              How do I earn rewards from RebelJudges voting?
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>When you vote in meme contests using RebelJudges Voting Keys, and your selected entries win, you earn proportional $REBL rewards. This creates a self-sustaining ecosystem where governance participation is directly rewarded.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ 4 -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-question-circle" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              What will the DAO control?
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The DAO will control: Treasury management, Partnership approvals, Protocol upgrades, Grant distributions, Exchange listing decisions, and other strategic financial decisions affecting the RebelInuX ecosystem.</p>
+          </div>
+        </div>
+        
+        <!-- FAQ 5 -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-question-circle" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Can I participate in governance without buying NFTs?
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>Yes! While RebelJudges requires Voting Key NFTs, the future DAO will use $REBL tokens for voting. You can participate in DAO governance by holding $REBL tokens. Additionally, everyone can participate in community discussions regardless of holdings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Related Pages -->
+    <section id="related">
+      <h2>Explore More</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <a href="tokenomics.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Tokenomics</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Detailed $REBL token distribution and vesting</p>
+        </a>
+        
+        <a href="roadmap.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-map-signs"></i>
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Roadmap</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Development timeline and future plans</p>
+        </a>
+        
+        <a href="community.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Community</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Join discussions and connect with rebels</p>
+        </a>
+      </div>
     </section>
   </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="social-icons">
+        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: var(--spacing-lg) 0;">
+        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL
+        </a>
+      </div>
+      
+      <div style="margin-bottom: var(--spacing-md); text-align: center;">
+        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
+        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
+        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
+        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
+        <a href="roadmap.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Roadmap</a>
+        <a href="privacy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy</a>
+      </div>
+      
+      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
+        <p style="margin: 0.5rem 0;">
+          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
+          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+        </p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-      dropdown.addEventListener('mouseenter', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'flex';
-        dropdown.querySelector('.dropdown-menu').style.flexDirection = 'column';
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide loader
+      setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1000);
+      
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          const nav = document.getElementById('nav-desktop');
+          const icon = this.querySelector('i');
+          
+          nav.classList.toggle('active');
+          if (nav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+      
+      // Close mobile nav when clicking on a link
+      document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+              toggleIcon.classList.remove('fa-times');
+              toggleIcon.classList.add('fa-bars');
+            }
+          }
+        });
       });
-      dropdown.addEventListener('mouseleave', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'none';
-      });
+      
+      // Back to top button
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        
+        backToTop.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      
+      // Initialize accordion
+      initializeAccordion();
     });
+    
+    // Accordion functionality
+    function initializeAccordion() {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const content = header.nextElementSibling;
+          const isActive = content.classList.contains('active');
+
+          // Close all accordion items
+          document.querySelectorAll('.accordion-content').forEach(item => {
+            item.classList.remove('active');
+            item.style.maxHeight = null;
+            item.style.padding = '0 var(--spacing-md)';
+          });
+          document.querySelectorAll('.accordion-header').forEach(h => {
+            h.classList.remove('active');
+          });
+
+          // Open clicked item if it wasn't already active
+          if (!isActive) {
+            content.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 100 + 'px';
+            header.classList.add('active');
+          }
+        });
+      });
+    }
   </script>
 </body>
 </html>
