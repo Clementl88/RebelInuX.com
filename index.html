@@ -4298,7 +4298,7 @@ function startAutoRefresh() {
 }
 
 // Update the refreshData function to be more robust
-window.refreshData = async function() {
+window.refreshData = async function(event) {
     const button = document.querySelector('.refresh-button');
     const isManualClick = button && event && event.type === 'click';
     
@@ -4309,6 +4309,7 @@ window.refreshData = async function() {
     }
     
     try {
+        console.log("🔄 Refreshing data...");
         const data = await fetchLiveStatsData();
         updateLiveStatsDisplay(data);
         
