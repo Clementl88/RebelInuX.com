@@ -204,24 +204,58 @@
     }
     
     /* Stats Overview */
-.stats-overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-    /* Mobile adjustment */
-@media (max-width: 768px) {
-  .stats-overview {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-}
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
 
-@media (max-width: 480px) {
-  .stats-overview {
-    grid-template-columns: 1fr;
-  }
-}
+    /* Stat Tabs */
+    .stat-tab {
+      background: rgba(255, 51, 102, 0.1);
+      border: 1px solid var(--rebel-red);
+      color: var(--rebel-gold);
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-tab i {
+      font-size: 1rem;
+    }
+
+    .stat-tab:hover {
+      background: rgba(255, 51, 102, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .stat-tab.active {
+      background: var(--rebel-red);
+      color: white;
+      border-color: var(--rebel-red);
+    }
+
+    .stat-tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .stat-tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
     .stat-card {
       background: var(--card-bg);
       padding: var(--spacing-lg);
@@ -368,42 +402,44 @@
       border-radius: var(--border-radius);
     }
     
-.calculator-info {
-  background: rgba(255, 51, 102, 0.1);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius);
-  border-left: 4px solid var(--rebel-red);
-  margin-bottom: var(--spacing-md);
-}
+    .calculator-info {
+      background: rgba(255, 51, 102, 0.1);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--rebel-red);
+      margin-bottom: var(--spacing-md);
+    }
 
     /* Important note - separate box */
-.important-note {
-  background: rgba(255, 204, 0, 0.1);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--rebel-gold);
-  margin-bottom: var(--spacing-xl);
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: flex-start;
-}
+    .important-note {
+      background: rgba(255, 204, 0, 0.1);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-gold);
+      margin-bottom: var(--spacing-xl);
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+    }
+    
     .important-note i {
-  color: var(--rebel-gold);
-  font-size: 1.2rem;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
+      color: var(--rebel-gold);
+      font-size: 1.2rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
 
-.important-note p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--rebel-gold);
-  line-height: 1.5;
-}
+    .important-note p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--rebel-gold);
+      line-height: 1.5;
+    }
 
-.important-note strong {
-  color: var(--rebel-gold);
-}
+    .important-note strong {
+      color: var(--rebel-gold);
+    }
+    
     .calculator-info p {
       display: flex;
       justify-content: space-between;
@@ -758,6 +794,11 @@
       .chart-container {
         height: 250px;
       }
+
+      .stat-tab {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+      }
     }
     
     /* Step by Step Guide */
@@ -938,175 +979,174 @@
       </div>
     </section>
     
- <!-- Epoch Stats with Tabs -->
-<section id="epoch-stats">
-  <h2>Epoch Statistics</h2>
-  
-  <!-- Tab Navigation -->
-  <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
-    <button class="stat-tab active" onclick="showStatTab('general')">
-      <i class="fas fa-chart-line"></i> General
-    </button>
-    <button class="stat-tab" onclick="showStatTab('holders')">
-      <i class="fas fa-users"></i> Holder Stats
-    </button>
-    <button class="stat-tab" onclick="showStatTab('rewards')">
-      <i class="fas fa-gift"></i> Rewards
-    </button>
-  </div>
-  
-  <!-- General Stats Tab -->
-  <div id="general-stats" class="stat-tab-content active">
-    <div class="stats-overview">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-calendar-week"></i>
-        </div>
-        <div class="stat-value">12</div>
-        <div class="stat-label">Epochs Completed</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Since October 2025
+    <!-- Epoch Stats with Tabs -->
+    <section id="epoch-stats">
+      <h2>Epoch Statistics</h2>
+      
+      <!-- Tab Navigation -->
+      <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+        <button class="stat-tab active" onclick="showStatTab('general')">
+          <i class="fas fa-chart-line"></i> General
+        </button>
+        <button class="stat-tab" onclick="showStatTab('holders')">
+          <i class="fas fa-users"></i> Holder Stats
+        </button>
+        <button class="stat-tab" onclick="showStatTab('rewards')">
+          <i class="fas fa-gift"></i> Rewards
+        </button>
+      </div>
+      
+      <!-- General Stats Tab -->
+      <div id="general-stats" class="stat-tab-content active">
+        <div class="stats-overview">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-calendar-week"></i>
+            </div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Epochs Completed</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Since October 2025
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-value">54.8M</div>
+            <div class="stat-label">Current Reward Pool</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              $REBL to be distributed
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-value">500+</div>
+            <div class="stat-label">Claim Participants</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Active reward claimants
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <div class="stat-value">2</div>
+            <div class="stat-label">Rebel Keys</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Rotating weekly
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-coins"></i>
-        </div>
-        <div class="stat-value">54.8M</div>
-        <div class="stat-label">Current Reward Pool</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          $REBL to be distributed
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-users"></i>
-        </div>
-        <div class="stat-value">500+</div>
-        <div class="stat-label">Claim Participants</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Active reward claimants
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-key"></i>
-        </div>
-        <div class="stat-value">2</div>
-        <div class="stat-label">Rebel Keys</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Rotating weekly
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Holder Stats Tab -->
-  <div id="holders-stats" class="stat-tab-content">
-    <div class="stats-overview">
-      <!-- NEW: $rebelinux Holders -->
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-wallet"></i>
-        </div>
-        <div class="stat-value">1,850</div>
-        <div class="stat-label">$rebelinux Holders</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Creator Coin holders
-        </div>
-      </div>
-      
-      <!-- NEW: Rebel Key #1 Holders -->
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-key" style="color: #ff3366;"></i>
-        </div>
-        <div class="stat-value">420</div>
-        <div class="stat-label">Rebel Key #1</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Active holders
+      <!-- Holder Stats Tab -->
+      <div id="holders-stats" class="stat-tab-content">
+        <div class="stats-overview">
+          <!-- NEW: $rebelinux Holders -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <div class="stat-value">1,850</div>
+            <div class="stat-label">$rebelinux Holders</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Creator Coin holders
+            </div>
+          </div>
+          
+          <!-- NEW: Rebel Key #1 Holders -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-key" style="color: #ff3366;"></i>
+            </div>
+            <div class="stat-value">420</div>
+            <div class="stat-label">Rebel Key #1</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Active holders
+            </div>
+          </div>
+          
+          <!-- NEW: Rebel Key #2 Holders -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-key" style="color: #ffcc00;"></i>
+            </div>
+            <div class="stat-value">380</div>
+            <div class="stat-label">Rebel Key #2</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Active holders
+            </div>
+          </div>
+          
+          <!-- Total Unique Claimers -->
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-value">620</div>
+            <div class="stat-label">Unique Claimers</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Total distinct participants
+            </div>
+          </div>
         </div>
       </div>
       
-      <!-- NEW: Rebel Key #2 Holders -->
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-key" style="color: #ffcc00;"></i>
-        </div>
-        <div class="stat-value">380</div>
-        <div class="stat-label">Rebel Key #2</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Active holders
-        </div>
-      </div>
-      
-      <!-- Total Unique Claimers -->
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-user-check"></i>
-        </div>
-        <div class="stat-value">620</div>
-        <div class="stat-label">Unique Claimers</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Total distinct participants
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Rewards Stats Tab -->
-  <div id="rewards-stats" class="stat-tab-content">
-    <div class="stats-overview">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-fire"></i>
-        </div>
-        <div class="stat-value">24.5M</div>
-        <div class="stat-label">$REBL Burned</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          By $rebelinux_burn account
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-hand-holding-usd"></i>
-        </div>
-        <div class="stat-value">48.2M</div>
-        <div class="stat-label">$REBL Claimed</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          By participants overall
+      <!-- Rewards Stats Tab -->
+      <div id="rewards-stats" class="stat-tab-content">
+        <div class="stats-overview">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="stat-value">24.5M</div>
+            <div class="stat-label">$REBL Burned</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              By $rebelinux_burn account
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="stat-value">48.2M</div>
+            <div class="stat-label">$REBL Claimed</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              By participants overall
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-value">72.7M</div>
+            <div class="stat-label">Total Distributed</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              $REBL distributed to date
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-value">33.7%</div>
+            <div class="stat-label">Burned Rate</div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+              Of total rewards burned
+            </div>
+          </div>
         </div>
       </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-chart-line"></i>
-        </div>
-        <div class="stat-value">72.7M</div>
-        <div class="stat-label">Total Distributed</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          $REBL distributed to date
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-percentage"></i>
-        </div>
-        <div class="stat-value">33.7%</div>
-        <div class="stat-label">Burned Rate</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Of total rewards burned
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-    
+    </section>
     
     <!-- How Epoch Rewards Work -->
     <section id="how-it-works">
@@ -1294,30 +1334,30 @@
       </div>
     </section>
     
-<!-- REBL Calculator -->
-<section id="rebl-calculator">
-  <h2>$REBL Reward Calculator</h2>
-  <div class="rebl-calculator">
-    <div class="calculator-container">
-      <!-- Stats Section -->
-      <div class="calculator-info">
-        <p>
-          <strong>Current $rebelinux Supply (CS):</strong>
-          <span class="info-value">499,242,047</span>
-        </p>
-        <p>
-          <strong>Epoch Reward Pool (ERP):</strong>
-          <span class="info-value">54,812,320.11 $REBL</span>
-        </p>
-      </div>
-      
-      <!-- Separated Important Note -->
-      <div class="important-note">
-        <i class="fas fa-lightbulb"></i>
-        <p>
-          <strong>Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> - your newest $rebelinux tokens (lowest age) are sold first, preserving the age of your older holdings.
-        </p>
-      </div>
+    <!-- REBL Calculator -->
+    <section id="rebl-calculator">
+      <h2>$REBL Reward Calculator</h2>
+      <div class="rebl-calculator">
+        <div class="calculator-container">
+          <!-- Stats Section -->
+          <div class="calculator-info">
+            <p>
+              <strong>Current $rebelinux Supply (CS):</strong>
+              <span class="info-value">499,242,047</span>
+            </p>
+            <p>
+              <strong>Epoch Reward Pool (ERP):</strong>
+              <span class="info-value">54,812,320.11 $REBL</span>
+            </p>
+          </div>
+          
+          <!-- Separated Important Note -->
+          <div class="important-note">
+            <i class="fas fa-lightbulb"></i>
+            <p>
+              <strong>Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> - your newest $rebelinux tokens (lowest age) are sold first, preserving the age of your older holdings.
+            </p>
+          </div>
           
           <div class="token-batches-section">
             <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">Your Token Batches</h4>
@@ -1358,12 +1398,11 @@
             <i class="fas fa-calculator"></i> CALCULATE REWARDS
           </button>
           
-          
           <div id="reward-result">
             Enter your token batches above to see your estimated rewards!
           </div>
 
-    <!-- Chart Container -->
+          <!-- Chart Container -->
           <div class="chart-container">
             <canvas id="rewardChart"></canvas>
             <div id="chartPlaceholder" class="chart-placeholder">
@@ -1371,7 +1410,6 @@
               <p>Your reward distribution will appear here after calculation</p>
             </div>
           </div>
-
           
           <!-- What If Calculator -->
           <div class="what-if-container">
@@ -2090,6 +2128,33 @@
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' $REBL';
+    }
+    
+    // Tab functionality for stats
+    function showStatTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.stat-tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.stat-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab content
+      document.getElementById(tabName + '-stats').classList.add('active');
+      
+      // Activate selected tab button
+      const tabButtons = document.querySelectorAll('.stat-tab');
+      tabButtons.forEach(button => {
+        if (button.textContent.toLowerCase().includes(tabName) || 
+            (tabName === 'general' && button.textContent.toLowerCase().includes('general')) ||
+            (tabName === 'holders' && button.textContent.toLowerCase().includes('holder')) ||
+            (tabName === 'rewards' && button.textContent.toLowerCase().includes('reward'))) {
+          button.classList.add('active');
+        }
+      });
     }
   </script>
 </body>
