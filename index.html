@@ -4169,8 +4169,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script>
-// Fix the very first line of your HTML - it should start with DOCTYPE
-// Remove "it does not load : " from the beginning
+
+  // Add this to your HTML to clear old service workers
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+            registration.unregister();
+        }
+        console.log('Service Workers unregistered');
+    });
+}
+</script>
 
 // Initialize AOS animations
 document.addEventListener('DOMContentLoaded', function() {
