@@ -1027,7 +1027,30 @@
     margin-bottom: var(--spacing-sm) !important;
   }
 }
-
+@media (max-width: 768px) {
+  /* Security warning mobile optimization */
+  .contract-verify-container > div:first-child {
+    padding: var(--spacing-sm) !important;
+    margin: 0 auto var(--spacing-md) !important;
+  }
+  
+  /* Checklist items - stack vertically */
+  .contract-verify-container > div:first-child > div:last-child {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
+  /* Contract code - smaller font on mobile */
+  code {
+    font-size: 0.7rem !important;
+    padding: 0.4rem !important;
+  }
+  
+  /* Center the entire security section */
+  .contract-verify-container {
+    padding: 0 var(--spacing-sm) !important;
+  }
+}
 
     @media (max-width: 768px) {
   .data-info small {
@@ -2015,36 +2038,82 @@
 
   <div class="contract-verify-container" style="max-width: 800px; margin: 0 auto;">
     
-<!-- Enhanced Security Warning -->
+<!-- Enhanced Security Warning - Centered for ALL devices -->
 <div style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 51, 102, 0.05)); 
              padding: var(--spacing-md); 
              border-radius: var(--border-radius); 
              max-width: 700px; 
-             margin: 0 auto; 
+             margin: 0 auto var(--spacing-lg); 
              border: 2px solid var(--rebel-red);
-             box-shadow: 0 4px 15px rgba(255, 51, 102, 0.1);">
-  <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-    <div style="flex-shrink: 0;">
-      <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 1.3rem;"></i>
-    </div>
-    <div>
-      <div style="font-weight: 700; color: var(--rebel-red); margin-bottom: 0.3rem; font-size: 0.95rem;">
+             box-shadow: 0 4px 15px rgba(255, 51, 102, 0.1);
+             text-align: center;">
+  
+  <!-- Main warning icon and title -->
+  <div style="margin-bottom: 1rem;">
+    <div style="display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+      <div style="width: 40px; height: 40px; background: rgba(255, 51, 102, 0.2); 
+                  border-radius: 50%; display: flex; align-items: center; 
+                  justify-content: center;">
+        <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 1.2rem;"></i>
+      </div>
+      <div style="font-weight: 900; color: var(--rebel-red); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
         ⚠️ CRITICAL SECURITY WARNING
       </div>
-      <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5;">
-        <strong>Scammers create fake websites!</strong> Always verify:
-      </div>
-      <ul style="color: rgba(255, 255, 255, 0.8); font-size: 0.85rem; margin: 0.5rem 0 0.5rem 1.2rem; line-height: 1.5;">
-        <li>✅ You're on the <strong>official RebelInuX website</strong></li>
-        <li>✅ Contract matches: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; color: var(--rebel-gold);">F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump</code></li>
-        <li>❌ <strong>NEVER</strong> share private keys or seed phrases</li>
-      </ul>
-      <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem; font-style: italic;">
-        Use the verification tools below to confirm the contract address.
-      </div>
+    </div>
+    
+    <!-- Main message -->
+    <div style="color: rgba(255, 255, 255, 0.95); font-size: 1rem; line-height: 1.5;">
+      <strong>Scammers create fake websites!</strong> Always verify these 3 points:
     </div>
   </div>
+  
+  <!-- Verification checklist - Center-aligned for all devices -->
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+    
+    <!-- Point 1 -->
+    <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(76, 175, 80, 0.1); 
+                padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(76, 175, 80, 0.3); 
+                max-width: 100%;">
+      <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 0.9rem; flex-shrink: 0;"></i>
+      <span style="color: white; font-size: 0.9rem; text-align: left;">
+        You're on the <strong>official</strong> RebelInuX website
+      </span>
+    </div>
+    
+    <!-- Point 2 -->
+    <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(76, 175, 80, 0.1); 
+                padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(76, 175, 80, 0.3); 
+                max-width: 100%;">
+      <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 0.9rem; flex-shrink: 0;"></i>
+      <div style="color: white; font-size: 0.9rem; text-align: left;">
+        <span style="display: block; margin-bottom: 0.3rem;">Contract matches:</span>
+        <code style="background: rgba(0,0,0,0.4); padding: 0.4rem 0.6rem; border-radius: 6px; 
+              font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--rebel-gold); 
+              word-break: break-all; display: block; line-height: 1.4;">
+          F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+        </code>
+      </div>
+    </div>
+    
+    <!-- Point 3 -->
+    <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(255, 51, 102, 0.1); 
+                padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(255, 51, 102, 0.3); 
+                max-width: 100%;">
+      <i class="fas fa-ban" style="color: var(--rebel-red); font-size: 0.9rem; flex-shrink: 0;"></i>
+      <span style="color: white; font-size: 0.9rem; text-align: left;">
+        <strong>NEVER</strong> share private keys or seed phrases
+      </span>
+    </div>
+  </div>
+  
+  <!-- Footer note -->
+  <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); padding-top: 0.8rem; 
+              border-top: 1px solid rgba(255, 255, 255, 0.1);">
+    <i class="fas fa-shield-alt" style="margin-right: 0.4rem;"></i>
+    Use the verification tools below to confirm the contract address.
+  </div>
 </div>
+
     
     <!-- Spacer -->
 <div style="height: 30px;"></div>
