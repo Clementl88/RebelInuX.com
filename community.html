@@ -1,64 +1,1464 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Community</title>
-  <!-- Same CSS as above -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Community - Join the rebellion, connect with rebels, and participate in community events and voting" />
+  <meta name="keywords" content="RebelInuX community, telegram, discord, X, social media, voting, events" />
+  <meta property="og:title" content="RebelInuX Community - Join the Rebellion" />
+  <meta property="og:description" content="Connect with the RebelInuX community across all platforms and participate in the revolution." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.fun/community.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Community - Join the Rebellion">
+  <meta name="twitter:description" content="Connect with the RebelInuX community across all platforms and participate in the revolution.">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
+  <title>RebelInuX Community - Join the Rebellion</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
-    /* Copy CSS from previous pages */
-    :root { /* ... same as above ... */ }
-    body { /* ... same as above ... */ }
-    /* Dropdown styles and navigation styles same as above */
-    .dropdown { position: relative; display: inline-block; }
-    .dropdown-toggle { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); cursor: pointer; text-decoration: none; }
-    .dropdown-toggle:hover { background: rgba(255, 51, 102, 0.1); transform: translateY(-2px); }
-    .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: rgba(0, 0, 0, 0.8); min-width: 200px; border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); z-index: 1001; flex-direction: column; }
-    .dropdown-menu a { padding: var(--spacing-sm); border-bottom: 1px solid rgba(255,255,255,0.2); transition: var(--transition); color: var(--white); text-decoration: none; }
-    .dropdown-menu a:hover { background: rgba(255, 51, 102, 0.2); }
-    #nav-desktop { display: flex; flex-wrap: wrap; gap: 10px; background: #222; padding: 10px; }
-    #nav-desktop a { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); text-decoration: none; color: var(--white); }
-    #nav-desktop a:hover { background: rgba(255, 51, 102, 0.1); }
-    main { padding: 20px; }
-    section { max-width: 800px; margin: 0 auto; }
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    main {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    section {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+    
+    /* Hero Section */
+    .page-hero {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-xl) 0;
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Stats Overview */
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--rebel-gold);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Social Cards */
+    .social-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    
+    .social-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid;
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .social-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      z-index: 1;
+    }
+    
+    .social-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .social-card.twitter {
+      border-color: #1DA1F2;
+    }
+    
+    .social-card.telegram {
+      border-color: #0088cc;
+    }
+    
+    .social-card.discord {
+      border-color: #5865F2;
+    }
+    
+    .social-card.zora {
+      border-color: #8a2be2;
+    }
+    
+    .social-icon {
+      font-size: 3.5rem;
+      margin-bottom: var(--spacing-md);
+      transition: var(--transition);
+    }
+    
+    .social-card:hover .social-icon {
+      transform: scale(1.1);
+    }
+    
+    .social-card.twitter .social-icon {
+      color: #1DA1F2;
+    }
+    
+    .social-card.telegram .social-icon {
+      color: #0088cc;
+    }
+    
+    .social-card.discord .social-icon {
+      color: #5865F2;
+    }
+    
+    .social-card.zora .social-icon {
+      color: #8a2be2;
+    }
+    
+    /* Buttons */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    .cta-button.twitter {
+      background: #1DA1F2;
+    }
+    
+    .cta-button.telegram {
+      background: #0088cc;
+    }
+    
+    .cta-button.discord {
+      background: #5865F2;
+    }
+    
+    .cta-button.zora {
+      background: #8a2be2;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
+      margin-top: var(--spacing-xl);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Voting Section */
+    .voting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    
+    .voting-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .voting-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+      border-color: var(--rebel-red);
+    }
+    
+    .voting-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 204, 0, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+    }
+    
+    /* Community Events */
+    .events-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--spacing-xl) 0;
+    }
+    
+    .events-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold));
+      transform: translateX(-50%);
+    }
+    
+    .event-item {
+      width: 50%;
+      padding: var(--spacing-lg);
+      position: relative;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .event-item:nth-child(odd) {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    
+    .event-item:nth-child(even) {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    
+    .event-dot {
+      position: absolute;
+      left: 50%;
+      top: var(--spacing-lg);
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      background: var(--rebel-red);
+      border: 3px solid var(--rebel-gold);
+      border-radius: 50%;
+      z-index: 2;
+    }
+    
+    .event-content {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+    }
+    
+    .event-date {
+      background: var(--rebel-red);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    /* Member Spotlight */
+    .member-spotlight {
+      background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 204, 0, 0.1));
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+    }
+    
+    .member-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--rebel-red);
+      margin: 0 auto var(--spacing-md);
+      overflow: hidden;
+    }
+    
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Community Guidelines */
+    .guidelines-list {
+      list-style: none;
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .guidelines-list li {
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--rebel-gold);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+    
+    .guidelines-list li i {
+      color: var(--rebel-gold);
+      margin-top: 0.3rem;
+      flex-shrink: 0;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: var(--spacing-md);
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      
+      .social-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .voting-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .events-timeline::before {
+        left: 30px;
+      }
+      
+      .event-item {
+        width: 100%;
+        padding-left: 70px;
+      }
+      
+      .event-dot {
+        left: 30px;
+      }
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+
+    /* Community Chat Preview */
+    .chat-preview {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      margin: var(--spacing-lg) auto;
+      max-width: 600px;
+    }
+    
+    .chat-message {
+      background: rgba(255, 255, 255, 0.05);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing-md);
+      border-left: 3px solid var(--rebel-red);
+    }
+    
+    .chat-message:last-child {
+      margin-bottom: 0;
+    }
+    
+    .chat-user {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .chat-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .chat-username {
+      font-weight: 600;
+      color: var(--rebel-gold);
+    }
+    
+    .chat-time {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-left: auto;
+    }
+    
+    .chat-text {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.5;
+    }
+    
+    /* Community Badges */
+    .badge-container {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .community-badge {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* Join Counter */
+    .join-counter {
+      background: linear-gradient(135deg, var(--rebel-red), #d62828);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin: var(--spacing-lg) auto;
+      max-width: 500px;
+    }
+    
+    .counter-number {
+      font-size: 3rem;
+      font-weight: 900;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .counter-label {
+      color: var(--rebel-gold);
+      font-size: 1.2rem;
+      margin-top: var(--spacing-sm);
+    }
   </style>
 </head>
 <body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header -->
   <header>
-    <nav id="nav-desktop">
-      <a href="index.html">Home</a>
-      <a href="#about">About</a>
-      
-      <!-- Community -->
-      <a href="community.html">Community</a>
-      
-      <!-- Other menu items -->
-      <a href="tokenomics.html">Tokenomics</a>
-      <a href="roadmap.html">Roadmap</a>
-      <a href="governance.html">Governance</a>
-      <a href="epoch-rewards.html">Epoch Rewards</a>
-      <a href="#artwork">Artwork</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="header-container">
+      <h1>RebelInuX Community</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="nav-desktop" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="trade.html">Trade</a>
+        <a href="tokenomics.html">Tokenomics</a>
+        <a href="governance.html">Governance</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="artwork.html">Artwork</a>
+        <a href="community.html" class="active">Community</a>
+      </nav>
+    </div>
   </header>
-
+  
   <main>
-    <section id="community">
-      <h1>Community</h1>
-      <p>Community info and links go here.</p>
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <h1>JOIN THE REBELLION</h1>
+      <p>Connect with rebels worldwide across all platforms. Join discussions, participate in voting, and help shape the future of RebelInuX.</p>
+      <div style="margin-top: var(--spacing-lg);">
+        <a href="#social-platforms" class="cta-button">
+          <i class="fas fa-users"></i> Connect Now
+        </a>
+        <a href="#voting-missions" class="cta-button gold">
+          <i class="fas fa-vote-yea"></i> Daily Voting
+        </a>
+        <a href="#community-events" class="cta-button">
+          <i class="fas fa-calendar-alt"></i> Upcoming Events
+        </a>
+      </div>
+    </section>
+    
+    <!-- Community Stats -->
+    <section id="community-stats">
+      <h2>Community Overview</h2>
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-value">1,000+</div>
+          <div class="stat-label">Active Members</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Across All Platforms
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="stat-value">24/7</div>
+          <div class="stat-label">Active Chat</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Always Something Happening
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-vote-yea"></i>
+          </div>
+          <div class="stat-value">Daily</div>
+          <div class="stat-label">Voting Missions</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Help Us Grow Organically
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="stat-value">Global</div>
+          <div class="stat-label">Community</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Rebels Worldwide
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Social Platforms -->
+    <section id="social-platforms">
+      <h2>Connect With Us</h2>
+      <div class="social-cards">
+        <!-- Twitter/X Card -->
+        <div class="social-card twitter">
+          <div class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </div>
+          <h3 style="color: #1DA1F2; margin-bottom: var(--spacing-sm);">Twitter / X</h3>
+          <p style="margin-bottom: var(--spacing-lg); color: rgba(255, 255, 255, 0.9);">
+            Follow for official announcements, memes, and real-time updates. Join the conversation using #RebelInuX.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+            <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" class="cta-button twitter">
+              <i class="fab fa-twitter"></i> Follow @RebelInuX
+            </a>
+            <a href="https://x.com/search?q=%23RebelInuX&src=hashtag_click" target="_blank" rel="noopener noreferrer" class="cta-button" style="background: rgba(29, 161, 242, 0.2); color: #1DA1F2; border: 1px solid #1DA1F2;">
+              <i class="fas fa-hashtag"></i> #RebelInuX
+            </a>
+          </div>
+        </div>
+        
+        <!-- Telegram Card -->
+        <div class="social-card telegram">
+          <div class="social-icon">
+            <i class="fab fa-telegram"></i>
+          </div>
+          <h3 style="color: #0088cc; margin-bottom: var(--spacing-sm);">Telegram</h3>
+          <p style="margin-bottom: var(--spacing-lg); color: rgba(255, 255, 255, 0.9);">
+            Join our main chat for discussions, support, and community bonding. Most active and helpful community.
+          </p>
+          <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button telegram">
+            <i class="fab fa-telegram"></i> Join Telegram
+          </a>
+        </div>
+        
+        <!-- Discord Card -->
+        <div class="social-card discord">
+          <div class="social-icon">
+            <i class="fab fa-discord"></i>
+          </div>
+          <h3 style="color: #5865F2; margin-bottom: var(--spacing-sm);">Discord</h3>
+          <p style="margin-bottom: var(--spacing-lg); color: rgba(255, 255, 255, 0.9);">
+            Organized channels for announcements, trading, memes, and voice chat. Perfect for deeper community engagement.
+          </p>
+          <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" class="cta-button discord">
+            <i class="fab fa-discord"></i> Join Discord
+          </a>
+        </div>
+        
+        <!-- ZORA Card -->
+        <div class="social-card zora">
+          <div class="social-icon">
+            <i class="fas fa-cube"></i>
+          </div>
+          <h3 style="color: #8a2be2; margin-bottom: var(--spacing-sm);">ZORA Collection</h3>
+          <p style="margin-bottom: var(--spacing-lg); color: rgba(255, 255, 255, 0.9);">
+            Explore and collect RebelInuX NFTs, Creator Coins, and Content Coins. Participate in our digital art ecosystem.
+          </p>
+          <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button zora">
+            <i class="fas fa-external-link-alt"></i> View Collection
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Voting Missions -->
+    <section id="voting-missions">
+      <h2>Daily Voting Missions</h2>
+      <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); margin-bottom: var(--spacing-lg);">
+        <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+          <i class="fas fa-vote-yea" style="margin-right: 10px;"></i> 🗳️ OUR DAILY VOTING MISSIONS
+        </h3>
+        <p style="text-align: center; margin-bottom: var(--spacing-lg); font-size: 1.1em;">
+          Join the real 24h race! Help us prove our organic strength by voting daily on these key platforms.
+          Every vote fuels our climb and shows real community support.
+        </p>
+        
+        <div class="voting-grid">
+          <!-- Coinsniper -->
+          <div class="voting-card">
+            <div class="voting-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Coinsniper</h3>
+            <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+              Vote once per day to help us climb the trending charts. Shows organic community growth.
+            </p>
+            <a href="https://coinsniper.net/coin/88419" target="_blank" rel="noopener noreferrer" class="cta-button" style="width: 100%;">
+              <i class="fas fa-vote-yea"></i> Vote Daily
+            </a>
+            <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-gold);">
+              <i class="fas fa-redo"></i> Reset: Every 24h
+            </div>
+          </div>
+          
+          <!-- Coinvote -->
+          <div class="voting-card">
+            <div class="voting-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Coinvote</h3>
+            <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+              Vote to increase our visibility and show sustained community engagement.
+            </p>
+            <a href="https://coinvote.cc/en/coin/RebelInuX" target="_blank" rel="noopener noreferrer" class="cta-button gold" style="width: 100%;">
+              <i class="fas fa-vote-yea"></i> Vote Now
+            </a>
+            <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-gold);">
+              <i class="fas fa-fire"></i> Trending Position
+            </div>
+          </div>
+          
+          <!-- Gemfinder -->
+          <div class="voting-card">
+            <div class="voting-icon">
+              <i class="fas fa-gem"></i>
+            </div>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Gemfinder</h3>
+            <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+              Help us get discovered by new investors looking for promising projects.
+            </p>
+            <a href="https://gemfinder.cc/coin/RebelInuX" target="_blank" rel="noopener noreferrer" class="cta-button" style="background: linear-gradient(135deg, #ff3366, #8a2be2); width: 100%;">
+              <i class="fas fa-search"></i> Vote & Discover
+            </a>
+            <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-gold);">
+              <i class="fas fa-eye"></i> Increased Visibility
+            </div>
+          </div>
+          
+          <!-- CoinHunt -->
+          <div class="voting-card">
+            <div class="voting-icon">
+              <i class="fas fa-search-dollar"></i>
+            </div>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">CoinHunt</h3>
+            <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+              Vote to help new hunters find our project in their search for gems.
+            </p>
+            <a href="https://coinhunt.cc/coin/RebelInuX" target="_blank" rel="noopener noreferrer" class="cta-button gold" style="width: 100%;">
+              <i class="fas fa-bullseye"></i> Hunt & Vote
+            </a>
+            <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-gold);">
+              <i class="fas fa-users"></i> Community Powered
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg);">
+          <p style="margin: 0; text-align: center; color: var(--rebel-gold); font-weight: 600;">
+            <i class="fas fa-lightbulb"></i> Pro Tip: Set a daily reminder! Consistent voting shows organic growth and helps us trend higher.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Community Events -->
+    <section id="community-events">
+      <h2>Upcoming Community Events</h2>
+      <div class="events-timeline">
+        <!-- Event 1 -->
+        <div class="event-item">
+          <div class="event-dot"></div>
+          <div class="event-content">
+            <span class="event-date">Weekly</span>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Meme Contests</h3>
+            <p>Weekly meme competitions with $REBL rewards for winners. Submit your best RebelInuX memes!</p>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-camera"></i> Submit Memes
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Event 2 -->
+        <div class="event-item">
+          <div class="event-dot"></div>
+          <div class="event-content">
+            <span class="event-date">Bi-Weekly</span>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">AMA Sessions</h3>
+            <p>Ask Me Anything sessions with the core team. Get your questions answered directly.</p>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button gold" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-microphone"></i> Join AMA
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Event 3 -->
+        <div class="event-item">
+          <div class="event-dot"></div>
+          <div class="event-content">
+            <span class="event-date">Monthly</span>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance Discussions</h3>
+            <p>Community discussions about future developments, partnerships, and roadmap decisions.</p>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="governance.html" class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-comments"></i> Join Discussion
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Event 4 -->
+        <div class="event-item">
+          <div class="event-dot"></div>
+          <div class="event-content">
+            <span class="event-date">Coming Soon</span>
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Trading Competitions</h3>
+            <p>Compete with other rebels in trading competitions with $REBL prize pools.</p>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="trade.html" class="cta-button gold" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-trophy"></i> Prepare Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Community Chat Preview -->
+    <section id="chat-preview">
+      <h2>Community Chat</h2>
+      <div class="chat-preview">
+        <div class="chat-message">
+          <div class="chat-user">
+            <div class="chat-avatar">R1</div>
+            <span class="chat-username">RebelOne</span>
+            <span class="chat-time">2 min ago</span>
+          </div>
+          <div class="chat-text">
+            Just voted on all platforms! Let's keep the momentum going rebels! 🔥
+          </div>
+        </div>
+        
+        <div class="chat-message">
+          <div class="chat-user">
+            <div class="chat-avatar">S2</div>
+            <span class="chat-username">ShibaSoldier</span>
+            <span class="chat-time">15 min ago</span>
+          </div>
+          <div class="chat-text">
+            New meme contest entry submitted! Check it out in the Telegram channel 🚀
+          </div>
+        </div>
+        
+        <div class="chat-message">
+          <div class="chat-user">
+            <div class="chat-avatar">M3</div>
+            <span class="chat-username">Moonbound</span>
+            <span class="chat-time">1 hour ago</span>
+          </div>
+          <div class="chat-text">
+            Love how transparent the team is with updates. Real community project! 🙌
+          </div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button">
+          <i class="fab fa-telegram"></i> Join Live Chat
+        </a>
+      </div>
+    </section>
+    
+    <!-- Community Guidelines -->
+    <section id="community-guidelines">
+      <h2>Community Guidelines</h2>
+      <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+          <i class="fas fa-shield-alt"></i> Our Community Values
+        </h3>
+        
+        <ul class="guidelines-list">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Respect Everyone:</strong> Treat all community members with respect, regardless of experience level or background.
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>No Spam or Scams:</strong> Keep discussions constructive. No spam, scam links, or shilling other projects.
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Help New Rebels:</strong> Welcome newcomers and help them understand the ecosystem. We grow together.
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Constructive Criticism:</strong> Feedback is welcome, but keep it constructive and helpful to the community.
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>No FUD or Toxicity:</strong> Keep discussions positive. Unsubstantiated fear and toxicity hurt community growth.
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Stay On Topic:</strong> Keep discussions relevant to RebelInuX and the broader crypto ecosystem.
+            </div>
+          </li>
+        </ul>
+        
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg);">
+          <p style="margin: 0; text-align: center; color: var(--rebel-red); font-weight: 600;">
+            <i class="fas fa-exclamation-triangle"></i> Violation of guidelines may result in removal from community channels.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Member Spotlight -->
+    <section id="member-spotlight">
+      <h2>Member Spotlight</h2>
+      <div class="member-spotlight">
+        <div class="member-avatar">
+          <img src="https://i.imgur.com/gEuSg1Y.webp" alt="Featured Rebel" loading="lazy">
+        </div>
+        <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Featured Rebel: @DefiMaven5</h3>
+        <p style="font-style: italic; color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-md);">
+          "Creating award-winning artwork for RebelInuX has been an incredible journey. The community's support is amazing!"
+        </p>
+        <div class="badge-container">
+          <span class="community-badge">
+            <i class="fas fa-paint-brush"></i> Top Artist
+          </span>
+          <span class="community-badge">
+            <i class="fas fa-award"></i> Contest Winner
+          </span>
+          <span class="community-badge">
+            <i class="fas fa-heart"></i> Community Pillar
+          </span>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Join Counter -->
+    <div class="join-counter">
+      <div class="counter-number">1,000+</div>
+      <div class="counter-label">Rebels Joined & Counting</div>
+      <div style="margin-top: var(--spacing-lg);">
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button" style="background: white; color: var(--rebel-red);">
+          <i class="fas fa-user-plus"></i> Be Rebel #1001
+        </a>
+      </div>
+    </div>
+    
+    <!-- Related Pages -->
+    <section id="related">
+      <h2>Explore More</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-vote-yea"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Participate in community voting and decisions</p>
+        </a>
+        
+        <a href="artwork.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Artwork</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">View community-created RebelInuX artwork</p>
+        </a>
+        
+        <a href="roadmap.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-map-signs"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Roadmap</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">See our development timeline and future plans</p>
+        </a>
+      </div>
     </section>
   </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="social-icons">
+        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: var(--spacing-lg) 0;">
+        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL
+        </a>
+      </div>
+      
+      <div style="margin-bottom: var(--spacing-md); text-align: center;">
+        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
+        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
+        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
+        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
+        <a href="roadmap.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Roadmap</a>
+        <a href="community.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Community</a>
+      </div>
+      
+      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
+        <p style="margin: 0.5rem 0;">
+          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
+          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+        </p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-      dropdown.addEventListener('mouseenter', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'flex';
-        dropdown.querySelector('.dropdown-menu').style.flexDirection = 'column';
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide loader
+      setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1000);
+      
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          const nav = document.getElementById('nav-desktop');
+          const icon = this.querySelector('i');
+          
+          nav.classList.toggle('active');
+          if (nav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+      
+      // Close mobile nav when clicking on a link
+      document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+              toggleIcon.classList.remove('fa-times');
+              toggleIcon.classList.add('fa-bars');
+            }
+          }
+        });
       });
-      dropdown.addEventListener('mouseleave', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'none';
+      
+      // Back to top button
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        
+        backToTop.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      
+      // Animate social cards on scroll
+      function animateSocialCards() {
+        const socialCards = document.querySelectorAll('.social-card');
+        socialCards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 200);
+          }
+        });
+      }
+      
+      // Initialize social cards with hidden state
+      const socialCards = document.querySelectorAll('.social-card');
+      socialCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       });
+      
+      window.addEventListener('scroll', animateSocialCards);
+      animateSocialCards(); // Initial call
+      
+      // Animate voting cards
+      function animateVotingCards() {
+        const votingCards = document.querySelectorAll('.voting-card');
+        votingCards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 150);
+          }
+        });
+      }
+      
+      // Initialize voting cards with hidden state
+      const votingCards = document.querySelectorAll('.voting-card');
+      votingCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(15px)';
+        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      });
+      
+      window.addEventListener('scroll', animateVotingCards);
+      animateVotingCards(); // Initial call
+      
+      // Animate chat messages
+      function animateChatMessages() {
+        const chatMessages = document.querySelectorAll('.chat-message');
+        chatMessages.forEach((message, index) => {
+          const rect = message.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            setTimeout(() => {
+              message.style.opacity = '1';
+              message.style.transform = 'translateX(0)';
+            }, index * 200);
+          }
+        });
+      }
+      
+      // Initialize chat messages with hidden state
+      const chatMessages = document.querySelectorAll('.chat-message');
+      chatMessages.forEach(message => {
+        message.style.opacity = '0';
+        message.style.transform = 'translateX(-20px)';
+        message.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      });
+      
+      window.addEventListener('scroll', animateChatMessages);
+      animateChatMessages(); // Initial call
     });
+    
+    // Random chat message rotation (optional feature)
+    function rotateChatMessages() {
+      const messages = [
+        { user: "CryptoRebel", text: "Just bought more $REBL! The community here is amazing! 🚀" },
+        { user: "MoonShiba", text: "Voted on all platforms today! Let's keep trending! 🔥" },
+        { user: "DeFiWarrior", text: "The transparency in this project is next level. Real gem! 💎" },
+        { user: "NFTCollector", text: "Love the artwork in the meme contests! So creative! 🎨" },
+        { user: "SolanaTrader", text: "Community-driven projects are the future! Glad to be here! 🙌" }
+      ];
+      
+      const chatPreview = document.querySelector('.chat-preview');
+      if (chatPreview) {
+        // Randomly update one message every 30 seconds
+        setInterval(() => {
+          const randomIndex = Math.floor(Math.random() * messages.length);
+          const message = messages[randomIndex];
+          const randomMessageIndex = Math.floor(Math.random() * 3);
+          
+          const messageElements = chatPreview.querySelectorAll('.chat-message');
+          if (messageElements[randomMessageIndex]) {
+            const userElement = messageElements[randomMessageIndex].querySelector('.chat-username');
+            const textElement = messageElements[randomMessageIndex].querySelector('.chat-text');
+            const avatarElement = messageElements[randomMessageIndex].querySelector('.chat-avatar');
+            
+            if (userElement && textElement && avatarElement) {
+              // Fade out
+              messageElements[randomMessageIndex].style.opacity = '0.5';
+              
+              setTimeout(() => {
+                // Update content
+                userElement.textContent = message.user;
+                textElement.textContent = message.text;
+                avatarElement.textContent = message.user.charAt(0) + (message.user.length > 1 ? message.user.charAt(1) : '');
+                
+                // Fade in
+                messageElements[randomMessageIndex].style.opacity = '1';
+              }, 300);
+            }
+          }
+        }, 30000); // 30 seconds
+      }
+    }
+    
+    // Start chat rotation after page loads
+    setTimeout(rotateChatMessages, 5000);
   </script>
 </body>
 </html>
