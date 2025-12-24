@@ -1953,63 +1953,8 @@
     }]
   }
   </script>
-  <!-- ========== GOOGLE ANALYTICS ========== -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PL0GBXNTMD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-PL0GBXNTMD');
-  
-  // Track important events
-  document.addEventListener('DOMContentLoaded', function() {
-    // Track external link clicks
-    document.querySelectorAll('a[href^="http"]:not([href*="rebelinux"])').forEach(link => {
-      link.addEventListener('click', function() {
-        gtag('event', 'outbound_click', {
-          'event_category': 'Outbound Link',
-          'event_label': this.href
-        });
-      });
-    });
-    
-    // Track buy button clicks
-    document.querySelectorAll('.buy-rebl-button, .cta-button[href*="buy"]').forEach(button => {
-      button.addEventListener('click', function() {
-        gtag('event', 'buy_button_click', {
-          'event_category': 'Conversion',
-          'event_label': 'Buy $REBL Button'
-        });
-      });
-    });
-  });
-</script>
 
-<!-- ========== END GOOGLE ANALYTICS ========== -->
 
-  // ========== GOOGLE ANALYTICS ERROR TRACKING ==========
-// Track 404 errors if user lands on error page
-if (window.location.pathname === '/404.html' || 
-    window.location.pathname === '/404' ||
-    document.title.includes('404') ||
-    document.body.textContent.includes('404')) {
-    
-    if (typeof gtag === 'function') {
-        gtag('event', '404_error', {
-            'event_category': 'Error',
-            'event_label': window.location.pathname,
-            'page_path': window.location.pathname,
-            'page_referrer': document.referrer || 'direct'
-        });
-    }
-    
-    // Also log to console for debugging
-    console.warn('⚠️ 404 Error Detected:', {
-        path: window.location.pathname,
-        referrer: document.referrer,
-        timestamp: new Date().toISOString()
-    });
-}
 
 // Track JavaScript errors
 window.addEventListener('error', function(e) {
