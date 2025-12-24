@@ -1955,36 +1955,6 @@
   </script>
 
 
-
-// Track JavaScript errors
-window.addEventListener('error', function(e) {
-    if (typeof gtag === 'function') {
-        gtag('event', 'javascript_error', {
-            'event_category': 'Error',
-            'event_label': e.message,
-            'error_message': e.message,
-            'error_filename': e.filename,
-            'error_lineno': e.lineno,
-            'error_colno': e.colno
-        });
-    }
-});
-
-// Track broken image links
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('img').forEach(img => {
-        img.addEventListener('error', function() {
-            if (typeof gtag === 'function') {
-                gtag('event', 'broken_image', {
-                    'event_category': 'Error',
-                    'event_label': this.src,
-                    'image_src': this.src,
-                    'page_path': window.location.pathname
-                });
-            }
-        });
-    });
-});
 </head>
 
 <body>
