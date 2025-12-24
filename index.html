@@ -3101,7 +3101,17 @@
         </div>
       </div>
     </div>
-    
+        <div style="text-align: center; margin-top: 1rem; width: 100%;">
+        <button onclick="checkRefreshStatus()" style="background: #666; color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
+            Debug Refresh Status
+        </button>
+        <button onclick="startAutoRefresh()" style="background: var(--rebel-gold); color: black; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
+            Restart Auto-Refresh
+        </button>
+        <button onclick="clearInterval(window.refreshInterval); console.log('❌ Auto-refresh stopped');" style="background: var(--rebel-red); color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
+            Stop Auto-Refresh
+        </button>
+    </div>
     <!-- Combined Stats Grid -->
     <div class="metric-cards">
       <!-- Price Card -->
@@ -3797,8 +3807,52 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCountdown2, 1000);
     setInterval(updateCountdown3, 1000);
     setTimeout(initializeTokenomicsChart, 1500); // Wait 1.5 seconds for everything to load
-});
 
+   // Start auto-refresh after a short delay
+    setTimeout(() => {
+        startAutoRefresh();
+    }, 2000); // Wait 2 seconds for everything to load
+    
+    // Also start auto-refresh when page becomes visible
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            console.log("👁️ Page is now visible, refreshing data...");
+            refreshData();
+        }
+    });
+});
+// Debug function to check refresh status
+function checkRefreshStatus() {
+    console.log("🔄 Refresh Status Check:");
+    console.log("- Auto-refresh interval ID:", window.refreshInterval);
+    console.log("- Last refresh time:", document.getElementById('last-updated-time')?.textContent);
+    console.log("- Page visibility:", document.visibilityState);
+    
+    // Force a manual refresh
+    refreshData();
+}
+
+// Make sure startAutoRefresh is also defined (add if not already there)
+function startAutoRefresh() {
+    console.log("▶️ Starting auto-refresh system...");
+    
+    // Clear any existing intervals first
+    if (window.refreshInterval) {
+        clearInterval(window.refreshInterval);
+    }
+    
+    // Initial refresh
+    refreshData();
+    
+    // Set up interval
+    window.refreshInterval = setInterval(() => {
+        console.log("⏰ Auto-refresh cycle at:", new Date().toLocaleTimeString());
+        refreshData();
+    }, 30000); // 30 seconds
+    
+    console.log("✅ Auto-refresh system started");
+}
+  
 // Loading animation
 window.addEventListener('load', function() {
     setTimeout(function() {
