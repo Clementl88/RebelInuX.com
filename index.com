@@ -1,0 +1,4195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains." />
+  <meta name="keywords" content="meme coin, shiba inu, crypto, NFT, ZORA, Solana, REBL, RebelInuX" />
+  <meta property="og:title" content="RebelInuX (REBL) - The Rebellious Meme Coin" />
+  <meta property="og:description" content="Join the rebellion with RebelInuX, the first triple-asset meme coin ecosystem." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- AOS Animation Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tippy.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css" />
+
+  <style>
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    /* Sections */
+    section {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      position: relative;
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 30%;
+      height: 2px;
+      background: var(--rebel-gold);
+    }
+    /* Hero Section */
+    #hero {
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    }
+    .hero-subtitle {
+      display: block;
+      font-size: 0.6em;
+      margin-bottom: 10px;
+      color: var(--rebel-red);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-red);
+      transition: var(--transition);
+      text-align: center;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-hover);
+      border-color: var(--rebel-gold);
+    }
+    .card i {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+    }
+    /* Image Container */
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: var(--spacing-xl) auto;
+      position: relative;
+    }
+    .image-container img {
+      border-radius: var(--border-radius);
+      transition: transform 0.4s, box-shadow 0.4s;
+      animation: float 3s ease-in-out infinite;
+      max-width: 100%;
+      border: 3px solid var(--rebel-red);
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 51, 102, 0.8);
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .image-container:hover .overlay {
+      opacity: 1;
+    }
+    .overlay-text {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+      padding: var(--spacing-md);
+      text-align: center;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    /* Roadmap */
+    .roadmap-timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--spacing-xl) 0;
+    }
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold));
+      transform: translateX(-50%);
+    }
+    .roadmap-milestone {
+      width: 50%;
+      padding: var(--spacing-sm);
+      position: relative;
+      margin-bottom: var(--spacing-xl);
+    }
+    .roadmap-milestone.left {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    .roadmap-milestone.right {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    .roadmap-circle {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: var(--rebel-red);
+      border: 3px solid var(--rebel-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+    }
+    .roadmap-content {
+      background: var(--card-bg);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-red);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: var(--transition);
+    }
+    .roadmap-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    .roadmap-content h3 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      font-size: 1.3rem;
+    }
+    /* Accordion */
+    .accordion-item {
+      border-bottom: 1px solid var(--rebel-red);
+      margin-bottom: var(--spacing-sm);
+    }
+    .accordion-header {
+      width: 100%;
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+    .buy-rebl-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .buy-rebl-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #ff3366, #ffcc00);
+    }
+    .buy-rebl-button i {
+      margin-right: 0.5rem;
+    }
+    .accordion-header:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--rebel-gold);
+    }
+    .accordion-header.active {
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      border-color: transparent;
+    }
+    .accordion-header .accordion-icon {
+      transition: transform 0.3s;
+    }
+    .accordion-header.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    .accordion-content {
+      padding: 0 var(--spacing-md);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 8px 8px;
+    }
+    .accordion-content.active {
+      padding: var(--spacing-md) var(--spacing-md) 2rem;
+      max-height: 2000px;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    .accordion-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .accordion-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #ff3366, #ffcc00);
+    }
+    .accordion-button i {
+      margin-right: 0.5rem;
+      font-size: 0.9rem;
+    }
+    /* Countdown */
+    .countdown-container {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      margin: var(--spacing-lg) auto;
+      max-width: 800px;
+      text-align: center;
+    }
+    .countdown-title {
+      font-size: 1.8rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+    }
+    #countdown {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+    }
+    .countdown-unit {
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 8px;
+      min-width: 80px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .countdown-label {
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: block;
+    }
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
+    }
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+    }
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    /* Artwork Section */
+    .artwork-slider {
+      display: flex;
+      overflow-x: hidden;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      max-width: 100%;
+      margin: var(--spacing-lg) auto;
+      position: relative;
+    }
+    .artwork-slide-container {
+      display: flex;
+      gap: var(--spacing-md);
+      animation: slide 20s linear infinite;
+    }
+    .artwork-slide {
+      display: flex;
+      flex-shrink: 0;
+      gap: var(--spacing-md);
+    }
+    .artwork-item {
+      background: var(--card-bg);
+      padding: var(--spacing-sm);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-red);
+      transition: var(--transition);
+      text-align: center;
+      min-width: 250px;
+      max-width: 300px;
+    }
+    .artwork-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    .artwork-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: var(--spacing-sm);
+    }
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    /* Pause animation on hover */
+    .artwork-slider:hover .artwork-slide-container {
+      animation-play-state: paused;
+    }
+    /* Mobile Adaptation */
+    @media (max-width: 768px) {
+      .artwork-slide {
+        gap: var(--spacing-sm);
+      }
+      .artwork-item {
+        min-width: 200px;
+        padding: var(--spacing-sm);
+      }
+      .artwork-slider {
+        gap: var(--spacing-sm);
+      }
+      .artwork-slide-container {
+        gap: var(--spacing-sm);
+        animation: slide 15s linear infinite;
+      }
+      /* Optional: Disable animation on very small screens */
+      @media (max-width: 480px) {
+        /* .artwork-slide-container { animation: none; } */
+      }
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: var(--spacing-md);
+      }
+      #nav-desktop.active {
+        display: flex;
+      }
+      .roadmap-milestone {
+        width: 100%;
+        padding-left: 70px;
+      }
+      .roadmap-timeline::before {
+        left: 30px;
+      }
+      .roadmap-circle {
+        left: 30px;
+      }
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      .countdown-unit {
+        min-width: 60px;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+    .price-widget {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      margin: var(--spacing-lg) auto;
+      max-width: 400px;
+      text-align: center;
+    }
+    .price-widget h3 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      font-size: 1.3rem;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .update-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .update-button {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+    .update-button:hover {
+      background: #e6b800;
+      transform: translateY(-2px);
+    }
+    .data-info {
+      text-align: center;
+      margin-top: var(--spacing-md);
+      color: var(--rebel-gold);
+      opacity: 0.8;
+    }
+    .data-info a {
+      color: var(--rebel-red);
+      text-decoration: underline;
+    }
+    .tokenomics-dashboard {
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 0, 0, 0.6) 100%);
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+      max-width: 1000px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    .tokenomics-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      z-index: 1;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+    .dashboard-header h3 {
+      color: var(--rebel-gold);
+      font-size: 1.5rem;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .refresh-button {
+      background: linear-gradient(135deg, var(--rebel-red), #d62828);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(255, 51, 102, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .refresh-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+      background: linear-gradient(135deg, #ff3366, #e52d27);
+    }
+    .update-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .update-button {
+      background: linear-gradient(135deg, var(--rebel-gold), #e6b800);
+      color: var(--dark-bg);
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .update-button:hover {
+      background: linear-gradient(135deg, #ffcc00, #ffd700);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+    }
+    .metric-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: var(--spacing-md);
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .metric-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 204, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+    .metric-icon {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-sm);
+      display: block;
+    }
+    .metric-card h4 {
+      color: var(--rebel-gold);
+      font-size: 0.9rem;
+      margin-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-bottom: 0.3rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      line-height: 1.2;
+    }
+    .metric-subtitle {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+    }
+    
+    /* Specific card enhancements */
+    .metric-card:nth-child(1) .metric-icon { color: #4CAF50; } /* Price - Green */
+    .metric-card:nth-child(2) .metric-icon { color: #2196F3; } /* Market Cap - Blue */
+    .metric-card:nth-child(3) .metric-icon { color: #FF9800; } /* Volume - Orange */
+    .metric-card:nth-child(4) .metric-icon { color: #9C27B0; } /* Holders - Purple */
+    .metric-card:nth-child(5) .metric-icon { color: var(--rebel-gold); } /* Supply - Gold */
+    .metric-card:nth-child(6) .metric-icon { color: var(--rebel-red); } /* Burned - Red */
+    .data-info {
+      text-align: center;
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: rgba(255, 204, 0, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 204, 0, 0.2);
+    }
+    .data-info small {
+      color: var(--rebel-gold);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    .data-info a {
+      color: var(--rebel-red);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    .data-info a:hover {
+      color: #ff3366;
+    }
+    /* Price change indicator enhancements */
+    #price-change {
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      background: rgba(76, 175, 80, 0.15);
+      border: 1px solid #4CAF50;
+      transition: var(--transition);
+    }
+    #price-change.positive {
+      background: rgba(76, 175, 80, 0.15);
+      border-color: #4CAF50;
+      color: #4CAF50;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    }
+    #price-change.negative {
+      background: rgba(244, 67, 54, 0.15);
+      border-color: #f44336;
+      color: #f44336;
+      box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+    }
+/* Add loading animation */
+.metric-value:empty::before {
+    content: 'Loading...';
+    color: var(--rebel-gold);
+    font-style: italic;
+}
+
+/* Button loading states */
+.refresh-button:disabled,
+.update-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Success states */
+.button-success {
+    background: #4CAF50 !important;
+}
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .tokenomics-dashboard {
+        padding: var(--spacing-md);
+        margin: var(--spacing-md) auto;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+      }
+      .controls {
+        justify-content: center;
+        width: 100%;
+      }
+      .metric-cards {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+      }
+      .metric-card {
+        padding: var(--spacing-sm);
+      }
+      .metric-value {
+        font-size: 1.5rem;
+      }
+      .refresh-button,
+      .update-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
+      }
+      .update-buttons {
+        width: 100%;
+      }
+      .update-button {
+        flex: 1;
+      }
+    }
+    @media (max-width: 480px) {
+      .metric-cards {
+        grid-template-columns: 1fr;
+      }
+      .metric-value {
+        font-size: 1.3rem;
+      }
+      .dashboard-header h3 {
+        font-size: 1.3rem;
+      }
+    }
+    .price-ticker {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    #current-price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-light);
+    }
+    #price-change {
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4CAF50;
+    }
+    #price-change.positive {
+      background: rgba(76, 175, 80, 0.2);
+      border-color: #4CAF50;
+      color: #4CAF50;
+    }
+    #price-change.negative {
+      background: rgba(244, 67, 54, 0.2);
+      border-color: #f44336;
+      color: #f44336;
+    }
+    .market-stats {
+      display: flex;
+      justify-content: space-around;
+      gap: var(--spacing-md);
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat .label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--rebel-gold);
+      margin-bottom: 0.3rem;
+    }
+    .stat .value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+    /* Mobile Responsive for Price Widget */
+    @media (max-width: 768px) {
+      .price-ticker {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+      #current-price {
+        font-size: 1.7rem;
+      }
+      .market-stats {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+    }
+    /* Language Selector Styles */
+    .language-selector {
+      margin-left: var(--spacing-md);
+    }
+    .language-selector select {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-light);
+      border: 1px solid var(--rebel-red);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+    .language-selector select:hover {
+      background: rgba(255, 51, 102, 0.1);
+      border-color: var(--rebel-gold);
+    }
+    .language-selector select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
+    }
+    /* Mobile Styles for Language Selector */
+    @media (max-width: 768px) {
+      .language-selector {
+        order: -1; /* Move to left on mobile */
+        margin-left: 0;
+        margin-right: auto;
+        width: 120px;
+      }
+      .language-selector select {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+      /* Adjust header layout for mobile */
+      .header-container {
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+      }
+      .language-selector {
+        order: 2;
+        width: 100%;
+        text-align: center;
+        margin: var(--spacing-sm) 0 0 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+    /* REBL Calculator */
+    .rebl-calculator {
+      background: var(--section-lg);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      margin: var(--spacing-lg) auto;
+      max-width: 800px;
+      text-align: center;
+    }
+    .calculator-container {
+      background: var(--card-bg);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-gold);
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    .calculator-info {
+      margin-bottom: var(--spacing-md);
+      font-size: 0.9em;
+      color: var(--rebel-gold);
+      text-align: left;
+    }
+    .calculator-info p {
+      margin-bottom: 0.5em;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5em;
+    }
+    .info-value {
+      color: white;
+      font-weight: bold;
+      margin-left: auto;
+    }
+    .tooltip-icon {
+      color: var(--rebel-gold);
+      cursor: help;
+      margin: 0 0.2em;
+    }
+    .token-batches-section {
+      margin-bottom: var(--spacing-md);
+    }
+    .section-label {
+      display: block;
+      margin-bottom: 0.8em;
+      font-weight: 600;
+      color: var(--rebel-gold);
+      text-align: left;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: var(--spacing-sm);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      border-radius: 8px;
+    }
+    #token-batches-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+    }
+    #token-batches-table th,
+    #token-batches-table td {
+      padding: 0.6em;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #token-batches-table th {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+.action-column {
+  width: 60px;
+  text-align: center;
+}
+    .batch-controls {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+    }
+    .batch-btn {
+      flex: 1;
+      border: none;
+      padding: 0.7em;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: var(--transition);
+    }
+    .add-btn {
+      background: var(--rebel-red);
+      color: white;
+    }
+    .clear-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--rebel-gold);
+      border: 1px solid var(--rebel-gold);
+    }
+    .batch-btn:hover {
+      transform: translateY(-2px);
+    }
+    .calculate-btn {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      border: none;
+      padding: 1em 1.5em;
+      border-radius: 25px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      margin: var(--spacing-sm) 0;
+      width: 100%;
+      font-size: 1em;
+    }
+    .calculate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+    }
+    .results-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
+      margin-bottom: 0;
+    }
+    #reward-result {
+      padding: 0.5rem;
+      border-radius: 8px;
+      background: rgba(255, 204, 0, 0.1);
+      border: 1px solid var(--rebel-gold);
+      min-height: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      text-align: center;
+      font-size: 0.95em;
+      margin-bottom: 0
+    }
+    #reward-result:not(:has(div)) {
+      min-height: 30px;
+      padding: 0.3rem;
+      font-size: 0.85em;
+      background: rgba(255, 204, 0, 0.05);
+      border: 1px dashed var(--rebel-gold);
+    }
+.chart-container {
+  height: 200px;
+  width: 100%;
+  margin-top: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  position: relative;
+}
+    .what-if-section {
+      background: var(--card-bg);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-gold);
+      margin: var(--spacing-lg) auto;
+      max-width: 100%;
+      text-align: left;
+    }
+    .what-if-section h4 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+      text-align: center;
+    }
+    .what-if-section > p {
+      font-size: 0.9em;
+      margin-bottom: var(--spacing-md);
+      text-align: center;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    .slider-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+    .slider-container label {
+      font-weight: 600;
+      color: var(--rebel-gold);
+      font-size: 0.9em;
+    }
+    .slider-value {
+      font-weight: normal;
+      color: white;
+    }
+    .slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+    .what-if-result {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      text-align: center;
+      margin: 0;
+    }
+    .formula-explanation {
+      font-size: 0.8em;
+      margin-top: var(--spacing-md);
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      line-height: 1.5;
+    }
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      .rebl-calculator {
+        padding: var(--spacing-sm);
+        margin: var(--spacing-md) auto;
+      }
+      .calculator-container {
+        padding: var(--spacing-sm);
+      }
+      .calculator-info {
+        font-size: 0.8em;
+      }
+      .calculator-info p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2em;
+      }
+      .info-value {
+        margin-left: 0;
+      }
+      #token-batches-table {
+        font-size: 0.8em;
+      }
+      #token-batches-table th,
+      #token-batches-table td {
+        padding: 0.4em;
+      }
+      .batch-controls {
+        flex-direction: column;
+      }
+      .batch-btn {
+        padding: 0.8em;
+      }
+      .calculate-btn {
+        padding: 0.9em 1.2em;
+        font-size: 0.9em;
+      }
+      #reward-result {
+        padding: var(--spacing-sm);
+        min-height: 70px;
+        font-size: 0.9em;
+      }
+      .chart-container {
+        height: 150px;
+      }
+      .what-if-section {
+        padding: var(--spacing-sm);
+      }
+      .slider-group {
+        gap: var(--spacing-sm);
+      }
+    }
+    @media (max-width: 480px) {
+      .rebl-calculator {
+        padding: 0.5rem;
+      }
+      #token-batches-table {
+        font-size: 0.75em;
+      }
+      #token-batches-table th,
+      #token-batches-table td {
+        padding: 0.3em;
+      }
+      .action-column {
+        width: 60px;
+      }
+      .chart-container {
+        height: 120px;
+      }
+    }
+    /* Input field styles */
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 0.6em;
+      border-radius: 4px;
+      border: 1px solid var(--rebel-gold);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 0.9em;
+    }
+    input[type="number"]:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--rebel-red);
+      box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
+    }
+    /* Remove button styles */
+   .remove-batch-btn {
+    background: var(--rebel-red);
+    color: white;
+    border: none;
+    padding: 0.4em 0.6em;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-batch-btn:hover {
+    background: #d62828;
+    transform: scale(1.1);
+}
+    .countdown-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      padding: 0.5em;
+      min-width: 80px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .countdown-number {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--rebel-gold);
+      display: block;
+    }
+    .countdown-label {
+      font-size: 0.7rem;
+      color: white;
+      margin-top: 0.2em;
+    }
+    .countdown-title {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    /* Dropdown styles - ADD THIS TO YOUR CSS */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.95);
+  min-width: 200px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--rebel-red);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--spacing-sm) 0;
+  backdrop-filter: blur(10px);
+}
+
+.dropdown-content a {
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 0.9em;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.dropdown-content a:hover {
+  background: rgba(255, 51, 102, 0.2);
+  color: var(--rebel-gold);
+  border-left: 3px solid var(--rebel-gold);
+  transform: translateX(5px);
+}
+
+.dropdown-content a i {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
+/* Dropdown trigger styling */
+.nav-dropdown > a {
+  position: relative;
+  padding-right: 25px !important;
+}
+
+.nav-dropdown > a::after {
+  content: '\f078';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+.nav-dropdown:hover > a::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.nav-dropdown:hover .dropdown-content {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Mobile dropdown styles */
+@media (max-width: 768px) {
+  .nav-dropdown > a::after {
+    right: 15px;
+  }
+
+  .dropdown-content {
+    position: static;
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    box-shadow: none;
+    transform: none;
+    padding-left: var(--spacing-lg);
+    margin-top: var(--spacing-sm);
+    border-left: 2px solid var(--rebel-red);
+  }
+
+  .nav-dropdown.active .dropdown-content {
+    display: block;
+  }
+
+  .nav-dropdown.active > a::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
+
+/* Add arrow indicator for mobile */
+@media (max-width: 768px) {
+  .nav-dropdown > a {
+    position: relative;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <h1>RebelInuX (REBL)</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    <nav id="nav-desktop">
+  <a href="#hero">Home</a>
+  <a href="#about">About</a>
+  
+<!-- Trading Dropdown -->
+<div class="nav-dropdown">
+  <a href="#trade">Trading</a>
+  <div class="dropdown-content">
+    <a href="#trade"><i class="fas fa-exchange-alt"></i> Trade $REBL</a>
+<a href="#tokenomics"><i class="fas fa-chart-line"></i> Live Stats</a>
+    <a href="#contract-verify"><i class="fas fa-shield-alt"></i> Verify Contract</a>
+  </div>
+</div>
+  
+  <a href="#integrity">Integrity</a>
+  
+  <!-- Tokenomics Dropdown -->
+  <div class="nav-dropdown">
+    <a href="#tokenomics">Tokenomics</a>
+    <div class="dropdown-content">
+      <a href="#tokenomics"><i class="fas fa-chart-pie"></i> Distribution</a>
+      <a href="#governance"><i class="fas fa-vote-yea"></i> Governance</a>
+      <a href="#epoch-rewards"><i class="fas fa-award"></i> Epoch Rewards</a>
+    </div>
+  </div>
+  
+  <!-- Resources Dropdown -->
+  <div class="nav-dropdown">
+    <a href="#roadmap">Resources</a>
+    <div class="dropdown-content">
+      <a href="#roadmap"><i class="fas fa-map-signs"></i> Roadmap</a>
+      <a href="#artwork"><i class="fas fa-palette"></i> Artwork</a>
+      <a href="#whitepaper"><i class="fas fa-file-alt"></i> Whitepaper</a>
+      <a href="#community"><i class="fas fa-users"></i> Community</a>
+    </div>
+  </div>
+  
+  <a href="#contact">Contact</a>
+</nav>
+    </div>
+  </header>
+  <!-- Hero Section -->
+  <section id="hero" class="visible">
+    <h2 class="hero-title">
+      <span class="hero-subtitle">TRIPLE-ASSET MEME REVOLUTION</span>
+      🔥 REBELINUX: THE SHIBA THAT RIPS THE RULES! 🔥
+    </h2>
+    <div class="image-container">
+      <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX mascot" loading="lazy" width="350" height="350">
+      <div class="overlay">
+        <div class="overlay-text">JOIN THE MEME REBELLION!</div>
+      </div>
+    </div>
+    <p style="max-width: 800px; margin: 0 auto var(--spacing-lg); font-size: 1.2em;">
+      RebelInuX is the first <strong>triple-asset meme coin</strong> on ZORA, merging collectible art, NFTs, and cross-chain rewards. <strong>No rules, just rebellion.</strong>
+    </p>
+    <div style="display: flex; justify-content: center; gap: var(--spacing-md); flex-wrap: wrap; margin-top: var(--spacing-lg);">
+      <a href="#community" class="cta-button">
+        <i class="fab fa-telegram"></i> JOIN TELEGRAM
+      </a>
+      <a href="#tokenomics" class="cta-button gold">
+        <i class="fas fa-coins"></i> TOKENOMICS
+      </a>
+      <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+        <i class="fas fa-shopping-cart"></i> BUY $REBL
+      </a>
+    </div>
+    <div style="text-align: center; margin: var(--spacing-md) auto;">
+      <span style="background: rgba(255, 204, 0, 0.2); color: var(--rebel-gold); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--rebel-gold); font-size: 0.9em; font-weight: 600;">
+        <i class="fas fa-shield-alt"></i> 100% BOT-FREE & TRANSPARENT
+      </span>
+    </div>
+    <div class="cards">
+      <!-- Creator Coin Card -->
+      <div class="card">
+        <i class="fas fa-paint-brush"></i>
+        <h3>Creator Coin</h3>
+        <p>Your stake in the rebellion.</p>
+        <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+          <strong>Claim $REBL rewards</strong> during designated epochs.
+        </p>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+          <a href="#epoch-rewards" class="cta-button" style="font-size: 0.8em; padding: 0.5em 1em;">
+            <i class="fas fa-info-circle"></i> Learn More
+          </a>
+          <a href="https://basescan.org/token/0xf95BEeF6439ec38fA757238Cdec8417ABDA536bd" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+            <img src="https://ethereum.org/favicon.ico" alt="Base" style="width: 16px; height: 16px;">
+            BASE (L2 ETHEREUM)
+          </a>
+        </div>
+      </div>
+      <!-- Content Coin NFT Card -->
+      <div class="card">
+        <i class="fas fa-palette"></i>
+        <h3>Content Coin NFT</h3>
+        <p>Your identity as a rebel.</p>
+        <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+          <strong>Secure your $REBL claim</strong> by linking your Solana wallet.
+        </p>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+          <a href="#artwork" class="cta-button" style="font-size: 0.8em; padding: 0.5em 1em;">
+            <i class="fas fa-images"></i> VIEW ARTWORK
+          </a>
+          <a href="https://zora.co/@rebelinux" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+            <img src="https://zora.co/favicon.ico" alt="ZORA Logo" style="width: 16px; height: 16px; border-radius: 50%;">
+            ZORA COLLECTION
+          </a>
+        </div>
+      </div>
+      <!-- $REBL Token Card -->
+      <div class="card">
+        <i class="fas fa-coins"></i>
+        <h3>$REBL Token</h3>
+        <p>Your reward for loyalty.</p>
+        <p style="font-size: 0.9em; margin-top: 0.5em; color: var(--rebel-gold);">
+          <strong>Deflationary burns</strong> increase scarcity and value.
+        </p>
+           
+<!-- GeckoTerminal Link -->
+<div style="margin: 1rem 0; text-align: center;">
+  <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+     target="_blank" 
+     class="cta-button"
+     style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em; margin-bottom: 0.5rem;">
+    <img src="geckoterminal icon.svg" alt="GeckoTerminal" style="width: 16px; height: 16px;">
+    GECKOTERMINAL
+  </a>
+</div>
+
+<div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: 1em;">
+  <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+    <img src="https://solscan.io/favicon.ico" alt="Solscan" style="width: 16px; height: 16px;">
+    SOLSCAN
+  </a>
+  <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button gold" style="display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.8em; padding: 0.5em 1em;">
+    <img src="https://dexscreener.com/favicon.ico" alt="Solana" style="width: 16px; height: 16px;">
+    DEXSCREENER
+  </a>
+</div>
+      </div>
+    </div>
+  </section>
+
+
+<section id="trade" class="visible" style="background: rgba(26, 26, 26, 0.9); padding: var(--spacing-xl) var(--spacing-md); text-align: center; border-top: 3px solid var(--rebel-red); border-bottom: 3px solid var(--rebel-gold);">
+  
+  <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-transform: uppercase; letter-spacing: 1px; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+    <i class="fas fa-bolt" style="margin-right: 10px;"></i>TRADE $REBL NOW
+  </h2>
+  
+  <p style="font-size: 1.1rem; margin-bottom: var(--spacing-xl); max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; color: rgba(255,255,255,0.9);">
+    Seamlessly swap and provide liquidity for <strong style="color: var(--rebel-gold);">$REBL</strong> across trusted decentralized exchanges. 
+    <span style="display: block; margin-top: 8px; font-size: 0.95rem; color: var(--rebel-gold);">
+      <i class="fas fa-star"></i> Low fees · Best rates · Instant swaps
+    </span>
+  </p>
+
+  <!-- DEX Cards Grid -->
+  <div class="dex-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg); max-width: 1100px; margin: 0 auto var(--spacing-xl);">
+    
+    <!-- PumpSwap Card -->
+    <div class="dex-card" style="background: linear-gradient(145deg, rgba(123, 63, 228, 0.15), rgba(26, 26, 26, 0.7)); border: 1px solid rgba(123, 63, 228, 0.4); border-radius: var(--border-radius); padding: var(--spacing-lg); transition: all 0.3s ease; position: relative; overflow: hidden;">
+      <div class="dex-card-header" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+        <img src="https://swap.pump.fun/logo.png" alt="PumpSwap" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid rgba(123, 63, 228, 0.6);">
+      </div>
+      <h3 style="color: #b19cff; margin-bottom: var(--spacing-sm); font-size: 1.4rem;">PumpSwap</h3>
+      <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: var(--spacing-md); line-height: 1.5;">
+        The native DEX and home for $REBL on Solana. Swap directly or earn fees by providing liquidity.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           class="trade-button" 
+           style="background: linear-gradient(135deg, #7b3fe4, #5a2bb5); color: white; padding: 0.85rem 1.5rem; border-radius: 30px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.7rem; transition: all 0.3s ease; border: none; font-size: 0.95rem;">
+          <i class="fas fa-exchange-alt"></i> Swap $REBL
+        </a>
+        <a href="https://swap.pump.fun/deposit?pool=Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+           target="_blank" 
+           class="trade-button-alt"
+           style="background: rgba(123, 63, 228, 0.2); color: #b19cff; padding: 0.7rem 1.2rem; border-radius: 30px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease; border: 1px solid rgba(123, 63, 228, 0.4); font-size: 0.85rem;">
+          <i class="fas fa-tint"></i> Add Liquidity & Earn
+        </a>
+      </div>
+    </div>
+    
+    <!-- Jupiter Card -->
+    <div class="dex-card" style="background: linear-gradient(145deg, rgba(106, 90, 249, 0.15), rgba(26, 26, 26, 0.7)); border: 1px solid rgba(106, 90, 249, 0.4); border-radius: var(--border-radius); padding: var(--spacing-lg); transition: all 0.3s ease; position: relative; overflow: hidden;">
+      <div class="dex-card-header" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+        <img src="https://jup.ag/svg/jupiter-logo.svg" alt="Jupiter" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid rgba(106, 90, 249, 0.6); padding: 8px; background: rgba(255,255,255,0.05);">
+      </div>
+      <h3 style="color: #a59cff; margin-bottom: var(--spacing-sm); font-size: 1.4rem;">Jupiter</h3>
+      <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: var(--spacing-md); line-height: 1.5;">
+        Get the optimal price. Aggregates liquidity from all Solana DEXs to find you the best rate and lowest fees.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <a href="https://jup.ag/swap?sell=So11111111111111111111111111111111111111112&buy=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           class="trade-button" 
+           style="background: linear-gradient(135deg, #6a5af9, #4a3ad9); color: white; padding: 0.85rem 1.5rem; border-radius: 30px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.7rem; transition: all 0.3s ease; border: none; font-size: 0.95rem;">
+          <i class="fas fa-percentage"></i> Find Best Rate
+        </a>
+        <a href="https://jup.ag" 
+           target="_blank" 
+           class="trade-button-alt"
+           style="background: rgba(106, 90, 249, 0.2); color: #a59cff; padding: 0.7rem 1.2rem; border-radius: 30px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease; border: 1px solid rgba(106, 90, 249, 0.4); font-size: 0.85rem;">
+          <i class="fas fa-external-link-alt"></i> Explore Jupiter
+        </a>
+      </div>
+    </div>
+    
+    <!-- PancakeSwap Card -->
+    <div class="dex-card" style="background: linear-gradient(145deg, rgba(31, 199, 212, 0.15), rgba(26, 26, 26, 0.7)); border: 1px solid rgba(31, 199, 212, 0.4); border-radius: var(--border-radius); padding: var(--spacing-lg); transition: all 0.3s ease; position: relative; overflow: hidden;">
+      <div class="dex-card-header" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+        <img src="https://pancakeswap.finance/logo.png" alt="PancakeSwap" style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid rgba(31, 199, 212, 0.6);">
+      </div>
+      <h3 style="color: #3bd9e8; margin-bottom: var(--spacing-sm); font-size: 1.4rem;">PancakeSwap</h3>
+      <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: var(--spacing-md); line-height: 1.5;">
+        A leading multi-chain DEX. Trade $REBL on Solana through a familiar and trusted platform.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <a href="https://pancakeswap.finance/swap?outputCurrency=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&chain=sol" 
+           target="_blank" 
+           class="trade-button" 
+           style="background: linear-gradient(135deg, #1fc7d4, #0fa7b4); color: white; padding: 0.85rem 1.5rem; border-radius: 30px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.7rem; transition: all 0.3s ease; border: none; font-size: 0.95rem;">
+          <i class="fas fa-syringe"></i> Swap on PancakeSwap
+        </a>
+        <a href="https://pancakeswap.finance" 
+           target="_blank" 
+           class="trade-button-alt"
+           style="background: rgba(31, 199, 212, 0.2); color: #3bd9e8; padding: 0.7rem 1.2rem; border-radius: 30px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease; border: 1px solid rgba(31, 199, 212, 0.4); font-size: 0.85rem;">
+          <i class="fas fa-home"></i> PancakeSwap Home
+        </a>
+      </div>
+    </div>
+
+<!-- MEXC DEX+ Card -->
+<div class="dex-card" style="background: linear-gradient(145deg, rgba(0, 168, 107, 0.15), rgba(26, 26, 26, 0.7)); border: 1px solid rgba(0, 168, 107, 0.4); border-radius: var(--border-radius); padding: var(--spacing-lg); transition: all 0.3s ease; position: relative; overflow: hidden;">
+
+  <div class="dex-card-header" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+    <img
+      src="https://cdn.brandfetch.io/idCHi7bZkV/w/1245/h/771/idaAdCngb8.png?c=1bxid64Mup7aczewSAYMX&t=1762333178610"
+      alt="MEXC Logo"
+      style="width:70px;height:70px;border-radius:50%;border:2px solid rgba(0,168,107,.6);object-fit:contain;background:#0b0b0b;"
+    >
+  </div>
+
+  <h3 style="color:#00e8a4;margin-bottom:var(--spacing-sm);font-size:1.4rem;">
+    MEXC DEX+
+  </h3>
+
+  <p style="color:rgba(255,255,255,0.8);font-size:0.95rem;margin-bottom:var(--spacing-md);line-height:1.5;">
+    Trade $REBL on MEXC's hybrid DEX platform with access to deep liquidity across multiple DEX aggregators.
+  </p>
+
+  <div style="display:flex;flex-direction:column;gap:0.8rem;">
+    <a
+      href="https://www.mexc.com/dex/trade?pair_ca=Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv&chain_id=100000&token_ca=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump&base_token_ca=So11111111111111111111111111111111111111112"
+      target="_blank"
+      class="trade-button"
+      style="background:linear-gradient(135deg,#00a86b,#008055);color:white;padding:0.85rem 1.5rem;border-radius:30px;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.7rem;transition:all 0.3s ease;border:none;font-size:0.95rem;"
+    >
+      <i class="fas fa-exchange-alt"></i> Trade on MEXC DEX+
+    </a>
+
+    <a
+      href="https://www.mexc.com"
+      target="_blank"
+      class="trade-button-alt"
+      style="background:rgba(0,168,107,0.2);color:#00e8a4;padding:0.7rem 1.2rem;border-radius:30px;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s ease;border:1px solid rgba(0,168,107,0.4);font-size:0.85rem;"
+    >
+      <i class="fas fa-external-link-alt"></i> Visit MEXC
+    </a>
+  </div>
+
+</div>
+  </div>
+
+  <!-- Security Notice -->
+  <div style="background: rgba(255, 51, 102, 0.08); padding: var(--spacing-md); border-radius: var(--border-radius); max-width: 700px; margin: 0 auto; border-left: 4px solid var(--rebel-red);">
+    <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.7rem;">
+      <i class="fas fa-shield-alt" style="color: var(--rebel-red); font-size: 1.1rem;"></i>
+      <span><strong>Security First:</strong> Always verify you're on the correct website and double-check the contract address 
+      <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;">F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump</code> before connecting your wallet or making any transaction.</span>
+    </p>
+  </div>
+</section>
+
+<!-- JavaScript for hover effects -->
+<script>
+  // Add hover effects to DEX cards
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.dex-card');
+    const buttons = document.querySelectorAll('.trade-button, .trade-button-alt');
+    
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px)';
+        this.style.boxShadow = '0 12px 25px rgba(0, 0, 0, 0.25)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+      });
+    });
+    
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        this.style.filter = 'brightness(1.15)';
+        this.style.transform = 'translateY(-2px)';
+      });
+      
+      button.addEventListener('mouseleave', function() {
+        this.style.filter = 'brightness(1)';
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  });
+</script>
+
+
+
+
+  <!-- NEW: Contract Verification Section -->
+  <section id="contract-verify" class="visible">
+    <h2><i class="fas fa-shield-alt"></i> VERIFY CONTRACT</h2>
+    
+    <div class="contract-verify-card">
+      <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 2rem; margin-bottom: var(--spacing-md);"></i>
+      <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">ALWAYS VERIFY BEFORE BUYING</h3>
+      
+      <div style="background: rgba(0,0,0,0.7); padding: var(--spacing-md); border-radius: 8px; margin: var(--spacing-md) 0; border: 1px solid var(--rebel-gold);">
+        <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.5rem;">Official $REBL Contract:</div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap;">
+          <code class="contract-code">
+            F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+          </code>
+          <button onclick="copyContract()" class="cta-button" style="background: var(--rebel-red); padding: 0.8rem 1.2rem;">
+            <i class="fas fa-copy"></i> Copy
+          </button>
+        </div>
+      </div>
+      
+      <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-sm); margin-top: var(--spacing-md);">
+        <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(0,0,0,0.5);">
+          <i class="fas fa-search"></i> Solscan
+        </a>
+        <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button gold" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,204,0,0.1);">
+          <i class="fas fa-chart-bar"></i> DexScreener
+        </a>
+        <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,51,102,0.1);">
+          <i class="fas fa-shield-check"></i> RugCheck
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Integrity & Transparency Section -->
+  <section id="integrity" class="visible" style="background: rgba(255, 51, 102, 0.05); padding: var(--spacing-xl) var(--spacing-md); border-top: 3px solid var(--rebel-red); border-bottom: 3px solid var(--rebel-gold);">
+    <div style="max-width: 1000px; margin: 0 auto;">
+      <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-shield-alt" style="margin-right: 15px;"></i>
+        BUILDING WITH INTEGRITY: OUR CORE PRINCIPLES
+      </h2>
+      <div style="background: rgba(0, 0, 0, 0.6); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <p style="font-size: 1.2em; line-height: 1.8; margin-bottom: var(--spacing-lg); text-align: center;">
+          At <strong>RebelInuX</strong>, we believe that lasting success is built on <strong>trust and authenticity</strong>.
+          That's why we are formally establishing our commitment to <strong>organic growth</strong> and <strong>transparent practices</strong>.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-lg); margin: var(--spacing-xl) 0;">
+          <!-- What We PROHIBIT -->
+          <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
+            <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-md); text-align: center;">
+              <i class="fas fa-ban" style="margin-right: 10px;"></i>
+              ❌ What We PROHIBIT
+            </h3>
+            <ul style="text-align: left; color: white; padding-left: 1rem;">
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Volume & Buy Bots</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Fake Engagement & Secondary Account Pumping</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Paid Votes for Artificial Trending</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Any other form of market manipulation</strong></li>
+            </ul>
+          </div>
+          <!-- What We CHAMPION -->
+          <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+            <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+              <i class="fas fa-trophy" style="margin-right: 10px;"></i>
+              ✅ What We CHAMPION
+            </h3>
+            <ul style="text-align: left; color: white; padding-left: 1rem;">
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Real Utility & Development</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Genuine Community Engagement</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Transparent Communication</strong></li>
+              <li style="margin-bottom: var(--spacing-sm);"><strong>Organic Hype from Real Believers</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: var(--spacing-lg);">
+          <p style="font-size: 1.1em; font-style: italic; color: var(--rebel-gold);">
+            <strong>We are building a project for the long term, and that starts with a real community.</strong><br>
+            Join us in growing the right way.
+          </p>
+          <div style="display: flex; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap;">
+            <a href="#community" class="cta-button">
+              <i class="fas fa-hands-helping"></i> JOIN OUR REAL COMMUNITY
+            </a>
+            <a href="#tokenomics" class="cta-button gold">
+              <i class="fas fa-chart-line"></i> VERIFY OUR TRANSPARENCY
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="visible">
+    <h2>WHAT IS REBELINUX?</h2>
+    <div class="image-container">
+      <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX mascot" loading="lazy" width="300" height="300">
+      <div class="overlay">
+        <div class="overlay-text">Powered by Rebels!</div>
+      </div>
+    </div>
+    <div style="max-width: 900px; margin: 0 auto;">
+      <p style="font-size: 1.2em; line-height: 1.8; margin-bottom: var(--spacing-lg);">
+        <strong>RebelInuX</strong> is a <strong>wild, decentralized meme movement</strong> inspired by the fearless Shiba Inu. We're here to <strong>break crypto norms</strong> with our triple-asset ecosystem: <strong>Creator Coin, Content Coin NFT, and $REBL token</strong>.
+      </p>
+      <!-- Vision Statement -->
+      <p class="vision-statement" style="font-size: 1.3em; font-style: italic; color: var(--rebel-gold); margin: var(--spacing-lg) 0; text-align: center;">
+        To unleash the fierce, fun-loving, meme-driven energy of Shiba Inu into crypto—making noise, shaking walls, and building a community that refuses to conform.
+      </p>
+      <!-- Key Features Section -->
+      <div style="margin-top: var(--spacing-lg);">
+        <h3 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">WHY REBELINUX?</h3>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-md);">
+          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🔥 Triple-Asset Ecosystem</h4>
+            <p style="font-size: 0.95em; line-height: 1.5;">
+              Merge collectible art, NFTs, and cross-chain rewards into a single, powerful ecosystem.
+            </p>
+          </div>
+          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🔄 Cross-Chain Value</h4>
+            <p style="font-size: 0.95em; line-height: 1.5;">
+              Revenue from ZORA assets is used to buy back and burn $REBL, increasing scarcity and value.
+            </p>
+          </div>
+          <div style="flex: 1; min-width: 250px; background: var(--section-bg); padding: var(--spacing-sm); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em;">🛡️ Community Governance</h4>
+            <p style="font-size: 0.95em; line-height: 1.5;">
+              Future DAO governance will let the community shape the project's evolution.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Call-to-Action -->
+      <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="#whitepaper" class="cta-button">
+          <i class="fas fa-file-alt"></i> READ THE WHITEPAPER
+        </a>
+        <a href="#roadmap" class="cta-button gold">
+          <i class="fas fa-rocket"></i> VIEW ROADMAP
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance Section -->
+  <section id="governance" class="visible">
+    <h2>GOVERNANCE: COMMUNITY-LED REBELLION</h2>
+    <div style="background: rgba(255, 51, 102, 0.05); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 900px; border: 2px solid var(--rebel-red);">
+      <p style="font-size: 1.2em; line-height: 1.6; margin-bottom: var(--spacing-md); text-align: center;">
+        <strong>RebelInuX (REBL)</strong> is evolving into a community-governed ecosystem powered by the $REBL token and RebelInuX NFT collection. We are committed to a full transition to decentralized governance, empowering holders to propose initiatives, vote on key decisions, and shape the project's future—ensuring transparency and shared ownership.
+      </p>
+    </div>
+    <!-- Dual-Governance Architecture -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 900px; border: 2px solid var(--rebel-gold);">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-balance-scale" style="margin-right: 10px;"></i>
+        DUAL-GOVERNANCE ARCHITECTURE
+      </h3>
+      <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: var(--spacing-lg);">
+        RebelInuX implements a sophisticated dual-governance model that separates cultural curation from financial governance, ensuring both community fun and fiscal responsibility.
+      </p>
+      <!-- Cultural Governance Card -->
+      <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); border: 2px solid var(--rebel-red);">
+        <h4 style="color: var(--rebel-red); margin-bottom: var(--spacing-md); text-align: center;">
+          <i class="fas fa-gavel" style="margin-right: 10px;"></i>
+          CURRENT: CULTURAL GOVERNANCE VIA REBELJUDGES VOTING KEY
+        </h4>
+        <div class="image-container" style="margin: var(--spacing-md) auto;">
+          <img src="https://i.imgur.com/LG3Ovwi.jpg" alt="RebelJudges Voting Key" loading="lazy" width="300" height="300">
+          <div class="overlay">
+            <div class="overlay-text">RebelJudges Voting Key</div>
+          </div>
+        </div>
+        <p style="font-size: 0.9em; font-style: italic; text-align: center; margin-bottom: var(--spacing-md); color: var(--rebel-gold);">
+          "RebelJudges Voting Key" – Governance NFT for community-led meme contest judging. 1 Voting Key = 1 Vote with $REBL reward incentives.
+        </p>
+        <div style="display: flex; justify-content: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+          <a href="https://zora.co/coin/base:0x0ea28d8b2f45fa45b3a13a9d0869263f6b41f5e6?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" class="cta-button" style="font-size: 0.9em;">
+            <i class="fas fa-external-link-alt"></i> VIEW ON ZORA
+          </a>
+          <a href="https://zora.co/@rebelinux" target="_blank" class="cta-button gold" style="font-size: 0.9em;">
+            <i class="fas fa-cube"></i> EXPLORE COLLECTION
+          </a>
+        </div>
+        <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Key Details:</h5>
+          <ul style="text-align: left; color: white; font-size: 0.95em;">
+            <li><strong>Token Name:</strong> RebelJudges Voting Key</li>
+            <li><strong>Token Details:</strong> 1,000,000,000 supply on ZORA (Base)</li>
+            <li><strong>Governance Power:</strong> 1 Voting Key = 1 Vote in all meme contests</li>
+            <li><strong>Voting Rights:</strong> Holders decide winners of community meme contests</li>
+            <li><strong>Reward Mechanism:</strong> Voters who select winning entries earn proportional $REBL rewards</li>
+            <li><strong>Founding Judge:</strong> <a href="https://x.com/issa_abdulrazaq" style="color: var(--rebel-red);">@issa_abdulrazaq</a> awarded 10,000,000 Voting Keys (1% supply) for creating the winning meme that inspired the RebelJudges system</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
+          <p style="font-size: 0.9em; color: var(--rebel-gold); text-align: center; margin: 0;">
+            <strong>Key Innovation:</strong> This system replaces team-led judging with transparent, community-controlled curation, creating a self-sustaining ecosystem where governance participation is directly rewarded with $REBL tokens.
+          </p>
+        </div>
+      </div>
+      <!-- Financial Governance Card -->
+      <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+          <i class="fas fa-landmark" style="margin-right: 10px;"></i>
+          FUTURE: FINANCIAL GOVERNANCE VIA REBELINUX DAO
+        </h4>
+        <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: var(--spacing-md);">
+          The RebelInuX DAO ($REBL) will manage treasury, partnerships, and protocol decisions, ensuring sound financial management and strategic growth.
+        </p>
+        <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Proposed DAO Parameters:</h5>
+          <ul style="text-align: left; color: white; font-size: 0.95em;">
+            <li><strong>DAO Name:</strong> RebelInuX Community DAO</li>
+            <li><strong>Governance Token:</strong> $REBL</li>
+            <li><strong>Approval Threshold:</strong> 60% (proposed)</li>
+            <li><strong>Proposal Minimum:</strong> 13M $REBL (proposed)</li>
+            <li><strong>Council Seats:</strong> 5 (proposed)</li>
+            <li><strong>Council Eligibility:</strong> Holders of both Creator Coin + Content Coin NFT (subject to community vote)</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
+          <p style="font-size: 0.9em; color: var(--rebel-red); text-align: center; margin: 0;">
+            <strong>This separation prevents any single group from having excessive control while allowing specialized governance for different aspects of our ecosystem.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Implementation Status -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 900px; border: 2px solid var(--rebel-red);">
+      <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-tasks" style="margin-right: 10px;"></i>
+        IMPLEMENTATION STATUS
+      </h3>
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-md);">
+        <div style="flex: 1; min-width: 250px; background: rgba(76, 175, 80, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); border: 2px solid #4CAF50;">
+          <h4 style="color: #4CAF50; margin-bottom: 0.5em; text-align: center;">
+            <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+            LIVE
+          </h4>
+          <p style="font-size: 0.95em; line-height: 1.5; text-align: center;">
+            RebelJudges NFT system actively governing meme contests
+          </p>
+        </div>
+        <div style="flex: 1; min-width: 250px; background: rgba(255, 204, 0, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+          <h4 style="color: var(--rebel-gold); margin-bottom: 0.5em; text-align: center;">
+            <i class="fas fa-clock" style="margin-right: 10px;"></i>
+            PLANNED
+          </h4>
+          <p style="font-size: 0.95em; line-height: 1.5; text-align: center;">
+            RebelInuX DAO launch (see <a href="#roadmap" style="color: var(--rebel-gold);">Roadmap</a> for timeline)
+          </p>
+        </div>
+      </div>
+      <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
+        <p style="font-size: 0.9em; color: var(--rebel-gold); text-align: center; margin: 0;">
+          <strong>Note:</strong> DAO parameters are preliminary proposals and will be finalized through community governance before launch.
+        </p>
+      </div>
+      <p style="font-size: 1em; line-height: 1.6; margin-top: var(--spacing-md); text-align: center;">
+        This dual-governance structure represents our commitment to progressive decentralization, with cultural governance already in community hands and financial governance transitioning through 2026.
+      </p>
+    </div>
+  </section>
+
+  <!-- Epoch Rewards Section -->
+  <section id="epoch-rewards" class="visible">
+    <h2>EPOCH REWARDS: CLAIM YOUR $REBL</h2>
+    <p style="text-align: center; font-size: 1.2em; margin-bottom: var(--spacing-lg);">
+      RebelInuX introduces a revolutionary <strong>epoch-based reward system</strong> for $REBL token distribution.
+      <strong>Hold a Creator Coin + the active Rebel Key NFT</strong> to claim rewards during weekly epochs.
+    </p>
+    <!-- Creator Coin Info -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">CREATOR COIN ($rebelinux)</h3>
+      <p style="font-size: 1.1em; line-height: 1.6;">
+        The <strong>Creator Coin ($rebelinux)</strong> is your stake in the rebellion.
+        <strong>Hold it to claim $REBL rewards</strong> during designated epochs.
+      </p>
+      <div style="text-align: center; margin-top: var(--spacing-md);">
+        <a href="https://basescan.org/token/0xf95BEeF6439ec38fA757238Cdec8417ABDA536bd" target="_blank" class="cta-button gold">
+          <i class="fas fa-external-link-alt"></i> VIEW ON BASE
+        </a>
+      </div>
+    </div>
+    <!-- Epoch Schedule -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">EPOCH SCHEDULE</h3>
+      <p style="font-size: 1.1em; line-height: 1.6;">
+        <strong>First Epoch:</strong> October 5, 2025 at 21:00 UTC<br>
+        <strong>Duration:</strong> 7 days (weekly)<br>
+        <strong>Reset Time:</strong> Every Sunday at 21:00 UTC<br>
+        <strong>Distribution:</strong> $REBL tokens distributed within 24 hours of epoch closure
+      </p>
+    </div>
+    <!-- REBL Calculator Section -->
+    <div class="rebl-calculator">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">🧮 $REBL REWARD CALCULATOR</h3>
+      <p style="font-size: 1em; margin-bottom: var(--spacing-lg); text-align: center; max-width: 500px; margin-left: auto; margin-right: auto;">
+        Enter your <strong>$rebelinux</strong> token batches to calculate your projected <strong>$REBL</strong> rewards!
+      </p>
+      <div class="calculator-container">
+        <!-- Current Supply and ERP -->
+        <div class="calculator-info">
+  <p>
+    <strong>Current $rebelinux Supply (CS):</strong>
+    <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens used to calculate rewards.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">499,242,047 $rebelinux</span>
+  </p>
+  <p>
+    <strong>Epoch Reward Pool (ERP):</strong>
+    <span class="tooltip-icon" data-tippy-content="The total $REBL tokens available for distribution in the current epoch.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">54,812,320.11 $REBL</span>
+  </p>
+  <p style="background: rgba(255,51,102,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--rebel-red); margin-top: 0.5rem;">
+    <strong>💡 Important:</strong> When selling $rebelinux tokens, the system uses <strong>LIFO (Last-In-First-Out)</strong> -
+    your newest $rebelinux tokens (lowest age) are sold first, preserving the age of your older holdings.
+  </p>
+</div>
+        <!-- Token Batches Table -->
+        <div class="token-batches-section">
+          <label class="section-label">
+            Your Token Batches:
+            <span class="tooltip-icon" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
+              <i class="fas fa-question-circle"></i>
+            </span>
+          </label>
+          <div class="table-container">
+<table id="token-batches-table">
+  <thead>
+    <tr>
+      <th>
+        $rebelinux Amount
+        <span class="tooltip-icon" data-tippy-content="Amount of $rebelinux tokens you hold">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th>
+        Age (Epochs)
+        <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of $rebelinux tokens (max 20)">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th>
+        Weighted Value
+        <span class="tooltip-icon" data-tippy-content="The value of this $rebelinux batch, weighted by how long you've held it">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th>
+        Estimated $REBL Reward
+        <span class="tooltip-icon" data-tippy-content="Estimated $REBL reward for this $rebelinux batch">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </th>
+      <th class="action-column">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Rows will be added dynamically -->
+  </tbody>
+</table>
+          </div>
+          <div class="batch-controls">
+            <button onclick="addTokenBatch()" class="batch-btn add-btn">
+              + Add Batch
+            </button>
+            <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
+              Clear All
+            </button>
+          </div>
+        </div>
+        <!-- Load Example Data -->
+        <div style="text-align: center; margin: var(--spacing-sm) 0;">
+          <button onclick="loadExampleData()" class="batch-btn" style="background: rgba(255,255,255,0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold);">
+            <i class="fas fa-vial"></i> Load Example Data
+          </button>
+        </div>
+        <!-- Calculate Button -->
+        <button onclick="calculateRewards()" class="calculate-btn">
+          CALCULATE REWARDS
+        </button>
+        <!-- Result and Chart -->
+        <div class="results-section">
+          <div id="reward-result">
+            Enter your token batches to see your rewards!
+          </div>
+          <div class="chart-container">
+            <canvas id="rewardChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div id="calculator-stats" style="background: rgba(255,255,255,0.05); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-sm); display: none;">
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: var(--spacing-sm); font-size: 0.9em;">
+          <div><strong>Total Tokens:</strong> <span id="stat-total-tokens">0</span></div>
+          <div><strong>Avg. Age:</strong> <span id="stat-avg-age">0</span> epochs</div>
+          <div><strong>Total Batches:</strong> <span id="stat-total-batches">0</span></div>
+        </div>
+      </div>
+      <!-- What If Scenarios -->
+      <div class="what-if-section">
+        <h4>🔮 What If?</h4>
+        <p>Simulate how your rewards would change if you held more tokens or held them longer.</p>
+        <div class="slider-group">
+          <div class="slider-container">
+            <label>
+              Token Amount:
+              <span id="whatIfAmountValue" class="slider-value">0</span>
+            </label>
+            <input
+              type="range"
+              id="whatIfAmount"
+              min="0"
+              max="1000000000"
+              step="1000000"
+              value="10000000"
+              oninput="updateWhatIf()"
+              class="slider"
+            >
+          </div>
+          <div class="slider-container">
+            <label>
+              Hold Time (Epochs):
+              <span id="whatIfEpochsValue" class="slider-value">10</span>
+            </label>
+            <input
+              type="range"
+              id="whatIfEpochs"
+              min="1"
+              max="20"
+              value="10"
+              oninput="updateWhatIf()"
+              class="slider"
+            >
+          </div>
+        </div>
+        <p class="what-if-result">
+          Projected Reward: <strong id="whatIfReward">0</strong> $REBL
+        </p>
+      </div>
+      <!-- Formula Explanation -->
+      <div class="formula-explanation">
+        <p>
+          <strong>Formula:</strong><br>
+          Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
+          <strong>Weighted Share (WS):</strong>
+          <span class="tooltip-icon" data-tippy-content="Older tokens contribute more to your reward.">
+            <i class="fas fa-question-circle"></i>
+          </span>
+          Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
+        </p>
+      </div>
+    </div>
+    <!-- Rebel Key Rotation -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">REBEL KEY ROTATION</h3>
+      <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: var(--spacing-md); text-align: center;">
+        Each epoch features a <strong>specific Rebel Key NFT</strong> as the claiming interface.
+        Currently rotating between <strong>Rebel Key #1</strong> and <strong>Rebel Key #2</strong>.
+      </p>
+      <div style="text-align: center; margin: var(--spacing-md) auto;">
+        <div style="display: flex; justify-content: center; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
+          <!-- Rebel Key #1 -->
+          <div style="flex: 0 0 auto; text-align: center; margin: 0.5em;">
+            <div class="image-container" style="width: 140px; height: 140px; margin: 0 auto;">
+              <img src="https://i.imgur.com/b8fnTx9.webp" alt="Rebel Key #1" loading="lazy" width="140" height="140">
+              <div class="overlay">
+                <div class="overlay-text" style="font-size: 0.9rem;">Rebel Key #1</div>
+              </div>
+            </div>
+            <p style="margin-top: 0.8em; font-size: 1em; color: var(--rebel-gold);">
+              <strong>Epoch 1, 3, 5, 7...</strong>
+            </p>
+            <p style="font-size: 0.85em; color: var(--text-light); margin: 0.3em 0;">
+              Odd-numbered epochs
+            </p>
+            <a href="https://zora.co/coin/base:0xecbdd4ca228721a24241eaa845733ff3fc7e4f4a?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee"
+               target="_blank"
+               class="cta-button"
+               style="font-size: 0.85rem; padding: 0.5rem 1rem; margin-top: 0.8rem;">
+              <i class="fas fa-external-link-alt"></i> View on ZORA
+            </a>
+          </div>
+          <!-- Arrow with rotation text -->
+          <div style="text-align: center; margin: 0 1rem;">
+            <div style="font-size: 2rem; color: var(--rebel-gold); margin-bottom: 0.5rem;">⇄</div>
+            <div style="font-size: 0.8em; color: var(--rebel-gold); background: rgba(255, 204, 0, 0.1); padding: 0.3rem 0.8rem; border-radius: 15px;">
+              Rotates Weekly
+            </div>
+          </div>
+          <!-- Rebel Key #2 -->
+          <div style="flex: 0 0 auto; text-align: center; margin: 0.5em;">
+            <div class="image-container" style="width: 140px; height: 140px; margin: 0 auto;">
+              <img src="https://i.imgur.com/YrN5PsU.webp" alt="Rebel Key #2" loading="lazy" width="120" height="50">
+              <div class="overlay">
+                <div class="overlay-text" style="font-size: 0.9rem;">Rebel Key #2</div>
+              </div>
+            </div>
+            <p style="margin-top: 0.8em; font-size: 1em; color: var(--rebel-gold);">
+              <strong>Epoch 2, 4, 6, 8...</strong>
+            </p>
+            <p style="font-size: 0.85em; color: var(--text-light); margin: 0.3em 0;">
+              Even-numbered epochs
+            </p>
+            <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee"
+               target="_blank"
+               class="cta-button"
+               style="font-size: 0.85rem; padding: 0.5rem 1rem; margin-top: 0.8rem;">
+              <i class="fas fa-external-link-alt"></i> View on ZORA
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Future Keys Info -->
+      <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg); border-left: 4px solid var(--rebel-red);">
+        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+          <i class="fas fa-rocket" style="margin-right: 10px;"></i>
+          Future Expansion
+        </h4>
+        <p style="font-size: 0.95em; line-height: 1.5; text-align: center; margin: 0;">
+          <strong>New Rebel Keys will be minted over time!</strong> As the collection grows, the rotation will expand beyond Keys #1 and #2,
+          creating more opportunities for holders to participate in different epochs.
+        </p>
+      </div>
+    </div>
+    <!-- How to Claim -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">HOW TO CLAIM $REBL</h3>
+      <ol style="text-align: left; font-size: 1.1em; line-height: 1.6;">
+        <li><strong>Hold a Creator Coin:</strong> Purchase on <a href="https://zora.co/@rebelinux" style="color: var(--rebel-gold);">ZORA</a>.</li>
+        <li><strong>Own the Active Rebel Key NFT:</strong> Buy the Rebel Key NFT designated for the current epoch.</li>
+        <li><strong>Submit Your Solana Address:</strong> Comment your Solana wallet address on the Rebel Key's ZORA page during the epoch.</li>
+        <li><strong>Receive $REBL:</strong> Tokens are distributed to your Solana wallet within 24 hours of the epoch's end.</li>
+      </ol>
+      <div style="text-align: center; margin-top: var(--spacing-md);">
+        <a href="https://zora.co/@rebelinux" target="_blank" class="cta-button">
+          <i class="fas fa-external-link-alt"></i> VIEW REBEL KEYS ON ZORA
+        </a>
+      </div>
+    </div>
+    <!-- Security Warning -->
+    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin: var(--spacing-md) auto; max-width: 600px; text-align: center;">
+      <p style="margin: 0; font-size: 0.9em; color: var(--rebel-red); font-weight: bold;">
+        ⚠️ <strong>SECURITY WARNING:</strong> ONLY share your <strong>public Solana address</strong> (e.g., <code>ahWDSP4...3MUiI</code>). NEVER share your private key or seed phrase.
+      </p>
+    </div>
+  </section>
+
+  <!-- Epoch Countdowns -->
+  <div style="display: flex; flex-direction: column; gap: var(--spacing-lg); justify-content: center; align-items: center; margin: var(--spacing-xl) auto; max-width: 800px;">
+  </div>
+    <!-- Epoch 12 Countdown -->
+    <div class="countdown-container" style="width: 100%;">
+      <h2 class="countdown-title">⏳ Epoch 12 Countdown (Rebel Key #2)</h2>
+      </div>
+      <p style="text-align: center; margin-bottom: var(--spacing-md); color: var(--rebel-gold);">
+        Time remaining before the end of <strong>Epoch 12</strong> using <strong>Rebel Key #2</strong>:
+      </p>
+      <div id="countdown1" style="display: flex; justify-content: center; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+        <div class="countdown-box">
+          <span id="days1" class="countdown-number">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="hours1" class="countdown-number">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="minutes1" class="countdown-number">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="seconds1" class="countdown-number">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: var(--spacing-sm); font-size: 0.9em; color: var(--rebel-gold);">
+        <strong>Hold a Creator Coin + <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="color: var(--rebel-gold); text-decoration: underline;">Rebel Key #2</a></strong> to claim $REBL during Epoch 12.
+      </p>
+    </div>
+    <!-- Epoch 13 Countdown -->
+    <div class="countdown-container" style="width: 100%;">
+      <h2 class="countdown-title">⏳ Epoch 13 Countdown (Rebel Key #1)</h2>
+      </div>
+      <p style="text-align: center; margin-bottom: var(--spacing-md); color: var(--rebel-gold);">
+        Time remaining before the start of <strong>Epoch 13</strong> using <strong>Rebel Key #1</strong>:
+      </p>
+      <div id="countdown2" style="display: flex; justify-content: center; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+        <div class="countdown-box">
+          <span id="days2" class="countdown-number">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="hours2" class="countdown-number">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="minutes2" class="countdown-number">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="seconds2" class="countdown-number">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: var(--spacing-sm); font-size: 0.9em; color: var(--rebel-gold);">
+        <strong>Hold a Creator Coin + <a href="https://zora.co/coin/base:0xecbdd4ca228721a24241eaa845733ff3fc7e4f4a?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="color: var(--rebel-gold); text-decoration: underline;">Rebel Key #1</a></strong> to claim $REBL during Epoch 13.
+      </p>
+    </div>
+    <!-- Epoch 14 Countdown -->
+    <div class="countdown-container" style="width: 100%;">
+      <h2 class="countdown-title">⏳ Epoch 14 Countdown (Rebel Key #2)</h2>
+      </div>
+      <p style="text-align: center; margin-bottom: var(--spacing-md); color: var(--rebel-gold);">
+        Time remaining before the start of <strong>Epoch 14</strong> using <strong>Rebel Key #2</strong>:
+      </p>
+      <div id="countdown3" style="display: flex; justify-content: center; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+        <div class="countdown-box">
+          <span id="days3" class="countdown-number">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="hours3" class="countdown-number">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="minutes3" class="countdown-number">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <span style="font-size: 1.5rem; color: var(--rebel-gold);">:</span>
+        <div class="countdown-box">
+          <span id="seconds3" class="countdown-number">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+      <p style="text-align: center; margin-top: var(--spacing-sm); font-size: 0.9em; color: var(--rebel-gold);">
+        <strong>Hold a Creator Coin + <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" target="_blank" style="color: var(--rebel-gold); text-decoration: underline;">Rebel Key #2</a></strong> to claim $REBL during Epoch 14.
+      </p>
+    </div>
+  </div>
+
+<!-- UPDATED Tokenomics Dashboard (Combined with Live Stats) -->
+<section id="tokenomics" class="visible">
+  <h2>$REBL LIVE STATS & TOKEN METRICS</h2>
+  
+  <div class="tokenomics-dashboard">
+    <div class="dashboard-header">
+      <h3><i class="fas fa-chart-line"></i> $REBL LIVE STATS & TOKEN METRICS</h3>
+      <div class="controls">
+        <button onclick="refreshData()" class="refresh-button">
+          <i class="fas fa-sync-alt"></i> Refresh All Data
+        </button>
+        <div class="update-buttons">
+          <button onclick="quickUpdateFromSolscan()" class="update-button">
+            <i class="fas fa-external-link-alt"></i> Get Latest
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Combined Stats Grid -->
+    <div class="metric-cards">
+      <!-- Price Card -->
+      <div class="metric-card">
+        <i class="fas fa-dollar-sign metric-icon" style="color: var(--rebel-gold);"></i>
+        <h4>Price (USD)</h4>
+        <div class="metric-value" id="live-price">—</div>
+        <div id="price-change-display" class="metric-subtitle" style="margin-top: 0.5rem; font-weight: 600;">Loading...</div>
+      </div>
+      
+      <!-- Market Cap Card -->
+      <div class="metric-card">
+        <i class="fas fa-fire metric-icon" style="color: #ff6600;"></i>
+        <h4>Market Cap</h4>
+        <div class="metric-value" id="live-market-cap">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Fully Diluted</div>
+      </div>
+      
+      <!-- Volume Card -->
+      <div class="metric-card">
+        <i class="fas fa-exchange-alt metric-icon" style="color: var(--rebel-red);"></i>
+        <h4>24H Volume</h4>
+        <div class="metric-value" id="live-volume">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Trading Activity</div>
+      </div>
+      
+      <!-- Liquidity Card -->
+      <div class="metric-card">
+        <i class="fas fa-tint metric-icon" style="color: #00ccff;"></i>
+        <h4>Liquidity</h4>
+        <div class="metric-value" id="live-liquidity">—</div>
+        <div class="metric-subtitle" style="color: var(--rebel-gold);">Pooled Value</div>
+      </div>
+      
+      <!-- Holders Card -->
+      <div class="metric-card">
+        <i class="fas fa-users metric-icon" style="color: #9C27B0;"></i>
+        <h4>Holders</h4>
+        <div class="metric-value" id="live-holders">Loading...</div>
+        <div class="metric-subtitle" id="holders-source-display">From Solscan</div>
+      </div>
+      
+      <!-- Current Supply Card -->
+      <div class="metric-card">
+        <i class="fas fa-coins metric-icon" style="color: var(--rebel-gold);"></i>
+        <h4>Current Supply</h4>
+        <div class="metric-value" id="live-supply">Loading...</div>
+        <div class="metric-subtitle" id="supply-percent">—</div>
+      </div>
+      
+      <!-- Burned Supply Card -->
+      <div class="metric-card">
+        <i class="fas fa-fire-alt metric-icon" style="color: var(--rebel-red);"></i>
+        <h4>Total Burned</h4>
+        <div class="metric-value" id="live-burned">Loading...</div>
+        <div class="metric-subtitle" id="burned-percent-display">—</div>
+      </div>
+    </div>
+    
+<!-- Data Source Info -->
+<div class="data-info">
+    <small>
+        <i class="fas fa-sync-alt"></i> Live data updates every 30 seconds via 
+        <a href="https://dexscreener.com/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" target="_blank" style="color: var(--rebel-gold);">DexScreener API</a> • 
+        <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" style="color: var(--rebel-gold);">Solscan</a> • 
+        Last updated: <span id="last-updated-time">—</span>
+        <span id="api-status" style="margin-left: 10px; font-size: 0.8em;"></span>
+    </small>
+</div>
+    <div style="text-align: center; margin-top: 20px;">
+    <button onclick="testDataFetch()" style="background: var(--rebel-red); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+        Test Data Fetch
+    </button>
+    <div id="test-result" style="margin-top: 10px; font-size: 0.9em;"></div>
+</div>
+
+<script>
+async function testDataFetch() {
+    const resultDiv = document.getElementById('test-result');
+    resultDiv.innerHTML = '<span style="color: var(--rebel-gold)">Testing API connection...</span>';
+    
+    try {
+        const testResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv');
+        if (testResponse.ok) {
+            resultDiv.innerHTML = '<span style="color: #4CAF50">✅ API connection successful!</span>';
+            initializeMetrics(); // Start the real data fetch
+        } else {
+            resultDiv.innerHTML = `<span style="color: var(--rebel-red)">❌ API error: ${testResponse.status}</span>`;
+        }
+    } catch (error) {
+        resultDiv.innerHTML = `<span style="color: var(--rebel-red)">❌ Network error: ${error.message}</span>`;
+    }
+}
+</script>
+  </div>
+</section>
+  
+    <!-- Supply Box -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-red); margin-bottom: var(--spacing-lg); text-align: center;">
+      <h3>MAX SUPPLY: 1,000,000,000 $REBL</h3>
+      <div style="font-size: clamp(2rem, 5vw, 2.5rem); font-weight: bold; color: var(--rebel-red); margin: var(--spacing-md) 0;">1B</div>
+      <p style="font-size: 0.9em; color: var(--rebel-gold);">Fixed Supply · No Inflation · Deflationary Burns</p>
+    </div>
+
+        <!-- Live Chart -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 1000px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-chart-line" style="margin-right: 10px;"></i>
+        Live $REBL Chart
+      </h3>
+      <div style="height: 400px; border-radius: var(--border-radius); overflow: hidden;">
+        <iframe
+          id="geckoterminal-embed"
+          title="GeckoTerminal Embed"
+          src="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv"
+          frameborder="0"
+          allow="clipboard-write"
+          allowfullscreen
+          style="width: 100%; height: 100%;"
+        ></iframe>
+      </div>
+      <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
+        Live chart powered by <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" target="_blank" style="color: var(--rebel-gold);">GeckoTerminal</a>
+      </p>
+    </div>
+    <!-- Chart -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) 0;">
+      <canvas id="distributionChart" style="width: 200%; max-height: 400px;"></canvas>
+    </div>
+    <!-- Accordion -->
+    <div class="accordion">
+      <!-- Team Fund -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-users-cog" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Team Fund Vesting
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>The Team Fund (<strong>70M REBL, 7%</strong>) is dedicated to compensating and retaining core contributors, with a transparent vesting structure for optimal long-term alignment.</p>
+          <ul style="text-align: left; margin-top: var(--spacing-sm);">
+            <li><strong>Immediate Operations (40%)</strong>: 28M REBL available for strategic initiatives and essential costs.</li>
+            <li><strong>Long-Term Alignment (60%)</strong>: 42M REBL secured in 3-year linear vesting with 40% initial cliff.</li>
+          </ul>
+          <div style="margin-top: var(--spacing-sm);">
+            <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL?ref=funereally-exemplary-jackal" target="_blank" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> Vesting Contract
+            </a>
+            <a href="https://solscan.io/account/8zzcDm3FWxAXsVw2iok5EoXj9q8XCG9tSu9UeenHcp52" target="_blank" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Ecosystem Fund -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-vault" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Ecosystem Fund Vesting
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>The Ecosystem Fund (<strong>60M REBL, 6%</strong>) is allocated for development, audits, and marketing, with a <strong>6-month cliff</strong> and <strong>18-month linear vesting</strong>.</p>
+          <ul style="text-align: left; margin-top: var(--spacing-sm);">
+            <li><strong>Initial Operations (0.5%)</strong>: 5M REBL for essential costs during the first 6 months.</li>
+            <li><strong>Sustained Growth (5.5%)</strong>: 55M REBL, subject to a 6-month cliff, then 20% unlocked followed by linear vesting over 18 months.</li>
+          </ul>
+          <div style="margin-top: var(--spacing-sm);">
+            <a href="https://solscan.io/account/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7P1" target="_blank" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> Vesting Contract
+            </a>
+            <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- NFT Holder Reward Mechanism -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-award" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            NFT Holder Reward Mechanism
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>The ZORA Rewards Treasury (<strong>160M REBL, 16%</strong>) is split into:</p>
+          <ul style="text-align: left; margin-top: var(--spacing-sm);">
+            <li><strong>Asset Holder Rewards (80%)</strong>: 128M REBL for Creator Coin and Content Coin NFT holders.</li>
+            <li><strong>Community Incentives (20%)</strong>: 32M REBL for grassroots initiatives and contests.</li>
+          </ul>
+          <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin: var(--spacing-sm) 0;">
+            <p style="font-size: 0.9em;"><strong>Vesting:</strong> 40% (64M REBL) released at launch, 60% (96M REBL) linearly over 2 years.</p>
+          </div>
+          <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" target="_blank" class="accordion-button">
+            <i class="fas fa-external-link-alt"></i> View Vesting Contract
+          </a>
+        </div>
+      </div>
+      <!-- Community DAO Reserve -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-users" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Community DAO Reserve
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>The Community DAO Reserve (<strong>10M REBL, 1%</strong>) is locked until <strong>July 1, 2026</strong>, then vests linearly over 24 months.</p>
+          <p><strong>Use cases:</strong> Strategic partnerships, community grants, exchange listings, and ecosystem incentives.</p>
+          <div style="margin-top: var(--spacing-sm);">
+            <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" target="_blank" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> Vesting Contract
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Cross-Chain Value Acceleration -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-link" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Cross-Chain Value Acceleration
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>
+            Revenue from ZORA assets (Creator Coins & Content Coin NFTs) is used to <strong>buy back and burn $REBL</strong>, increasing scarcity and value for holders.
+          </p>
+          <p>
+            <strong>How it works:</strong>
+          </p>
+          <ul style="text-align: left; margin-top: var(--spacing-sm);">
+            <li><strong>80% Buy-Back & Burn:</strong> ETH revenue is bridged to Solana to <strong>permanently burn $REBL</strong>.</li>
+            <li><strong>15% Community DAO:</strong> Funds future initiatives and buy-back campaigns.</li>
+            <li><strong>5% Operations:</strong> Covers essential costs.</li>
+          </ul>
+          <p style="font-size: 0.95em; font-style: italic; color: var(--rebel-gold); margin-top: var(--spacing-sm);">
+            <strong>Result:</strong> Trading activity on ZORA directly boosts $REBL value on Solana through deflationary pressure.
+          </p>
+        </div>
+      </div>
+      <!-- Decentralization & Security -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-shield-alt" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Decentralization & Security
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p><strong>Solana ($REBL):</strong> Mint, freeze, and update authorities are renounced. LP tokens locked for 1 year.</p>
+          <p><strong>ZORA (NFTs):</strong> Founder's Creator Coins are vested over 5 years. Smart contracts are non-upgradeable.</p>
+        </div>
+      </div>
+      <!-- Governance Framework -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          <span>
+            <i class="fas fa-vote-yea" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+            Governance Framework
+          </span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </button>
+        <div class="accordion-content">
+          <p>Future DAO will use $REBL for voting. Holders of both Creator Coin + Content Coin NFT may get enhanced governance rights.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap Section -->
+  <section id="roadmap" class="visible">
+    <h2>OUR REBELLION ROADMAP</h2>
+    <p style="text-align: center; color: var(--rebel-gold); margin-bottom: var(--spacing-lg); font-style: italic;">2025-2026</p>
+    <div class="roadmap-timeline">
+      <!-- Q2 2025 -->
+      <div class="roadmap-milestone left">
+        <div class="roadmap-content">
+          <h3>
+            <span class="roadmap-quarter" style="background: linear-gradient(var(--rebel-red), var(--rebel-gold)); color: white; padding: 0.3rem 0.7rem; border-radius: 50%; font-weight: bold; margin-right: 0.7rem; display: inline-block; min-width: 40px; text-align: center;">Q2</span>
+            Foundation & Launch
+          </h3>
+          <ul>
+            <li>RebelInuX ($REBL) token creation.</li>
+            <li>Initial community building on X, Telegram, Discord.</li>
+            <li>Renouncement of mint, freeze, and update authority.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Q3 2025 -->
+      <div class="roadmap-milestone right">
+        <div class="roadmap-content">
+          <h3>
+            <span class="roadmap-quarter" style="background: linear-gradient(var(--rebel-red), var(--rebel-gold)); color: white; padding: 0.3rem 0.7rem; border-radius: 50%; font-weight: bold; margin-right: 0.7rem; display: inline-block; min-width: 40px; text-align: center;">Q3</span>
+            Triple-Asset Ecosystem Launch
+          </h3>
+          <ul>
+            <li><strong>LAUNCH:</strong> RebelInuX Creator Coins & Content Coin NFTs on ZORA.</li>
+            <li>New reward mechanism: Hold both assets to claim $REBL.</li>
+            <li>Shift to digital ownership and utility-based distribution.</li>
+            <li><strong>LAUNCH:</strong> RebelInuX ($REBL) token listed on a Solana DEX (PumpSwap).</li>
+            <li>Deployment of the $REBL token claim portal for holders.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Q4 2025 -->
+      <div class="roadmap-milestone left">
+        <div class="roadmap-content">
+          <h3>
+            <span class="roadmap-quarter" style="background: linear-gradient(var(--rebel-red), var(--rebel-gold)); color: white; padding: 0.3rem 0.7rem; border-radius: 50%; font-weight: bold; margin-right: 0.7rem; display: inline-block; min-width: 40px; text-align: center; position: relative;">
+              Q4
+              <span style="font-size: 0.6rem; background: var(--rebel-gold); color: var(--dark-bg); padding: 2px 6px; border-radius: 8px; position: absolute; top: -10px; right: -10px;">CURRENT</span>
+            </span>
+            Expansion & Utility
+          </h3>
+          <ul>
+            <li>Initiate community governance discussions and planning.</li>
+            <li>Form initial partnerships aligned with the rebel ethos.</li>
+            <li><strong>Research and pursue</strong> additional DEX liquidity and future CEX listing opportunities.</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Q1-Q3 2026 -->
+      <div class="roadmap-milestone right">
+        <div class="roadmap-content">
+          <h3>
+            <span class="roadmap-quarter" style="background: linear-gradient(var(--rebel-red), var(--rebel-gold)); color: white; padding: 0.3rem 0.7rem; border-radius: 50%; font-weight: bold; margin-right: 0.7rem; display: inline-block; min-width: 40px; text-align: center;">Q1-Q3</span>
+            Governance & The Future Pack
+          </h3>
+          <ul>
+            <li>Official launch of the RebelInuX DAO on Realms.</li>
+            <li>Grant holders of both core assets enhanced governance rights.</li>
+            <li>Develop further utility for the triple-asset ecosystem.</li>
+            <li>Community-funded initiatives from the treasury.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Disclaimer -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-xl) auto; max-width: 800px; font-style: italic; text-align: center;">
+      <h3 style="color: var(--rebel-gold);">Note on Timelines:</h3>
+      <p>This roadmap outlines our strategic goals. Dates are forecasts and may shift based on technical challenges, community feedback, or market conditions. Our focus is on quality, not deadlines.</p>
+    </div>
+  </section>
+
+  <!-- White Paper Section -->
+  <section id="whitepaper" class="visible" style="background: var(--section-bg); padding: var(--spacing-xl) var(--spacing-md); text-align: center;">
+    <h2>Learn More - Download Our White Paper</h2>
+    <p>Discover the full details about RebelInuX's tokenomics, roadmap, and vision.</p>
+    <a href="RebelInuX_White_Paper.pdf" target="_blank" rel="noopener noreferrer" class="cta-button">
+      <i class="fas fa-download"></i> Download White Paper
+    </a>
+  </section>
+
+  <!-- Artwork Section -->
+  <section id="artwork" class="visible">
+    <h2 style="color: var(--rebel-red); margin-bottom: var(--spacing-lg);">REBEL COMMUNITY ARTWORK</h2>
+    <div class="artwork-slider">
+      <!-- Container for slides -->
+      <div class="artwork-slide-container">
+        <!-- Slide 1 -->
+        <div class="artwork-slide">
+          <!-- Artwork 1 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"REBEL BUILD" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 2 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"SHIBA ENERGY" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="artwork-slide">
+          <!-- Artwork 3 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/IyP5045.webp" alt="TO THE MOON by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"TO THE MOON" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0xfbef2c9843f9a0fa10812ec03884aa1e609c9f0d?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 4 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/RgzP2CA.webp" alt="TRIPLE-ASSET ECOSYSTEM by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"TRIPLE-ASSET ECOSYSTEM" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0xb850e16792a21f3732ba64bfb89b04109085d263?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="artwork-slide">
+          <!-- Artwork 5 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/NVIBbOo.webp" alt="THE MEME REVOLUTION by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"THE MEME REVOLUTION" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0x868db9ba892c7d3497184d76b23452a3e97a8b70?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 6 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/yMLGNmZ.webp" alt="THE COUNCIL by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"THE COUNCIL" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0xb850e16792a21f3732ba64bfb89b04109085d263?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="artwork-slide">
+          <!-- Artwork 7 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/jXnS27o.webp" alt="BREAKS CHAINS by @PeterGriff9178" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"BREAKS CHAINS" – Award-winning artwork by <a href="https://x.com/PeterGriff9178" style="color: var(--rebel-red);">@PeterGriff9178</a></p>
+            <a href="https://zora.co/coin/base:0xf480b4b9ab2a45021c435b30a8fee42ba5119ecf?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 8 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/tU8KDxf.webp" alt="NO HYPE by @PeterGriff9178" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"NO HYPE" – Award-winning artwork by <a href="https://x.com/PeterGriff9178" style="color: var(--rebel-red);">@PeterGriff9178</a></p>
+            <a href="https://zora.co/coin/base:0xd942bb1732e67dcc704d7b701594b0ff4e01ffe1?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="artwork-slide">
+          <!-- Artwork 9 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/6ECioCX.webp" alt="THE COUNCIL by @PeterGriff9178" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"THE COUNCIL" – Award-winning artwork by <a href="https://x.com/PeterGriff9178" style="color: var(--rebel-red);">@PeterGriff9178</a></p>
+            <a href="https://zora.co/coin/base:0x031f93dd91b3c87d801538f4bc9fe9a42f585b10?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 10 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/cb5pTtS.webp" alt="BUY THE DIP by @Prime__12" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"BUY THE DIP" – Award-winning artwork by <a href="https://x.com/Prime__12" style="color: var(--rebel-red);">@Prime__12</a></p>
+            <a href="https://zora.co/coin/base:0xe8fe77c982370b7202f2228503e737362f4c28c4?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+        <!-- Duplicate Slide 1 for seamless loop -->
+        <div class="artwork-slide">
+          <!-- Artwork 1 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"REBEL BUILD" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+          <!-- Artwork 2 -->
+          <div class="artwork-item">
+            <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY by @DefiMaven5" loading="lazy" width="300" height="300">
+            <p style="margin-top: 15px; font-style: italic; color: var(--text-light);">"SHIBA ENERGY" – Grand prize-winning artwork by <a href="https://x.com/DefiMaven5" style="color: var(--rebel-red);">@DefiMaven5</a></p>
+            <a href="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c" class="cta-button" style="background: var(--rebel-red); margin-top: 10px; font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> BUY ON ZORA
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Section -->
+  <section id="community" class="visible">
+    <h2>JOIN THE REBELLION</h2>
+    <div class="image-container">
+      <img src="https://i.imgur.com/bfPgAoS.webp" alt="RebelInuX Unleash the roar" loading="lazy" width="300" height="300">
+      <div class="overlay">
+        <div class="overlay-text">Unite with Rebels!</div>
+      </div>
+    </div>
+    <p>Connect with us on our rebellious platforms!</p>
+    <div class="social-icons">
+      <a href="https://x.com/RebelInuX" aria-label="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://t.me/RebelInuX_Official" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="https://discord.gg/s8dkuyD3cZ" aria-label="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://zora.co/@rebelinux" aria-label="Zora"><i class="fas fa-cube"></i></a>
+    </div>
+    <!-- Add this right after the .social-icons div in the Community Section -->
+<div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 800px; border: 2px solid var(--rebel-gold);">
+  <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+    <i class="fas fa-vote-yea" style="margin-right: 10px;"></i> 🗳️ OUR DAILY VOTING MISSIONS
+  </h3>
+  <p style="text-align: center; margin-bottom: var(--spacing-md);">
+    Join the real 24h race! Help us prove our organic strength by voting daily on these key platforms.
+  </p>
+  <!-- Voting Links Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-sm); text-align: center;">
+    <!-- Coinsniper -->
+    <a href="https://coinsniper.net/coin/88419" target="_blank" class="cta-button" style="background: var(--rebel-red); margin: 0.3rem; font-size: 0.9em;">
+      <i class="fas fa-star"></i> VOTE: Coinsniper (Daily)
+    </a>
+    <!-- Coinvote -->
+    <a href="https://coinvote.cc/en/coin/RebelInuX" target="_blank" class="cta-button" style="background: var(--rebel-gold); color: var(--dark-bg); margin: 0.3rem; font-size: 0.9em;">
+      <i class="fas fa-vote-yea"></i> VOTE: Coinvote
+    </a>
+    <!-- Add more buttons for Gemfinder, CoinHunt, etc., following the same pattern -->
+  </div>
+  <p style="text-align: center; font-size: 0.9em; color: var(--rebel-gold); margin-top: var(--spacing-md);">
+    <strong>Every vote fuels our organic climb!</strong>
+  </p>
+</div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="visible">
+    <h2>REBEL CONTACT</h2>
+    <div class="image-container">
+      <img src="https://i.imgur.com/gEuSg1Y.webp" alt="Rebel Contact" loading="lazy" width="300" height="300">
+      <div class="overlay">
+        <div class="overlay-text">Reach Out & Rebel!</div>
+      </div>
+    </div>
+    <p>Got questions? Reach out to the rebels: <a href="mailto:contact@rebelinux.fun">contact@rebelinux.fun</a></p>
+  </section>
+
+  <footer>
+    <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">JOIN THE REBELLION</h3>
+    <div class="social-icons">
+      <a href="https://x.com/RebelInuX" aria-label="X"><i class="fab fa-twitter"></i></a>
+      <a href="https://t.me/RebelInuX_Official" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+      <a href="https://discord.gg/s8dkuyD3cZ" aria-label="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://zora.co/@rebelinux" aria-label="Zora"><i class="fas fa-cube"></i></a>
+    </div>
+      <!-- GeckoTerminal Logo -->
+    <div style="text-align: center; margin: var(--spacing-lg) 0;">
+      <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         style="display: inline-block;">
+        <img src="geckoterminal_dark.svg" alt="Track REBL on GeckoTerminal" width="180" height="auto">
+      </a>
+      <p style="color: var(--rebel-gold); font-size: 0.9em; margin-top: 0.5rem;">
+        Track $REBL on GeckoTerminal
+      </p>
+    </div>
+    
+    <div style="text-align: center; margin: var(--spacing-lg) 0;">
+      <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="buy-rebl-button">
+        <i class="fas fa-shopping-cart"></i> BUY $REBL
+      </a>
+    </div>
+    <div style="margin-bottom: var(--spacing-md);">
+      <a href="/privacy-policy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy Policy</a>
+      <a href="/terms-of-service.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Terms of Service</a>
+      <a href="/disclaimer.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Disclaimer</a>
+    </div>
+    <div style="text-align: center; margin-top: var(--spacing-md); font-size: 0.8em; color: #ccc;">
+      <p style="margin: 0.5rem 0;">
+        © 2025 RebelInuX. All rights reserved. RebelInuX is a meme token for entertainment, <a href="/disclaimer.html" style="color: var(--rebel-red);">not an investment product</a>.
+      </p>
+    </div>
+    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 10px; margin-top: var(--spacing-sm); border-left: 4px solid var(--rebel-red); max-width: 600px; margin-left: auto; margin-right: auto; font-size: 0.8em;">
+      <p style="margin: 0;">
+        <strong>⚠️ IMPORTANT:</strong> High risk. Participation prohibited in the EEA, Switzerland, France. <a href="/disclaimer.html" style="color: var(--rebel-red);">Full legal notice</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+<script>
+// Fix the very first line of your HTML - it should start with DOCTYPE
+// Remove "it does not load : " from the beginning
+
+// Initialize AOS animations
+document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+    });
+    
+    // Initialize Tippy.js
+    tippy('[data-tippy-content]', {
+        theme: 'light-border',
+        arrow: true,
+        placement: 'top',
+        allowHTML: true,
+    });
+    
+    // Initial section animation
+    animateSections();
+    
+    // Initialize calculator
+    loadCalculatorState();
+    if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+        addTokenBatch();
+    }
+    
+    // Initialize metrics
+    setTimeout(initializeMetrics, 1000);
+    
+    // Start countdowns
+    updateCountdown1();
+    updateCountdown2();
+    updateCountdown3();
+    setInterval(updateCountdown1, 1000);
+    setInterval(updateCountdown2, 1000);
+    setInterval(updateCountdown3, 1000);
+    setTimeout(initializeTokenomicsChart, 1500); // Wait 1.5 seconds for everything to load
+});
+
+// Loading animation
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const loader = document.getElementById('loader');
+        if (loader) loader.classList.add('hidden');
+    }, 1000);
+});
+
+// Mobile navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+            const nav = document.getElementById('nav-desktop');
+            const icon = this.querySelector('i');
+            
+            nav.classList.toggle('active');
+            if (nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+    }
+    
+    // Close mobile nav when clicking on a link
+    document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
+            }
+        });
+    });
+    
+    // Mobile dropdown functionality
+    document.querySelectorAll('.nav-dropdown > a').forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = this.parentElement;
+                const isActive = dropdown.classList.contains('active');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.nav-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('active');
+                });
+                
+                // Toggle this dropdown
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+});
+
+// Back to top button
+window.addEventListener('scroll', function() {
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    }
+});
+
+document.getElementById('backToTop').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Animate sections on scroll
+function animateSections() {
+    document.querySelectorAll('section').forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+            section.classList.add('visible');
+        }
+    });
+}
+window.addEventListener('scroll', animateSections);
+
+// Accordion functionality
+document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const isActive = content.classList.contains('active');
+
+        // Close all accordion items
+        document.querySelectorAll('.accordion-content').forEach(item => {
+            item.classList.remove('active');
+            item.style.maxHeight = null;
+            item.style.padding = '0 var(--spacing-md)';
+        });
+        document.querySelectorAll('.accordion-header').forEach(h => {
+            h.classList.remove('active');
+        });
+
+        // Open clicked item if it wasn't already active
+        if (!isActive) {
+            content.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 100 + 'px';
+            header.classList.add('active');
+        }
+    });
+});
+
+// Contract copy function
+function copyContract() {
+    const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    navigator.clipboard.writeText(contractAddress).then(() => {
+        const button = event.target.closest('button') || event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = '#4CAF50';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = 'var(--rebel-red)';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+// Countdown Timers
+function updateCountdown1() {
+    const element = document.getElementById('countdown1');
+    if (!element) return;
+    
+    const epoch4EndDate = new Date("2025-12-28T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch4EndDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">✅ Epoch 12 Ended!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days1').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
+}
+
+function updateCountdown2() {
+    const element = document.getElementById('countdown2');
+    if (!element) return;
+    
+    const epoch5StartDate = new Date("2025-12-28T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch5StartDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 13 Started!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days2').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
+}
+
+function updateCountdown3() {
+    const element = document.getElementById('countdown3');
+    if (!element) return;
+    
+    const epoch6StartDate = new Date("2026-01-04T22:00:00").getTime();
+    const now = new Date().getTime();
+    const distance = epoch6StartDate - now;
+    
+    if (distance < 0) {
+        element.innerHTML = '<div style="font-size: 1.5rem; font-weight: bold; color: var(--rebel-red);">🚀 Epoch 14 Started!</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days3').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours3').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes3').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds3').textContent = seconds.toString().padStart(2, '0');
+}
+// Live Stats Data - WORKING VERSION
+const STATIC_DATA = {
+    holders: 67,
+    currentSupply: 944920617,
+    burnedSupply: 55079383,
+    maxSupply: 1000000000
+};
+// Fixed fetchLiveStatsData function WITHOUT static fallback
+async function fetchLiveStatsData() {
+    try {
+        console.log("🔄 Fetching live data...");
+        
+        // 1. Get DexScreener API data (primary source)
+        let marketData = {
+            price: 0,
+            priceChange: 0,
+            marketCap: 0,
+            volume: 0,
+            liquidity: 0,
+            success: false
+        };
+        
+        try {
+            const dexscreenerResponse = await fetch(
+                'https://api.dexscreener.com/latest/dex/pairs/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    cache: 'no-cache'
+                }
+            );
+            
+            if (dexscreenerResponse.ok) {
+                const dexscreenerData = await dexscreenerResponse.json();
+                console.log("📊 DexScreener data received:", dexscreenerData);
+                
+                if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
+                    const pair = dexscreenerData.pairs[0];
+                    
+                    marketData = {
+                        price: parseFloat(pair.priceUsd) || 0,
+                        priceChange: parseFloat(pair.priceChange?.h24) || 0,
+                        marketCap: parseFloat(pair.fdv) || 0,
+                        volume: parseFloat(pair.volume?.h24) || 0,
+                        liquidity: parseFloat(pair.liquidity?.usd) || 0,
+                        success: true
+                    };
+                    
+                    console.log("✅ Market data parsed:", marketData);
+                }
+            }
+        } catch (dexscreenerError) {
+            console.error("❌ DexScreener error:", dexscreenerError);
+            // NO STATIC FALLBACK HERE - just return what we have
+        }
+        
+        // 2. Get supply and holder data (keep your existing STATIC_DATA for these)
+        const holders = STATIC_DATA.holders || 0;
+        const holdersSource = 'Static Reference';
+        const currentSupply = STATIC_DATA.currentSupply || 0;
+        const burnedSupply = STATIC_DATA.burnedSupply || 0;
+        const maxSupply = STATIC_DATA.maxSupply || 0;
+        
+        // 3. Prepare final data
+        const finalData = {
+            price: marketData.price,
+            priceChange: marketData.priceChange,
+            marketCap: marketData.marketCap,
+            volume: marketData.volume,
+            liquidity: marketData.liquidity,
+            holders: holders,
+            currentSupply: currentSupply,
+            burnedSupply: burnedSupply,
+            maxSupply: maxSupply,
+            holdersSource: holdersSource,
+            lastUpdate: new Date().toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            }),
+            success: marketData.success
+        };
+        
+        console.log("✅ Final data prepared:", finalData);
+        return finalData;
+        
+    } catch (error) {
+        console.error("💥 Critical error in fetchLiveStatsData:", error);
+        // Return minimal data structure if everything fails
+        return {
+            price: 0,
+            priceChange: 0,
+            marketCap: 0,
+            volume: 0,
+            liquidity: 0,
+            holders: 0,
+            currentSupply: 0,
+            burnedSupply: 0,
+            maxSupply: 0,
+            holdersSource: 'Error',
+            lastUpdate: 'Error',
+            success: false
+        };
+    }
+}
+
+// Also update the getStaticData function to just return zeros or remove it entirely
+function getStaticData() {
+    return {
+        price: 0,
+        priceChange: 0,
+        marketCap: 0,
+        volume: 0,
+        liquidity: 0,
+        holders: STATIC_DATA.holders || 0,
+        currentSupply: STATIC_DATA.currentSupply || 0,
+        burnedSupply: STATIC_DATA.burnedSupply || 0,
+        maxSupply: STATIC_DATA.maxSupply || 0,
+        holdersSource: 'Offline',
+        lastUpdate: 'Offline',
+        success: false
+    };
+}
+
+// Fixed updateLiveStatsDisplay function
+function updateLiveStatsDisplay(data) {
+    console.log("🎨 Updating display with data:", data);
+    
+    // Format number with commas
+    function formatNumber(num) {
+        if (num === 0 || isNaN(num)) return '—';
+        if (num >= 1000000) {
+            return '$' + (num / 1000000).toFixed(2) + 'M';
+        }
+        if (num >= 1000) {
+            return '$' + (num / 1000).toFixed(1) + 'K';
+        }
+        return num.toLocaleString();
+    }
+    
+    // Update each metric card
+    const updates = {
+        'live-price': data.price > 0 ? `$${data.price.toFixed(8)}` : '$0.00000000',
+        'live-market-cap': formatNumber(data.marketCap),
+        'live-volume': formatNumber(data.volume),
+        'live-liquidity': formatNumber(data.liquidity),
+        'live-holders': data.holders.toLocaleString(),
+        'holders-source-display': data.holdersSource,
+        'live-supply': data.currentSupply.toLocaleString(),
+        'live-burned': data.burnedSupply.toLocaleString(),
+        'last-updated-time': data.lastUpdate || 'Just now'
+    };
+    
+    // Apply all updates
+    Object.entries(updates).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+            console.log(`✅ Updated ${id}: ${value}`);
+        }
+    });
+    
+    // Update price change display
+    const priceChangeElement = document.getElementById('price-change-display');
+    if (priceChangeElement) {
+        if (data.priceChange !== 0) {
+            priceChangeElement.textContent = `${data.priceChange >= 0 ? '+' : ''}${data.priceChange.toFixed(2)}%`;
+            priceChangeElement.className = data.priceChange >= 0 ? 'positive' : 'negative';
+        } else {
+            priceChangeElement.textContent = '0.00%';
+            priceChangeElement.className = '';
+        }
+    }
+    
+    // Update percentages
+    const currentPercent = ((data.currentSupply / data.maxSupply) * 100).toFixed(2);
+    const burnedPercent = ((data.burnedSupply / data.maxSupply) * 100).toFixed(2);
+    
+    document.getElementById('supply-percent').textContent = `${currentPercent}% of total`;
+    document.getElementById('burned-percent-display').textContent = `${burnedPercent}% burned`;
+    
+    // Update API status indicator
+    const apiStatus = document.getElementById('api-status');
+    if (apiStatus) {
+        if (data.success) {
+            apiStatus.textContent = '✅ Live Data';
+            apiStatus.style.color = '#4CAF50';
+        } else {
+            apiStatus.textContent = '⚠️ Static Data';
+            apiStatus.style.color = '#FF9800';
+        }
+    }
+    
+    console.log("✅ Display updated successfully!");
+}
+
+// Simplified initializeMetrics function
+async function initializeMetrics() {
+    console.log("🚀 Initializing metrics...");
+    
+    // Show loading state
+    document.querySelectorAll('.metric-value').forEach(el => {
+        if (el.textContent === '—') {
+            el.innerHTML = '<span style="color: var(--rebel-gold); font-style: italic;">Loading...</span>';
+        }
+    });
+    
+    try {
+        const data = await fetchLiveStatsData();
+        updateLiveStatsDisplay(data);
+        
+        // Start auto-refresh
+        setInterval(async () => {
+            if (document.visibilityState === 'visible') {
+                console.log("🔄 Auto-refreshing data...");
+                const newData = await fetchLiveStatsData();
+                updateLiveStatsDisplay(newData);
+            }
+        }, 30000); // Every 30 seconds
+        
+    } catch (error) {
+        console.error("Failed to initialize metrics:", error);
+        updateLiveStatsDisplay(getStaticData());
+    }
+}
+
+// Refresh button handler
+window.refreshData = async function() {
+    const button = document.querySelector('.refresh-button');
+    if (!button) return;
+    
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+    button.disabled = true;
+    
+    try {
+        const data = await fetchLiveStatsData();
+        updateLiveStatsDisplay(data);
+        
+        // Show success feedback
+        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+        button.style.background = '#4CAF50';
+        
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+            button.style.background = '';
+        }, 1500);
+        
+    } catch (error) {
+        button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+        button.style.background = 'var(--rebel-red)';
+        
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+            button.style.background = '';
+        }, 2000);
+    }
+};
+
+// Quick update button
+window.quickUpdateFromSolscan = function() {
+    window.refreshData();
+};
+
+// Static data fallback
+function getStaticData() {
+    return {
+        price: 0,
+        priceChange: 0,
+        marketCap: 0,
+        volume: 0,
+        liquidity: 0,
+        holders: STATIC_DATA.holders || 0,
+        currentSupply: STATIC_DATA.currentSupply || 0,
+        burnedSupply: STATIC_DATA.burnedSupply || 0,
+        maxSupply: STATIC_DATA.maxSupply || 0,
+        holdersSource: 'Offline',
+        lastUpdate: 'Offline',
+        success: false
+    };
+}
+
+  
+// Tokenomics Pie Chart - ADD THIS FUNCTION
+function initializeTokenomicsChart() {
+    const ctx = document.getElementById('distributionChart');
+    if (!ctx) {
+        console.error('Chart canvas not found!');
+        return;
+    }
+    
+    // Wait for Chart.js to be fully loaded
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js not loaded!');
+        return;
+    }
+    
+    try {
+        // Create the chart
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
+                datasets: [{
+                    data: [70, 16, 7, 6, 1],
+                    backgroundColor: [
+                        'rgba(255, 51, 102, 0.9)',
+                        'rgba(255, 159, 64, 0.9)',
+                        'rgba(75, 192, 192, 0.9)',
+                        'rgba(255, 206, 86, 0.9)',
+                        'rgba(75, 192, 86, 0.9)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14,
+                                family: 'Montserrat',
+                                weight: '600'
+                            },
+                            color: 'white',
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        console.log('✅ Tokenomics chart initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error creating chart:', error);
+    }
+}
+window.refreshData = async function() {
+    const button = document.querySelector('.refresh-button');
+    if (!button) return;
+    
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+    button.disabled = true;
+    
+    const data = await fetchLiveStatsData();
+    updateLiveStatsDisplay(data);
+    
+    if (data.success) {
+        button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+        button.classList.add('button-success');
+    } else {
+        button.innerHTML = '<i class="fas fa-shield-alt"></i> Using Static';
+        button.style.background = 'var(--rebel-gold)';
+    }
+    
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+        button.classList.remove('button-success');
+        button.style.background = '';
+    }, 2000);
+};
+
+window.quickUpdateFromSolscan = function() {
+    window.refreshData();
+};
+
+// ========== REBL CALCULATOR FUNCTIONS ==========
+
+function addTokenBatch(amount = '', age = '') {
+    const table = document.querySelector('#token-batches-table tbody');
+    if (!table) return;
+    
+const row = document.createElement('tr');
+row.innerHTML = `
+    <td>
+        <input type="number" class="batch-amount" value="${amount}" placeholder="Amount" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;" oninput="updateRowCalculations(this)">
+    </td>
+    <td>
+        <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateRowCalculations(this)" style="width: 100%; padding: 0.5em; border-radius: 4px; border: 1px solid var(--rebel-gold); background: rgba(0, 0, 0, 0.3); color: white;">
+    </td>
+    <td class="batch-weighted-value" style="color: var(--rebel-gold); font-size: 0.9em;">0</td>
+    <td class="batch-estimated-reward" style="color: var(--rebel-red); font-weight: bold; font-size: 0.9em;">0 $REBL</td>
+    <td><button onclick="removeTokenBatch(this)" class="remove-batch-btn">×</button></td>
+`;
+    table.appendChild(row);
+    
+    // Update calculations for this new row
+    updateRowCalculations(row.querySelector('.batch-amount'));
+}
+
+function removeTokenBatch(button) {
+    const row = button.closest('tr');
+    if (row) {
+        row.remove();
+        calculateRewards();
+        updateWhatIf(); // Update what-if after removing
+        saveCalculatorState();
+    }
+}
+
+function clearTokenBatches() {
+    const table = document.querySelector('#token-batches-table tbody');
+    if (table) {
+        table.innerHTML = '';
+        calculateRewards();
+        updateWhatIf(); // Update what-if after clearing
+        localStorage.removeItem('reblCalculatorBatches');
+        
+        // Add one empty row back
+        setTimeout(() => addTokenBatch(), 100);
+    }
+}
+
+function updateRowCalculations(input) {
+    const row = input.closest('tr');
+    if (!row) return;
+    
+    const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+    const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+    
+    // Constants
+    const CS = 499242047.00; // Current Creator Supply
+    const ERP = 54812320.11; // Epoch Reward Pool
+    const k = 0.07;
+    const A_max = 20;
+    
+    // Calculate weighted value: amount × (1 + 0.07 × min(age, 20))
+    const weightedValue = amount * (1 + k * Math.min(age, A_max));
+    
+    // Calculate estimated reward: (weightedValue / CS) × ERP
+    const estimatedReward = (weightedValue / CS) * ERP;
+    
+    // Update display
+    const weightedValueCell = row.querySelector('.batch-weighted-value');
+    const estimatedRewardCell = row.querySelector('.batch-estimated-reward');
+    
+    if (weightedValueCell) {
+        weightedValueCell.textContent = weightedValue.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        weightedValueCell.style.color = 'var(--rebel-gold)';
+    }
+    
+    if (estimatedRewardCell) {
+        estimatedRewardCell.textContent = estimatedReward.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + ' $REBL';
+        estimatedRewardCell.style.color = estimatedReward > 0 ? 'var(--rebel-red)' : '#ccc';
+    }
+    
+    // Also update the total calculation and save state
+    calculateRewards();
+    updateWhatIf(); // Update what-if slider
+    saveCalculatorState();
+}
+
+function calculateRewards() {
+    const CS = 499242047.00;
+    const ERP = 54812320.11;
+    const rows = document.querySelectorAll('#token-batches-table tbody tr');
+    let WS = 0;
+    let totalAmount = 0;
+    let totalReward = 0;
+    
+    // Store data for chart
+    const batchData = [];
+    
+    rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+        const k = 0.07;
+        const A_max = 20;
+        
+        const weightedValue = amount * (1 + k * Math.min(age, A_max));
+        WS += weightedValue;
+        totalAmount += amount;
+        
+        const rowReward = (weightedValue / CS) * ERP;
+        totalReward += rowReward;
+        
+        // Store data for chart
+        if (amount > 0) {
+            batchData.push({
+                amount: amount,
+                age: age,
+                reward: rowReward
+            });
+        }
+    });
+    
+    const resultElement = document.getElementById('reward-result');
+    
+    if (!resultElement) return;
+    
+    if (WS <= 0 || isNaN(totalReward)) {
+        resultElement.innerHTML = 'Please enter valid token batches!';
+        resultElement.style.color = 'var(--rebel-red)';
+    } else {
+        const sharePercentage = ((WS / CS) * 100).toFixed(6);
+        resultElement.innerHTML = `
+            <div style="text-align: left; line-height: 1.6;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Total $rebelinux:</strong></span>
+                    <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Total Weighted Share:</strong></span>
+                    <span style="color: var(--rebel-gold);">${WS.toLocaleString()}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; padding-bottom: 0.5em; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span><strong>Your Share of Pool:</strong></span>
+                    <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 1.2em;">
+                    <span><strong>Total Estimated Reward:</strong></span>
+                    <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })} $REBL</span>
+                </div>
+            </div>
+        `;
+        resultElement.style.color = 'var(--rebel-gold)';
+    }
+    
+    // Update the chart
+    updateRewardChart(batchData, totalReward);
+}
+
+// Update What If function
+function updateWhatIf() {
+    const amountSlider = document.getElementById('whatIfAmount');
+    const epochsSlider = document.getElementById('whatIfEpochs');
+    const amountValue = document.getElementById('whatIfAmountValue');
+    const epochsValue = document.getElementById('whatIfEpochsValue');
+    const rewardElement = document.getElementById('whatIfReward');
+    
+    if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+    
+    // Update display values
+    const amount = parseInt(amountSlider.value);
+    const epochs = parseInt(epochsSlider.value);
+    
+    amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+    epochsValue.textContent = epochs;
+    
+    // Calculate what-if reward
+    const CS = 499242047.00;
+    const ERP = 54812320.11;
+    const k = 0.07;
+    const A_max = 20;
+    
+    const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
+    const estimatedReward = (weightedValue / CS) * ERP;
+    
+    // Update display
+    rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+// Initialize What If sliders
+function initializeWhatIf() {
+    const amountSlider = document.getElementById('whatIfAmount');
+    const epochsSlider = document.getElementById('whatIfEpochs');
+    
+    if (amountSlider && epochsSlider) {
+        // Set initial values
+        amountSlider.value = 10000000;
+        epochsSlider.value = 10;
+        
+        // Add event listeners
+        amountSlider.addEventListener('input', updateWhatIf);
+        epochsSlider.addEventListener('input', updateWhatIf);
+        
+        // Initial update
+        updateWhatIf();
+    }
+}
+
+// Chart functions
+let rewardChart = null;
+
+function updateRewardChart(batchData, totalReward) {
+    const canvas = document.getElementById('rewardChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (rewardChart) {
+        rewardChart.destroy();
+    }
+    
+    if (batchData.length === 0 || totalReward <= 0) {
+        // Show empty chart message
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'var(--rebel-gold)';
+        ctx.font = '14px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.fillText('Add $rebelinux token batches to see the chart', canvas.width / 2, canvas.height / 2);
+        return;
+    }
+    
+    // Prepare data for chart
+    const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+    const rewards = batchData.map(batch => batch.reward);
+    const percentages = batchData.map(batch => (batch.reward / totalReward * 100).toFixed(1));
+    
+    // Colors for the chart
+    const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(153, 102, 255, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 99, 132, 0.8)'
+    ];
+    
+    const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)'
+    ];
+    
+    // Create chart
+    rewardChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: rewards,
+                backgroundColor: backgroundColors.slice(0, batchData.length),
+                borderColor: borderColors.slice(0, batchData.length),
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: 'white',
+                        font: {
+                            family: 'Montserrat',
+                            size: 11
+                        },
+                        padding: 15,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const batch = batchData[context.dataIndex];
+                            const percentage = percentages[context.dataIndex];
+                            return [
+                                `Batch ${context.dataIndex + 1}: ${batch.reward.toLocaleString()} $REBL`,
+                                `$rebelinux: ${batch.amount.toLocaleString()}`,
+                                `Age: ${batch.age} epochs`,
+                                `Share: ${percentage}% of total`
+                            ];
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: 'var(--rebel-gold)',
+                    bodyColor: 'white',
+                    borderColor: 'var(--rebel-gold)',
+                    borderWidth: 1
+                }
+            }
+        }
+    });
+}
+
+function loadExampleData() {
+    clearTokenBatches();
+    // Add realistic example batches
+    addTokenBatch('1000000', '5');  // 1M $rebelinux held for 5 epochs
+    addTokenBatch('500000', '12');  // 500K $rebelinux held for 12 epochs  
+    addTokenBatch('2500000', '1');  // 2.5M $rebelinux held for 1 epoch
+    
+    setTimeout(() => {
+        calculateRewards();
+        updateWhatIf();
+        const resultElement = document.getElementById('reward-result');
+        if (resultElement) {
+            resultElement.innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded! Calculations updated.</div>';
+        }
+    }, 100);
+}
+
+function loadCalculatorState() {
+    const saved = localStorage.getItem('reblCalculatorBatches');
+    if (saved) {
+        const batches = JSON.parse(saved);
+        clearTokenBatches();
+        batches.forEach(batch => addTokenBatch(batch.amount, batch.age));
+    }
+}
+
+function saveCalculatorState() {
+    const batches = [];
+    document.querySelectorAll('#token-batches-table tbody tr').forEach(row => {
+        const amount = row.querySelector('.batch-amount').value;
+        const age = row.querySelector('.batch-age').value;
+        if (amount || age) {
+            batches.push({ amount, age });
+        }
+    });
+    localStorage.setItem('reblCalculatorBatches', JSON.stringify(batches));
+}
+
+// Save calculator state on input
+document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('batch-amount') || e.target.classList.contains('batch-age')) {
+        saveCalculatorState();
+    }
+});
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize calculator
+    loadCalculatorState();
+    if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+        addTokenBatch();
+    }
+    
+    // Initialize what-if sliders
+    initializeWhatIf();
+    
+    // Initialize chart
+    setTimeout(updateRewardChart, 500);
+});
+</script>
+</body>
+</html>
