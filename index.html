@@ -1744,6 +1744,39 @@
   "image": "https://i.imgur.com/gEuSg1Y.webp"
 }
 </script>
+
+  <!-- ========== GOOGLE ANALYTICS ========== -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PL0GBXNTMD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PL0GBXNTMD');
+  
+  // Track important events
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track external link clicks
+    document.querySelectorAll('a[href^="http"]:not([href*="rebelinux"])').forEach(link => {
+      link.addEventListener('click', function() {
+        gtag('event', 'outbound_click', {
+          'event_category': 'Outbound Link',
+          'event_label': this.href
+        });
+      });
+    });
+    
+    // Track buy button clicks
+    document.querySelectorAll('.buy-rebl-button, .cta-button[href*="buy"]').forEach(button => {
+      button.addEventListener('click', function() {
+        gtag('event', 'buy_button_click', {
+          'event_category': 'Conversion',
+          'event_label': 'Buy $REBL Button'
+        });
+      });
+    });
+  });
+</script>
+<!-- ========== END GOOGLE ANALYTICS ========== -->
 </head>
 
 <body>
