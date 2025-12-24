@@ -1823,6 +1823,60 @@
 </script>
 
 <!-- ========== END GOOGLE ANALYTICS ========== -->
+
+  // ========== GOOGLE ANALYTICS ERROR TRACKING ==========
+// Track 404 errors if user lands on error page
+if (window.location.pathname === '/404.html' || 
+    window.location.pathname === '/404' ||
+    document.title.includes('404') ||
+    document.body.textContent.includes('404')) {
+    
+    if (typeof gtag === 'function') {
+        gtag('event', '404_error', {
+            'event_category': 'Error',
+            'event_label': window.location.pathname,
+            'page_path': window.location.pathname,
+            'page_referrer': document.referrer || 'direct'
+        });
+    }
+    
+    // Also log to console for debugging
+    console.warn('⚠️ 404 Error Detected:', {
+        path: window.location.pathname,
+        referrer: document.referrer,
+        timestamp: new Date().toISOString()
+    });
+}
+
+// Track JavaScript errors
+window.addEventListener('error', function(e) {
+    if (typeof gtag === 'function') {
+        gtag('event', 'javascript_error', {
+            'event_category': 'Error',
+            'event_label': e.message,
+            'error_message': e.message,
+            'error_filename': e.filename,
+            'error_lineno': e.lineno,
+            'error_colno': e.colno
+        });
+    }
+});
+
+// Track broken image links
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('error', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'broken_image', {
+                    'event_category': 'Error',
+                    'event_label': this.src,
+                    'image_src': this.src,
+                    'page_path': window.location.pathname
+                });
+            }
+        });
+    });
+});
 </head>
 
 <body>
@@ -2156,6 +2210,52 @@
       });
     });
   });
+
+  // ========== SMART REDIRECTS FOR BROKEN LINKS ==========
+document.addEventListener('DOMContentLoaded', function() {
+    const path = window.location.pathname.toLowerCase();
+    
+    // Common broken links or old pages
+    const redirects = {
+        '/old-dashboard': '/#tokenomics',
+        '/old-trading': '/#trade',
+        '/buy.html': '/#trade',
+        '/token.html': '/#tokenomics',
+        '/whitepaper.pdf': '/#whitepaper',
+        '/roadmap.html': '/#roadmap',
+        '/community.html': '/#community',
+        '/nft.html': '/#artwork',
+        '/rewards.html': '/#epoch-rewards'
+    };
+    
+    // Check for redirects
+    for (const [oldPath, newPath] of Object.entries(redirects)) {
+        if (path.includes(oldPath.toLowerCase())) {
+            console.log(`🔄 Redirecting ${oldPath} to ${newPath}`);
+            window.location.replace(newPath);
+            return;
+        }
+    }
+    
+    // Special case: redirect common typos
+    const commonTypos = {
+        'rebellinux': '',
+        'rebelinix': '',
+        'rebelnux': '',
+        'rebl': '',
+        'rebelinuxx': '',
+        'rebelinux.com': '' // if someone types .com instead of .fun
+    };
+    
+    const hostname = window.location.hostname.toLowerCase();
+    for (const [typo, _] of Object.entries(commonTypos)) {
+        if (hostname.includes(typo) && !hostname.includes('rebelinux.fun')) {
+            console.log(`🔄 Correcting typo: ${typo} -> rebelinux.fun`);
+            window.location.replace('https://rebelinux.fun' + window.location.pathname);
+            return;
+        }
+    }
+});
 </script>
 
 
