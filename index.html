@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,8 +10,16 @@
   <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
   <meta property="og:url" content="https://rebelinux.com" />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
   <title>RebelInuX (REBL) - The Rebellious Meme Coin</title>
 
+  <!-- ADD THESE LINES HERE -->
+<link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
+<meta name="theme-color" content="#1a1a1a">
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
@@ -1706,12 +1714,38 @@
       top: 10px;
     }
   </style>
+
+  <!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "RebelInuX",
+  "url": "https://rebelinux.com",
+  "logo": "https://i.imgur.com/gEuSg1Y.webp",
+  "description": "RebelInuX pioneers a novel meme coin model with a triple-asset ecosystem on ZORA, merging collectible art with a secure claim mechanism across chains.",
+  "sameAs": [
+    "https://x.com/RebelInuX",
+    "https://t.me/RebelInuX_Official",
+    "https://discord.gg/s8dkuyD3cZ",
+    "https://zora.co/@rebelinux"
+  ]
+}
+</script>
+<!-- Additional schema for CryptoCurrency -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CryptoCurrency",
+  "name": "RebelInuX Token",
+  "symbol": "REBL",
+  "description": "REBL is the utility token of the RebelInuX triple-asset meme coin ecosystem.",
+  "url": "https://rebelinux.com",
+  "image": "https://i.imgur.com/gEuSg1Y.webp"
+}
+</script>
 </head>
 
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
 <body>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
@@ -3120,17 +3154,7 @@
         </div>
       </div>
     </div>
-        <div style="text-align: center; margin-top: 1rem; width: 100%;">
-        <button onclick="checkRefreshStatus()" style="background: #666; color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Debug Refresh Status
-        </button>
-        <button onclick="startAutoRefresh()" style="background: var(--rebel-gold); color: black; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Restart Auto-Refresh
-        </button>
-        <button onclick="clearInterval(window.refreshInterval); console.log('❌ Auto-refresh stopped');" style="background: var(--rebel-red); color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Stop Auto-Refresh
-        </button>
-    </div>
+
     <!-- Combined Stats Grid -->
     <div class="metric-cards">
       <!-- Price Card -->
@@ -3317,8 +3341,8 @@
     <i class="fas fa-chart-pie" style="margin-right: 10px;"></i>
     Token Distribution
   </h3>
-  <div style="height: 400px; position: relative;">
-    <canvas id="distributionChart"></canvas>
+  <div style="height: 400px; position: relative; display: flex; justify-content: center; align-items: center;">
+    <canvas id="distributionChart" style="max-width: 100%; max-height: 100%;"></canvas>
   </div>
   <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
     $REBL token allocation breakdown
@@ -3474,7 +3498,7 @@
       </div>
     </div>
   </section>
-
+    
   <!-- Roadmap Section -->
   <section id="roadmap" class="visible">
     <h2>OUR REBELLION ROADMAP</h2>
@@ -3782,11 +3806,7 @@
     </div>
   </footer>
 
-  <!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
+
 
 <script>
 // Fix the very first line of your HTML - it should start with DOCTYPE
@@ -3827,8 +3847,10 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCountdown1, 1000);
     setInterval(updateCountdown2, 1000);
     setInterval(updateCountdown3, 1000);
-    setTimeout(initializeTokenomicsChart, 1500); // Wait 1.5 seconds for everything to load
-
+// Initialize charts after everything loads
+window.addEventListener('load', function() {
+    setTimeout(initializeTokenomicsChart, 1000);
+});
    // Start auto-refresh after a short delay
     setTimeout(() => {
         startAutoRefresh();
@@ -3842,16 +3864,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-// Debug function to check refresh status
-function checkRefreshStatus() {
-    console.log("🔄 Refresh Status Check:");
-    console.log("- Auto-refresh interval ID:", window.refreshInterval);
-    console.log("- Last refresh time:", document.getElementById('last-updated-time')?.textContent);
-    console.log("- Page visibility:", document.visibilityState);
-    
-    // Force a manual refresh
-    refreshData();
-}
 
 // Make sure startAutoRefresh is also defined (add if not already there)
 function startAutoRefresh() {
@@ -4098,7 +4110,6 @@ async function fetchLiveStatsData() {
             
             if (dexscreenerResponse.ok) {
                 const dexscreenerData = await dexscreenerResponse.json();
-                console.log("📊 DexScreener data received:", dexscreenerData);
                 
                 if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
                     const pair = dexscreenerData.pairs[0];
@@ -4257,8 +4268,6 @@ function updateLiveStatsDisplay(data) {
         statusElement.textContent = data.success ? '✅ Live' : '⚠️ Cached';
         statusElement.style.color = data.success ? '#4CAF50' : '#FF9800';
     }
-      console.log("✅ Display updated successfully!");
-
 }
 
 // Fixed initializeMetrics function with proper auto-refresh
@@ -4387,84 +4396,128 @@ function getStaticData() {
   
 // Tokenomics Pie Chart - ADD THIS FUNCTION
 function initializeTokenomicsChart() {
-    const ctx = document.getElementById('distributionChart');
-    if (!ctx) {
-        console.error('Chart canvas not found!');
-        return;
+    
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            createChartAfterDelay();
+        });
+    } else {
+        createChartAfterDelay();
     }
     
-    // Wait for Chart.js to be fully loaded
-    if (typeof Chart === 'undefined') {
-        console.error('Chart.js not loaded!');
-        setTimeout(initializeTokenomicsChart, 100);
-        return;
+    function createChartAfterDelay() {
+        // Give extra time for everything to load
+        setTimeout(createChart, 500);
     }
     
-    try {
-        // Get the container div
-        const container = ctx.closest('div');
-        if (container) {
-            // Set canvas to match container size
-            ctx.style.width = '100%';
-            ctx.style.height = '400px';
+    function createChart() {
+        const ctx = document.getElementById('distributionChart');
+        if (!ctx) {
+            console.error('❌ Chart canvas not found!');
+            return;
         }
         
-        // Create the chart
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Bonding Curve', 'ZORA Rewards', 'Team Fund', 'Ecosystem Fund', 'Community DAO'],
-                datasets: [{
-                    data: [70, 16, 7, 6, 1],
-                    backgroundColor: [
-                        'rgba(255, 51, 102, 0.9)',
-                        'rgba(255, 159, 64, 0.9)',
-                        'rgba(75, 192, 192, 0.9)',
-                        'rgba(255, 206, 86, 0.9)',
-                        'rgba(75, 192, 86, 0.9)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 255, 255, 1)',
-                        'rgba(255, 255, 255, 1)',
-                        'rgba(255, 255, 255, 1)',
-                        'rgba(255, 255, 255, 1)',
-                        'rgba(255, 255, 255, 1)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false, // ← THIS FIXES THE WIDTH ISSUE
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: {
-                                size: 14,
-                                family: 'Montserrat',
-                                weight: '600'
+        // Check if Chart.js is loaded
+        if (typeof Chart === 'undefined') {
+            console.error('❌ Chart.js not loaded!');
+            // Try to load it dynamically
+            loadChartJS();
+            return;
+        }
+        
+        try {
+            // Clear any existing chart
+            if (window.tokenomicsChart) {
+                window.tokenomicsChart.destroy();
+            }
+            
+            // Create new chart
+            window.tokenomicsChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO (1%)'],
+                    datasets: [{
+                        data: [70, 16, 7, 6, 1],
+                        backgroundColor: [
+                            'rgba(255, 51, 102, 0.9)',
+                            'rgba(255, 159, 64, 0.9)',
+                            'rgba(75, 192, 192, 0.9)',
+                            'rgba(255, 206, 86, 0.9)',
+                            'rgba(75, 192, 86, 0.9)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)',
+                            'rgba(255, 255, 255, 1)'
+                        ],
+                        borderWidth: 2,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Montserrat',
+                                    weight: '600'
+                                },
+                                color: 'white',
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
                             },
-                            color: 'white',
-                            padding: 20,
-                            usePointStyle: true,
-                            pointStyle: 'circle'
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'var(--rebel-gold)',
+                            bodyColor: 'white'
                         }
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${context.raw}%`;
-                            }
-                        }
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 1000
                     }
                 }
-            }
-        });
-        
-        console.log('✅ Tokenomics chart initialized successfully!');
-    } catch (error) {
-        console.error('❌ Error creating chart:', error);
+            });
+            
+          
+            
+        } catch (error) {
+            console.error('❌ Error creating chart:', error);
+            // Show error message on canvas
+            ctx.style.display = 'flex';
+            ctx.style.alignItems = 'center';
+            ctx.style.justifyContent = 'center';
+            ctx.innerHTML = '<div style="color: var(--rebel-gold); text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i><br>Chart failed to load.<br><button onclick="initializeTokenomicsChart()" style="margin-top: 10px; padding: 8px 16px; background: var(--rebel-red); color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button></div>';
+        }
+    }
+    
+    function loadChartJS() {
+        console.log('📊 Loading Chart.js dynamically...');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = function() {
+            console.log('✅ Chart.js loaded dynamically');
+            setTimeout(createChart, 300);
+        };
+        script.onerror = function() {
+            console.error('❌ Failed to load Chart.js');
+        };
+        document.head.appendChild(script);
     }
 }
 window.refreshData = async function() {
@@ -4966,6 +5019,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize chart
     setTimeout(updateRewardChart, 500);
 });
+</script>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+  <!-- Service Worker Registration -->
+<script>
+// Only register service worker in production
+if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      console.log('ServiceWorker registration successful');
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
 </script>
 </body>
 </html>
