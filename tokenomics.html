@@ -31,6 +31,10 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <!-- Tippy.js for tooltips -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
   <style>
     :root {
       --rebel-red: #ff3366;
@@ -595,6 +599,466 @@
       background: #d62828;
       transform: translateY(-5px);
     }
+
+    /* Enhanced Metric Cards from second file */
+    .metric-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: var(--spacing-md);
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+    
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 204, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+    
+    .metric-icon {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-sm);
+      display: block;
+    }
+    
+    .metric-card h4 {
+      color: var(--rebel-gold);
+      font-size: 0.9rem;
+      margin-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-bottom: 0.3rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      line-height: 1.2;
+    }
+    
+    .metric-subtitle {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+    }
+
+    /* Accordion Styles from second file */
+    .accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .accordion-item {
+      border-bottom: 1px solid var(--rebel-red);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .accordion-header {
+      width: 100%;
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      border-radius: 8px;
+      margin-bottom: 4px;
+    }
+    
+    .accordion-header:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--rebel-gold);
+    }
+    
+    .accordion-header.active {
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      border-color: transparent;
+    }
+    
+    .accordion-header .accordion-icon {
+      transition: transform 0.3s;
+    }
+    
+    .accordion-header.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    .accordion-content {
+      padding: 0 var(--spacing-md);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .accordion-content.active {
+      padding: var(--spacing-md) var(--spacing-md) 2rem;
+      max-height: 2000px;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    
+    .accordion-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .accordion-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #ff3366, #ffcc00);
+    }
+    
+    .accordion-button i {
+      margin-right: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* Live Price Widget */
+    .price-widget {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      margin: var(--spacing-lg) auto;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .price-widget h3 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      font-size: 1.3rem;
+    }
+    
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .update-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .update-button {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+    
+    .update-button:hover {
+      background: #e6b800;
+      transform: translateY(-2px);
+    }
+    
+    .data-info {
+      text-align: center;
+      margin-top: var(--spacing-md);
+      color: var(--rebel-gold);
+      opacity: 0.8;
+    }
+    
+    .data-info a {
+      color: var(--rebel-red);
+      text-decoration: underline;
+    }
+
+    /* Tokenomics Dashboard */
+    .tokenomics-dashboard {
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 0, 0, 0.6) 100%);
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+      max-width: 1000px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tokenomics-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      z-index: 1;
+    }
+    
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+    
+    .dashboard-header h3 {
+      color: var(--rebel-gold);
+      font-size: 1.5rem;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .refresh-button {
+      background: linear-gradient(135deg, var(--rebel-red), #d62828);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(255, 51, 102, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .refresh-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+      background: linear-gradient(135deg, #ff3366, #e52d27);
+    }
+    
+    .update-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .update-button {
+      background: linear-gradient(135deg, var(--rebel-gold), #e6b800);
+      color: var(--dark-bg);
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .update-button:hover {
+      background: linear-gradient(135deg, #ffcc00, #ffd700);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 204, 0, 0.4);
+    }
+
+    /* Price Ticker */
+    .price-ticker {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    #current-price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-light);
+    }
+    
+    #price-change {
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid #4CAF50;
+    }
+    
+    #price-change.positive {
+      background: rgba(76, 175, 80, 0.2);
+      border-color: #4CAF50;
+      color: #4CAF50;
+    }
+    
+    #price-change.negative {
+      background: rgba(244, 67, 54, 0.2);
+      border-color: #f44336;
+      color: #f44336;
+    }
+
+    /* Market Stats */
+    .market-stats {
+      display: flex;
+      justify-content: space-around;
+      gap: var(--spacing-md);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat .label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--rebel-gold);
+      margin-bottom: 0.3rem;
+    }
+    
+    .stat .value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+
+    /* Security Checklist */
+    .security-checklist {
+      background: rgba(255, 204, 0, 0.05);
+      border: 1px solid var(--rebel-gold);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    /* Enhanced Contract Verification */
+    .contract-verify-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .contract-display {
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .contract-code {
+      display: block;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1em;
+      color: var(--rebel-gold);
+      word-break: break-all;
+      padding: 1rem;
+      background: rgba(255, 204, 0, 0.05);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 204, 0, 0.2);
+    }
+    
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--rebel-red);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .copy-button:hover {
+      background: #d62828;
+      transform: scale(1.05);
+    }
+
+    .verification-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .verification-card {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(26, 35, 126, 0.3));
+      border: 1px solid #2196F3;
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .verification-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -700,6 +1164,181 @@
         </div>
       </div>
     </section>
+
+    <!-- Live Stats Dashboard -->
+    <section id="live-stats">
+      <h2>Live $REBL Stats & Token Metrics</h2>
+      
+      <div class="tokenomics-dashboard">
+        <div class="dashboard-header">
+          <h3><i class="fas fa-chart-line"></i> $REBL LIVE STATS & TOKEN METRICS</h3>
+          <div class="controls">
+            <button onclick="refreshData()" class="refresh-button">
+              <i class="fas fa-sync-alt"></i> Refresh All Data
+            </button>
+            <div class="update-buttons">
+              <button onclick="quickUpdateFromSolscan()" class="update-button">
+                <i class="fas fa-external-link-alt"></i> Get Latest
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Combined Stats Grid -->
+        <div class="metric-cards">
+          <!-- Price Card -->
+          <div class="metric-card">
+            <i class="fas fa-dollar-sign metric-icon" style="color: var(--rebel-gold);"></i>
+            <h4>Price (USD)</h4>
+            <div class="metric-value" id="live-price">—</div>
+            <div id="price-change-display" class="metric-subtitle" style="margin-top: 0.5rem; font-weight: 600;">Loading...</div>
+          </div>
+          
+          <!-- Market Cap Card -->
+          <div class="metric-card">
+            <i class="fas fa-fire metric-icon" style="color: #ff6600;"></i>
+            <h4>Market Cap</h4>
+            <div class="metric-value" id="live-market-cap">—</div>
+            <div class="metric-subtitle" style="color: var(--rebel-gold);">Fully Diluted</div>
+          </div>
+          
+          <!-- Volume Card -->
+          <div class="metric-card">
+            <i class="fas fa-exchange-alt metric-icon" style="color: var(--rebel-red);"></i>
+            <h4>24H Volume</h4>
+            <div class="metric-value" id="live-volume">—</div>
+            <div class="metric-subtitle" style="color: var(--rebel-gold);">Trading Activity</div>
+          </div>
+          
+          <!-- Liquidity Card -->
+          <div class="metric-card">
+            <i class="fas fa-tint metric-icon" style="color: #00ccff;"></i>
+            <h4>Liquidity</h4>
+            <div class="metric-value" id="live-liquidity">—</div>
+            <div class="metric-subtitle" style="color: var(--rebel-gold);">Pooled Value</div>
+          </div>
+          
+          <!-- Holders Card -->
+          <div class="metric-card">
+            <i class="fas fa-users metric-icon" style="color: #9C27B0;"></i>
+            <h4>Holders</h4>
+            <div class="metric-value" id="live-holders">Loading...</div>
+            <div class="metric-subtitle" id="holders-source-display">From Solscan</div>
+          </div>
+          
+          <!-- Token Supply Card -->
+          <div class="metric-card">
+            <i class="fas fa-coins metric-icon" style="color: var(--rebel-gold);"></i>
+            <h4>TOKEN SUPPLY</h4>
+            <div class="metric-value" style="color: var(--rebel-gold); font-size: 1.8rem; margin-bottom: 0.2rem;">
+              944,920,617
+            </div>
+            <div class="metric-subtitle" style="margin-bottom: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                <span style="color: rgba(255, 255, 255, 0.7);">
+                  <i class="fas fa-arrow-up" style="color: #4CAF50; margin-right: 0.3rem;"></i>94.49% of total
+                </span>
+                <span style="color: var(--rebel-red); font-weight: 600;">
+                  Max: 1B
+                </span>
+              </div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 3px; margin-top: 0.5rem; overflow: hidden;">
+              <div style="background: linear-gradient(90deg, var(--rebel-gold), #ffd700); 
+                          height: 100%; 
+                          width: 94.49%; 
+                          border-radius: 3px;"></div>
+            </div>
+          </div>
+          
+          <!-- Burned Supply Card -->
+          <div class="metric-card">
+            <i class="fas fa-fire-alt metric-icon" style="color: var(--rebel-red);"></i>
+            <h4>TOTAL BURNED</h4>
+            <div class="metric-value" style="color: var(--rebel-red); font-size: 1.8rem; margin-bottom: 0.2rem;">
+              55,079,383
+            </div>
+            <div class="metric-subtitle" style="margin-bottom: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                <span style="color: rgba(255, 255, 255, 0.7);">
+                  <i class="fas fa-fire" style="color: var(--rebel-red); margin-right: 0.3rem;"></i>5.51% of total
+                </span>
+                <span style="color: var(--rebel-red); font-weight: 600;">
+                  Max: 1B
+                </span>
+              </div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 3px; margin-top: 0.5rem; overflow: hidden;">
+              <div style="background: linear-gradient(90deg, var(--rebel-red), #ff3366); 
+                          height: 100%; 
+                          width: 5.51%; 
+                          border-radius: 3px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Source Info -->
+        <div class="data-info" style="text-align: center; margin-top: var(--spacing-lg); padding: var(--spacing-sm) 0; border-top: 1px solid rgba(255, 204, 0, 0.2);">
+          <small style="display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.8rem; font-size: 0.85rem;">
+            <span style="display: inline-flex; align-items: center; gap: 0.4rem;">
+              <i class="fas fa-sync-alt" style="color: var(--rebel-gold); font-size: 0.9rem;"></i>
+              <span style="color: rgba(255, 255, 255, 0.7);">Live data updates every 30s via</span>
+            </span>
+            
+            <a href="https://dexscreener.com/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" 
+               target="_blank" rel="noopener noreferrer" 
+               style="display: inline-flex; align-items: center; gap: 0.3rem; color: var(--rebel-gold); text-decoration: none; padding: 0.2rem 0.6rem; border-radius: 12px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3);">
+              <i class="fas fa-chart-line"></i>
+              DexScreener API
+            </a>
+            
+            <span style="color: rgba(255, 255, 255, 0.3);">•</span>
+            
+            <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+              rel="noopener noreferrer"
+               style="display: inline-flex; align-items: center; gap: 0.3rem; color: var(--rebel-gold); text-decoration: none; padding: 0.2rem 0.6rem; border-radius: 12px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3);">
+              <i class="fas fa-search"></i>
+              Solscan
+            </a>
+            
+            <span style="color: rgba(255, 255, 255, 0.3);">•</span>
+            
+            <span style="display: inline-flex; align-items: center; gap: 0.4rem; color: rgba(255, 255, 255, 0.7);">
+              <i class="fas fa-clock"></i>
+              Last updated: <span id="last-updated-time" style="color: var(--rebel-gold); font-weight: 600; margin-left: 0.2rem;">—</span>
+            </span>
+            
+            <span id="api-status" style="display: inline-flex; align-items: center; gap: 0.3rem; margin-left: 0.5rem; padding: 0.2rem 0.6rem; border-radius: 12px; background: rgba(76, 175, 80, 0.1); color: #4CAF50; border: 1px solid rgba(76, 175, 80, 0.3);">
+              <i class="fas fa-circle" style="font-size: 0.6rem;"></i>
+              Live
+            </span>
+          </small>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Price Chart -->
+    <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) auto; max-width: 1000px;">
+      <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-chart-line" style="margin-right: 10px;"></i>
+        Live $REBL Chart
+      </h3>
+      <div style="height: 400px; border-radius: var(--border-radius); overflow: hidden;">
+        <iframe
+          id="geckoterminal-embed"
+          title="GeckoTerminal Embed"
+          src="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv"
+          frameborder="0"
+          allow="clipboard-write"
+          allowfullscreen
+          style="width: 100%; height: 100%;"
+        ></iframe>
+      </div>
+      <p style="text-align: center; margin-top: var(--spacing-sm); color: var(--rebel-gold); font-size: 0.9em;">
+        Live chart powered by <a href="https://www.geckoterminal.com/solana/pools/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv" target="_blank" rel="noopener noreferrer" style="color: var(--rebel-gold);">GeckoTerminal</a>
+      </p>
+    </div>
     
     <!-- Distribution Chart -->
     <section id="distribution">
@@ -905,6 +1544,158 @@
         </div>
       </div>
     </section>
+
+    <!-- Enhanced Accordion Section -->
+    <section id="detailed-tokenomics">
+      <h2>Detailed Tokenomics Breakdown</h2>
+      <div class="accordion">
+        <!-- Team Fund -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-users-cog" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Team Fund Vesting
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The Team Fund (<strong>70M REBL, 7%</strong>) is dedicated to compensating and retaining core contributors, with a transparent vesting structure for optimal long-term alignment.</p>
+            <ul style="text-align: left; margin-top: var(--spacing-sm);">
+              <li><strong>Immediate Operations (40%)</strong>: 28M REBL available for strategic initiatives and essential costs.</li>
+              <li><strong>Long-Term Alignment (60%)</strong>: 42M REBL secured in 3-year linear vesting with 40% initial cliff.</li>
+            </ul>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL?ref=funereally-exemplary-jackal" target="_blank" rel="noopener noreferrer" class="accordion-button">
+                <i class="fas fa-external-link-alt"></i> Vesting Contract
+              </a>
+              <a href="https://solscan.io/account/8zzcDm3FWxAXsVw2iok5EoXj9q8XCG9tSu9UeenHcp52" target="_blank" rel="noopener noreferrer" class="accordion-button">
+                <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Ecosystem Fund -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-vault" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Ecosystem Fund Vesting
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The Ecosystem Fund (<strong>60M REBL, 6%</strong>) is allocated for development, audits, and marketing, with a <strong>6-month cliff</strong> and <strong>18-month linear vesting</strong>.</p>
+            <ul style="text-align: left; margin-top: var(--spacing-sm);">
+              <li><strong>Initial Operations (0.5%)</strong>: 5M REBL for essential costs during the first 6 months.</li>
+              <li><strong>Sustained Growth (5.5%)</strong>: 55M REBL, subject to a 6-month cliff, then 20% unlocked followed by linear vesting over 18 months.</li>
+            </ul>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="https://solscan.io/account/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7P1" target="_blank" rel="noopener noreferrer" class="accordion-button">
+                <i class="fas fa-external-link-alt"></i> Vesting Contract
+              </a>
+              <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" rel="noopener noreferrer" class="accordion-button">
+                <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- NFT Holder Reward Mechanism -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-award" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              NFT Holder Reward Mechanism
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The ZORA Rewards Treasury (<strong>160M REBL, 16%</strong>) is split into:</p>
+            <ul style="text-align: left; margin-top: var(--spacing-sm);">
+              <li><strong>Asset Holder Rewards (80%)</strong>: 128M REBL for Creator Coin and Content Coin NFT holders.</li>
+              <li><strong>Community Incentives (20%)</strong>: 32M REBL for grassroots initiatives and contests.</li>
+            </ul>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin: var(--spacing-sm) 0;">
+              <p style="font-size: 0.9em;"><strong>Vesting:</strong> 40% (64M REBL) released at launch, 60% (96M REBL) linearly over 2 years.</p>
+            </div>
+            <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" target="_blank"  rel="noopener noreferrer" class="accordion-button">
+              <i class="fas fa-external-link-alt"></i> View Vesting Contract
+            </a>
+          </div>
+        </div>
+        <!-- Community DAO Reserve -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-users" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Community DAO Reserve
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>The Community DAO Reserve (<strong>10M REBL, 1%</strong>) is locked until <strong>July 1, 2026</strong>, then vests linearly over 24 months.</p>
+            <p><strong>Use cases:</strong> Strategic partnerships, community grants, exchange listings, and ecosystem incentives.</p>
+            <div style="margin-top: var(--spacing-sm);">
+              <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" target="_blank"  rel="noopener noreferrer" class="accordion-button">
+                <i class="fas fa-external-link-alt"></i> Vesting Contract
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Cross-Chain Value Acceleration -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-link" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Cross-Chain Value Acceleration
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>
+              Revenue from ZORA assets (Creator Coins & Content Coin NFTs) is used to <strong>buy back and burn $REBL</strong>, increasing scarcity and value for holders.
+            </p>
+            <p>
+              <strong>How it works:</strong>
+            </p>
+            <ul style="text-align: left; margin-top: var(--spacing-sm);">
+              <li><strong>80% Buy-Back & Burn:</strong> ETH revenue is bridged to Solana to <strong>permanently burn $REBL</strong>.</li>
+              <li><strong>15% Community DAO:</strong> Funds future initiatives and buy-back campaigns.</li>
+              <li><strong>5% Operations:</strong> Covers essential costs.</li>
+            </ul>
+            <p style="font-size: 0.95em; font-style: italic; color: var(--rebel-gold); margin-top: var(--spacing-sm);">
+              <strong>Result:</strong> Trading activity on ZORA directly boosts $REBL value on Solana through deflationary pressure.
+            </p>
+          </div>
+        </div>
+        <!-- Decentralization & Security -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-shield-alt" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Decentralization & Security
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p><strong>Solana ($REBL):</strong> Mint, freeze, and update authorities are renounced. LP tokens locked for 1 year.</p>
+            <p><strong>ZORA (NFTs):</strong> Founder's Creator Coins are vested over 5 years. Smart contracts are non-upgradeable.</p>
+          </div>
+        </div>
+        <!-- Governance Framework -->
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>
+              <i class="fas fa-vote-yea" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
+              Governance Framework
+            </span>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="accordion-content">
+            <p>Future DAO will use $REBL for voting. Holders of both Creator Coin + Content Coin NFT may get enhanced governance rights.</p>
+          </div>
+        </div>
+      </div>
+    </section>
     
     <!-- Cross-Chain Value -->
     <section id="cross-chain">
@@ -947,62 +1738,7 @@
         </div>
       </div>
     </section>
-    
-    <!-- Epoch Rewards Calculator -->
-    <section id="calculator">
-      <h2>Epoch Reward Calculator</h2>
-      <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
-        <div style="text-align: center; margin-bottom: var(--spacing-lg);">
-          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
-            <i class="fas fa-calculator"></i> Calculate Your $REBL Rewards
-          </h3>
-          <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;">
-            Estimate your $REBL rewards based on your $rebelinux holdings and holding period. The calculator uses the current epoch parameters.
-          </p>
-        </div>
-        
-        <div style="background: rgba(0, 0, 0, 0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg);">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-            <div style="text-align: center;">
-              <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900;">499,242,047</div>
-              <div style="color: var(--rebel-gold); font-size: 0.9rem;">Current $rebelinux Supply</div>
-            </div>
-            
-            <div style="text-align: center;">
-              <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900;">54,812,320.11</div>
-              <div style="color: var(--rebel-red); font-size: 0.9rem;">Epoch Reward Pool ($REBL)</div>
-            </div>
-            
-            <div style="text-align: center;">
-              <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900;">7%</div>
-              <div style="color: var(--rebel-gold); font-size: 0.9rem;">Annual Bonus Rate</div>
-            </div>
-            
-            <div style="text-align: center;">
-              <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900;">20</div>
-              <div style="color: var(--rebel-gold); font-size: 0.9rem;">Max Age (Epochs)</div>
-            </div>
-          </div>
-          
-          <div style="text-align: center;">
-            <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button" style="margin-right: var(--spacing-sm);">
-              <i class="fas fa-external-link-alt"></i> Buy $rebelinux
-            </a>
-            <a href="epoch-rewards.html" class="cta-button gold">
-              <i class="fas fa-info-circle"></i> Full Calculator
-            </a>
-          </div>
-        </div>
-        
-        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); border-left: 4px solid var(--rebel-red);">
-          <p style="margin: 0; font-size: 0.95em; color: var(--rebel-gold);">
-            <strong>💡 How it works:</strong> Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool<br>
-            <strong>Weighted Share:</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches.
-          </p>
-        </div>
-      </div>
-    </section>
-    
+
     <!-- Security & Decentralization -->
     <section id="security">
       <h2>Security & Decentralization</h2>
@@ -1056,9 +1792,335 @@
             </a>
           </div>
         </div>
+
+        <!-- Enhanced Security Checklist -->
+        <div class="security-checklist">
+          <h4 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-xl);">
+            <i class="fas fa-list-check"></i> SECURITY CHECKLIST
+          </h4>
+          
+          <!-- CENTERED GRID CONTAINER -->
+          <div style="display: grid; 
+                      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+                      gap: var(--spacing-lg);
+                      justify-items: center;
+                      align-items: start;
+                      max-width: 1200px;
+                      margin: 0 auto;">
+            
+            <!-- CHECKLIST ITEM 1 -->
+            <div style="background: rgba(255, 255, 255, 0.05); 
+                        border: 1px solid rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: var(--spacing-md); 
+                        width: 100%; 
+                        max-width: 280px;
+                        text-align: center;
+                        transition: all 0.3s ease;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: 0.8rem;">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.2rem;"></i>
+                <div style="font-weight: 700; color: white; font-size: 1.1rem;">Mint Authority</div>
+              </div>
+              <div style="font-size: 1rem; color: var(--rebel-gold); padding: 0.5rem; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                Renounced ✓
+              </div>
+            </div>
+            
+            <!-- CHECKLIST ITEM 2 -->
+            <div style="background: rgba(255, 255, 255, 0.05); 
+                        border: 1px solid rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: var(--spacing-md); 
+                        width: 100%; 
+                        max-width: 280px;
+                        text-align: center;
+                        transition: all 0.3s ease;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: 0.8rem;">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.2rem;"></i>
+                <div style="font-weight: 700; color: white; font-size: 1.1rem;">Freeze Authority</div>
+              </div>
+              <div style="font-size: 1rem; color: var(--rebel-gold); padding: 0.5rem; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                Renounced ✓
+              </div>
+            </div>
+            
+            <!-- CHECKLIST ITEM 3 -->
+            <div style="background: rgba(255, 255, 255, 0.05); 
+                        border: 1px solid rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: var(--spacing-md); 
+                        width: 100%; 
+                        max-width: 280px;
+                        text-align: center;
+                        transition: all 0.3s ease;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: 0.8rem;">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.2rem;"></i>
+                <div style="font-weight: 700; color: white; font-size: 1.1rem;">LP Tokens Burned</div>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: 900; color: var(--rebel-red); margin-bottom: 0.3rem;">
+                98.57%
+              </div>
+              <div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                <i class="fas fa-fire" style="color: var(--rebel-red); margin-right: 0.3rem;"></i>Permanently Burned
+              </div>
+            </div>
+            
+            <!-- CHECKLIST ITEM 4 -->
+            <div style="background: rgba(255, 255, 255, 0.05); 
+                        border: 1px solid rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: var(--spacing-md); 
+                        width: 100%; 
+                        max-width: 280px;
+                        text-align: center;
+                        transition: all 0.3s ease;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: 0.8rem;">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.2rem;"></i>
+                <div style="font-weight: 700; color: white; font-size: 1.1rem;">Tokens Locked</div>
+              </div>
+              <div style="font-size: 1.4rem; font-weight: 900; color: var(--rebel-gold); margin-bottom: 0.3rem;">
+                33.12%
+              </div>
+              <div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                <i class="fas fa-lock" style="color: var(--rebel-gold); margin-right: 0.3rem;"></i>In Vesting Schedule
+              </div>
+            </div>
+            
+            <!-- CHECKLIST ITEM 5 -->
+            <div style="background: rgba(255, 255, 255, 0.05); 
+                        border: 1px solid rgba(255, 255, 255, 0.1); 
+                        border-radius: 12px; 
+                        padding: var(--spacing-md); 
+                        width: 100%; 
+                        max-width: 280px;
+                        text-align: center;
+                        transition: all 0.3s ease;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); margin-bottom: 0.8rem;">
+                <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 1.2rem;"></i>
+                <div style="font-weight: 700; color: white; font-size: 1.1rem;">Verified Contract</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <div style="font-size: 1rem; color: var(--rebel-gold); padding: 0.5rem 1rem; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                  Public ✓
+                </div>
+                <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+                   target="_blank" 
+                  rel="noopener noreferrer"
+                   style="color: var(--rebel-gold); text-decoration: none; font-size: 0.9rem;">
+                  <i class="fas fa-external-link-alt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-    
+
+    <!-- Contract Verification Section -->
+    <section id="contract-verification">
+      <h2><i class="fas fa-shield-check"></i> CONTRACT VERIFICATION</h2>
+      <p style="text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg); color: #ccc;">
+        Always verify the official contract address before buying. This is your most important security step.
+      </p>
+
+      <div class="contract-verify-container">
+        
+        <!-- Enhanced Security Warning -->
+        <div style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 51, 102, 0.05)); 
+                   padding: var(--spacing-md); 
+                   border-radius: var(--border-radius); 
+                   max-width: 700px; 
+                   margin: 0 auto var(--spacing-lg); 
+                   border: 2px solid var(--rebel-red);
+                   box-shadow: 0 4px 15px rgba(255, 51, 102, 0.1);
+                   text-align: center;">
+          
+          <!-- Main warning icon and title -->
+          <div style="margin-bottom: 1rem;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+              <div style="width: 40px; height: 40px; background: rgba(255, 51, 102, 0.2); 
+                          border-radius: 50%; display: flex; align-items: center; 
+                          justify-content: center;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 1.2rem;"></i>
+              </div>
+              <div style="font-weight: 900; color: var(--rebel-red); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                CRITICAL SECURITY WARNING
+              </div>
+            </div>
+            
+            <!-- Main message -->
+            <div style="color: rgba(255, 255, 255, 0.95); font-size: 1rem; line-height: 1.5;">
+              <strong>Scammers create fake websites!</strong> Always verify these 3 points:
+            </div>
+          </div>
+          
+          <!-- Verification checklist -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+            
+            <!-- Point 1 -->
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(76, 175, 80, 0.1); 
+                        padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(76, 175, 80, 0.3); 
+                        max-width: 100%;">
+              <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 0.9rem; flex-shrink: 0;"></i>
+              <span style="color: white; font-size: 0.9rem; text-align: left;">
+                You're on the <strong>official</strong> RebelInuX website
+              </span>
+            </div>
+            
+            <!-- Point 2 -->
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(76, 175, 80, 0.1); 
+                        padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(76, 175, 80, 0.3); 
+                        max-width: 100%;">
+              <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 0.9rem; flex-shrink: 0;"></i>
+              <div style="color: white; font-size: 0.9rem; text-align: left;">
+                <span style="display: block; margin-bottom: 0.3rem;">Contract matches:</span>
+                <code style="background: rgba(0,0,0,0.4); padding: 0.4rem 0.6rem; border-radius: 6px; 
+                      font-family: 'Courier New', monospace; font-size: 0.8rem; color: var(--rebel-gold); 
+                      word-break: break-all; display: block; line-height: 1.4;">
+                  F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+                </code>
+              </div>
+            </div>
+            
+            <!-- Point 3 -->
+            <div style="display: flex; align-items: center; gap: 0.6rem; background: rgba(255, 51, 102, 0.1); 
+                        padding: 0.6rem 1.2rem; border-radius: 30px; border: 1px solid rgba(255, 51, 102, 0.3); 
+                        max-width: 100%;">
+              <i class="fas fa-ban" style="color: var(--rebel-red); font-size: 0.9rem; flex-shrink: 0;"></i>
+              <span style="color: white; font-size: 0.9rem; text-align: left;">
+                <strong>NEVER</strong> share private keys or seed phrases
+              </span>
+            </div>
+          </div>
+          
+          <!-- Footer note -->
+          <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); padding-top: 0.8rem; 
+                      border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <i class="fas fa-shield-alt" style="margin-right: 0.4rem;"></i>
+            Use the verification tools below to confirm the contract address.
+          </div>
+        </div>
+        
+        <!-- Contract Address Display -->
+        <div class="contract-display" style="background: rgba(0, 0, 0, 0.6); 
+                     border: 2px solid var(--rebel-gold); 
+                     border-radius: var(--border-radius); 
+                     padding: var(--spacing-lg); 
+                     margin-bottom: var(--spacing-lg); position: relative;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap; gap: var(--spacing-sm);">
+            <div>
+              <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.3rem; font-weight: 600;">
+                <i class="fas fa-fingerprint"></i> OFFICIAL $REBL CONTRACT
+              </div>
+              <div style="font-size: 0.85em; color: #aaa;">
+                Solana • SPL Token
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+              <span style="background: rgba(76, 175, 80, 0.2); color: #4CAF50; padding: 0.3rem 0.8rem; border-radius: 20px; 
+                         font-size: 0.85em; font-weight: 600; border: 1px solid #4CAF50;">
+                <i class="fas fa-check-circle"></i> Verified
+              </span>
+            </div>
+          </div>
+          
+          <div style="background: rgba(0, 0, 0, 0.8); padding: var(--spacing-md); border-radius: 8px; 
+                     border: 1px solid rgba(255, 255, 255, 0.1); 
+                     margin-bottom: var(--spacing-md);">
+            <code class="contract-code">
+              F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+            </code>
+            <button onclick="copyContract()" 
+                    class="copy-button">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+          </div>
+          
+          <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap;">
+            <div style="font-size: 0.9em; color: #aaa; text-align: center;">
+              <i class="fas fa-lightbulb"></i> Tip: Double-check this address in your wallet before confirming any transaction
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Tools Grid -->
+        <h4 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">
+          <i class="fas fa-search"></i> VERIFY ON THIRD-PARTY PLATFORMS
+        </h4>
+        
+        <div class="verification-grid">
+          
+          <!-- Solscan Card -->
+          <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+             target="_blank" 
+            rel="noopener noreferrer"
+             class="verification-card">
+            <div style="width: 60px; height: 60px; background: rgba(33, 150, 243, 0.2); 
+                        border-radius: 50%; display: flex; align-items: center; 
+                        justify-content: center; margin-bottom: var(--spacing-md);">
+              <i class="fas fa-search" style="color: #2196F3; font-size: 1.8rem;"></i>
+            </div>
+            <h4 style="color: #2196F3; margin-bottom: var(--spacing-sm);">Solscan</h4>
+            <p style="color: #ccc; font-size: 0.9em; margin: 0;">
+              View contract details, holders, and transactions
+            </p>
+            <div style="margin-top: auto; padding-top: var(--spacing-md);">
+              <span style="background: rgba(33, 150, 243, 0.2); color: #2196F3; padding: 0.3rem 0.8rem; 
+                         border-radius: 20px; font-size: 0.8em; border: 1px solid #2196F3;">
+                Explorer
+              </span>
+            </div>
+          </a>
+
+          <!-- DexScreener Card -->
+          <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+             target="_blank" 
+            rel="noopener noreferrer"
+             class="verification-card" 
+             style="border-color: #FF9800; background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(255, 152, 0, 0.3));">
+            <div style="width: 60px; height: 60px; background: rgba(255, 152, 0, 0.2); 
+                        border-radius: 50%; display: flex; align-items: center; 
+                        justify-content: center; margin-bottom: var(--spacing-md);">
+              <i class="fas fa-chart-line" style="color: #FF9800; font-size: 1.8rem;"></i>
+            </div>
+            <h4 style="color: #FF9800; margin-bottom: var(--spacing-sm);">DexScreener</h4>
+            <p style="color: #ccc; font-size: 0.9em; margin: 0;">
+              Real-time charts, liquidity, and trading data
+            </p>
+            <div style="margin-top: auto; padding-top: var(--spacing-md);">
+              <span style="background: rgba(255, 152, 0, 0.2); color: #FF9800; padding: 0.3rem 0.8rem; 
+                         border-radius: 20px; font-size: 0.8em; border: 1px solid #FF9800;">
+                Analytics
+              </span>
+            </div>
+          </a>
+
+          <!-- RugCheck Card -->
+          <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+             target="_blank" 
+            rel="noopener noreferrer"
+             class="verification-card" 
+             style="border-color: #4CAF50; background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(76, 175, 80, 0.3));">
+            <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); 
+                        border-radius: 50%; display: flex; align-items: center; 
+                        justify-content: center; margin-bottom: var(--spacing-md);">
+              <i class="fas fa-shield-alt" style="color: #4CAF50; font-size: 1.8rem;"></i>
+            </div>
+            <h4 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">RugCheck</h4>
+            <p style="color: #ccc; font-size: 0.9em; margin: 0;">
+              Security audit, renounced mint, and risk analysis
+            </p>
+            <div style="margin-top: auto; padding-top: var(--spacing-md);">
+              <span style="background: rgba(76, 175, 80, 0.2); color: #4CAF50; padding: 0.3rem 0.8rem; 
+                         border-radius: 20px; font-size: 0.8em; border: 1px solid #4CAF50;">
+                Security
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Related Pages -->
     <section id="related">
       <h2>Explore More</h2>
@@ -1193,6 +2255,12 @@
       
       // Initialize chart
       initializeTokenomicsChart();
+      
+      // Initialize accordion
+      initializeAccordion();
+      
+      // Initialize metrics
+      setTimeout(initializeMetrics, 1000);
     });
     
     // Tokenomics Chart
@@ -1268,6 +2336,33 @@
       });
     }
     
+    // Accordion functionality
+    function initializeAccordion() {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const content = header.nextElementSibling;
+          const isActive = content.classList.contains('active');
+
+          // Close all accordion items
+          document.querySelectorAll('.accordion-content').forEach(item => {
+            item.classList.remove('active');
+            item.style.maxHeight = null;
+            item.style.padding = '0 var(--spacing-md)';
+          });
+          document.querySelectorAll('.accordion-header').forEach(h => {
+            h.classList.remove('active');
+          });
+
+          // Open clicked item if it wasn't already active
+          if (!isActive) {
+            content.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 100 + 'px';
+            header.classList.add('active');
+          }
+        });
+      });
+    }
+    
     // Progress bar animations
     document.addEventListener('scroll', function() {
       const progressBars = document.querySelectorAll('.progress-fill');
@@ -1285,6 +2380,368 @@
         bar.style.transition = 'width 1.5s ease-in-out';
       });
     }, 500);
+
+    // Live Stats Data
+    const STATIC_DATA = {
+      holders: 67,
+      currentSupply: 944920617,
+      burnedSupply: 55079383,
+      maxSupply: 1000000000
+    };
+
+    // Fetch live stats data
+    async function fetchLiveStatsData() {
+      try {
+        console.log("🔄 Fetching live data...");
+        
+        // Get DexScreener API data
+        let marketData = {
+          price: 0,
+          priceChange: 0,
+          marketCap: 0,
+          volume: 0,
+          liquidity: 0,
+          success: false
+        };
+        
+        try {
+          const dexscreenerResponse = await fetch(
+            'https://api.dexscreener.com/latest/dex/pairs/solana/Fyak2SY4vx2PnExMh87rJ7uGAVrhN3Z9SfZcJEMa7kyv',
+            {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+              },
+              cache: 'no-cache'
+            }
+          );
+          
+          if (dexscreenerResponse.ok) {
+            const dexscreenerData = await dexscreenerResponse.json();
+            
+            if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
+              const pair = dexscreenerData.pairs[0];
+              
+              marketData = {
+                price: parseFloat(pair.priceUsd) || 0,
+                priceChange: parseFloat(pair.priceChange?.h24) || 0,
+                marketCap: parseFloat(pair.fdv) || 0,
+                volume: parseFloat(pair.volume?.h24) || 0,
+                liquidity: parseFloat(pair.liquidity?.usd) || 0,
+                success: true
+              };
+              
+              console.log("✅ Market data parsed:", marketData);
+            }
+          }
+        } catch (dexscreenerError) {
+          console.error("❌ DexScreener error:", dexscreenerError);
+        }
+        
+        // Get supply and holder data
+        const holders = STATIC_DATA.holders || 0;
+        const holdersSource = 'Static Reference';
+        const currentSupply = STATIC_DATA.currentSupply || 0;
+        const burnedSupply = STATIC_DATA.burnedSupply || 0;
+        const maxSupply = STATIC_DATA.maxSupply || 0;
+        
+        // Prepare final data
+        const finalData = {
+          price: marketData.price,
+          priceChange: marketData.priceChange,
+          marketCap: marketData.marketCap,
+          volume: marketData.volume,
+          liquidity: marketData.liquidity,
+          holders: holders,
+          currentSupply: currentSupply,
+          burnedSupply: burnedSupply,
+          maxSupply: maxSupply,
+          holdersSource: holdersSource,
+          lastUpdate: new Date().toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit' 
+          }),
+          success: marketData.success
+        };
+        
+        console.log("✅ Final data prepared:", finalData);
+        return finalData;
+        
+      } catch (error) {
+        console.error("💥 Critical error in fetchLiveStatsData:", error);
+        return {
+          price: 0,
+          priceChange: 0,
+          marketCap: 0,
+          volume: 0,
+          liquidity: 0,
+          holders: 0,
+          currentSupply: 0,
+          burnedSupply: 0,
+          maxSupply: 0,
+          holdersSource: 'Error',
+          lastUpdate: 'Error',
+          success: false
+        };
+      }
+    }
+
+    // Update live stats display
+    function updateLiveStatsDisplay(data) {
+      console.log("🎨 Updating display with data:", data);
+      
+      // Format number with commas
+      function formatNumber(num) {
+        if (num === 0 || isNaN(num)) return '—';
+        if (num >= 1000000) {
+          return '$' + (num / 1000000).toFixed(2) + 'M';
+        }
+        if (num >= 1000) {
+          return '$' + (num / 1000).toFixed(1) + 'K';
+        }
+        return num.toLocaleString();
+      }
+      
+      // Update each metric card
+      const updates = {
+        'live-price': data.price > 0 ? `$${data.price.toFixed(8)}` : '$0.00000000',
+        'live-market-cap': formatNumber(data.marketCap),
+        'live-volume': formatNumber(data.volume),
+        'live-liquidity': formatNumber(data.liquidity),
+        'live-holders': data.holders.toLocaleString(),
+        'holders-source-display': data.holdersSource,
+        'last-updated-time': data.lastUpdate || 'Just now'
+      };
+      
+      // Apply all updates
+      Object.entries(updates).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = value;
+          console.log(`✅ Updated ${id}: ${value}`);
+        }
+      });
+      
+      // Update price change display
+      const priceChangeElement = document.getElementById('price-change-display');
+      if (priceChangeElement) {
+        if (data.priceChange !== 0) {
+          priceChangeElement.textContent = `${data.priceChange >= 0 ? '+' : ''}${data.priceChange.toFixed(2)}%`;
+          priceChangeElement.className = data.priceChange >= 0 ? 'positive' : 'negative';
+        } else {
+          priceChangeElement.textContent = '0.00%';
+          priceChangeElement.className = '';
+        }
+      }
+      
+      // Update timestamp
+      const timeElement = document.getElementById('last-updated-time');
+      if (timeElement) {
+        timeElement.textContent = data.lastUpdate || new Date().toLocaleTimeString();
+      }
+      
+      // Update API status
+      const statusElement = document.getElementById('api-status');
+      if (statusElement) {
+        statusElement.textContent = data.success ? '✅ Live' : '⚠️ Cached';
+        statusElement.style.color = data.success ? '#4CAF50' : '#FF9800';
+      }
+    }
+
+    // Initialize metrics
+    async function initializeMetrics() {
+      console.log("🚀 Initializing metrics...");
+      
+      // Show loading state
+      document.querySelectorAll('.metric-value').forEach(el => {
+        if (el.textContent === '—' || el.textContent === 'Loading...') {
+          el.innerHTML = '<span style="color: var(--rebel-gold); font-style: italic;">Loading...</span>';
+        }
+      });
+      
+      try {
+        // Initial data fetch
+        const data = await fetchLiveStatsData();
+        updateLiveStatsDisplay(data);
+        
+        // Start auto-refresh
+        console.log("🔄 Setting up auto-refresh every 30 seconds...");
+        setInterval(async () => {
+          if (document.visibilityState === 'visible') {
+            console.log("🔄 Auto-refresh triggered at:", new Date().toLocaleTimeString());
+            const newData = await fetchLiveStatsData();
+            updateLiveStatsDisplay(newData);
+          } else {
+            console.log("⏸️ Page not visible, skipping refresh");
+          }
+        }, 30000);
+        
+        console.log("✅ Auto-refresh interval started");
+        
+      } catch (error) {
+        console.error("❌ Failed to initialize metrics:", error);
+      }
+    }
+
+    // Refresh data function
+    window.refreshData = async function(event) {
+      const button = document.querySelector('.refresh-button');
+      const isManualClick = button && event && event.type === 'click';
+      
+      if (isManualClick) {
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+        button.disabled = true;
+      }
+      
+      try {
+        console.log("🔄 Refreshing data...");
+        const data = await fetchLiveStatsData();
+        updateLiveStatsDisplay(data);
+        
+        if (isManualClick) {
+          // Show success feedback for manual clicks only
+          button.innerHTML = '<i class="fas fa-check"></i> Updated!';
+          button.style.background = '#4CAF50';
+          
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+            button.style.background = '';
+          }, 1500);
+        }
+        
+      } catch (error) {
+        console.error("❌ Error refreshing data:", error);
+        
+        if (isManualClick) {
+          button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+          button.style.background = 'var(--rebel-red)';
+          
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+            button.style.background = '';
+          }, 2000);
+        }
+      }
+    };
+
+    // Quick update button
+    window.quickUpdateFromSolscan = function() {
+      window.refreshData();
+    };
+
+    // Contract copy function
+    function copyContract() {
+      const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+      const button = event.target.closest('button') || event.target;
+      const originalHTML = button.innerHTML;
+      
+      navigator.clipboard.writeText(contractAddress).then(() => {
+        // Show success state
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = '#4CAF50';
+        button.style.color = 'white';
+        
+        // Show temporary toast notification
+        showToast('Contract address copied to clipboard!', 'success');
+        
+        // Restore button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.background = '';
+          button.style.color = '';
+        }, 2000);
+        
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        button.innerHTML = '<i class="fas fa-times"></i> Failed';
+        button.style.background = '#f44336';
+        showToast('Failed to copy. Please try again.', 'error');
+        
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.background = '';
+        }, 2000);
+      });
+    }
+
+    // Toast notification function
+    function showToast(message, type = 'info') {
+      // Remove existing toasts
+      const existingToast = document.querySelector('.toast-notification');
+      if (existingToast) existingToast.remove();
+      
+      // Create toast
+      const toast = document.createElement('div');
+      toast.className = `toast-notification toast-${type}`;
+      toast.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      // Style toast
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+        color: white;
+        padding: 12px 24px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Animation keyframes for toast
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideUp {
+        from {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideDown {
+        from {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes highlightPulse {
+        0% { background: rgba(255, 204, 0, 0.05); }
+        50% { background: rgba(255, 204, 0, 0.2); }
+        100% { background: rgba(255, 204, 0, 0.05); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
