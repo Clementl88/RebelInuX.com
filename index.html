@@ -1568,73 +1568,6 @@
     position: relative;
   }
 }
-    /* Add hover effects for verification cards */
-.verification-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.copy-button:hover {
-  background: #d62828;
-  transform: scale(1.05);
-}
-
-/* Mobile responsiveness for contract verification */
-@media (max-width: 768px) {
-  .contract-verify-container {
-    padding: 0 var(--spacing-sm);
-  }
-  
-  .verification-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .contract-display {
-    padding: var(--spacing-md);
-  }
-  
-  .contract-code {
-    font-size: 0.9em;
-    padding: 0.8rem;
-  }
-  
-  .copy-button {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    width: 100%;
-    margin-top: var(--spacing-sm);
-  }
-}
-
-/* Toast notification animations */
-@keyframes slideUp {
-  from {
-    transform: translateX(-50%) translateY(100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-50%) translateY(100px);
-    opacity: 0;
-  }
-}
-
-@keyframes highlightPulse {
-  0% { background: rgba(255, 204, 0, 0.05); }
-  50% { background: rgba(255, 204, 0, 0.2); }
-  100% { background: rgba(255, 204, 0, 0.05); }
-}
   </style>
 </head>
 <body>
@@ -1662,7 +1595,6 @@
   <a href="#trade">Trading</a>
   <div class="dropdown-content">
     <a href="#trade"><i class="fas fa-exchange-alt"></i> Trade $REBL</a>
-      <a href="#contract-verify"><i class="fas fa-shield-alt"></i> Verify Contract</a>
 <a href="#tokenomics"><i class="fas fa-chart-line"></i> Live Stats</a>
     <a href="#contract-verify"><i class="fas fa-shield-alt"></i> Verify Contract</a>
   </div>
@@ -1977,313 +1909,39 @@
 
 
 
- <!-- Contract Verification Section -->
-<section id="contract-verify" class="visible">
-  <h2><i class="fas fa-shield-check"></i> CONTRACT VERIFICATION</h2>
-  <p style="text-align: center; max-width: 700px; margin: 0 auto var(--spacing-lg); color: #ccc;">
-    Always verify the official contract address before buying. This is your most important security step.
-  </p>
-
-  <div class="contract-verify-container" style="max-width: 800px; margin: 0 auto;">
+  <!-- NEW: Contract Verification Section -->
+  <section id="contract-verify" class="visible">
+    <h2><i class="fas fa-shield-alt"></i> VERIFY CONTRACT</h2>
     
-    <!-- Warning Banner -->
-    <div class="warning-banner" style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.15), rgba(255, 51, 102, 0.05)); 
-                 border: 2px solid var(--rebel-red); 
-                 border-radius: var(--border-radius); 
-                 padding: var(--spacing-lg); 
-                 margin-bottom: var(--spacing-lg);
-                 text-align: center;">
-      <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-md); margin-bottom: var(--spacing-sm);">
-        <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 2rem;"></i>
-        <h3 style="color: var(--rebel-red); margin: 0; font-size: 1.5rem;">SECURITY WARNING</h3>
-      </div>
-      <p style="margin: 0; font-size: 1.1em; line-height: 1.6;">
-        Scammers create fake contracts. <strong>Always verify</strong> you're buying the correct $REBL token.
-      </p>
-    </div>
-
-    <!-- Contract Address Display -->
-    <div class="contract-display" style="background: rgba(0, 0, 0, 0.6); 
-                 border: 2px solid var(--rebel-gold); 
-                 border-radius: var(--border-radius); 
-                 padding: var(--spacing-lg); 
-                 margin-bottom: var(--spacing-lg);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap; gap: var(--spacing-sm);">
-        <div>
-          <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.3rem; font-weight: 600;">
-            <i class="fas fa-fingerprint"></i> OFFICIAL $REBL CONTRACT
-          </div>
-          <div style="font-size: 0.85em; color: #aaa;">
-            Solana • SPL Token
-          </div>
-        </div>
-        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-          <span style="background: rgba(76, 175, 80, 0.2); color: #4CAF50; padding: 0.3rem 0.8rem; border-radius: 20px; 
-                       font-size: 0.85em; font-weight: 600; border: 1px solid #4CAF50;">
-            <i class="fas fa-check-circle"></i> Verified
-          </span>
+    <div class="contract-verify-card">
+      <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red); font-size: 2rem; margin-bottom: var(--spacing-md);"></i>
+      <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">ALWAYS VERIFY BEFORE BUYING</h3>
+      
+      <div style="background: rgba(0,0,0,0.7); padding: var(--spacing-md); border-radius: 8px; margin: var(--spacing-md) 0; border: 1px solid var(--rebel-gold);">
+        <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.5rem;">Official $REBL Contract:</div>
+        <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap;">
+          <code class="contract-code">
+            F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+          </code>
+          <button onclick="copyContract()" class="cta-button" style="background: var(--rebel-red); padding: 0.8rem 1.2rem;">
+            <i class="fas fa-copy"></i> Copy
+          </button>
         </div>
       </div>
       
-      <div style="background: rgba(0, 0, 0, 0.8); padding: var(--spacing-md); border-radius: 8px; 
-                   border: 1px solid rgba(255, 255, 255, 0.1); 
-                   margin-bottom: var(--spacing-md);
-                   position: relative;">
-        <code class="contract-code" 
-              style="display: block; 
-                     font-family: 'Courier New', monospace; 
-                     font-size: 1.1em; 
-                     color: var(--rebel-gold); 
-                     word-break: break-all; 
-                     padding: 1rem; 
-                     background: rgba(255, 204, 0, 0.05); 
-                     border-radius: 6px;
-                     border: 1px solid rgba(255, 204, 0, 0.2);">
-          F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
-        </code>
-        <button onclick="copyContract()" 
-                class="copy-button" 
-                style="position: absolute; 
-                       top: 10px; 
-                       right: 10px; 
-                       background: var(--rebel-red); 
-                       color: white; 
-                       border: none; 
-                       border-radius: 5px; 
-                       padding: 0.6rem 1.2rem; 
-                       cursor: pointer; 
-                       font-weight: 600;
-                       display: flex; 
-                       align-items: center; 
-                       gap: 0.5rem;
-                       transition: all 0.3s ease;">
-          <i class="fas fa-copy"></i> Copy
-        </button>
-      </div>
-      
-      <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap;">
-        <div style="font-size: 0.9em; color: #aaa; text-align: center;">
-          <i class="fas fa-lightbulb"></i> Tip: Double-check this address in your wallet before confirming any transaction
-        </div>
-      </div>
-    </div>
-
-    <!-- Verification Tools Grid -->
-    <h4 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">
-      <i class="fas fa-search"></i> VERIFY ON THIRD-PARTY PLATFORMS
-    </h4>
-    
-    <div class="verification-grid" style="display: grid; 
-                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-                 gap: var(--spacing-md); 
-                 margin-bottom: var(--spacing-xl);">
-      
-      <!-- Solscan Card -->
-      <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-         target="_blank" 
-         class="verification-card" 
-         style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(26, 35, 126, 0.3)); 
-                border: 1px solid #2196F3; 
-                border-radius: var(--border-radius); 
-                padding: var(--spacing-lg); 
-                text-align: center; 
-                text-decoration: none; 
-                transition: all 0.3s ease;
-                display: flex; 
-                flex-direction: column; 
-                align-items: center;">
-        <div style="width: 60px; height: 60px; background: rgba(33, 150, 243, 0.2); 
-                    border-radius: 50%; display: flex; align-items: center; 
-                    justify-content: center; margin-bottom: var(--spacing-md);">
-          <i class="fas fa-search" style="color: #2196F3; font-size: 1.8rem;"></i>
-        </div>
-        <h4 style="color: #2196F3; margin-bottom: var(--spacing-sm);">Solscan</h4>
-        <p style="color: #ccc; font-size: 0.9em; margin: 0;">
-          View contract details, holders, and transactions
-        </p>
-        <div style="margin-top: auto; padding-top: var(--spacing-md);">
-          <span style="background: rgba(33, 150, 243, 0.2); color: #2196F3; padding: 0.3rem 0.8rem; 
-                       border-radius: 20px; font-size: 0.8em; border: 1px solid #2196F3;">
-            Explorer
-          </span>
-        </div>
-      </a>
-
-      <!-- DexScreener Card -->
-      <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-         target="_blank" 
-         class="verification-card" 
-         style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(255, 152, 0, 0.3)); 
-                border: 1px solid #FF9800; 
-                border-radius: var(--border-radius); 
-                padding: var(--spacing-lg); 
-                text-align: center; 
-                text-decoration: none; 
-                transition: all 0.3s ease;
-                display: flex; 
-                flex-direction: column; 
-                align-items: center;">
-        <div style="width: 60px; height: 60px; background: rgba(255, 152, 0, 0.2); 
-                    border-radius: 50%; display: flex; align-items: center; 
-                    justify-content: center; margin-bottom: var(--spacing-md);">
-          <i class="fas fa-chart-line" style="color: #FF9800; font-size: 1.8rem;"></i>
-        </div>
-        <h4 style="color: #FF9800; margin-bottom: var(--spacing-sm);">DexScreener</h4>
-        <p style="color: #ccc; font-size: 0.9em; margin: 0;">
-          Real-time charts, liquidity, and trading data
-        </p>
-        <div style="margin-top: auto; padding-top: var(--spacing-md);">
-          <span style="background: rgba(255, 152, 0, 0.2); color: #FF9800; padding: 0.3rem 0.8rem; 
-                       border-radius: 20px; font-size: 0.8em; border: 1px solid #FF9800;">
-            Analytics
-          </span>
-        </div>
-      </a>
-
-      <!-- RugCheck Card -->
-      <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-         target="_blank" 
-         class="verification-card" 
-         style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(76, 175, 80, 0.3)); 
-                border: 1px solid #4CAF50; 
-                border-radius: var(--border-radius); 
-                padding: var(--spacing-lg); 
-                text-align: center; 
-                text-decoration: none; 
-                transition: all 0.3s ease;
-                display: flex; 
-                flex-direction: column; 
-                align-items: center;">
-        <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); 
-                    border-radius: 50%; display: flex; align-items: center; 
-                    justify-content: center; margin-bottom: var(--spacing-md);">
-          <i class="fas fa-shield-alt" style="color: #4CAF50; font-size: 1.8rem;"></i>
-        </div>
-        <h4 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">RugCheck</h4>
-        <p style="color: #ccc; font-size: 0.9em; margin: 0;">
-          Security audit, renounced mint, and risk analysis
-        </p>
-        <div style="margin-top: auto; padding-top: var(--spacing-md);">
-          <span style="background: rgba(76, 175, 80, 0.2); color: #4CAF50; padding: 0.3rem 0.8rem; 
-                       border-radius: 20px; font-size: 0.8em; border: 1px solid #4CAF50;">
-            Security
-          </span>
-        </div>
-      </a>
-
-    </div>
-    
-<!-- Liquidity Lock Banner -->
-<div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 51, 102, 0.05)); 
-             border: 2px solid #4CAF50; 
-             border-radius: var(--border-radius); 
-             padding: var(--spacing-md); 
-             margin-bottom: var(--spacing-lg);
-             text-align: center;">
-  <div style="display: flex; justify-content: center; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
-    <div style="text-align: center;">
-      <div style="font-size: 2rem; font-weight: 900; color: #4CAF50; line-height: 1;">98.57%</div>
-      <div style="font-size: 0.9em; color: white; margin-top: 0.3rem;">
-        <i class="fas fa-fire" style="color: var(--rebel-red); margin-right: 0.3rem;"></i>
-        LP Tokens Burned
-      </div>
-    </div>
-    <div style="width: 2px; height: 40px; background: rgba(255, 255, 255, 0.2);"></div>
-    <div style="text-align: center;">
-      <div style="font-size: 2rem; font-weight: 900; color: var(--rebel-gold); line-height: 1;">33.12%</div>
-      <div style="font-size: 0.9em; color: white; margin-top: 0.3rem;">
-        <i class="fas fa-lock" style="color: var(--rebel-gold); margin-right: 0.3rem;"></i>
-        Tokens Locked
-      </div>
-    </div>
-  </div>
-  <p style="margin: var(--spacing-sm) 0 0 0; font-size: 0.85em; color: #aaa; font-style: italic;">
-    Maximum security: Burned LP prevents rug pulls, locked tokens prevent dumping
-  </p>
-</div>
-    
-<!-- Security Checklist -->
-<div class="security-checklist" style="background: rgba(255, 204, 0, 0.05); 
-             border: 1px solid var(--rebel-gold); 
-             border-radius: var(--border-radius); 
-             padding: var(--spacing-lg); 
-             margin-top: var(--spacing-lg);">
-  <h4 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">
-    <i class="fas fa-list-check"></i> SECURITY CHECKLIST
-  </h4>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
-    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-      <i class="fas fa-check-circle" style="color: #4CAF50; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: white; margin-bottom: 0.2rem;">Mint Authority</div>
-        <div style="font-size: 0.9em; color: #aaa;">Renounced ✓</div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-      <i class="fas fa-check-circle" style="color: #4CAF50; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: white; margin-bottom: 0.2rem;">Freeze Authority</div>
-        <div style="font-size: 0.9em; color: #aaa;">Renounced ✓</div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-      <i class="fas fa-check-circle" style="color: #4CAF50; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: white; margin-bottom: 0.2rem;">LP Tokens Burned</div>
-        <div style="font-size: 0.9em; color: #aaa;">
-          <span style="color: #4CAF50; font-weight: bold;">98.57%</span> 🔥 Locked Forever
-        </div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-      <i class="fas fa-check-circle" style="color: #4CAF50; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: white; margin-bottom: 0.2rem;">Tokens Locked</div>
-        <div style="font-size: 0.9em; color: #aaa;">
-          <span style="color: #4CAF50; font-weight: bold;">33.12%</span> 🔐 In Vesting
-        </div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-      <i class="fas fa-check-circle" style="color: #4CAF50; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: white; margin-bottom: 0.2rem;">Verified Contract</div>
-        <div style="font-size: 0.9em; color: #aaa;">Public ✓</div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Liquidity Lock Explanation -->
-  <div style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.05); border-radius: 8px; border-left: 3px solid var(--rebel-red);">
-    <div style="font-size: 0.85em; color: #aaa; line-height: 1.4;">
-      <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm); margin-bottom: 0.3rem;">
-        <i class="fas fa-fire" style="color: var(--rebel-red); font-size: 0.9em; margin-top: 0.1rem;"></i>
-        <div><strong>98.57% LP Burned:</strong> Liquidity tokens permanently burned, making rug pulls impossible</div>
-      </div>
-      <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-        <i class="fas fa-lock" style="color: var(--rebel-gold); font-size: 0.9em; margin-top: 0.1rem;"></i>
-        <div><strong>33.12% Tokens Locked:</strong> Team & ecosystem tokens vested to prevent dumping</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    <!-- Quick Links -->
-    <div style="text-align: center; margin-top: var(--spacing-xl);">
-      <div style="display: flex; justify-content: center; gap: var(--spacing-md); flex-wrap: wrap;">
-        <a href="#trade" class="cta-button" style="background: var(--rebel-red);">
-          <i class="fas fa-exchange-alt"></i> Go to Trading
+      <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-sm); margin-top: var(--spacing-md);">
+        <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(0,0,0,0.5);">
+          <i class="fas fa-search"></i> Solscan
         </a>
-        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-           target="_blank" 
-           class="cta-button gold">
-          <i class="fas fa-shopping-cart"></i> Buy $REBL
+        <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button gold" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,204,0,0.1);">
+          <i class="fas fa-chart-bar"></i> DexScreener
+        </a>
+        <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" target="_blank" class="cta-button" style="font-size: 0.85em; padding: 0.7rem; background: rgba(255,51,102,0.1);">
+          <i class="fas fa-shield-check"></i> RugCheck
         </a>
       </div>
     </div>
-
-  </div>
-</section>
+  </section>
   
   <!-- Integrity & Transparency Section -->
   <section id="integrity" class="visible" style="background: rgba(255, 51, 102, 0.05); padding: var(--spacing-xl) var(--spacing-md); border-top: 3px solid var(--rebel-red); border-bottom: 3px solid var(--rebel-gold);">
@@ -3672,6 +3330,24 @@ document.querySelectorAll('.accordion-header').forEach(header => {
     });
 });
 
+// Contract copy function
+function copyContract() {
+    const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    navigator.clipboard.writeText(contractAddress).then(() => {
+        const button = event.target.closest('button') || event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = '#4CAF50';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = 'var(--rebel-red)';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
 // Countdown Timers
 function updateCountdown1() {
     const element = document.getElementById('countdown1');
@@ -4135,95 +3811,6 @@ window.quickUpdateFromSolscan = function() {
     window.refreshData();
 };
 
-// ========== CONTRACT VERIFICATION FUNCTIONS ==========
-
-// Enhanced copy function with better feedback
-function copyContract() {
-  const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-  const button = event.target.closest('button') || event.target;
-  const originalHTML = button.innerHTML;
-  
-  navigator.clipboard.writeText(contractAddress).then(() => {
-    // Show success state
-    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-    button.style.background = '#4CAF50';
-    button.style.color = 'white';
-    
-    // Briefly highlight the contract code
-    const contractCode = document.querySelector('.contract-code');
-    if (contractCode) {
-      contractCode.style.animation = 'highlightPulse 0.5s ease';
-      setTimeout(() => {
-        contractCode.style.animation = '';
-      }, 500);
-    }
-    
-    // Show temporary toast notification
-    showToast('Contract address copied to clipboard!', 'success');
-    
-    // Restore button after 2 seconds
-    setTimeout(() => {
-      button.innerHTML = originalHTML;
-      button.style.background = '';
-      button.style.color = '';
-    }, 2000);
-    
-  }).catch(err => {
-    console.error('Failed to copy: ', err);
-    button.innerHTML = '<i class="fas fa-times"></i> Failed';
-    button.style.background = '#f44336';
-    showToast('Failed to copy. Please try again.', 'error');
-    
-    setTimeout(() => {
-      button.innerHTML = originalHTML;
-      button.style.background = '';
-    }, 2000);
-  });
-}
-
-// Toast notification function
-function showToast(message, type = 'info') {
-  // Remove existing toasts
-  const existingToast = document.querySelector('.toast-notification');
-  if (existingToast) existingToast.remove();
-  
-  // Create toast
-  const toast = document.createElement('div');
-  toast.className = `toast-notification toast-${type}`;
-  toast.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
-    <span>${message}</span>
-  `;
-  
-  // Style toast
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: ${type === 'success' ? '#4CAF50' : '#f44336'};
-    color: white;
-    padding: 12px 24px;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    z-index: 9999;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease;
-  `;
-  
-  document.body.appendChild(toast);
-  
-  // Remove toast after 3 seconds
-  setTimeout(() => {
-    toast.style.animation = 'slideDown 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
-
-  
 // ========== REBL CALCULATOR FUNCTIONS ==========
 
 function addTokenBatch(amount = '', age = '') {
