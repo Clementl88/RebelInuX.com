@@ -1,70 +1,1657 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Epoch Rewards</title>
-  <!-- Same CSS as above -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Epoch Rewards - Claim $REBL tokens by holding Creator Coin and Rebel Key NFTs during weekly epochs" />
+  <meta name="keywords" content="RebelInuX rewards, epoch rewards, $REBL claims, creator coin, rebel key, NFT rewards" />
+  <meta property="og:title" content="RebelInuX Epoch Rewards - Weekly $REBL Distribution" />
+  <meta property="og:description" content="Learn how to claim $REBL tokens by holding Creator Coin and active Rebel Key NFTs during weekly epochs." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.fun/epoch-rewards.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Epoch Rewards - Weekly $REBL Distribution">
+  <meta name="twitter:description" content="Learn how to claim $REBL tokens by holding Creator Coin and active Rebel Key NFTs during weekly epochs.">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
+  <title>RebelInuX Epoch Rewards - Weekly $REBL Distribution</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
-    /* Copy CSS from previous pages */
-    :root { /* ... same as above ... */ }
-    body { /* ... same as above ... */ }
-    /* Dropdown styles and navigation styles same as above */
-    .dropdown { position: relative; display: inline-block; }
-    .dropdown-toggle { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); cursor: pointer; text-decoration: none; color: inherit; }
-    .dropdown-toggle:hover { background: rgba(255, 51, 102, 0.1); transform: translateY(-2px); }
-    .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: rgba(0, 0, 0, 0.8); min-width: 200px; border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); z-index: 1001; flex-direction: column; }
-    .dropdown-menu a { padding: var(--spacing-sm); border-bottom: 1px solid rgba(255,255,255,0.2); transition: var(--transition); color: var(--white); text-decoration: none; }
-    .dropdown-menu a:hover { background: rgba(255, 51, 102, 0.2); }
-    #nav-desktop { display: flex; flex-wrap: wrap; gap: 10px; background: #222; padding: 10px; }
-    #nav-desktop a { padding: var(--spacing-sm) var(--spacing-md); border-radius: 30px; font-weight: 600; transition: var(--transition); text-decoration: none; color: var(--white); }
-    #nav-desktop a:hover { background: rgba(255, 51, 102, 0.1); }
-    main { padding: 20px; }
-    section { max-width: 800px; margin: 0 auto; }
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    #nav-desktop a.active {
+      background: rgba(255, 51, 102, 0.2);
+      color: var(--rebel-gold);
+    }
+    
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    main {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    section {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      width: 100%;
+      text-align: center;
+    }
+    
+    /* Hero Section */
+    .page-hero {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-xl) 0;
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Stats Overview */
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .stat-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .stat-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: var(--rebel-gold);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Content Cards */
+    .content-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      border: 2px solid var(--rebel-red);
+      margin-bottom: var(--spacing-lg);
+      transition: var(--transition);
+    }
+    
+    .content-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+      border-color: var(--rebel-gold);
+    }
+    
+    .content-card h3 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      font-size: 1.5rem;
+    }
+    
+    /* Epoch Countdowns */
+    .countdown-container {
+      background: var(--section-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      margin: var(--spacing-lg) 0;
+      border: 2px solid var(--rebel-gold);
+    }
+    
+    .countdown-title {
+      font-size: 1.8rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--rebel-gold);
+      text-align: center;
+    }
+    
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .countdown-box {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      border: 2px solid var(--rebel-red);
+      text-align: center;
+    }
+    
+    .epoch-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .epoch-key {
+      display: inline-block;
+      background: rgba(255, 51, 102, 0.2);
+      color: var(--rebel-red);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .time-display {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin: var(--spacing-md) 0;
+    }
+    
+    .time-unit {
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm);
+      border-radius: 8px;
+      min-width: 70px;
+      text-align: center;
+    }
+    
+    .time-value {
+      font-size: 2rem;
+      font-weight: 900;
+    }
+    
+    .time-label {
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: block;
+    }
+    
+    /* REBL Calculator */
+    .rebl-calculator {
+      background: var(--section-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      margin: var(--spacing-xl) 0;
+      border: 2px solid var(--rebel-gold);
+    }
+    
+    .calculator-container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+    }
+    
+    .calculator-info {
+      background: rgba(255, 51, 102, 0.1);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing-lg);
+      border-left: 4px solid var(--rebel-red);
+    }
+    
+    .calculator-info p {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .info-value {
+      color: var(--rebel-gold);
+      font-weight: bold;
+    }
+    
+    .token-batches-section {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    #token-batches-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    
+    #token-batches-table th,
+    #token-batches-table td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #token-batches-table th {
+      color: var(--rebel-gold);
+      font-weight: 600;
+    }
+    
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--rebel-gold);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+    
+    .batch-controls {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+    }
+    
+    .batch-btn {
+      flex: 1;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    
+    .add-btn {
+      background: var(--rebel-red);
+      color: white;
+    }
+    
+    .clear-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--rebel-gold);
+      border: 1px solid var(--rebel-gold);
+    }
+    
+    .calculate-btn {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      color: var(--dark-bg);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      margin: var(--spacing-md) auto;
+      display: block;
+      font-size: 1.1rem;
+    }
+    
+    .calculate-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    #reward-result {
+      background: rgba(255, 204, 0, 0.1);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-gold);
+      margin-top: var(--spacing-lg);
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--rebel-gold);
+    }
+    
+    /* Rebel Key Display */
+    .key-display {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-xl);
+      align-items: center;
+      flex-wrap: wrap;
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .key-card {
+      text-align: center;
+      max-width: 300px;
+    }
+    
+    .key-image {
+      width: 200px;
+      height: 200px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin: 0 auto var(--spacing-md);
+      border: 3px solid var(--rebel-red);
+    }
+    
+    .key-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .key-rotation {
+      text-align: center;
+      margin: var(--spacing-lg) 0;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+    }
+    
+    /* Buttons */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
+      margin-top: var(--spacing-xl);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: var(--spacing-md);
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      
+      .countdown-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .key-display {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+      }
+      
+      .time-display {
+        flex-wrap: wrap;
+      }
+      
+      .time-unit {
+        min-width: 60px;
+        padding: 0.5rem;
+      }
+      
+      .time-value {
+        font-size: 1.5rem;
+      }
+      
+      #token-batches-table {
+        font-size: 0.8rem;
+      }
+      
+      #token-batches-table th,
+      #token-batches-table td {
+        padding: 0.5rem;
+      }
+    }
+    
+    /* Step by Step Guide */
+    .steps-guide {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .step-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    .step-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      width: 40px;
+      height: 40px;
+      background: var(--rebel-red);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+      border: 3px solid var(--rebel-gold);
+    }
+    
+    .step-icon {
+      font-size: 3rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .security-warning {
+      background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(255, 204, 0, 0.1));
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-red);
+      text-align: center;
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .security-warning h3 {
+      color: var(--rebel-red);
+      margin-bottom: var(--spacing-md);
+    }
   </style>
 </head>
 <body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header -->
   <header>
-    <nav id="nav-desktop">
-      <a href="index.html">Home</a>
-      <a href="#about">About</a>
-      
-      <!-- Epoch Rewards Dropdown -->
-      <div class="dropdown">
-        <a href="epoch-rewards.html" class="dropdown-toggle">Epoch Rewards</a>
-        <div class="dropdown-menu">
-          <a href="epoch-rewards.html">Reward System</a>
-          <a href="#schedule">Schedule</a>
+    <div class="header-container">
+      <h1>RebelInuX Epoch Rewards</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="nav-desktop" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="trade.html">Trade</a>
+        <a href="tokenomics.html">Tokenomics</a>
+        <a href="governance.html">Governance</a>
+        <a href="epoch-rewards.html" class="active">Epoch Rewards</a>
+        <a href="artwork.html">Artwork</a>
+        <a href="community.html">Community</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <h1>EPOCH REWARDS SYSTEM</h1>
+      <p>Claim $REBL tokens by holding Creator Coin and the active Rebel Key NFT during weekly epochs. Rewards distributed every 7 days to loyal rebels!</p>
+      <div style="margin-top: var(--spacing-lg);">
+        <a href="#current-epochs" class="cta-button">
+          <i class="fas fa-clock"></i> Live Countdowns
+        </a>
+        <a href="#rebl-calculator" class="cta-button gold">
+          <i class="fas fa-calculator"></i> Reward Calculator
+        </a>
+        <a href="#how-to-claim" class="cta-button">
+          <i class="fas fa-gift"></i> How to Claim
+        </a>
+      </div>
+    </section>
+    
+    <!-- Epoch Stats -->
+    <section id="epoch-stats">
+      <h2>Epoch Statistics</h2>
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-calendar-week"></i>
+          </div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">Epochs Completed</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Since October 2025
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <div class="stat-value">54.8M</div>
+          <div class="stat-label">Current Reward Pool</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            $REBL to be distributed
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-value">500+</div>
+          <div class="stat-label">Claim Participants</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Active reward claimants
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-key"></i>
+          </div>
+          <div class="stat-value">2</div>
+          <div class="stat-label">Rebel Keys</div>
+          <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+            Rotating weekly
+          </div>
         </div>
       </div>
-
-      <!-- Other menu items -->
-      <a href="tokenomics.html">Tokenomics</a>
-      <a href="roadmap.html">Roadmap</a>
-      <a href="governance.html">Governance</a>
-      <a href="#artwork">Artwork</a>
-      <a href="#community">Community</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <section id="epoch-rewards">
-      <h1>Epoch Rewards</h1>
-      <p>Details about epoch rewards go here.</p>
+    </section>
+    
+    <!-- How Epoch Rewards Work -->
+    <section id="how-it-works">
+      <h2>How Epoch Rewards Work</h2>
+      <div class="content-card">
+        <h3><i class="fas fa-cogs" style="margin-right: 10px;"></i> The Reward Mechanism</h3>
+        <p style="font-size: 1.1rem; margin-bottom: var(--spacing-md);">
+          RebelInuX introduces a revolutionary <strong>epoch-based reward system</strong> for $REBL token distribution. 
+          Holders of <strong>Creator Coin ($rebelinux)</strong> and the <strong>active Rebel Key NFT</strong> can claim rewards during weekly epochs.
+        </p>
+        
+        <div class="steps-guide">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Hold Creator Coin</h4>
+            <p style="font-size: 0.95rem;">Acquire $rebelinux tokens on ZORA (Base network)</p>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Own Rebel Key NFT</h4>
+            <p style="font-size: 0.95rem;">Purchase the Rebel Key NFT designated for current epoch</p>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Submit Solana Address</h4>
+            <p style="font-size: 0.95rem;">Comment your Solana wallet on the Rebel Key's ZORA page</p>
+          </div>
+          
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="step-icon">
+              <i class="fas fa-gift"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Receive $REBL</h4>
+            <p style="font-size: 0.95rem;">Tokens distributed within 24 hours of epoch closure</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Current Epochs -->
+    <section id="current-epochs">
+      <h2>Current Epoch Countdowns</h2>
+      
+      <div class="countdown-grid">
+        <!-- Epoch 12 -->
+        <div class="countdown-box">
+          <div class="epoch-number">Epoch 12</div>
+          <div class="epoch-key">Rebel Key #2</div>
+          <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+            Ends: December 28, 2025 at 22:00 UTC
+          </p>
+          
+          <div class="time-display">
+            <div class="time-unit">
+              <span class="time-value" id="days1">00</span>
+              <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="hours1">00</span>
+              <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="minutes1">00</span>
+              <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="seconds1">00</span>
+              <span class="time-label">Seconds</span>
+            </div>
+          </div>
+          
+          <div style="margin-top: var(--spacing-md);">
+            <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+               target="_blank" rel="noopener noreferrer" 
+               class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-key"></i> Get Rebel Key #2
+            </a>
+          </div>
+        </div>
+        
+        <!-- Epoch 13 -->
+        <div class="countdown-box">
+          <div class="epoch-number">Epoch 13</div>
+          <div class="epoch-key">Rebel Key #1</div>
+          <p style="margin-bottom: var(--spacing-md); color: rgba(255, 255, 255, 0.9);">
+            Starts: December 28, 2025 at 22:00 UTC
+          </p>
+          
+          <div class="time-display">
+            <div class="time-unit">
+              <span class="time-value" id="days2">00</span>
+              <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="hours2">00</span>
+              <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="minutes2">00</span>
+              <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="seconds2">00</span>
+              <span class="time-label">Seconds</span>
+            </div>
+          </div>
+          
+          <div style="margin-top: var(--spacing-md);">
+            <a href="https://zora.co/coin/base:0xecbdd4ca228721a24241eaa845733ff3fc7e4f4a?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+               target="_blank" rel="noopener noreferrer" 
+               class="cta-button gold" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+              <i class="fas fa-key"></i> Get Rebel Key #1
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Rebel Key Rotation -->
+    <section id="key-rotation">
+      <h2>Rebel Key Rotation</h2>
+      <div class="content-card">
+        <h3><i class="fas fa-sync-alt" style="margin-right: 10px;"></i> Weekly Key Rotation</h3>
+        <p style="font-size: 1.1rem; margin-bottom: var(--spacing-lg);">
+          Each epoch features a specific Rebel Key NFT as the claiming interface. 
+          Currently rotating between <strong>Rebel Key #1</strong> and <strong>Rebel Key #2</strong> on a weekly basis.
+        </p>
+        
+        <div class="key-display">
+          <div class="key-card">
+            <div class="key-image">
+              <img src="https://i.imgur.com/6UMr8HB.webp" alt="Rebel Key #1" loading="lazy">
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Rebel Key #1</h4>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-sm);">
+              Used for odd-numbered epochs (1, 3, 5, 7...)
+            </p>
+            <a href="https://zora.co/coin/base:0xecbdd4ca228721a24241eaa845733ff3fc7e4f4a?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+               target="_blank" rel="noopener noreferrer" 
+               class="cta-button" style="font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> View on ZORA
+            </a>
+          </div>
+          
+          <div class="key-rotation">
+            <i class="fas fa-exchange-alt"></i>
+            <div style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--rebel-gold);">
+              Rotates Weekly
+            </div>
+          </div>
+          
+          <div class="key-card">
+            <div class="key-image">
+              <img src="https://i.imgur.com/OXMDryx.webp" alt="Rebel Key #2" loading="lazy">
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Rebel Key #2</h4>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-sm);">
+              Used for even-numbered epochs (2, 4, 6, 8...)
+            </p>
+            <a href="https://zora.co/coin/base:0xe43fed2a4df3430cbba39e141d35fb4265cc734c?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+               target="_blank" rel="noopener noreferrer" 
+               class="cta-button" style="font-size: 0.9rem;">
+              <i class="fas fa-external-link-alt"></i> View on ZORA
+            </a>
+          </div>
+        </div>
+        
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg); border-left: 4px solid var(--rebel-red);">
+          <p style="margin: 0; color: var(--rebel-gold);">
+            <strong>Future Expansion:</strong> New Rebel Keys will be minted over time, expanding the rotation beyond Keys #1 and #2.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- REBL Calculator -->
+    <section id="rebl-calculator">
+      <h2>$REBL Reward Calculator</h2>
+      <div class="rebl-calculator">
+        <div class="calculator-container">
+          <div class="calculator-info">
+            <p>
+              <strong>Current $rebelinux Supply (CS):</strong>
+              <span class="info-value">499,242,047</span>
+            </p>
+            <p>
+              <strong>Epoch Reward Pool (ERP):</strong>
+              <span class="info-value">54,812,320.11 $REBL</span>
+            </p>
+            <p style="font-size: 0.9rem; margin-top: var(--spacing-sm); color: var(--rebel-gold);">
+              <i class="fas fa-lightbulb"></i> <strong>Important:</strong> When selling $rebelinux tokens, the system uses LIFO (Last-In-First-Out) - newest tokens are sold first.
+            </p>
+          </div>
+          
+          <div class="token-batches-section">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">Your Token Batches</h4>
+            <div class="table-container">
+              <table id="token-batches-table">
+                <thead>
+                  <tr>
+                    <th>$rebelinux Amount</th>
+                    <th>Age (Epochs)</th>
+                    <th>Weighted Value</th>
+                    <th>Estimated $REBL</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Rows will be added dynamically -->
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="batch-controls">
+              <button onclick="addTokenBatch()" class="batch-btn add-btn">
+                <i class="fas fa-plus"></i> Add Batch
+              </button>
+              <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
+                <i class="fas fa-trash"></i> Clear All
+              </button>
+            </div>
+            
+            <div style="text-align: center; margin: var(--spacing-md) 0;">
+              <button onclick="loadExampleData()" class="batch-btn" style="background: rgba(255, 255, 255, 0.1); color: var(--rebel-gold); border: 1px solid var(--rebel-gold);">
+                <i class="fas fa-vial"></i> Load Example Data
+              </button>
+            </div>
+          </div>
+          
+          <button onclick="calculateRewards()" class="calculate-btn">
+            <i class="fas fa-calculator"></i> CALCULATE REWARDS
+          </button>
+          
+          <div id="reward-result">
+            Enter your token batches above to see your estimated rewards!
+          </div>
+          
+          <!-- What If Section -->
+          <div style="margin-top: var(--spacing-xl); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+              <i class="fas fa-chart-line"></i> What If Calculator
+            </h4>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
+              <div>
+                <label style="display: block; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+                  Token Amount:
+                  <span id="whatIfAmountValue" style="color: white;">10,000,000</span>
+                </label>
+                <input type="range" id="whatIfAmount" min="0" max="1000000000" step="1000000" value="10000000" 
+                       oninput="updateWhatIf()" style="width: 100%;">
+              </div>
+              
+              <div>
+                <label style="display: block; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+                  Hold Time (Epochs):
+                  <span id="whatIfEpochsValue" style="color: white;">10</span>
+                </label>
+                <input type="range" id="whatIfEpochs" min="1" max="20" value="10" 
+                       oninput="updateWhatIf()" style="width: 100%;">
+              </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: var(--spacing-lg);">
+              <h5 style="color: var(--rebel-gold);">Projected Reward:</h5>
+              <div style="font-size: 1.8rem; font-weight: 900; color: var(--rebel-red);" id="whatIfReward">
+                0 $REBL
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- How to Claim -->
+    <section id="how-to-claim">
+      <h2>How to Claim Your Rewards</h2>
+      <div class="content-card">
+        <h3><i class="fas fa-gift" style="margin-right: 10px;"></i> Step-by-Step Claim Process</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg); margin: var(--spacing-lg) 0;">
+          <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
+            <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm); text-align: center;">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">Step 1: Acquire Assets</h4>
+            <ul style="color: rgba(255, 255, 255, 0.9);">
+              <li>Purchase <strong>Creator Coin ($rebelinux)</strong> on ZORA</li>
+              <li>Buy the active <strong>Rebel Key NFT</strong> for current epoch</li>
+            </ul>
+          </div>
+          
+          <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+              <i class="fas fa-comment"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">Step 2: Submit Claim</h4>
+            <ul style="color: rgba(255, 255, 255, 0.9);">
+              <li>Go to the active Rebel Key's ZORA page</li>
+              <li>Comment your <strong>Solana wallet address</strong> during the epoch</li>
+            </ul>
+          </div>
+          
+          <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
+            <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm); text-align: center;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">Step 3: Receive Rewards</h4>
+            <ul style="color: rgba(255, 255, 255, 0.9);">
+              <li>Wait for epoch to end (7 days)</li>
+              <li>$REBL tokens distributed within 24 hours</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: var(--spacing-lg);">
+          <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button">
+            <i class="fas fa-external-link-alt"></i> View Creator Coin on ZORA
+          </a>
+          <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button gold">
+            <i class="fas fa-key"></i> Browse Rebel Keys
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Security Warning -->
+    <section id="security">
+      <div class="security-warning">
+        <h3><i class="fas fa-shield-alt" style="margin-right: 10px;"></i> SECURITY WARNING</h3>
+        <p style="font-size: 1.1rem; margin-bottom: var(--spacing-md);">
+          ⚠️ <strong>CRITICAL:</strong> ONLY share your <strong>public Solana address</strong> (e.g., <code>ahWDSP4...3MUiI</code>) when claiming rewards.
+        </p>
+        <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.9);">
+          <strong>NEVER</strong> share your private key, seed phrase, or any sensitive information. 
+          The RebelInuX team will NEVER ask for these details.
+        </p>
+      </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="content-card">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg);">
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> What are epochs?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              Epochs are 7-day periods during which you can claim $REBL rewards. Each epoch uses a specific Rebel Key NFT for claims.
+            </p>
+          </div>
+          
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> Do I need both assets?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              Yes, you need both <strong>Creator Coin ($rebelinux)</strong> and the active <strong>Rebel Key NFT</strong> to claim rewards.
+            </p>
+          </div>
+          
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> How are rewards calculated?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              Rewards are proportional to your weighted share of the total Creator Coin supply. Older tokens earn more (age bonus up to 20 epochs).
+            </p>
+          </div>
+          
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> When are rewards distributed?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              $REBL tokens are distributed to your Solana wallet within 24 hours of the epoch ending.
+            </p>
+          </div>
+          
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> Can I sell my Creator Coin?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              Yes, but the system uses LIFO (Last-In-First-Out). Newest tokens are sold first, preserving age of older holdings.
+            </p>
+          </div>
+          
+          <div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> What happens if I miss an epoch?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              You can claim in the next epoch. Your token age continues to accumulate, potentially increasing future rewards.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Related Pages -->
+    <section id="related">
+      <h2>Explore More</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <a href="tokenomics.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Tokenomics</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Learn about $REBL token distribution and economics</p>
+        </a>
+        
+        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-vote-yea"></i>
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Governance</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Participate in community voting and decisions</p>
+        </a>
+        
+        <a href="artwork.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Artwork</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">View community-created artwork and NFTs</p>
+        </a>
+      </div>
     </section>
   </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="social-icons">
+        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: var(--spacing-lg) 0;">
+        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL
+        </a>
+      </div>
+      
+      <div style="margin-bottom: var(--spacing-md); text-align: center;">
+        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
+        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
+        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
+        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
+        <a href="epoch-rewards.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Epoch Rewards</a>
+        <a href="artwork.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Artwork</a>
+      </div>
+      
+      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
+        <p style="margin: 0.5rem 0;">
+          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
+          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+        </p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    document.querySelectorAll('.dropdown').forEach(dropdown => {
-      dropdown.addEventListener('mouseenter', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'flex';
-        dropdown.querySelector('.dropdown-menu').style.flexDirection = 'column';
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide loader
+      setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1000);
+      
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          const nav = document.getElementById('nav-desktop');
+          const icon = this.querySelector('i');
+          
+          nav.classList.toggle('active');
+          if (nav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+      
+      // Close mobile nav when clicking on a link
+      document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+              toggleIcon.classList.remove('fa-times');
+              toggleIcon.classList.add('fa-bars');
+            }
+          }
+        });
       });
-      dropdown.addEventListener('mouseleave', () => {
-        dropdown.querySelector('.dropdown-menu').style.display = 'none';
+      
+      // Back to top button
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        
+        backToTop.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+      
+      // Initialize countdowns
+      updateCountdown1();
+      updateCountdown2();
+      setInterval(updateCountdown1, 1000);
+      setInterval(updateCountdown2, 1000);
+      
+      // Initialize calculator
+      if (document.querySelectorAll('#token-batches-table tbody tr').length === 0) {
+        addTokenBatch();
+      }
+      
+      // Initialize what-if calculator
+      updateWhatIf();
+      
+      // Animate cards on scroll
+      function animateCards() {
+        const cards = document.querySelectorAll('.stat-card, .step-card, .countdown-box, .key-card');
+        cards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 100);
+          }
+        });
+      }
+      
+      // Initialize cards with hidden state
+      const cardsInit = document.querySelectorAll('.stat-card, .step-card, .countdown-box, .key-card');
+      cardsInit.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       });
+      
+      window.addEventListener('scroll', animateCards);
+      animateCards(); // Initial call
     });
+    
+    // Countdown Functions
+    function updateCountdown1() {
+      const epochEndDate = new Date("2025-12-28T22:00:00").getTime();
+      const now = new Date().getTime();
+      const distance = epochEndDate - now;
+      
+      if (distance < 0) {
+        document.getElementById('days1').textContent = "00";
+        document.getElementById('hours1').textContent = "00";
+        document.getElementById('minutes1').textContent = "00";
+        document.getElementById('seconds1').textContent = "00";
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('days1').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours1').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes1').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds1').textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    function updateCountdown2() {
+      const epochStartDate = new Date("2025-12-28T22:00:00").getTime();
+      const now = new Date().getTime();
+      const distance = epochStartDate - now;
+      
+      if (distance < 0) {
+        document.getElementById('days2').textContent = "00";
+        document.getElementById('hours2').textContent = "00";
+        document.getElementById('minutes2').textContent = "00";
+        document.getElementById('seconds2').textContent = "00";
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('days2').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours2').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
+      document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
+    }
+    
+    // Calculator Functions
+    function addTokenBatch(amount = '', age = '') {
+      const table = document.querySelector('#token-batches-table tbody');
+      if (!table) return;
+      
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <input type="number" class="batch-amount" value="${amount}" placeholder="Amount" oninput="updateRowCalculations(this)">
+        </td>
+        <td>
+          <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateRowCalculations(this)">
+        </td>
+        <td class="batch-weighted-value" style="color: var(--rebel-gold);">0</td>
+        <td class="batch-estimated-reward" style="color: var(--rebel-red); font-weight: bold;">0 $REBL</td>
+        <td><button onclick="removeTokenBatch(this)" class="batch-btn" style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer;">×</button></td>
+      `;
+      table.appendChild(row);
+      
+      if (amount || age) {
+        updateRowCalculations(row.querySelector('.batch-amount'));
+      }
+    }
+    
+    function removeTokenBatch(button) {
+      const row = button.closest('tr');
+      if (row) {
+        row.remove();
+        calculateRewards();
+      }
+    }
+    
+    function clearTokenBatches() {
+      const table = document.querySelector('#token-batches-table tbody');
+      if (table) {
+        table.innerHTML = '';
+        addTokenBatch();
+        document.getElementById('reward-result').innerHTML = 'Enter your token batches above to see your estimated rewards!';
+      }
+    }
+    
+    function updateRowCalculations(input) {
+      const row = input.closest('tr');
+      if (!row) return;
+      
+      const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+      const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+      
+      // Constants
+      const CS = 499242047.00;
+      const ERP = 54812320.11;
+      const k = 0.07;
+      const A_max = 20;
+      
+      // Calculate weighted value
+      const weightedValue = amount * (1 + k * Math.min(age, A_max));
+      
+      // Calculate estimated reward
+      const estimatedReward = (weightedValue / CS) * ERP;
+      
+      // Update display
+      const weightedValueCell = row.querySelector('.batch-weighted-value');
+      const estimatedRewardCell = row.querySelector('.batch-estimated-reward');
+      
+      if (weightedValueCell) {
+        weightedValueCell.textContent = weightedValue.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+      
+      if (estimatedRewardCell) {
+        estimatedRewardCell.textContent = estimatedReward.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + ' $REBL';
+      }
+      
+      calculateRewards();
+    }
+    
+    function calculateRewards() {
+      const CS = 499242047.00;
+      const ERP = 54812320.11;
+      const rows = document.querySelectorAll('#token-batches-table tbody tr');
+      let WS = 0;
+      let totalAmount = 0;
+      let totalReward = 0;
+      
+      rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+        const k = 0.07;
+        const A_max = 20;
+        
+        const weightedValue = amount * (1 + k * Math.min(age, A_max));
+        WS += weightedValue;
+        totalAmount += amount;
+        
+        totalReward += (weightedValue / CS) * ERP;
+      });
+      
+      const resultElement = document.getElementById('reward-result');
+      
+      if (WS <= 0 || isNaN(totalReward)) {
+        resultElement.innerHTML = 'Please enter valid token batches!';
+        resultElement.style.color = 'var(--rebel-red)';
+      } else {
+        const sharePercentage = ((WS / CS) * 100).toFixed(6);
+        resultElement.innerHTML = `
+          <div style="text-align: left;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+              <span><strong>Total $rebelinux:</strong></span>
+              <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+              <span><strong>Total Weighted Share:</strong></span>
+              <span style="color: var(--rebel-gold);">${WS.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+              <span><strong>Your Share of Pool:</strong></span>
+              <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 1.2em;">
+              <span><strong>Total Estimated Reward:</strong></span>
+              <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })} $REBL</span>
+            </div>
+          </div>
+        `;
+        resultElement.style.color = 'var(--rebel-gold)';
+      }
+    }
+    
+    function loadExampleData() {
+      clearTokenBatches();
+      addTokenBatch('1000000', '5');
+      addTokenBatch('500000', '12');
+      addTokenBatch('2500000', '1');
+      
+      setTimeout(() => {
+        calculateRewards();
+        document.getElementById('reward-result').innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded! Calculations updated.</div>';
+      }, 100);
+    }
+    
+    // What If Calculator
+    function updateWhatIf() {
+      const amountSlider = document.getElementById('whatIfAmount');
+      const epochsSlider = document.getElementById('whatIfEpochs');
+      const amountValue = document.getElementById('whatIfAmountValue');
+      const epochsValue = document.getElementById('whatIfEpochsValue');
+      const rewardElement = document.getElementById('whatIfReward');
+      
+      if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+      
+      const amount = parseInt(amountSlider.value);
+      const epochs = parseInt(epochsSlider.value);
+      
+      amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+      epochsValue.textContent = epochs;
+      
+      // Calculate what-if reward
+      const CS = 499242047.00;
+      const ERP = 54812320.11;
+      const k = 0.07;
+      const A_max = 20;
+      
+      const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
+      const estimatedReward = (weightedValue / CS) * ERP;
+      
+      rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' $REBL';
+    }
   </script>
 </body>
 </html>
