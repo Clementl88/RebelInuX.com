@@ -4282,7 +4282,6 @@ window.addEventListener('load', function() {
 });
     
 // ========== ENHANCED MOBILE NAVIGATION & DROPDOWNS ==========
-
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileToggle = document.getElementById('mobileNavToggle');
@@ -4301,15 +4300,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Close all dropdowns when closing mobile menu
                 document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
                     dropdown.classList.remove('active');
-                    // Update ARIA state
                     const trigger = dropdown.querySelector('.dropdown-trigger');
                     if (trigger) trigger.setAttribute('aria-expanded', 'false');
                 });
             }
         });
     }
-    
-    // ========== FIXED DROPDOWN FUNCTIONALITY ==========
     
     // Mobile dropdown functionality
     document.querySelectorAll('.nav-dropdown > .dropdown-trigger').forEach(trigger => {
@@ -4334,16 +4330,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 dropdown.classList.toggle('active');
                 this.setAttribute('aria-expanded', dropdown.classList.contains('active'));
                 
-                // Scroll into view if needed
-                if (!isActive && dropdown.classList.contains('active')) {
-                    setTimeout(() => {
-                        dropdown.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 300);
-                }
-                
                 // Navigate on second click if it's a link to a section
                 if (!isActive) {
-                    // First click - just open dropdown, don't navigate
+                    // First click - just open dropdown
                     return;
                 } else {
                     // Second click - navigate to section
@@ -4356,7 +4345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Close mobile nav when clicking on ANY link (not just dropdowns)
+    // Close mobile nav when clicking on a link
     document.querySelectorAll('#nav-desktop a').forEach(link => {
         link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
@@ -4422,6 +4411,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+});
     
     // ========== ACTIVE NAV LINK HIGHLIGHTING ==========
     
