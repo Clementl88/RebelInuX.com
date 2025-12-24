@@ -3119,17 +3119,7 @@
         </div>
       </div>
     </div>
-        <div style="text-align: center; margin-top: 1rem; width: 100%;">
-        <button onclick="checkRefreshStatus()" style="background: #666; color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Debug Refresh Status
-        </button>
-        <button onclick="startAutoRefresh()" style="background: var(--rebel-gold); color: black; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Restart Auto-Refresh
-        </button>
-        <button onclick="clearInterval(window.refreshInterval); console.log('❌ Auto-refresh stopped');" style="background: var(--rebel-red); color: white; padding: 0.5rem 1rem; border-radius: 5px; border: none; cursor: pointer; font-size: 0.8rem; margin: 0.2rem;">
-            Stop Auto-Refresh
-        </button>
-    </div>
+
     <!-- Combined Stats Grid -->
     <div class="metric-cards">
       <!-- Price Card -->
@@ -3473,21 +3463,6 @@
       </div>
     </div>
   </section>
-
-    <!-- Add this right after the Pie Chart section (around line 1035) -->
-<div style="text-align: center; margin-top: 10px;">
-    <button onclick="testChart()" style="background: var(--rebel-red); color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">
-        <i class="fas fa-chart-pie"></i> Test Chart
-    </button>
-</div>
-<script>
-function testChart() {
-    console.log("🔄 Testing chart...");
-    console.log("Chart.js loaded:", typeof Chart !== 'undefined');
-    console.log("Canvas element:", document.getElementById('distributionChart'));
-    initializeTokenomicsChart();
-}
-</script>
     
   <!-- Roadmap Section -->
   <section id="roadmap" class="visible">
@@ -3854,16 +3829,6 @@ window.addEventListener('load', function() {
         }
     });
 });
-// Debug function to check refresh status
-function checkRefreshStatus() {
-    console.log("🔄 Refresh Status Check:");
-    console.log("- Auto-refresh interval ID:", window.refreshInterval);
-    console.log("- Last refresh time:", document.getElementById('last-updated-time')?.textContent);
-    console.log("- Page visibility:", document.visibilityState);
-    
-    // Force a manual refresh
-    refreshData();
-}
 
 // Make sure startAutoRefresh is also defined (add if not already there)
 function startAutoRefresh() {
@@ -4110,7 +4075,6 @@ async function fetchLiveStatsData() {
             
             if (dexscreenerResponse.ok) {
                 const dexscreenerData = await dexscreenerResponse.json();
-                console.log("📊 DexScreener data received:", dexscreenerData);
                 
                 if (dexscreenerData.pairs && dexscreenerData.pairs.length > 0) {
                     const pair = dexscreenerData.pairs[0];
@@ -4269,8 +4233,6 @@ function updateLiveStatsDisplay(data) {
         statusElement.textContent = data.success ? '✅ Live' : '⚠️ Cached';
         statusElement.style.color = data.success ? '#4CAF50' : '#FF9800';
     }
-      console.log("✅ Display updated successfully!");
-
 }
 
 // Fixed initializeMetrics function with proper auto-refresh
@@ -4399,7 +4361,6 @@ function getStaticData() {
   
 // Tokenomics Pie Chart - ADD THIS FUNCTION
 function initializeTokenomicsChart() {
-    console.log("🔄 Initializing tokenomics chart...");
     
     // Wait for DOM to be fully loaded
     if (document.readyState === 'loading') {
@@ -4498,7 +4459,7 @@ function initializeTokenomicsChart() {
                 }
             });
             
-            console.log('✅ Tokenomics chart created successfully!');
+          
             
         } catch (error) {
             console.error('❌ Error creating chart:', error);
