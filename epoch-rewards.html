@@ -28,6 +28,9 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root {
       --rebel-red: #ff3366;
@@ -456,6 +459,39 @@
       box-shadow: var(--box-shadow-hover);
     }
     
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+      margin: var(--spacing-lg) 0;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      border: 1px solid var(--rebel-gold);
+    }
+    
+    #rewardChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    
+    .chart-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--rebel-gold);
+      text-align: center;
+    }
+    
+    .chart-placeholder i {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-sm);
+      opacity: 0.5;
+    }
+    
     #reward-result {
       background: rgba(255, 204, 0, 0.1);
       padding: var(--spacing-lg);
@@ -679,6 +715,10 @@
       #token-batches-table td {
         padding: 0.5rem;
       }
+      
+      .chart-container {
+        height: 250px;
+      }
     }
     
     /* Step by Step Guide */
@@ -739,6 +779,75 @@
     .security-warning h3 {
       color: var(--rebel-red);
       margin-bottom: var(--spacing-md);
+    }
+    
+    /* What If Calculator */
+    .what-if-container {
+      margin-top: var(--spacing-xl);
+      background: rgba(0, 0, 0, 0.4);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--rebel-gold);
+    }
+    
+    .slider-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .slider-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .slider-container label {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .slider-value {
+      color: white;
+      font-weight: bold;
+    }
+    
+    .slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      -webkit-appearance: none;
+    }
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--rebel-gold);
+      cursor: pointer;
+      border: 2px solid white;
+    }
+    
+    .what-if-result {
+      text-align: center;
+      margin-top: var(--spacing-lg);
+    }
+    
+    .what-if-result h4 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    #whatIfReward {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--rebel-red);
     }
   </style>
 </head>
@@ -1084,42 +1193,62 @@
             <i class="fas fa-calculator"></i> CALCULATE REWARDS
           </button>
           
+          <!-- Chart Container -->
+          <div class="chart-container">
+            <canvas id="rewardChart"></canvas>
+            <div id="chartPlaceholder" class="chart-placeholder">
+              <i class="fas fa-chart-pie"></i>
+              <p>Your reward distribution will appear here after calculation</p>
+            </div>
+          </div>
+          
           <div id="reward-result">
             Enter your token batches above to see your estimated rewards!
           </div>
           
-          <!-- What If Section -->
-          <div style="margin-top: var(--spacing-xl); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
-            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+          <!-- What If Calculator -->
+          <div class="what-if-container">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
               <i class="fas fa-chart-line"></i> What If Calculator
             </h4>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
-              <div>
-                <label style="display: block; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <div class="slider-group">
+              <div class="slider-container">
+                <label>
                   Token Amount:
-                  <span id="whatIfAmountValue" style="color: white;">10,000,000</span>
+                  <span id="whatIfAmountValue" class="slider-value">10,000,000</span>
                 </label>
                 <input type="range" id="whatIfAmount" min="0" max="1000000000" step="1000000" value="10000000" 
-                       oninput="updateWhatIf()" style="width: 100%;">
+                       oninput="updateWhatIf()" class="slider">
               </div>
               
-              <div>
-                <label style="display: block; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <div class="slider-container">
+                <label>
                   Hold Time (Epochs):
-                  <span id="whatIfEpochsValue" style="color: white;">10</span>
+                  <span id="whatIfEpochsValue" class="slider-value">10</span>
                 </label>
                 <input type="range" id="whatIfEpochs" min="1" max="20" value="10" 
-                       oninput="updateWhatIf()" style="width: 100%;">
+                       oninput="updateWhatIf()" class="slider">
               </div>
             </div>
             
-            <div style="text-align: center; margin-top: var(--spacing-lg);">
-              <h5 style="color: var(--rebel-gold);">Projected Reward:</h5>
-              <div style="font-size: 1.8rem; font-weight: 900; color: var(--rebel-red);" id="whatIfReward">
+            <div class="what-if-result">
+              <h4>Projected Reward:</h4>
+              <div id="whatIfReward" style="font-size: 2rem; font-weight: 900; color: var(--rebel-red);">
                 0 $REBL
               </div>
             </div>
+          </div>
+          
+          <!-- Formula Explanation -->
+          <div style="margin-top: var(--spacing-xl); padding: var(--spacing-md); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+              <i class="fas fa-calculator"></i> Reward Formula
+            </h4>
+            <p style="text-align: center; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8);">
+              <strong>Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool</strong><br>
+              <strong>Weighted Share =</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches
+            </p>
           </div>
         </div>
       </div>
@@ -1330,6 +1459,9 @@
   </footer>
 
   <script>
+    // Chart.js instance
+    let rewardChart = null;
+    
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
       // Hide loader
@@ -1398,6 +1530,9 @@
       
       // Initialize what-if calculator
       updateWhatIf();
+      
+      // Initialize chart placeholder
+      setupChartPlaceholder();
       
       // Animate cards on scroll
       function animateCards() {
@@ -1512,6 +1647,7 @@
         table.innerHTML = '';
         addTokenBatch();
         document.getElementById('reward-result').innerHTML = 'Enter your token batches above to see your estimated rewards!';
+        hideChart();
       }
     }
     
@@ -1563,6 +1699,9 @@
       let totalAmount = 0;
       let totalReward = 0;
       
+      // Store batch data for chart
+      const batchData = [];
+      
       rows.forEach(row => {
         const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
         const age = parseFloat(row.querySelector('.batch-age').value) || 0;
@@ -1573,41 +1712,56 @@
         WS += weightedValue;
         totalAmount += amount;
         
-        totalReward += (weightedValue / CS) * ERP;
+        const batchReward = (weightedValue / CS) * ERP;
+        totalReward += batchReward;
+        
+        if (amount > 0) {
+          batchData.push({
+            amount: amount,
+            age: age,
+            weightedValue: weightedValue,
+            reward: batchReward
+          });
+        }
       });
       
       const resultElement = document.getElementById('reward-result');
       
-      if (WS <= 0 || isNaN(totalReward)) {
+      if (WS <= 0 || isNaN(totalReward) || batchData.length === 0) {
         resultElement.innerHTML = 'Please enter valid token batches!';
         resultElement.style.color = 'var(--rebel-red)';
-      } else {
-        const sharePercentage = ((WS / CS) * 100).toFixed(6);
-        resultElement.innerHTML = `
-          <div style="text-align: left;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-              <span><strong>Total $rebelinux:</strong></span>
-              <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-              <span><strong>Total Weighted Share:</strong></span>
-              <span style="color: var(--rebel-gold);">${WS.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-              <span><strong>Your Share of Pool:</strong></span>
-              <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 1.2em;">
-              <span><strong>Total Estimated Reward:</strong></span>
-              <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })} $REBL</span>
-            </div>
-          </div>
-        `;
-        resultElement.style.color = 'var(--rebel-gold)';
+        hideChart();
+        return;
       }
+      
+      const sharePercentage = ((WS / CS) * 100).toFixed(6);
+      resultElement.innerHTML = `
+        <div style="text-align: left;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Total $rebelinux:</strong></span>
+            <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Total Weighted Share:</strong></span>
+            <span style="color: var(--rebel-gold);">${WS.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Your Share of Pool:</strong></span>
+            <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.2em;">
+            <span><strong>Total Estimated Reward:</strong></span>
+            <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })} $REBL</span>
+          </div>
+        </div>
+      `;
+      resultElement.style.color = 'var(--rebel-gold)';
+      
+      // Update the chart with batch data
+      updateChart(batchData, totalReward);
     }
     
     function loadExampleData() {
@@ -1620,6 +1774,124 @@
         calculateRewards();
         document.getElementById('reward-result').innerHTML = '<div style="color: var(--rebel-gold);"><i class="fas fa-check-circle"></i> Example data loaded! Calculations updated.</div>';
       }, 100);
+    }
+    
+    // Chart Functions
+    function setupChartPlaceholder() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex';
+      }
+    }
+    
+    function hideChart() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex';
+      }
+      if (rewardChart) {
+        rewardChart.destroy();
+        rewardChart = null;
+      }
+    }
+    
+    function updateChart(batchData, totalReward) {
+      const ctx = document.getElementById('rewardChart').getContext('2d');
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      
+      // Hide placeholder
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'none';
+      }
+      
+      // Destroy existing chart if it exists
+      if (rewardChart) {
+        rewardChart.destroy();
+      }
+      
+      // Prepare chart data
+      const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+      const rewards = batchData.map(batch => batch.reward);
+      const percentages = batchData.map(batch => ((batch.reward / totalReward) * 100).toFixed(1));
+      
+      // Colors for the chart
+      const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(153, 102, 255, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 99, 132, 0.8)'
+      ];
+      
+      const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)'
+      ];
+      
+      // Create new chart
+      rewardChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: rewards,
+            backgroundColor: backgroundColors.slice(0, batchData.length),
+            borderColor: borderColors.slice(0, batchData.length),
+            borderWidth: 2,
+            hoverOffset: 15
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: 'white',
+                font: {
+                  family: 'Montserrat',
+                  size: 12
+                },
+                padding: 15,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const batch = batchData[context.dataIndex];
+                  const percentage = percentages[context.dataIndex];
+                  return [
+                    `Batch ${context.dataIndex + 1}: ${batch.reward.toLocaleString()} $REBL`,
+                    `Amount: ${batch.amount.toLocaleString()} $rebelinux`,
+                    `Age: ${batch.age} epochs`,
+                    `Share: ${percentage}% of total`
+                  ];
+                }
+              },
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: 'var(--rebel-gold)',
+              bodyColor: 'white',
+              borderColor: 'var(--rebel-gold)',
+              borderWidth: 1
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1000
+          }
+        }
+      });
     }
     
     // What If Calculator
