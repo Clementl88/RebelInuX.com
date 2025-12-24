@@ -4280,45 +4280,6 @@ window.addEventListener('load', function() {
         if (loader) loader.classList.add('hidden');
     }, 1000);
 });
-
-// ========== ENHANCED MOBILE NAVIGATION & DROPDOWNS ==========
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
-    const mobileToggle = document.getElementById('mobileNavToggle');
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', function() {
-            const nav = document.getElementById('nav-desktop');
-            const icon = this.querySelector('i');
-            
-            nav.classList.toggle('active');
-            if (nav.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-                // Close all dropdowns when closing mobile menu
-                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
-            }
-        });
-    }
-    
-    // Close mobile nav when clicking on a link
-    document.querySelectorAll('#nav-desktop a').forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                document.getElementById('nav-desktop').classList.remove('active');
-                const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
-                if (toggleIcon) {
-                    toggleIcon.classList.remove('fa-times');
-                    toggleIcon.classList.add('fa-bars');
-                }
-            }
-        });
-    });
     
 // ========== ENHANCED MOBILE NAVIGATION & DROPDOWNS ==========
 
