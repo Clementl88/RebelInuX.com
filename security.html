@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Security Details - Complete security audit, contract verification, and risk analysis" />
+  <meta name="keywords" content="$REBL security, smart contract audit, token safety, RugCheck verification, Solscan" />
+  <meta property="og:title" content="RebelInuX Security - Complete Safety Analysis" />
+  <meta property="og:description" content="Full security details, contract verification, and safety checks for $REBL token." />
+  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:url" content="https://rebelinux.fun/security.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Security - Complete Safety Analysis">
+  <meta name="twitter:description" content="Full security details, contract verification, and safety checks for $REBL token.">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
+  <title>RebelInuX Security Details - Complete Safety Analysis</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    main {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    section {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+    
+    /* Hero Section */
+    .page-hero {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-xl) 0;
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid;
+      transition: var(--transition);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    /* Security Grid */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .security-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .security-item:hover {
+      border-color: var(--rebel-gold);
+      transform: translateY(-3px);
+    }
+    
+    .security-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      margin: var(--spacing-md) 0;
+    }
+    
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    
+    .checklist i {
+      color: #4CAF50;
+      font-size: 1.2rem;
+    }
+    
+    /* Buttons */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    /* Verification Tools */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .tool-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      text-align: center;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--rebel-gold);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
+      margin-top: var(--spacing-xl);
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: var(--spacing-md);
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      .security-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin: 0.2rem;
+    }
+    
+    .badge.green {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+    }
+    
+    .badge.red {
+      background: rgba(255, 51, 102, 0.2);
+      color: var(--rebel-red);
+      border: 1px solid var(--rebel-red);
+    }
+    
+    .badge.gold {
+      background: rgba(255, 204, 0, 0.2);
+      color: var(--rebel-gold);
+      border: 1px solid var(--rebel-gold);
+    }
+    
+    /* Contract Address */
+    .contract-address {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--rebel-gold);
+      border-radius: 8px;
+      padding: var(--spacing-md);
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+      margin: var(--spacing-md) 0;
+    }
+    
+    /* Status Indicators */
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .status-good {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      border: 1px solid #4CAF50;
+    }
+    
+    .status-warning {
+      background: rgba(255, 193, 7, 0.2);
+      color: #FFC107;
+      border: 1px solid #FFC107;
+    }
+    
+    .status-info {
+      background: rgba(33, 150, 243, 0.2);
+      color: #2196F3;
+      border: 1px solid #2196F3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <h1>RebelInuX Security</h1>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="nav-desktop" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="trade.html">Trade</a>
+        <a href="tokenomics.html">Tokenomics</a>
+        <a href="governance.html">Governance</a>
+        <a href="security.html" class="active">Security</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="community.html">Community</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero">
+      <h1>SECURITY DETAILS</h1>
+      <p>Complete security analysis, contract verification, and safety checks for the $REBL token ecosystem.</p>
+      <div style="margin-top: var(--spacing-lg);">
+        <a href="#checklist" class="cta-button">
+          <i class="fas fa-list-check"></i> Security Checklist
+        </a>
+        <a href="#contract" class="cta-button gold">
+          <i class="fas fa-file-contract"></i> Contract Verification
+        </a>
+        <a href="#tools" class="cta-button">
+          <i class="fas fa-shield-alt"></i> Verification Tools
+        </a>
+      </div>
+    </section>
+    
+    <!-- Security Overview -->
+    <section id="overview">
+      <h2>Security Overview</h2>
+      <div class="card" style="border-color: var(--rebel-gold);">
+        <div style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); flex-wrap: wrap;">
+          <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-shield-alt" style="color: #4CAF50; font-size: 1.8rem;"></i>
+          </div>
+          <div>
+            <h3 style="color: var(--rebel-gold); margin-bottom: 0.5rem;">Overall Security Status</h3>
+            <div class="status-indicator status-good">
+              <i class="fas fa-check-circle"></i>
+              <span>VERIFIED & SECURE</span>
+            </div>
+          </div>
+        </div>
+        
+        <p style="margin-bottom: var(--spacing-md);">
+          The $REBL token has been designed with maximum security and transparency in mind. All critical authorities have been renounced, and liquidity is permanently locked.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin: var(--spacing-lg) 0;">
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #4CAF50; margin-bottom: 0.5rem;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div style="font-weight: 600; color: var(--rebel-gold);">Mint Authority</div>
+            <div>Renounced</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #4CAF50; margin-bottom: 0.5rem;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div style="font-weight: 600; color: var(--rebel-gold);">Freeze Authority</div>
+            <div>Renounced</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; color: var(--rebel-red); margin-bottom: 0.5rem;">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div style="font-weight: 600; color: var(--rebel-gold);">LP Tokens</div>
+            <div>98.57% Burned</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <div style="font-size: 2rem; color: #2196F3; margin-bottom: 0.5rem;">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div style="font-weight: 600; color: var(--rebel-gold);">Vested Tokens</div>
+            <div>33.12% Locked</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Security Checklist -->
+    <section id="checklist">
+      <h2>Complete Security Checklist</h2>
+      
+      <div class="security-grid">
+        <!-- Mint Authority -->
+        <div class="security-item">
+          <div class="security-icon" style="color: #4CAF50;">
+            <i class="fas fa-ban"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Mint Authority</h3>
+          <div class="badge green">RENOUNCED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            The ability to create new tokens has been permanently disabled. No new $REBL tokens can ever be minted.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-check-circle" style="color: #4CAF50;"></i> Maximum supply: 1,000,000,000
+          </div>
+        </div>
+        
+        <!-- Freeze Authority -->
+        <div class="security-item">
+          <div class="security-icon" style="color: #4CAF50;">
+            <i class="fas fa-snowflake"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Freeze Authority</h3>
+          <div class="badge green">RENOUNCED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            No one can freeze tokens in user wallets. Your $REBL holdings are completely secure and accessible at all times.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-check-circle" style="color: #4CAF50;"></i> Full control retained by holders
+          </div>
+        </div>
+        
+        <!-- LP Tokens -->
+        <div class="security-item">
+          <div class="security-icon" style="color: var(--rebel-red);">
+            <i class="fas fa-fire"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">LP Tokens</h3>
+          <div class="badge red">98.57% BURNED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            Liquidity pool tokens have been permanently burned, locking liquidity and preventing rug pulls.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-lock" style="color: var(--rebel-red);"></i> Liquidity permanently secured
+          </div>
+        </div>
+        
+        <!-- Contract Verification -->
+        <div class="security-item">
+          <div class="security-icon" style="color: #2196F3;">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Contract Verification</h3>
+          <div class="badge green">VERIFIED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            Smart contract source code is publicly verified on Solscan and other explorers.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-check-circle" style="color: #2196F3;"></i> Transparent codebase
+          </div>
+        </div>
+        
+        <!-- Vesting Locks -->
+        <div class="security-item">
+          <div class="security-icon" style="color: var(--rebel-gold);">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Team & Ecosystem</h3>
+          <div class="badge gold">33.12% VESTED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            Team and ecosystem funds are locked in transparent vesting schedules with cliffs.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-clock" style="color: var(--rebel-gold);"></i> Long-term alignment
+          </div>
+        </div>
+        
+        <!-- Multi-Sig Wallets -->
+        <div class="security-item">
+          <div class="security-icon" style="color: #9C27B0;">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Multi-Sig Wallets</h3>
+          <div class="badge green">IMPLEMENTED</div>
+          <p style="margin: var(--spacing-md) 0; font-size: 0.9em;">
+            Treasury and ecosystem funds are secured in multi-signature wallets requiring multiple approvals.
+          </p>
+          <div style="font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
+            <i class="fas fa-shield-alt" style="color: #9C27B0;"></i> Enhanced security
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Contract Verification -->
+    <section id="contract">
+      <h2>Contract Verification</h2>
+      
+      <div class="card" style="border-color: var(--rebel-gold);">
+        <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg);">
+          <i class="fas fa-fingerprint"></i> Official $REBL Contract
+        </h3>
+        
+        <!-- Security Warning -->
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); border-left: 4px solid var(--rebel-red);">
+          <div style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: 0.5rem;">
+            <i class="fas fa-exclamation-triangle" style="color: var(--rebel-red);"></i>
+            <span style="font-weight: 600; color: var(--rebel-red);">IMPORTANT SECURITY NOTICE</span>
+          </div>
+          <p style="margin: 0; font-size: 0.95em;">
+            Always verify this contract address in your wallet before making any transactions. Scammers create fake websites with different addresses.
+          </p>
+        </div>
+        
+        <!-- Contract Address -->
+        <div style="margin-bottom: var(--spacing-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm); flex-wrap: wrap; gap: var(--spacing-sm);">
+            <div>
+              <div style="font-size: 0.9em; color: var(--rebel-gold); margin-bottom: 0.3rem; font-weight: 600;">
+                <i class="fas fa-network-wired"></i> CONTRACT ADDRESS
+              </div>
+              <div style="font-size: 0.85em; color: #aaa;">
+                Solana • SPL Token • Mainnet
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+              <span class="badge green">
+                <i class="fas fa-check-circle"></i> Verified
+              </span>
+              <span class="badge red">
+                <i class="fas fa-fire"></i> LP Burned
+              </span>
+            </div>
+          </div>
+          
+          <div class="contract-address">
+            F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+          </div>
+          
+          <div style="text-align: center; margin-top: var(--spacing-md);">
+            <button onclick="copyToClipboard('F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump')" class="cta-button" style="font-size: 0.9rem;">
+              <i class="fas fa-copy"></i> Copy Contract Address
+            </button>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
+            <i class="fas fa-external-link-alt"></i> Quick Verification Links
+          </h4>
+          <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); justify-content: center;">
+            <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="cta-button" style="background: #2196F3; font-size: 0.9rem;">
+              <i class="fas fa-search"></i> Solscan
+            </a>
+            <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="cta-button gold" style="font-size: 0.9rem;">
+              <i class="fas fa-shield-alt"></i> RugCheck
+            </a>
+            <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="cta-button" style="background: #FF9800; font-size: 0.9rem;">
+              <i class="fas fa-chart-line"></i> DexScreener
+            </a>
+            <a href="trade.html#contract-verify" 
+               class="cta-button gold" style="font-size: 0.9rem;">
+              <i class="fas fa-file-contract"></i> Full Verification
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Verification Tools -->
+    <section id="tools">
+      <h2>Verification Tools</h2>
+      <p style="text-align: center; max-width: 800px; margin: 0 auto var(--spacing-xl); color: #ccc;">
+        Use these trusted third-party platforms to independently verify the security and legitimacy of the $REBL token.
+      </p>
+      
+      <div class="tools-grid">
+        <!-- Solscan -->
+        <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="tool-card">
+          <div style="width: 60px; height: 60px; background: rgba(33, 150, 243, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+            <i class="fas fa-search" style="color: #2196F3; font-size: 1.8rem;"></i>
+          </div>
+          <h3 style="color: #2196F3; margin-bottom: var(--spacing-sm);">Solscan</h3>
+          <p style="color: #ccc; font-size: 0.9em; margin-bottom: var(--spacing-md);">
+            View contract details, holders, transactions, and token metadata.
+          </p>
+          <div class="badge" style="background: rgba(33, 150, 243, 0.2); color: #2196F3; border-color: #2196F3;">
+            Blockchain Explorer
+          </div>
+        </a>
+        
+        <!-- RugCheck -->
+        <a href="https://rugcheck.xyz/tokens/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="tool-card">
+          <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+            <i class="fas fa-shield-alt" style="color: #4CAF50; font-size: 1.8rem;"></i>
+          </div>
+          <h3 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">RugCheck</h3>
+          <p style="color: #ccc; font-size: 0.9em; margin-bottom: var(--spacing-md);">
+            Security audit, renounced authorities analysis, and rug pull risk assessment.
+          </p>
+          <div class="badge" style="background: rgba(76, 175, 80, 0.2); color: #4CAF50; border-color: #4CAF50;">
+            Security Audit
+          </div>
+        </a>
+        
+        <!-- DexScreener -->
+        <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="tool-card">
+          <div style="width: 60px; height: 60px; background: rgba(255, 152, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+            <i class="fas fa-chart-line" style="color: #FF9800; font-size: 1.8rem;"></i>
+          </div>
+          <h3 style="color: #FF9800; margin-bottom: var(--spacing-sm);">DexScreener</h3>
+          <p style="color: #ccc; font-size: 0.9em; margin-bottom: var(--spacing-md);">
+            Real-time charts, liquidity data, trading volume, and market analysis.
+          </p>
+          <div class="badge" style="background: rgba(255, 152, 0, 0.2); color: #FF9800; border-color: #FF9800;">
+            Market Analytics
+          </div>
+        </a>
+        
+        <!-- Streamflow -->
+        <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="tool-card">
+          <div style="width: 60px; height: 60px; background: rgba(156, 39, 176, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+            <i class="fas fa-calendar-alt" style="color: #9C27B0; font-size: 1.8rem;"></i>
+          </div>
+          <h3 style="color: #9C27B0; margin-bottom: var(--spacing-sm);">Streamflow</h3>
+          <p style="color: #ccc; font-size: 0.9em; margin-bottom: var(--spacing-md);">
+            Verify vesting schedules for team and ecosystem funds with transparent unlocking.
+          </p>
+          <div class="badge" style="background: rgba(156, 39, 176, 0.2); color: #9C27B0; border-color: #9C27B0;">
+            Vesting Verification
+          </div>
+        </a>
+      </div>
+    </section>
+    
+    <!-- Security Tips -->
+    <section id="tips">
+      <h2>Security Best Practices</h2>
+      
+      <div class="card" style="border-color: var(--rebel-red);">
+        <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg);">
+          <i class="fas fa-user-shield"></i> How to Stay Safe
+        </h3>
+        
+        <div class="checklist">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Always verify the contract address</strong> - Compare with the official address shown above
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Never share your private keys or seed phrase</strong> - No legitimate service will ever ask for these
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Bookmark official websites</strong> - Use bookmarks instead of searching to avoid phishing sites
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Verify social media accounts</strong> - Check for blue verification badges on official accounts
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Use hardware wallets</strong> - For significant holdings, consider using a Ledger or Trezor
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <strong>Start with small test transactions</strong> - When interacting with new contracts, test with small amounts first
+            </div>
+          </li>
+        </div>
+        
+        <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-lg);">
+          <div style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: 0.5rem;">
+            <i class="fas fa-lightbulb" style="color: var(--rebel-gold);"></i>
+            <span style="font-weight: 600; color: var(--rebel-gold);">Remember</span>
+          </div>
+          <p style="margin: 0; font-size: 0.95em;">
+            If something seems too good to be true, it probably is. Always do your own research (DYOR) and verify information from multiple sources.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Related Pages -->
+    <section id="related">
+      <h2>Related Information</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <a href="trade.html#contract-verify" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Full Contract Verification</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Complete contract details with copy buttons and verification</p>
+        </a>
+        
+        <a href="tokenomics.html#security" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-coins"></i>
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Tokenomics</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Token distribution, vesting schedules, and supply details</p>
+        </a>
+        
+        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-vote-yea"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Community voting and decentralized decision-making</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="social-icons">
+        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+          <i class="fab fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
+          <i class="fas fa-cube"></i>
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: var(--spacing-lg) 0;">
+        <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL
+        </a>
+      </div>
+      
+      <div style="margin-bottom: var(--spacing-md); text-align: center;">
+        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
+        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
+        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
+        <a href="security.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Security</a>
+        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
+        <a href="privacy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy</a>
+      </div>
+      
+      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
+        <p style="margin: 0.5rem 0;">
+          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
+          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide loader
+      setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+      }, 1000);
+      
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          const nav = document.getElementById('nav-desktop');
+          const icon = this.querySelector('i');
+          
+          nav.classList.toggle('active');
+          if (nav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+      
+      // Close mobile nav when clicking on a link
+      document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+              toggleIcon.classList.remove('fa-times');
+              toggleIcon.classList.add('fa-bars');
+            }
+          }
+        });
+      });
+      
+      // Back to top button
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        
+        backToTop.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    });
+    
+    // Copy to clipboard function
+    function copyToClipboard(text) {
+      const button = event.target.closest('button') || event.target;
+      const originalHTML = button.innerHTML;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        // Show success state
+        button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        button.style.background = '#4CAF50';
+        
+        // Show temporary toast notification
+        showToast('Contract address copied to clipboard!', 'success');
+        
+        // Restore button after 2 seconds
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.background = '';
+        }, 2000);
+        
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        button.innerHTML = '<i class="fas fa-times"></i> Failed';
+        button.style.background = '#f44336';
+        showToast('Failed to copy. Please try again.', 'error');
+        
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style.background = '';
+        }, 2000);
+      });
+    }
+    
+    // Toast notification function
+    function showToast(message, type = 'info') {
+      // Remove existing toasts
+      const existingToast = document.querySelector('.toast-notification');
+      if (existingToast) existingToast.remove();
+      
+      // Create toast
+      const toast = document.createElement('div');
+      toast.className = `toast-notification toast-${type}`;
+      toast.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      // Style toast
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+        color: white;
+        padding: 12px 24px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideDown 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+    
+    // Animation keyframes for toast
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideUp {
+        from {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideDown {
+        from {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
