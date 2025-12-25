@@ -409,7 +409,26 @@
       border-left: 4px solid var(--rebel-red);
       margin-bottom: var(--spacing-md);
     }
+        /* Scenario what if button */
+.scenario-btn {
+  background: rgba(255, 51, 102, 0.15);
+  color: var(--rebel-gold);
+  border: 1px solid var(--rebel-red);
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
 
+.scenario-btn:hover {
+  background: rgba(255, 51, 102, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
     /* Important note - separate box */
     .important-note {
       background: rgba(255, 204, 0, 0.1);
@@ -1670,6 +1689,13 @@
       <input type="range" id="whatIfEpochs" min="1" max="20" value="10" oninput="updateWhatIf()" class="slider">
     </div>
   </div>
+
+    <!-- === ADD PRESET SCENARIOS RIGHT HERE === -->
+  <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+    <button onclick="setWhatIfScenario(5000000, 5)" class="scenario-btn">Small Holder (5M, 5 Epochs)</button>
+    <button onclick="setWhatIfScenario(25000000, 15)" class="scenario-btn">Whale Strategy (25M, 15 Epochs)</button>
+    <button onclick="setWhatIfScenario(10000000, 20)" class="scenario-btn">Max Age Bonus (10M, 20 Epochs)</button>
+  </div>
   
   <!-- Results - Make it more impactful -->
   <div class="what-if-result" style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
@@ -1983,7 +2009,23 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
-      
+      function setWhatIfScenario(amount, epochs) {
+  // Set slider values
+  document.getElementById('whatIfAmount').value = amount;
+  document.getElementById('whatIfEpochs').value = epochs;
+  
+  // Update displayed values
+  document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString() + ' $rebelinux';
+  document.getElementById('whatIfEpochsValue').textContent = epochs;
+  
+  // Calculate and update the reward
+  updateWhatIf();
+  
+  // Optional: Add visual feedback
+  const buttons = document.querySelectorAll('.scenario-btn');
+  buttons.forEach(btn => btn.style.background = 'rgba(255, 51, 102, 0.15)');
+  event.target.style.background = 'rgba(255, 51, 102, 0.3)';
+}
       // Initialize countdowns
       updateCountdown1();
       updateCountdown2();
