@@ -1900,7 +1900,7 @@
       calculateRewards();
     }
     
-    function calculateRewards() {
+     function calculateRewards() {
       const CS = 499242047.00;
       const ERP = 54812320.11;
       const rows = document.querySelectorAll('#token-batches-table tbody tr');
@@ -1969,7 +1969,7 @@
       `;
       resultElement.style.color = 'var(--rebel-gold)';
       
-      // Update the chart with batch data
+      // Update the chart with batch data - FIXED TYPO HERE
       updateChart(batchData, totalReward);
     }
     
@@ -1986,27 +1986,50 @@
     }
     
     // Chart Functions
-// Update setupChartPlaceholder function
-function setupChartPlaceholder() {
-  const chartPlaceholder = document.getElementById('chartPlaceholder');
-  const canvas = document.getElementById('rewardChart');
-  
-  if (chartPlaceholder) {
-    chartPlaceholder.style.display = 'flex'; // Show placeholder
-  }
-  if (canvas) {
-    canvas.style.display = 'none'; // Hide canvas
-  }
-}
-  
+    // Update setupChartPlaceholder function
+    function setupChartPlaceholder() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
+      
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex'; // Show placeholder
+      }
+      if (canvas) {
+        canvas.style.display = 'none'; // Hide canvas
+      }
+    }
     
+    // Update hideChart function
+    function hideChart() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
+      
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex'; // Show placeholder
+      }
+      if (canvas) {
+        canvas.style.display = 'none'; // Hide canvas
+      }
+      
+      // Destroy chart instance if it exists
+      if (rewardChart) {
+        rewardChart.destroy();
+        rewardChart = null;
+      }
+    }
+    
+    // Update updateChart function - REMOVE THE DUPLICATE
     function updateChart(batchData, totalReward) {
       const ctx = document.getElementById('rewardChart').getContext('2d');
       const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
       
-      // Hide placeholder
+      // Hide placeholder and show chart
       if (chartPlaceholder) {
         chartPlaceholder.style.display = 'none';
+      }
+      if (canvas) {
+        canvas.style.display = 'block';
       }
       
       // Destroy existing chart if it exists
