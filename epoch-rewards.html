@@ -2490,6 +2490,39 @@
         maximumFractionDigits: 2
       }) + ' $REBL';
     }
+
+    / Add this function to make the scenario buttons work
+function setWhatIfScenario(amount, epochs) {
+  // Get the slider elements
+  const amountSlider = document.getElementById('whatIfAmount');
+  const epochsSlider = document.getElementById('whatIfEpochs');
+  
+  if (!amountSlider || !epochsSlider) return;
+  
+  // Update slider values
+  amountSlider.value = amount;
+  epochsSlider.value = epochs;
+  
+  // Update displayed values
+  document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString() + ' $rebelinux';
+  document.getElementById('whatIfEpochsValue').textContent = epochs;
+  
+  // Calculate and display the new reward
+  updateWhatIf();
+  
+  // Optional: Add visual feedback for active button
+  const buttons = document.querySelectorAll('.scenario-btn');
+  buttons.forEach(btn => {
+    btn.style.background = 'rgba(255, 51, 102, 0.15)';
+    btn.style.borderColor = 'var(--rebel-red)';
+  });
+  
+  // Highlight the clicked button (if event is available)
+  if (event && event.target) {
+    event.target.style.background = 'rgba(255, 51, 102, 0.3)';
+    event.target.style.borderColor = 'var(--rebel-gold)';
+  }
+}
     
     // Tab functionality for stats
     function showStatTab(tabName) {
