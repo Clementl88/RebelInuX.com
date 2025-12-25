@@ -1379,6 +1379,16 @@
                 <tbody>
                   <!-- Rows will be added dynamically -->
                 </tbody>
+                <!-- Add this footer row -->
+                <tfoot id="table-footer" style="display: none;">
+                  <tr style="background: rgba(255, 51, 102, 0.1);">
+                    <td><strong>Average:</strong></td>
+                    <td><strong id="avg-age">0</strong></td>
+                    <td><strong id="avg-weighted">0</strong></td>
+                    <td><strong id="avg-reward">0 $REBL</strong></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
             
@@ -1850,13 +1860,19 @@
       }
     }
     
-    function clearTokenBatches() {
+       function clearTokenBatches() {
       const table = document.querySelector('#token-batches-table tbody');
+      const tableFooter = document.getElementById('table-footer');
+      
       if (table) {
         table.innerHTML = '';
         addTokenBatch();
         document.getElementById('reward-result').innerHTML = 'Enter your token batches above to see your estimated rewards!';
         hideChart();
+      }
+      
+      if (tableFooter) {
+        tableFooter.style.display = 'none';
       }
     }
     
@@ -1900,13 +1916,15 @@
       calculateRewards();
     }
     
-     function calculateRewards() {
+         function calculateRewards() {
       const CS = 499242047.00;
       const ERP = 54812320.11;
       const rows = document.querySelectorAll('#token-batches-table tbody tr');
       let WS = 0;
       let totalAmount = 0;
       let totalReward = 0;
+      let totalAge = 0;
+      let batchCount = 0;
       
       // Store batch data for chart
       const batchData = [];
@@ -1920,11 +1938,13 @@
         const weightedValue = amount * (1 + k * Math.min(age, A_max));
         WS += weightedValue;
         totalAmount += amount;
+        totalAge += age;
         
         const batchReward = (weightedValue / CS) * ERP;
         totalReward += batchReward;
         
         if (amount > 0) {
+          batchCount++;
           batchData.push({
             amount: amount,
             age: age,
@@ -1943,12 +1963,32 @@
         return;
       }
       
+      // Calculate averages
+      const avgAmount = totalAmount / batchCount;
+      const avgAge = totalAge / batchCount;
+      const avgReward = totalReward / batchCount;
       const sharePercentage = ((WS / CS) * 100).toFixed(6);
+      
       resultElement.innerHTML = `
         <div style="text-align: left;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Batches:</strong></span>
+            <span style="color: var(--rebel-gold);">${batchCount}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
             <span><strong>Total $rebelinux:</strong></span>
             <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Average per Batch:</strong></span>
+            <span style="color: var(--rebel-gold);">${avgAmount.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            })} $rebelinux</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Average Age:</strong></span>
+            <span style="color: var(--rebel-gold);">${avgAge.toFixed(1)} epochs</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
             <span><strong>Total Weighted Share:</strong></span>
@@ -1958,7 +1998,14 @@
             <span><strong>Your Share of Pool:</strong></span>
             <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
           </div>
-          <div style="display: flex; justify-content: space-between; font-size: 1.2em;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 1.1em;">
+            <span><strong>Average Reward per Batch:</strong></span>
+            <span style="color: var(--rebel-gold); font-weight: bold;">${avgReward.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })} $REBL</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-top: 0.5em; padding-top: 0.5em; border-top: 1px solid rgba(255, 204, 0, 0.3);">
             <span><strong>Total Estimated Reward:</strong></span>
             <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -1969,7 +2016,7 @@
       `;
       resultElement.style.color = 'var(--rebel-gold)';
       
-      // Update the chart with batch data - FIXED TYPO HERE
+      // Update the chart with batch data
       updateChart(batchData, totalReward);
     }
     
