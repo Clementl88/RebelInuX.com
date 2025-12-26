@@ -312,6 +312,17 @@
       font-size: 1.5rem;
     }
     
+    /* Add this to your CSS section */
+.countdown-highlight {
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 5px 0;
+}
     /* Epoch Countdowns */
     .countdown-container {
       background: var(--section-bg);
@@ -386,6 +397,7 @@
       margin-top: 0.3rem;
       display: block;
     }
+
     
     /* REBL Calculator */
     .rebl-calculator {
@@ -2138,6 +2150,10 @@ function loadExampleCase(type) {
       setTimeout(function() {
         document.getElementById('loader').classList.add('hidden');
       }, 1000);
+
+        // Initialize vesting schedule
+  updateVestingSchedule();
+  setInterval(updateVestingSchedule, 60000); // Update every minute
       
       // Mobile menu toggle
       const mobileToggle = document.getElementById('mobileNavToggle');
@@ -2678,6 +2694,53 @@ function updateWhatIf() {
   console.log('Amount:', amount, 'Epochs:', epochs);
   console.log('Estimated Reward:', estimatedReward);
   console.log('Return %:', returnPercentage, 'Pool %:', poolPercentage);
+}
+
+
+    // Vesting Schedule Functions
+function updateVestingSchedule() {
+  // Next unlock date: January 14, 2026, 09:35 AM GMT+1
+  const nextUnlockDate = new Date("2026-01-14T08:35:00Z"); // 09:35 GMT+1 = 08:35 UTC
+  const now = new Date();
+  const timeDiff = nextUnlockDate - now;
+  
+  // Calculate days until next unlock
+  const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hoursDiff = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  
+  // Update days display
+  const daysElement = document.getElementById('nextUnlockDays');
+  if (daysElement) {
+    daysElement.textContent = daysDiff >= 0 ? daysDiff : '0';
+  }
+  
+  // Update date display
+  const dateElement = document.getElementById('nextUnlockDate');
+  const dateFullElement = document.getElementById('nextUnlockDateFull');
+  if (dateElement) {
+    dateElement.textContent = `Jan 14, 2026${hoursDiff > 0 ? ` (+${hoursDiff}h)` : ''}`;
+  }
+  if (dateFullElement) {
+    dateFullElement.textContent = "January 14, 2026, 09:35 AM GMT+1";
+  }
+  
+  // Calculate vesting progress
+  // Total vesting period: ~40 months (Oct 2025 - Feb 2029)
+  const startDate = new Date("2025-10-01");
+  const endDate = new Date("2029-02-01");
+  const totalDuration = endDate - startDate;
+  const elapsed = now - startDate;
+  const progressPercent = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+  
+  // Update progress bar
+  const progressBar = document.getElementById('vestingBar');
+  const progressText = document.getElementById('vestingProgress');
+  if (progressBar) {
+    progressBar.style.width = `${progressPercent}%`;
+  }
+  if (progressText) {
+    progressText.textContent = `${progressPercent.toFixed(1)}%`;
+  }
 }
     
     // Tab functionality for stats
