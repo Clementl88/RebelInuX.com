@@ -1721,7 +1721,7 @@
 <!-- Context -->
 <div class="grid-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-top: var(--spacing-md); font-size: 0.9rem;">
   <div id="returnPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
-    <div style="color: var(--rebel-gold); font-weight: bold;" id="returnPercentValue">18.66%</div>
+<div style="color: var(--rebel-gold); font-weight: bold;" id="returnPercentValue">18.66%</div>
     <div style="color: rgba(255, 255, 255, 0.7);">Return on $rebelinux</div>
   </div>
   <div id="poolPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
@@ -2518,7 +2518,7 @@ function loadExampleCase(type) {
       });
     }
     
-// What If Calculator - Enhanced version
+// What If Calculator - Fixed version
 function updateWhatIf() {
   const amountSlider = document.getElementById('whatIfAmount');
   const epochsSlider = document.getElementById('whatIfEpochs');
@@ -2553,26 +2553,28 @@ function updateWhatIf() {
     maximumFractionDigits: 2
   }) + ' $REBL';
   
-  // Update the percentage displays
-  const returnElement = document.querySelector('.what-if-result .grid-container div:first-child div:first-child');
-  const poolElement = document.querySelector('.what-if-result .grid-container div:last-child div:first-child');
+  // Update the percentage displays - FIXED SELECTORS
+  const returnPercentValue = document.getElementById('returnPercentValue');
+  const poolPercentValue = document.getElementById('poolPercentValue');
   
-  // Update the percentages in the grid
-  const returnDiv = document.querySelector('.what-if-result .grid-container div:first-child');
-  const poolDiv = document.querySelector('.what-if-result .grid-container div:last-child');
-  
-  if (returnDiv && poolDiv) {
-    // Update return percentage
-    returnDiv.querySelector('div:first-child').textContent = returnPercentage + '%';
-    // Update pool percentage
-    poolDiv.querySelector('div:first-child').textContent = poolPercentage + '%';
+  if (returnPercentValue) {
+    returnPercentValue.textContent = returnPercentage + '%';
   }
   
-  // Also update the insight text
-  const insightText = document.querySelector('.what-if-container .insight-text');
+  if (poolPercentValue) {
+    poolPercentValue.textContent = poolPercentage + '%';
+  }
+  
+  // Update the insight text
+  const insightText = document.querySelector('.insight-text');
   if (insightText) {
     insightText.innerHTML = `Holding for <strong>${epochs} epochs</strong> with <strong>${amount.toLocaleString()} $rebelinux</strong> earns you <strong>${estimatedReward.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} $REBL</strong>—equivalent to <strong>${poolPercentage}% of the entire epoch pool!</strong>`;
   }
+  
+  // Debug logging - remove this after it works
+  console.log('Amount:', amount, 'Epochs:', epochs);
+  console.log('Estimated Reward:', estimatedReward);
+  console.log('Return %:', returnPercentage, 'Pool %:', poolPercentage);
 }
     
     // Tab functionality for stats
