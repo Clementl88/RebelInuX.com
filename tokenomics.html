@@ -839,14 +839,14 @@
             <div class="supply-percentage">6%</div>
           </div>
           
-          <div class="supply-item">
-            <div class="supply-name">
-              <div class="supply-color" style="background: #4bc056;"></div>
-              <span>Community DAO Reserve</span>
-            </div>
-            <div class="supply-amount">10,000,000 REBL</div>
-            <div class="supply-percentage">1%</div>
-          </div>
+<div class="supply-item">
+  <div class="supply-name">
+    <div class="supply-color" style="background: #4bc056;"></div>
+    <span>Community DAO Reserve</span>
+  </div>
+  <div class="supply-amount">10,000,000 REBL</div>
+  <div class="supply-percentage">1%</div>
+</div>
         </div>
       </div>
     </section>
@@ -992,6 +992,52 @@
             </a>
           </div>
         </div>
+<!-- Community DAO Reserve Vesting -->
+<div class="vesting-card">
+  <div class="vesting-header">
+    <div class="vesting-icon">
+      <i class="fas fa-hands-helping"></i>
+    </div>
+    <div>
+      <h3 class="vesting-title">Community DAO Reserve</h3>
+      <div style="color: var(--rebel-gold); font-size: 1.2rem;">10M REBL (1%)</div>
+    </div>
+  </div>
+  
+  <div class="vesting-details">
+    <div class="vesting-item">
+      <span class="vesting-label">Lockup Period</span>
+      <span class="vesting-value">Until July 1, 2026</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0%"></div>
+    </div>
+    
+    <div class="vesting-item">
+      <span class="vesting-label">Linear Vesting</span>
+      <span class="vesting-value">24 months</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0%"></div>
+    </div>
+  </div>
+  
+  <div style="background: rgba(75, 192, 86, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
+    <p style="font-size: 0.9rem; margin: 0; color: #4bc056;">
+      <i class="fas fa-lock"></i> Locked until Q3 2026, then 24-month linear vesting
+    </p>
+  </div>
+  
+  <div style="margin-top: var(--spacing-md);">
+    <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="cta-button" style="font-size: 0.9rem; width: 100%; background: linear-gradient(135deg, #4bc056, var(--rebel-gold));">
+      <i class="fas fa-external-link-alt"></i> View Vesting Contract
+    </a>
+  </div>
+</div>
+        
       </div>
     </section>
 
@@ -1474,6 +1520,41 @@ function updateContractProgress() {
   }
 }
 
+
+    // Community DAO Reserve progress calculation
+function updateDAOReserveProgress() {
+  const lockupEnd = new Date("2026-07-01T00:00:00Z"); // July 1, 2026
+  const vestingEnd = new Date("2028-07-01T00:00:00Z"); // 24 months later
+  const now = new Date();
+  
+  let progress = 0;
+  
+  if (now >= lockupEnd) {
+    if (now >= vestingEnd) {
+      progress = 100;
+    } else {
+      // Calculate linear progress after lockup
+      const vestingDuration = vestingEnd - lockupEnd;
+      const elapsedAfterLockup = now - lockupEnd;
+      progress = Math.min(100, (elapsedAfterLockup / vestingDuration) * 100);
+    }
+  }
+  
+  // Update progress bars for DAO Reserve card
+  const daoProgressBars = document.querySelectorAll('.vesting-card:last-child .progress-fill');
+  if (daoProgressBars.length >= 2) {
+    // First bar (lockup period)
+    daoProgressBars[0].style.width = now >= lockupEnd ? '100%' : '0%';
+    
+    // Second bar (linear vesting)
+    daoProgressBars[1].style.width = `${progress}%`;
+  }
+}
+
+// Call on page load
+updateDAOReserveProgress();
+
+    
 // Call on page load and periodically
 updateContractProgress();
 setInterval(updateContractProgress, 60000); // Update every minute
@@ -1492,16 +1573,17 @@ setInterval(updateContractProgress, 60000); // Update every minute
       window.tokenomicsChart = new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO (1%)'],
-          datasets: [{
-            data: [70, 16, 7, 6, 1],
-            backgroundColor: [
-              'rgba(255, 51, 102, 0.9)',
-              'rgba(255, 159, 64, 0.9)',
-              'rgba(75, 192, 192, 0.9)',
-              'rgba(255, 206, 86, 0.9)',
-              'rgba(75, 192, 86, 0.9)'
-            ],
+  data: {
+  labels: ['Bonding Curve (70%)', 'ZORA Rewards (16%)', 'Team Fund (7%)', 'Ecosystem Fund (6%)', 'Community DAO (1%)'],
+  datasets: [{
+    data: [70, 16, 7, 6, 1],
+    backgroundColor: [
+      'rgba(255, 51, 102, 0.9)',     // Bonding Curve - Red
+      'rgba(255, 159, 64, 0.9)',     // ZORA Rewards - Orange
+      'rgba(75, 192, 192, 0.9)',     // Team Fund - Teal
+      'rgba(255, 206, 86, 0.9)',     // Ecosystem Fund - Yellow
+      'rgba(75, 192, 86, 0.9)'       // Community DAO - Green
+    ],
             borderColor: [
               'rgba(255, 255, 255, 1)',
               'rgba(255, 255, 255, 1)',
