@@ -1955,6 +1955,24 @@
   <script>
     // Chart.js instance
     let rewardChart = null;
+
+          function setWhatIfScenario(amount, epochs) {
+  // Set slider values
+  document.getElementById('whatIfAmount').value = amount;
+  document.getElementById('whatIfEpochs').value = epochs;
+  
+  // Update displayed values
+  document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString() + ' $rebelinux';
+  document.getElementById('whatIfEpochsValue').textContent = epochs;
+  
+  // Calculate and update the reward
+  updateWhatIf();
+  
+  // Optional: Add visual feedback
+  const buttons = document.querySelectorAll('.scenario-btn');
+  buttons.forEach(btn => btn.style.background = 'rgba(255, 51, 102, 0.15)');
+  event.target.style.background = 'rgba(255, 51, 102, 0.3)';
+}
     
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
@@ -1980,6 +1998,7 @@
           }
         });
       }
+
       
       // Close mobile nav when clicking on a link
       document.querySelectorAll('#nav-desktop a').forEach(link => {
@@ -2010,23 +2029,7 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
-      function setWhatIfScenario(amount, epochs) {
-  // Set slider values
-  document.getElementById('whatIfAmount').value = amount;
-  document.getElementById('whatIfEpochs').value = epochs;
-  
-  // Update displayed values
-  document.getElementById('whatIfAmountValue').textContent = amount.toLocaleString() + ' $rebelinux';
-  document.getElementById('whatIfEpochsValue').textContent = epochs;
-  
-  // Calculate and update the reward
-  updateWhatIf();
-  
-  // Optional: Add visual feedback
-  const buttons = document.querySelectorAll('.scenario-btn');
-  buttons.forEach(btn => btn.style.background = 'rgba(255, 51, 102, 0.15)');
-  event.target.style.background = 'rgba(255, 51, 102, 0.3)';
-}
+
       // Initialize countdowns
       updateCountdown1();
       updateCountdown2();
