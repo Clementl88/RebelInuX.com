@@ -868,7 +868,7 @@
       <div class="vesting-grid">
 
           
-<!-- Founder's Ultimate Commitment Vesting - SIMPLIFIED VERSION -->
+<!-- Founder's Ultimate Commitment Vesting - WITH ACCURATE PROGRESS -->
 <div class="vesting-card" style="border-color: #00aaff; box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);">
   <div class="vesting-header">
     <div class="vesting-icon" style="background: rgba(0, 170, 255, 0.2); color: #00aaff;">
@@ -882,32 +882,35 @@
   </div>
   
   <div class="vesting-details">
+    <!-- Current Unlocked Progress -->
     <div class="vesting-item">
-      <span class="vesting-label">Current Progress</span>
-      <span class="vesting-value" style="color: #00aaff;">13.49M REBL (8%)</span>
+      <span class="vesting-label">Unlocked So Far</span>
+      <span class="vesting-value" style="color: #00aaff;" id="founderUnlockedAmount">13.49M REBL</span>
     </div>
     <div class="progress-bar">
-      <div class="progress-fill" style="background: linear-gradient(90deg, #00aaff, #0099ff); width: 8%"></div>
+      <div class="progress-fill" id="founderUnlockedBar" style="background: linear-gradient(90deg, #00aaff, #0099ff); width: 8%"></div>
     </div>
     
+    <!-- Overall Time Progress -->
     <div class="vesting-item">
-      <span class="vesting-label">Vesting Type</span>
-      <span class="vesting-value">12-month Linear • NO CLIFF</span>
+      <span class="vesting-label">Time Elapsed</span>
+      <span class="vesting-value" id="founderTimeProgress">~30 days</span>
     </div>
     <div class="progress-bar">
-      <div class="progress-fill" style="background: linear-gradient(90deg, #00aaff, #0099ff); width: 100%"></div>
+      <div class="progress-fill" id="founderTimeBar" style="background: linear-gradient(90deg, #4CAF50, #8BC34A); width: 8.2%"></div>
     </div>
     
+    <!-- Next Unlock -->
     <div class="vesting-item">
       <span class="vesting-label">Next Unlock</span>
-      <span class="vesting-value" style="color: #00ff00;">Dec 31, 2025</span>
+      <span class="vesting-value" style="color: #00ff00;" id="founderNextUnlockDate">Dec 31, 2025</span>
     </div>
   </div>
   
   <div style="background: rgba(0, 170, 255, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
-    <p style="font-size: 0.9rem; margin: 0; color: #00aaff; text-align: center;">
-      <i class="fas fa-calendar-alt"></i> <strong>100% of founder holdings locked</strong>
-    </p>
+    <div style="font-size: 0.9rem; color: #00aaff; text-align: center;">
+      <i class="fas fa-calendar-alt"></i> <strong id="founderDaysCount">~30 of 365 days</strong> • 13.49M REBL/month
+    </div>
   </div>
   
   <div style="margin-top: var(--spacing-md);">
@@ -915,7 +918,7 @@
        target="_blank" 
        rel="noopener noreferrer"
        class="cta-button" style="font-size: 0.9rem; width: 100%; background: linear-gradient(135deg, #00aaff, #0099ff);">
-      <i class="fas fa-external-link-alt"></i> View Live Contract (8% Unlocked)
+      <i class="fas fa-external-link-alt"></i> Live Contract (8% Unlocked)
     </a>
   </div>
 </div>
@@ -1783,85 +1786,79 @@
       });
     }
 
-// Founder's lock progress calculation - EXACT DATES FROM STREAMFLOW
-function updateFounderLockProgress() {
-  // Exact dates from Streamflow contract
-  const contractStartDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
-  const contractEndDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
-  const nextUnlockDate = new Date("2025-12-31T21:28:00Z");   // Dec 31, 2025, 10:28 PM GMT+1
+// Founder's Commitment - Accurate Progress Calculator
+function updateFounderCommitmentProgress() {
+  // Exact contract dates from Streamflow
+  const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
+  const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
+  const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
   
   const now = new Date();
-  const totalDuration = contractEndDate - contractStartDate;
-  const elapsed = now - contractStartDate;
+  const totalDuration = endDate - startDate; // Total milliseconds in 1 year
+  const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
   
-  // Calculate overall progress (0-100%)
-  let overallProgress = 0;
+  // Calculate time-based progress (0-100%)
+  const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
   
-  if (now >= contractStartDate) {
-    if (now >= contractEndDate) {
-      overallProgress = 100; // Fully vested
-    } else {
-      overallProgress = Math.min(100, (elapsed / totalDuration) * 100);
+  // Calculate days elapsed/remaining
+  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+  const daysTotal = 365; // 1 year
+  const daysRemaining = Math.max(0, daysTotal - daysElapsed);
+  
+  // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
+  const unlockedPercent = 8;
+  const unlockedAmount = 13.49; // In millions
+  
+  // Update progress bars
+  const unlockedBar = document.getElementById('founderUnlockedBar');
+  const timeBar = document.getElementById('founderTimeBar');
+  const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
+  const timeProgressEl = document.getElementById('founderTimeProgress');
+  const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
+  const daysCountEl = document.getElementById('founderDaysCount');
+  
+  if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
+  if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
+  
+  if (unlockedAmountEl) {
+    unlockedAmountEl.textContent = `${unlockedAmount}M REBL (${unlockedPercent}%)`;
+  }
+  
+  if (timeProgressEl) {
+    timeProgressEl.textContent = `${timeProgressPercent.toFixed(1)}%`;
+  }
+  
+  if (nextUnlockDateEl) {
+    nextUnlockDateEl.textContent = `Dec 31, 2025`;
+  }
+  
+  if (daysCountEl) {
+    daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong> • 13.49M REBL/month`;
+  }
+  
+  // Calculate and display next unlock countdown
+  const timeToNextUnlock = nextUnlockDate - now;
+  if (timeToNextUnlock > 0) {
+    const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+    const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+    // Update the next unlock display with countdown
+    if (nextUnlockDateEl) {
+      nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
     }
   }
   
-  // Calculate next unlock progress
-  let nextUnlockProgress = 0;
-  const timeToNextUnlock = nextUnlockDate - now;
-  const timeBetweenUnlocks = 30 * 24 * 60 * 60 * 1000; // ~30 days in milliseconds
-  
-  if (timeToNextUnlock > 0) {
-    const timeSinceLastUnlock = timeBetweenUnlocks - timeToNextUnlock;
-    nextUnlockProgress = Math.min(100, (timeSinceLastUnlock / timeBetweenUnlocks) * 100);
-  } else {
-    nextUnlockProgress = 100; // Next unlock has passed
-  }
-  
-  // Calculate unlocked amount (8% so far)
-  const totalTokens = 161836700; // 161.8367M REBL
-  const unlockedTokens = 13486300; // 13.4863M REBL (8%)
-  const unlockedPercentage = 8; // From Streamflow
-  
-  // Update progress bars
-  const founderTotalBar = document.getElementById('founderTotalProgress');
-  const founderNextUnlockBar = document.getElementById('founderNextUnlockProgress');
-  const founderCurrentUnlocked = document.getElementById('founderCurrentUnlocked');
-  
-  if (founderTotalBar) founderTotalBar.style.width = `${unlockedPercentage}%`;
-  if (founderNextUnlockBar) founderNextUnlockBar.style.width = `${nextUnlockProgress}%`;
-  if (founderCurrentUnlocked) {
-    founderCurrentUnlocked.textContent = `${(unlockedTokens/1000000).toFixed(2)}M REBL (${unlockedPercentage}%)`;
-  }
-  
-  // Update accordion progress if exists
+  // Update accordion progress if it exists
   const founderProgressBar = document.getElementById('founderProgressBar');
   const founderProgressText = document.getElementById('founderProgressText');
   
-  if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercentage}%`;
-  if (founderProgressText) founderProgressText.textContent = `${unlockedPercentage}%`;
-  
-  // Update days count if element exists
-  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-  const daysTotal = Math.floor(totalDuration / (1000 * 60 * 60 * 24));
-  const daysRemaining = Math.max(0, Math.floor((contractEndDate - now) / (1000 * 60 * 60 * 24)));
-  
-  if (document.getElementById('founderDaysText')) {
-    document.getElementById('founderDaysText').textContent = 
-      `${daysElapsed} days elapsed • ${daysRemaining} days remaining`;
-  }
-  
-  // Update next unlock countdown
-  const nextUnlockCountdown = document.getElementById('nextUnlockCountdown');
-  if (nextUnlockCountdown && timeToNextUnlock > 0) {
-    const days = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    nextUnlockCountdown.textContent = `${days}d ${hours}h`;
-  }
+  if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
+  if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
 }
 
-// Initialize and update regularly
-updateFounderLockProgress();
-setInterval(updateFounderLockProgress, 3600000); // Update every hour
+// Initialize and update
+updateFounderCommitmentProgress();
+setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
     
     // Update contract progress dynamically
     function updateContractProgress() {
