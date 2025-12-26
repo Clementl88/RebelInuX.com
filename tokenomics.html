@@ -1294,10 +1294,10 @@
         <!-- NFT Holder Reward Mechanism - UPDATED -->
         <div class="accordion-item">
           <button class="accordion-header">
-            <span>
-              <i class="fas fa-award" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
-              NFT Holder Reward Mechanism - Detailed Vesting
-            </span>
+<span>
+  <i class="fas fa-award" style="margin-right: var(--spacing-sm); color: #9C27B0;"></i>
+  ZORA Rewards Treasury - Detailed Vesting
+</span>
             <i class="fas fa-chevron-down accordion-icon"></i>
           </button>
           <div class="accordion-content">
@@ -1930,86 +1930,87 @@
       setInterval(updateContractProgress, 60000); // Update every minute
     });
     
-    // Tokenomics Chart
-    function initializeTokenomicsChart() {
-      const ctx = document.getElementById('distributionChart');
-      if (!ctx) return;
-      
-      // Destroy existing chart if it exists
-      if (window.tokenomicsChart) {
-        window.tokenomicsChart.destroy();
-      }
-      
-      // Create new chart
-      window.tokenomicsChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-labels: [
-  'Bonding Curve (53.77%)',
-  'Founder\'s Commitment (16.23%)',  // Using blue color
-  'ZORA Rewards Treasury (16%)',     // Using purple color
-  'Team Fund (7%)',
-  'Ecosystem Fund (6%)',
-  'Community DAO (1%)'
-]datasets: [{
-  data: [53.77, 16.23, 16, 7, 6, 1],  // All 6 percentages
-  backgroundColor: [
-    'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve (53.77%)
-    'rgba(0, 170, 255, 0.9)',      // BLUE - Founder's Commitment (16.23%)
-    'rgba(156, 39, 176, 0.9)',     // PURPLE - ZORA Rewards Treasury (16%)
-    'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund (7%)
-    'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund (6%)
-    'rgba(75, 192, 86, 0.9)'       // Green - Community DAO (1%)
-  ],
-  borderColor: [
-    'rgba(255, 255, 255, 1)',
-    'rgba(255, 255, 255, 1)',  // Added for Founder
-    'rgba(255, 255, 255, 1)',
-    'rgba(255, 255, 255, 1)',
-    'rgba(255, 255, 255, 1)',
-    'rgba(255, 255, 255, 1)'   // Added for Community DAO
-  ],
-  borderWidth: 2,
-  hoverOffset: 15
-}]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'right',
-              labels: {
-                font: {
-                  size: 14,
-                  family: 'Montserrat',
-                  weight: '600'
-                },
-                color: 'white',
-                padding: 20,
-                usePointStyle: true,
-                pointStyle: 'circle'
-              }
+// Tokenomics Chart - CORRECTED VERSION
+function initializeTokenomicsChart() {
+  const ctx = document.getElementById('distributionChart');
+  if (!ctx) return;
+  
+  // Destroy existing chart if it exists
+  if (window.tokenomicsChart) {
+    window.tokenomicsChart.destroy();
+  }
+  
+  // Create new chart
+  window.tokenomicsChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [
+        'Bonding Curve (53.77%)',
+        'Founder\'s Commitment (16.23%)',
+        'ZORA Rewards Treasury (16%)',
+        'Team Fund (7%)',
+        'Ecosystem Fund (6%)',
+        'Community DAO (1%)'
+      ],
+      datasets: [{
+        data: [53.77, 16.23, 16, 7, 6, 1],
+        backgroundColor: [
+          'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
+          'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
+          'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
+          'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
+          'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
+          'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
+        ],
+        borderColor: [
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)',
+          'rgba(255, 255, 255, 1)'
+        ],
+        borderWidth: 2,
+        hoverOffset: 15
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            font: {
+              size: 14,
+              family: 'Montserrat',
+              weight: '600'
             },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return `${context.label}: ${context.raw}%`;
-                }
-              },
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleColor: 'var(--rebel-gold)',
-              bodyColor: 'white'
+            color: 'white',
+            padding: 20,
+            usePointStyle: true,
+            pointStyle: 'circle'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.label}: ${context.raw}%`;
             }
           },
-          animation: {
-            animateScale: true,
-            animateRotate: true,
-            duration: 1000
-          }
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: 'var(--rebel-gold)',
+          bodyColor: 'white'
         }
-      });
+      },
+      animation: {
+        animateScale: true,
+        animateRotate: true,
+        duration: 1000
+      }
     }
+  });
+}
 
 // Founder's Commitment - Accurate Progress Calculator
 function updateFounderCommitmentProgress() {
