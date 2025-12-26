@@ -1300,7 +1300,7 @@
 
 
 
-    <!-- REBL Vesting Schedule -->
+ <!-- REBL Vesting Schedule -->
 <section id="vesting-schedule">
   <h2><i class="fas fa-calendar-alt"></i> $REBL Vesting Schedule</h2>
   <div class="content-card">
@@ -1321,39 +1321,39 @@
         </div>
       </div>
       
+      <!-- Initial Cliff Unlock -->
+      <div class="stat-card" style="border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);">
+        <div class="stat-icon">
+          <i class="fas fa-rocket" style="color: #00ff00;"></i>
+        </div>
+        <div class="stat-value" style="color: #00ff00;">51.2M</div>
+        <div class="stat-label">Initial Cliff</div>
+        <div style="font-size: 0.9rem; color: #00ff00; margin-top: 0.5rem;">
+          40% unlocked immediately
+        </div>
+      </div>
+      
       <!-- Monthly Unlock -->
       <div class="stat-card" style="border-color: var(--rebel-gold);">
         <div class="stat-icon">
           <i class="fas fa-unlock"></i>
         </div>
-        <div class="stat-value" style="color: var(--rebel-gold);">3.2M</div>
+        <div class="stat-value" style="color: var(--rebel-gold);">2.56M</div>
         <div class="stat-label">Monthly Unlock</div>
         <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Per month to ZORA rewards
+          ~2.56M per month (60% over 30 months)
         </div>
       </div>
       
-      <!-- Remaining Months -->
+      <!-- Final Unlock -->
       <div class="stat-card">
         <div class="stat-icon">
-          <i class="fas fa-calendar"></i>
+          <i class="fas fa-flag-checkered"></i>
         </div>
-        <div class="stat-value">40</div>
-        <div class="stat-label">Remaining Months</div>
-        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
-          Of vesting schedule
-        </div>
-      </div>
-      
-      <!-- Next Unlock -->
-      <div class="stat-card" style="border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);">
-        <div class="stat-icon">
-          <i class="fas fa-clock" style="color: #00ff00;"></i>
-        </div>
-        <div class="stat-value" id="nextUnlockDays" style="color: #00ff00;">--</div>
-        <div class="stat-label">Days to Next Unlock</div>
-        <div style="font-size: 0.9rem; color: #00ff00; margin-top: 0.5rem;" id="nextUnlockDate">
-          Loading...
+        <div class="stat-value" id="daysToEnd">--</div>
+        <div class="stat-label">Days Until End</div>
+        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;" id="endDate">
+          Sep 14, 2027
         </div>
       </div>
     </div>
@@ -1361,25 +1361,25 @@
     <!-- Vesting Details -->
     <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin-bottom: var(--spacing-lg);">
       <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
-        <i class="fas fa-info-circle"></i> Vesting Details
+        <i class="fas fa-info-circle"></i> Vesting Schedule Breakdown
       </h4>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
         <div>
-          <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Contract Purpose</h5>
+          <h5 style="color: #00ff00; margin-bottom: var(--spacing-sm);">Immediate Cliff</h5>
           <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-            The vesting contract holds <strong>128,000,000 $REBL</strong> that will be gradually allocated to the ZORA reward system over time.
+            <strong>51.2M $REBL (40%)</strong> unlocked immediately upon contract deployment.
           </p>
         </div>
         <div>
-          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Unlock Schedule</h5>
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Monthly Unlock</h5>
           <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-            <strong>3.2M $REBL</strong> unlocks every month and is added to the epoch reward pool for distribution.
+            <strong>2.56M $REBL/month</strong> for 30 months (76.8M $REBL total).
           </p>
         </div>
         <div>
-          <h5 style="color: #00ff00; margin-bottom: var(--spacing-sm);">Next Unlock</h5>
+          <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Total Distribution</h5>
           <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-            <strong id="nextUnlockDateFull">January 14, 2026, 09:35 AM GMT+1</strong>
+            <strong>128M $REBL</strong> fully vested by <strong>September 14, 2027</strong>.
           </p>
         </div>
       </div>
@@ -1395,12 +1395,30 @@
         <div id="vestingBar" style="height: 100%; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); width: 0%; transition: width 1s ease;"></div>
       </div>
       <div style="display: flex; justify-content: space-between; margin-top: var(--spacing-sm); font-size: 0.85rem; color: rgba(255, 255, 255, 0.7);">
-        <span>Start: Oct 2025</span>
-        <span>End: ~Feb 2029</span>
+        <span>Cliff: 40% immediately</span>
+        <span>End: Sep 14, 2027</span>
+      </div>
+    </div>
+    
+    <!-- Timeline Visualization -->
+    <div style="margin-top: var(--spacing-xl);">
+      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-chart-line"></i> Vesting Timeline
+      </h4>
+      <div style="position: relative; height: 60px; background: rgba(0,0,0,0.2); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); padding: var(--spacing-sm);">
+        <!-- Cliff -->
+        <div style="position: absolute; left: 0; width: 40%; height: 40px; background: rgba(0, 255, 0, 0.2); border-radius: var(--border-radius); border: 2px solid #00ff00; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #00ff00; font-size: 0.8rem;">
+          40% CLIFF
+        </div>
+        <!-- Monthly -->
+        <div style="position: absolute; left: 40%; width: 60%; height: 40px; background: rgba(255, 204, 0, 0.2); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--rebel-gold); font-size: 0.8rem;">
+          60% LINEAR (30 months)
+        </div>
       </div>
     </div>
   </div>
 </section>
+    
  <!-- ============ FINAL, ACCURATE SUPPLY STATISTICS SECTION ============ -->
 <section id="supply-stats">
     <h2><i class="fas fa-chart-pie"></i> $rebelinux Supply Breakdown</h2>
@@ -2621,40 +2639,46 @@ function updateWhatIf() {
 }
 
 
-    // Vesting Schedule Functions
+// Updated Vesting Schedule Functions
 function updateVestingSchedule() {
-  // Next unlock date: January 14, 2026, 09:35 AM GMT+1
-  const nextUnlockDate = new Date("2026-01-14T08:35:00Z"); // 09:35 GMT+1 = 08:35 UTC
-  const now = new Date();
-  const timeDiff = nextUnlockDate - now;
+  // Contract start date (assumed October 2025 based on your previous data)
+  const startDate = new Date("2025-10-01T00:00:00Z");
+  // Final unlock date
+  const endDate = new Date("2027-09-14T18:33:00Z"); // Sep 14, 2027, 06:33 PM UTC
   
-  // Calculate days until next unlock
-  const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  const hoursDiff = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const now = new Date();
+  const totalDuration = endDate - startDate;
+  const elapsed = now - startDate;
+  
+  // Calculate days until final unlock
+  const timeToEnd = endDate - now;
+  const daysToEnd = Math.max(0, Math.floor(timeToEnd / (1000 * 60 * 60 * 24)));
   
   // Update days display
-  const daysElement = document.getElementById('nextUnlockDays');
+  const daysElement = document.getElementById('daysToEnd');
   if (daysElement) {
-    daysElement.textContent = daysDiff >= 0 ? daysDiff : '0';
+    daysElement.textContent = daysToEnd;
   }
   
-  // Update date display
-  const dateElement = document.getElementById('nextUnlockDate');
-  const dateFullElement = document.getElementById('nextUnlockDateFull');
-  if (dateElement) {
-    dateElement.textContent = `Jan 14, 2026${hoursDiff > 0 ? ` (+${hoursDiff}h)` : ''}`;
-  }
-  if (dateFullElement) {
-    dateFullElement.textContent = "January 14, 2026, 09:35 AM GMT+1";
+  // Update end date display
+  const endDateElement = document.getElementById('endDate');
+  if (endDateElement) {
+    endDateElement.textContent = "Sep 14, 2027, 06:33 PM UTC";
   }
   
   // Calculate vesting progress
-  // Total vesting period: ~40 months (Oct 2025 - Feb 2029)
-  const startDate = new Date("2025-10-01");
-  const endDate = new Date("2029-02-01");
-  const totalDuration = endDate - startDate;
-  const elapsed = now - startDate;
-  const progressPercent = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+  let progressPercent = 0;
+  
+  if (now >= startDate) {
+    if (now >= endDate) {
+      progressPercent = 100;
+    } else {
+      // 40% immediate cliff + proportional share of the remaining 60%
+      const cliffPercent = 40;
+      const linearPercent = Math.min(60, (elapsed / totalDuration) * 60);
+      progressPercent = cliffPercent + linearPercent;
+    }
+  }
   
   // Update progress bar
   const progressBar = document.getElementById('vestingBar');
