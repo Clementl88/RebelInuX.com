@@ -1983,7 +1983,54 @@
   buttons.forEach(btn => btn.style.background = 'rgba(255, 51, 102, 0.15)');
   event.target.style.background = 'rgba(255, 51, 102, 0.3)';
 }
-    
+   // Example cases for token batches
+function loadExampleCase(type) {
+  clearTokenBatches();
+  
+  switch(type) {
+    case 'starter':
+      // Starter portfolio - small holder just starting
+      addTokenBatch('500000', '2');
+      addTokenBatch('300000', '1');
+      break;
+      
+    case 'investor':
+      // Investor portfolio - medium holder with mixed ages
+      addTokenBatch('2000000', '8');
+      addTokenBatch('1000000', '3');
+      addTokenBatch('500000', '15');
+      break;
+      
+    case 'whale':
+      // Whale portfolio - large holder with significant age
+      addTokenBatch('5000000', '12');
+      addTokenBatch('3000000', '5');
+      addTokenBatch('2000000', '18');
+      addTokenBatch('1000000', '1');
+      break;
+      
+    default:
+      addTokenBatch('1000000', '5');
+  }
+  
+  // Wait a moment for the rows to be added, then calculate
+  setTimeout(() => {
+    calculateRewards();
+  }, 100);
+  
+  // Visual feedback
+  const buttons = document.querySelectorAll('.scenario-btn');
+  buttons.forEach(btn => {
+    btn.style.background = 'rgba(255, 51, 102, 0.15)';
+    btn.style.boxShadow = 'none';
+  });
+  
+  // Highlight the clicked button
+  if (event && event.target) {
+    event.target.style.background = 'rgba(255, 51, 102, 0.3)';
+    event.target.style.boxShadow = '0 0 10px rgba(255, 51, 102, 0.5)';
+  }
+} 
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
       // Hide loader
