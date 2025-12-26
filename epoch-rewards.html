@@ -1718,32 +1718,30 @@
           1,866,448.24 $REBL
         </div>
         
-        <!-- Context -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-top: var(--spacing-md); font-size: 0.9rem;">
-          <div style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
-            <div style="color: var(--rebel-gold); font-weight: bold;">18.66%</div>
-            <div style="color: rgba(255, 255, 255, 0.7);">Return on $rebelinux</div>
-          </div>
-          <div style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
-            <div style="color: var(--rebel-gold); font-weight: bold;">3.41%</div>
-            <div style="color: rgba(255, 255, 255, 0.7);">Of Epoch Pool</div>
-          </div>
-        </div>
-      </div>
+<!-- Context -->
+<div class="grid-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-top: var(--spacing-md); font-size: 0.9rem;">
+  <div id="returnPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
+    <div style="color: var(--rebel-gold); font-weight: bold;" id="returnPercentValue">18.66%</div>
+    <div style="color: rgba(255, 255, 255, 0.7);">Return on $rebelinux</div>
+  </div>
+  <div id="poolPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
+    <div style="color: var(--rebel-gold); font-weight: bold;" id="poolPercentValue">3.41%</div>
+    <div style="color: rgba(255, 255, 255, 0.7);">Of Epoch Pool</div>
+  </div>
+</div>
       
-      <!-- Insight -->
-      <div style="margin-top: var(--spacing-lg); text-align: center;">
-        <div style="display: inline-flex; align-items: center; gap: var(--spacing-sm); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
-          <i class="fas fa-lightbulb" style="color: var(--rebel-gold); font-size: 1.2rem;"></i>
-          <div style="text-align: left;">
-            <div style="font-weight: bold; color: var(--rebel-gold); font-size: 0.9rem;">Insight:</div>
-            <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">
-              Holding for <strong>10 epochs</strong> with <strong>10M $rebelinux</strong> earns you <strong>1.87M $REBL</strong>—equivalent to <strong>3.41% of the entire epoch pool!</strong>
-            </div>
-          </div>
-        </div>
+<!-- Insight -->
+<div style="margin-top: var(--spacing-lg); text-align: center;">
+  <div style="display: inline-flex; align-items: center; gap: var(--spacing-sm); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
+    <i class="fas fa-lightbulb" style="color: var(--rebel-gold); font-size: 1.2rem;"></i>
+    <div style="text-align: left;">
+      <div style="font-weight: bold; color: var(--rebel-gold); font-size: 0.9rem;">Insight:</div>
+      <div class="insight-text" style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">
+        Holding for <strong>10 epochs</strong> with <strong>10M $rebelinux</strong> earns you <strong>1.87M $REBL</strong>—equivalent to <strong>3.41% of the entire epoch pool!</strong>
       </div>
     </div>
+  </div>
+</div>
     
     <!-- Formula Explanation -->
     <div style="margin-top: var(--spacing-xl); padding: var(--spacing-md); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
@@ -2520,36 +2518,62 @@ function loadExampleCase(type) {
       });
     }
     
-    // What If Calculator
-    function updateWhatIf() {
-      const amountSlider = document.getElementById('whatIfAmount');
-      const epochsSlider = document.getElementById('whatIfEpochs');
-      const amountValue = document.getElementById('whatIfAmountValue');
-      const epochsValue = document.getElementById('whatIfEpochsValue');
-      const rewardElement = document.getElementById('whatIfReward');
-      
-      if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
-      
-      const amount = parseInt(amountSlider.value);
-      const epochs = parseInt(epochsSlider.value);
-      
-      amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
-      epochsValue.textContent = epochs;
-      
-      // Calculate what-if reward
-      const CS = 499242047.00;
-      const ERP = 54812320.11;
-      const k = 0.07;
-      const A_max = 20;
-      
-      const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
-      const estimatedReward = (weightedValue / CS) * ERP;
-      
-      rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + ' $REBL';
-    }
+// What If Calculator - Enhanced version
+function updateWhatIf() {
+  const amountSlider = document.getElementById('whatIfAmount');
+  const epochsSlider = document.getElementById('whatIfEpochs');
+  const amountValue = document.getElementById('whatIfAmountValue');
+  const epochsValue = document.getElementById('whatIfEpochsValue');
+  const rewardElement = document.getElementById('whatIfReward');
+  
+  if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+  
+  const amount = parseInt(amountSlider.value);
+  const epochs = parseInt(epochsSlider.value);
+  
+  amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+  epochsValue.textContent = epochs;
+  
+  // Calculate what-if reward
+  const CS = 499242047.00;
+  const ERP = 54812320.11;
+  const k = 0.07;
+  const A_max = 20;
+  
+  const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
+  const estimatedReward = (weightedValue / CS) * ERP;
+  
+  // Calculate percentages
+  const returnPercentage = ((estimatedReward / amount) * 100).toFixed(2);
+  const poolPercentage = ((estimatedReward / ERP) * 100).toFixed(2);
+  
+  // Update reward display
+  rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }) + ' $REBL';
+  
+  // Update the percentage displays
+  const returnElement = document.querySelector('.what-if-result .grid-container div:first-child div:first-child');
+  const poolElement = document.querySelector('.what-if-result .grid-container div:last-child div:first-child');
+  
+  // Update the percentages in the grid
+  const returnDiv = document.querySelector('.what-if-result .grid-container div:first-child');
+  const poolDiv = document.querySelector('.what-if-result .grid-container div:last-child');
+  
+  if (returnDiv && poolDiv) {
+    // Update return percentage
+    returnDiv.querySelector('div:first-child').textContent = returnPercentage + '%';
+    // Update pool percentage
+    poolDiv.querySelector('div:first-child').textContent = poolPercentage + '%';
+  }
+  
+  // Also update the insight text
+  const insightText = document.querySelector('.what-if-container .insight-text');
+  if (insightText) {
+    insightText.innerHTML = `Holding for <strong>${epochs} epochs</strong> with <strong>${amount.toLocaleString()} $rebelinux</strong> earns you <strong>${estimatedReward.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} $REBL</strong>—equivalent to <strong>${poolPercentage}% of the entire epoch pool!</strong>`;
+  }
+}
     
     // Tab functionality for stats
     function showStatTab(tabName) {
