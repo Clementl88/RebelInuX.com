@@ -1220,7 +1220,7 @@
             <div class="stat-icon">
               <i class="fas fa-fire"></i>
             </div>
-            <div class="stat-value">5.06M</div>
+            <div class="stat-value">4.97M</div>
             <div class="stat-label">$REBL Burned</div>
             <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
               By $rebelinux_burn account
@@ -1231,7 +1231,7 @@
             <div class="stat-icon">
               <i class="fas fa-hand-holding-usd"></i>
             </div>
-            <div class="stat-value">1.15M</div>
+            <div class="stat-value">1.03M</div>
             <div class="stat-label">$REBL Claimed</div>
             <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
               By participants overall
@@ -1242,7 +1242,7 @@
             <div class="stat-icon">
               <i class="fas fa-chart-line"></i>
             </div>
-            <div class="stat-value">6.21M</div>
+            <div class="stat-value">6M</div>
             <div class="stat-label">Total Processed</div>
             <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
               $REBL distributed + burned
@@ -1263,6 +1263,109 @@
       </div>
     </section>
 
+
+
+    <!-- REBL Vesting Schedule -->
+<section id="vesting-schedule">
+  <h2><i class="fas fa-calendar-alt"></i> $REBL Vesting Schedule</h2>
+  <div class="content-card">
+    <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+      <i class="fas fa-lock"></i> Vesting Contract Details
+    </h3>
+    
+    <div class="stats-overview" style="margin-bottom: var(--spacing-xl);">
+      <!-- Total Vesting -->
+      <div class="stat-card" style="border-color: var(--rebel-red);">
+        <div class="stat-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="stat-value" style="color: var(--rebel-red);">128M</div>
+        <div class="stat-label">$REBL Vesting</div>
+        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+          Total in contract
+        </div>
+      </div>
+      
+      <!-- Monthly Unlock -->
+      <div class="stat-card" style="border-color: var(--rebel-gold);">
+        <div class="stat-icon">
+          <i class="fas fa-unlock"></i>
+        </div>
+        <div class="stat-value" style="color: var(--rebel-gold);">3.2M</div>
+        <div class="stat-label">Monthly Unlock</div>
+        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+          Per month to ZORA rewards
+        </div>
+      </div>
+      
+      <!-- Remaining Months -->
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-calendar"></i>
+        </div>
+        <div class="stat-value">40</div>
+        <div class="stat-label">Remaining Months</div>
+        <div style="font-size: 0.9rem; color: var(--rebel-gold); margin-top: 0.5rem;">
+          Of vesting schedule
+        </div>
+      </div>
+      
+      <!-- Next Unlock -->
+      <div class="stat-card" style="border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);">
+        <div class="stat-icon">
+          <i class="fas fa-clock" style="color: #00ff00;"></i>
+        </div>
+        <div class="stat-value" id="nextUnlockDays" style="color: #00ff00;">--</div>
+        <div class="stat-label">Days to Next Unlock</div>
+        <div style="font-size: 0.9rem; color: #00ff00; margin-top: 0.5rem;" id="nextUnlockDate">
+          Loading...
+        </div>
+      </div>
+    </div>
+    
+    <!-- Vesting Details -->
+    <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold); margin-bottom: var(--spacing-lg);">
+      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-info-circle"></i> Vesting Details
+      </h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <div>
+          <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Contract Purpose</h5>
+          <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+            The vesting contract holds <strong>128,000,000 $REBL</strong> that will be gradually allocated to the ZORA reward system over time.
+          </p>
+        </div>
+        <div>
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Unlock Schedule</h5>
+          <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+            <strong>3.2M $REBL</strong> unlocks every month and is added to the epoch reward pool for distribution.
+          </p>
+        </div>
+        <div>
+          <h5 style="color: #00ff00; margin-bottom: var(--spacing-sm);">Next Unlock</h5>
+          <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+            <strong id="nextUnlockDateFull">January 14, 2026, 09:35 AM GMT+1</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div style="margin-top: var(--spacing-lg);">
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+        <span style="color: var(--rebel-gold); font-weight: 600;">Vesting Progress</span>
+        <span style="color: var(--rebel-gold); font-weight: 600;" id="vestingProgress">0%</span>
+      </div>
+      <div style="height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden;">
+        <div id="vestingBar" style="height: 100%; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); width: 0%; transition: width 1s ease;"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: var(--spacing-sm); font-size: 0.85rem; color: rgba(255, 255, 255, 0.7);">
+        <span>Start: Oct 2025</span>
+        <span>End: ~Feb 2029</span>
+      </div>
+    </div>
+  </div>
+</section>
  <!-- ============ FINAL, ACCURATE SUPPLY STATISTICS SECTION ============ -->
 <section id="supply-stats">
     <h2><i class="fas fa-chart-pie"></i> $rebelinux Supply Breakdown</h2>
