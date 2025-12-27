@@ -2,7 +2,8 @@
 <html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- FIXED: Removed restrictive viewport settings to allow zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Tokenomics - Detailed $REBL token distribution, vesting schedules, and governance model" />
   <meta name="keywords" content="$REBL tokenomics, token distribution, vesting, RebelInuX rewards, supply metrics" />
   <meta property="og:title" content="RebelInuX Tokenomics - $REBL Token Details" />
@@ -14,6 +15,12 @@
   <meta name="twitter:title" content="RebelInuX Tokenomics - $REBL Token Details">
   <meta name="twitter:description" content="Detailed breakdown of $REBL token distribution, vesting schedules, and reward mechanisms.">
   <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Mobile Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <!-- Favicon -->
   <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
@@ -55,6 +62,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: rgba(255, 51, 102, 0.3);
     }
     
     html {
@@ -68,12 +76,34 @@
       color: var(--text-light);
       line-height: 1.6;
       overflow-x: hidden;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
     }
     
     a {
       text-decoration: none;
       color: inherit;
       transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important; /* Prevent zoom on iOS */
     }
     
     img {
@@ -84,12 +114,13 @@
     
     /* Header */
     header {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       padding: var(--spacing-md);
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rebel-gold);
     }
     
     .header-container {
@@ -135,6 +166,9 @@
       font-size: 1.5rem;
       color: var(--rebel-gold);
       cursor: pointer;
+      width: 44px;
+      height: 44px;
+      z-index: 1001;
     }
     
     /* Main Content */
@@ -149,7 +183,7 @@
     }
     
     h2 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       margin-bottom: var(--spacing-lg);
       color: var(--rebel-gold);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -165,7 +199,7 @@
     .page-hero {
       text-align: center;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-xl) 0;
+      padding: var(--spacing-xl) var(--spacing-md);
       background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
       border-radius: var(--border-radius);
       position: relative;
@@ -185,15 +219,23 @@
     }
     
     .page-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
       margin-bottom: var(--spacing-md);
     }
     
     .page-hero p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       max-width: 800px;
       margin: 0 auto;
       color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
     }
     
     /* Stats Overview */
@@ -225,7 +267,7 @@
     }
     
     .stat-value {
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
       font-weight: 900;
       color: var(--text-light);
       margin-bottom: 0.5rem;
@@ -245,6 +287,7 @@
       border-radius: var(--border-radius);
       margin-bottom: var(--spacing-xl);
       border: 2px solid var(--rebel-gold);
+      overflow: hidden;
     }
     
     .chart-wrapper {
@@ -266,6 +309,7 @@
       padding: var(--spacing-lg);
       border-radius: var(--border-radius);
       border: 2px solid var(--rebel-red);
+      overflow: hidden;
     }
     
     .vesting-header {
@@ -285,10 +329,11 @@
       justify-content: center;
       font-size: 1.5rem;
       color: var(--rebel-red);
+      flex-shrink: 0;
     }
     
     .vesting-title {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
       color: var(--rebel-gold);
     }
     
@@ -301,15 +346,19 @@
       justify-content: space-between;
       padding: var(--spacing-sm) 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
     }
     
     .vesting-label {
       color: rgba(255, 255, 255, 0.7);
+      margin-right: 1rem;
     }
     
     .vesting-value {
       color: var(--rebel-gold);
       font-weight: 600;
+      text-align: right;
+      flex: 1;
     }
     
     /* Progress Bars */
@@ -393,6 +442,7 @@
       padding: var(--spacing-lg);
       border-radius: var(--border-radius);
       margin-bottom: var(--spacing-xl);
+      overflow: hidden;
     }
     
     .supply-item {
@@ -404,6 +454,8 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
       border-left: 4px solid var(--rebel-red);
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     
     .supply-name {
@@ -411,17 +463,21 @@
       align-items: center;
       gap: var(--spacing-sm);
       font-weight: 600;
+      flex: 1;
+      min-width: 200px;
     }
     
     .supply-color {
       width: 20px;
       height: 20px;
       border-radius: 4px;
+      flex-shrink: 0;
     }
     
     .supply-amount {
       color: var(--rebel-gold);
       font-weight: 700;
+      margin-right: 1rem;
     }
     
     .supply-percentage {
@@ -443,6 +499,9 @@
       transition: var(--transition);
       box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
       gap: var(--spacing-sm);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      border: none;
     }
     
     .cta-button:hover {
@@ -454,6 +513,12 @@
     .cta-button.gold {
       background: var(--rebel-gold);
       color: var(--dark-bg);
+    }
+    
+    .cta-button.full-width {
+      display: flex;
+      width: 100%;
+      margin: 0.5rem 0;
     }
     
     /* Footer */
@@ -477,58 +542,14 @@
       font-size: 1.8rem;
       color: var(--rebel-red);
       transition: var(--transition);
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
     }
     
     .social-icons a:hover {
       color: var(--rebel-gold);
       transform: translateY(-5px);
-    }
-    
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .mobile-nav-toggle {
-        display: block;
-      }
-      
-      #nav-desktop {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        padding: var(--spacing-md);
-      }
-      
-      #nav-desktop.active {
-        display: flex;
-      }
-      
-      .stats-overview {
-        grid-template-columns: 1fr;
-      }
-      
-      .vesting-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .timeline::before {
-        left: 30px;
-      }
-      
-      .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-      }
-      
-      .timeline-dot {
-        left: 30px;
-      }
-      
-      .chart-wrapper {
-        height: 300px;
-      }
     }
     
     /* Loading Animation */
@@ -620,6 +641,8 @@
       transition: var(--transition);
       border-radius: 8px;
       margin-bottom: 4px;
+      min-height: 60px;
+      text-align: left;
     }
     
     .accordion-header:hover {
@@ -635,6 +658,8 @@
     
     .accordion-header .accordion-icon {
       transition: transform 0.3s;
+      margin-left: 1rem;
+      flex-shrink: 0;
     }
     
     .accordion-header.active .accordion-icon {
@@ -672,6 +697,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      min-height: 44px;
     }
     
     .accordion-button:hover {
@@ -683,6 +709,495 @@
     .accordion-button i {
       margin-right: 0.5rem;
       font-size: 0.9rem;
+    }
+    
+    .accordion-button.full-width {
+      display: flex;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    
+    /* Info Box */
+    .info-box {
+      background: rgba(255, 51, 102, 0.1);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      border-left: 4px solid var(--rebel-red);
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .info-box p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Cross Chain Section */
+    .cross-chain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .cross-chain-card {
+      text-align: center;
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-red);
+      transition: var(--transition);
+      background: rgba(255, 51, 102, 0.1);
+    }
+    
+    .cross-chain-card.gold {
+      border-color: var(--rebel-gold);
+      background: rgba(255, 204, 0, 0.1);
+    }
+    
+    .cross-chain-card.green {
+      border-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+    }
+    
+    .cross-chain-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      border: 3px solid var(--rebel-red);
+    }
+    
+    .cross-chain-card.gold .cross-chain-icon {
+      background: rgba(255, 204, 0, 0.2);
+      border-color: var(--rebel-gold);
+    }
+    
+    .cross-chain-card.green .cross-chain-icon {
+      background: rgba(76, 175, 80, 0.2);
+      border-color: #4CAF50;
+    }
+    
+    .cross-chain-percentage {
+      display: inline-block;
+      background: var(--rebel-red);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .cross-chain-card.gold .cross-chain-percentage {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    .cross-chain-card.green .cross-chain-percentage {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    /* Related Pages */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .related-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+      display: block;
+    }
+    
+    .related-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .related-card.red {
+      border-color: var(--rebel-red);
+    }
+    
+    .related-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .related-card.red .related-icon {
+      color: var(--rebel-red);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 80px var(--spacing-md) var(--spacing-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto;
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      #nav-desktop a {
+        padding: var(--spacing-md);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+        min-height: 56px;
+      }
+      
+      .header-container h1 {
+        font-size: 1.3rem;
+        max-width: 70%;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .stat-card {
+        padding: 1.2rem;
+      }
+      
+      .vesting-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .vesting-header {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1rem;
+      }
+      
+      .vesting-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .vesting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+      
+      .vesting-value {
+        text-align: left;
+        width: 100%;
+      }
+      
+      .timeline::before {
+        left: 30px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 0;
+        padding-top: 0;
+        padding-bottom: var(--spacing-lg);
+      }
+      
+      .timeline-dot {
+        left: 30px;
+        top: 20px;
+      }
+      
+      .timeline-content {
+        padding: 1.2rem;
+      }
+      
+      .chart-wrapper {
+        height: 300px;
+      }
+      
+      .accordion-header {
+        font-size: 0.9rem;
+        padding: 1rem;
+      }
+      
+      .accordion-header span {
+        flex: 1;
+      }
+      
+      .accordion-content {
+        padding: 0 1rem;
+      }
+      
+      .accordion-content.active {
+        padding: 1rem;
+        font-size: 0.95rem;
+      }
+      
+      .cross-chain-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .related-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+      }
+      
+      .accordion-button {
+        width: 100%;
+        margin: 0.5rem 0;
+        justify-content: center;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        display: block;
+        width: 100%;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+      
+      /* Mobile optimizations for complex content */
+      .accordion-content .grid-container {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+      
+      .accordion-content .text-center {
+        padding: 1rem !important;
+      }
+      
+      .accordion-content .flex-container {
+        flex-direction: column !important;
+        gap: 1rem !important;
+      }
+      
+      .accordion-content h3, .accordion-content h4, .accordion-content h5 {
+        font-size: 1.1rem !important;
+        text-align: center !important;
+      }
+      
+      .supply-name {
+        min-width: auto;
+      }
+      
+      .supply-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .supply-amount, .supply-percentage {
+        width: 100%;
+        text-align: left;
+      }
+      
+      /* Fix overflow in accordion content */
+      .accordion-content > div {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      
+      /* Prevent horizontal scrolling */
+      body {
+        overflow-x: hidden;
+      }
+      
+      main, section, .chart-container, .vesting-card, .timeline-content {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+    }
+    
+    /* Extra Small Screens */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      
+      .header-container {
+        padding: 0.5rem;
+      }
+      
+      .page-hero {
+        padding: 1.5rem 0.75rem;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.6rem;
+      }
+      
+      .page-hero p {
+        font-size: 0.95rem;
+      }
+      
+      .chart-container {
+        padding: 1rem;
+      }
+      
+      .chart-wrapper {
+        height: 220px;
+      }
+      
+      .vesting-card {
+        padding: 1.2rem;
+      }
+      
+      .timeline-item {
+        padding-left: 40px;
+      }
+      
+      .timeline-content {
+        padding: 1rem;
+      }
+      
+      .supply-breakdown {
+        padding: 1rem;
+      }
+      
+      .social-icons a {
+        font-size: 1.5rem;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .accordion-header {
+        font-size: 0.85rem;
+        padding: 0.875rem;
+      }
+      
+      .accordion-content.active {
+        font-size: 0.9rem;
+        padding: 0.875rem;
+      }
+      
+      .accordion-content .stat-number {
+        font-size: 1.5rem !important;
+      }
+      
+      .cta-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+      
+      /* Improve touch targets for very small screens */
+      button, .cta-button, .accordion-button, #nav-desktop a {
+        min-height: 48px;
+      }
+      
+      .mobile-nav-toggle {
+        width: 48px;
+        height: 48px;
+      }
+    }
+    
+    /* Tablet */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .vesting-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .cross-chain-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .chart-wrapper {
+        height: 350px;
+      }
+    }
+    
+    /* Large Desktop */
+    @media (min-width: 1400px) {
+      main {
+        padding: var(--spacing-xl) 0;
+      }
+    }
+    
+    /* High-resolution screens */
+    @media (min-width: 1920px) {
+      :root {
+        --spacing-xl: 4rem;
+        --spacing-lg: 3rem;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      .loader, .back-to-top, .mobile-nav-toggle, .hero-buttons {
+        display: none !important;
+      }
+      
+      body {
+        color: #000;
+        background: #fff;
+      }
+      
+      .page-hero {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      
+      .page-hero::before {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -721,7 +1236,7 @@
     <section class="page-hero">
       <h1>$REBL TOKENOMICS</h1>
       <p>Complete breakdown of $REBL token distribution, vesting schedules, and reward mechanisms in the RebelInuX ecosystem.</p>
-      <div style="margin-top: var(--spacing-lg);">
+      <div class="hero-buttons">
         <a href="#distribution" class="cta-button">
           <i class="fas fa-chart-pie"></i> View Distribution
         </a>
@@ -790,9 +1305,9 @@
       </div>
     </section>
 
-    <!-- Add this RIGHT AFTER the Quick Stats section -->
-    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin: var(--spacing-lg) 0; text-align: center; border-left: 4px solid var(--rebel-red);">
-      <p style="margin: 0; font-size: 1rem;">
+    <!-- Important Connection -->
+    <div class="info-box">
+      <p style="margin: 0;">
         <i class="fas fa-link" style="color: var(--rebel-gold); margin-right: var(--spacing-sm);"></i>
         <strong>Important Connection:</strong> $REBL rewards are distributed weekly to holders of <strong>$rebelinux (Creator Coin)</strong> on ZORA. 
         <a href="epoch-rewards.html#supply-stats" style="color: var(--rebel-gold); font-weight: bold; text-decoration: underline;">
@@ -865,6 +1380,7 @@
   <div class="supply-amount">10,000,000 REBL</div>
   <div class="supply-percentage">1%</div>
 </div>
+          
         </div>
       </div>
     </section>
@@ -924,12 +1440,11 @@
     <a href="https://app.streamflow.finance/contract/solana/mainnet/Gr2Ej69EusSQSGrVjin3NZ6ZRYQhWZaWUwuFEqWLJFy9" 
        target="_blank" 
        rel="noopener noreferrer"
-       class="cta-button" style="font-size: 0.9rem; width: 100%; background: linear-gradient(135deg, #00aaff, #0099ff);">
+       class="cta-button full-width" style="background: linear-gradient(135deg, #00aaff, #0099ff);">
       <i class="fas fa-external-link-alt"></i> Vesting Contract
     </a>
   </div>
 </div>
-        
           <!-- ZORA Rewards Treasury - ENHANCED -->
 <div class="vesting-card" style="border-color: #9C27B0; box-shadow: 0 0 15px rgba(156, 39, 176, 0.2);">
   <div class="vesting-header">
@@ -976,7 +1491,7 @@
     <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" 
        target="_blank" 
        rel="noopener noreferrer"
-       class="cta-button" style="font-size: 0.9rem; width: 100%; background: linear-gradient(135deg, #9C27B0, #E91E63);">
+       class="cta-button full-width" style="background: linear-gradient(135deg, #9C27B0, #E91E63);">
       <i class="fas fa-external-link-alt"></i> View Vesting Contract
     </a>
   </div>
@@ -1011,7 +1526,6 @@
     <div class="progress-bar">
       <div class="progress-fill" style="background: linear-gradient(90deg, #4bc0c0, #36a2b5); width: 60%"></div>
     </div>
-    <!-- ^^ This is where the missing </div> should be ^^ -->
     
     <div class="vesting-item">
       <span class="vesting-label">Vesting Period</span>
@@ -1029,7 +1543,7 @@
     <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL" 
        target="_blank" 
        rel="noopener noreferrer"
-       class="cta-button" style="font-size: 0.9rem; width: 100%;">
+       class="cta-button full-width">
       <i class="fas fa-external-link-alt"></i> View Vesting Contract
     </a>
   </div>
@@ -1080,7 +1594,7 @@
     <a href="https://app.streamflow.finance/contract/solana/mainnet/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7" 
        target="_blank" 
        rel="noopener noreferrer"
-       class="cta-button gold" style="font-size: 0.9rem; width: 100%;">
+       class="cta-button gold full-width">
       <i class="fas fa-external-link-alt"></i> View Vesting Contract
     </a>
   </div>
@@ -1133,11 +1647,113 @@
     <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" 
        target="_blank" 
        rel="noopener noreferrer"
-       class="cta-button" style="font-size: 0.9rem; width: 100%; background: linear-gradient(135deg, #4CAF50, #8BC34A);">
+       class="cta-button full-width" style="background: linear-gradient(135deg, #4CAF50, #8BC34A);">
       <i class="fas fa-external-link-alt"></i> View Vesting Contract
     </a>
   </div>
 </div>
+    </section>
+
+    <!-- Timeline Section - ADDED FROM CODE 2 -->
+    <section id="timeline-section">
+      <h2><i class="fas fa-road"></i> Vesting Timeline</h2>
+      <div class="timeline">
+        
+        <!-- ZORA Treasury Timeline Item -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background: #9C27B0;"></div>
+          <div class="timeline-content">
+            <h3 style="color: #9C27B0; margin-bottom: 0.5rem;">
+              <i class="fas fa-award"></i> ZORA Rewards Treasury
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
+              <strong>40% cliff unlocked immediately (Sep 14, 2025)</strong><br>
+              60% linear vesting over 24 months
+            </p>
+            <div style="background: rgba(156, 39, 176, 0.1); padding: 0.75rem; border-radius: 8px;">
+              <div style="color: #BA68C8; font-size: 0.9rem;">
+                <i class="fas fa-gift"></i> Weekly epoch rewards for $rebelinux holders
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Founder's Commitment Timeline Item -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background: #00aaff;"></div>
+          <div class="timeline-content">
+            <h3 style="color: #00aaff; margin-bottom: 0.5rem;">
+              <i class="fas fa-user-shield"></i> Founder's Ultimate Commitment
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
+              <strong>Zero cliff • 12-month linear vesting</strong><br>
+              Started Nov 1, 2025 • Ends Nov 1, 2026
+            </p>
+            <div style="background: rgba(0, 170, 255, 0.1); padding: 0.75rem; border-radius: 8px;">
+              <div style="color: #00aaff; font-size: 0.9rem;">
+                <i class="fas fa-lock"></i> 13.49M REBL unlocked monthly
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Fund Timeline Item -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background: #4bc0c0;"></div>
+          <div class="timeline-content">
+            <h3 style="color: #4bc0c0; margin-bottom: 0.5rem;">
+              <i class="fas fa-users-cog"></i> Team Fund
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
+              <strong>40% cliff • 3-year linear vesting</strong><br>
+              28M REBL immediate • 42M REBL over 3 years
+            </p>
+            <div style="background: rgba(75, 192, 192, 0.1); padding: 0.75rem; border-radius: 8px;">
+              <div style="color: #4bc0c0; font-size: 0.9rem;">
+                <i class="fas fa-user-tie"></i> Core team compensation & retention
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ecosystem Fund Timeline Item -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background: var(--rebel-gold);"></div>
+          <div class="timeline-content">
+            <h3 style="color: var(--rebel-gold); margin-bottom: 0.5rem;">
+              <i class="fas fa-seedling"></i> Ecosystem Fund
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
+              <strong>6-month cliff • 18-month linear</strong><br>
+              5M REBL immediate • 55M REBL over 18 months
+            </p>
+            <div style="background: rgba(255, 204, 0, 0.1); padding: 0.75rem; border-radius: 8px;">
+              <div style="color: var(--rebel-gold); font-size: 0.9rem;">
+                <i class="fas fa-cogs"></i> Development, audits, marketing
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- DAO Reserve Timeline Item -->
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background: #4CAF50;"></div>
+          <div class="timeline-content">
+            <h3 style="color: #4CAF50; margin-bottom: 0.5rem;">
+              <i class="fas fa-vote-yea"></i> Community DAO Reserve
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
+              <strong>Locked until July 1, 2026</strong><br>
+              24-month linear vesting thereafter
+            </p>
+            <div style="background: rgba(76, 175, 80, 0.1); padding: 0.75rem; border-radius: 8px;">
+              <div style="color: #4CAF50; font-size: 0.9rem;">
+                <i class="fas fa-handshake"></i> Community grants & partnerships
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Enhanced Accordion Section -->
@@ -1146,572 +1762,1005 @@
       <div class="accordion">
 
  <!-- Founder's Ultimate Commitment - SUPER ENHANCED -->
-<div class="accordion-item founder-accordion">
+<div class="accordion-item">
   <button class="accordion-header">
     <span>
-      <i class="fas fa-user-shield" style="margin-right: 0.5rem; color: #00aaff;"></i>
+      <i class="fas fa-user-shield" style="margin-right: var(--spacing-sm); color: #00aaff;"></i>
       Founder's Ultimate Commitment
-      <span class="accordion-subtitle">161.84M REBL • 16.23% • Zero Cliff</span>
+      <span style="margin-left: var(--spacing-sm); font-size: 0.9rem; color: #00aaff;">
+        (161.84M REBL • 16.23%)
+      </span>
     </span>
     <i class="fas fa-chevron-down accordion-icon"></i>
   </button>
   <div class="accordion-content">
     <!-- Hero Section -->
-    <div class="accordion-hero">
-      <div class="hero-icon">
-        <i class="fas fa-user-shield"></i>
+    <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+      <div style="width: 100px; height: 100px; background: rgba(0, 170, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 3px solid #00aaff; box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);">
+        <i class="fas fa-user-shield" style="color: #00aaff; font-size: 3rem;"></i>
       </div>
-      <h3>The Ultimate Trust Signal</h3>
-      <p>100% of founder's personal holdings locked with <strong>ZERO CLIFF</strong> for complete long-term alignment</p>
+      <h3 style="color: #00aaff; margin-bottom: var(--spacing-sm); font-size: 1.8rem;">
+        The Ultimate Trust Signal
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto; font-size: 1.1rem;">
+        100% of founder's personal holdings locked with <strong>ZERO CLIFF</strong> for complete long-term alignment
+      </p>
     </div>
     
     <!-- Key Stats Grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number">161.84M</div>
-        <div class="stat-label">$REBL Locked</div>
-        <div class="stat-desc">Founder's entire allocation</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); margin: var(--spacing-xl) 0;">
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 170, 255, 0.1); border-radius: var(--border-radius); border: 2px solid #00aaff;">
+        <div style="font-size: 2.5rem; color: #00aaff; font-weight: 900; margin-bottom: var(--spacing-sm);">161.84M</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">$REBL Locked</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Founder's entire allocation</div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-number">16.23%</div>
-        <div class="stat-label">Of Total Supply</div>
-        <div class="stat-desc">Significant portion of tokens</div>
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 255, 0, 0.1); border-radius: var(--border-radius); border: 2px solid #00ff00;">
+        <div style="font-size: 2.5rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">16.23%</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Of Total Supply</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Significant portion of tokens</div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-number">13.49M/mo</div>
-        <div class="stat-label">Monthly Unlock</div>
-        <div class="stat-desc">Consistent, predictable release</div>
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <div style="font-size: 2.5rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">13.49M/mo</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Monthly Unlock</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Consistent, predictable release</div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-number">12 mos</div>
-        <div class="stat-label">Vesting Period</div>
-        <div class="stat-desc">Full year commitment</div>
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
+        <div style="font-size: 2.5rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">12 mos</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Vesting Period</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Full year commitment</div>
       </div>
     </div>
     
     <!-- Benefits Section -->
-    <div class="benefits-section">
-      <h4><i class="fas fa-shield-alt"></i> Key Benefits & Security Features</h4>
-      <div class="benefits-grid">
-        <div class="benefit-item">
-          <div class="benefit-icon">
-            <i class="fas fa-ban"></i>
+    <div style="background: rgba(0, 170, 255, 0.1); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid #00aaff;">
+      <h5 style="color: #00aaff; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-shield-alt"></i> Key Benefits & Security Features
+      </h5>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255, 51, 102, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid var(--rebel-red);">
+            <i class="fas fa-ban" style="color: var(--rebel-red); font-size: 1.8rem;"></i>
           </div>
-          <div class="benefit-title">No "Dev Dump"</div>
-          <div class="benefit-desc">Eliminates concerns about founder selling</div>
+          <div style="font-weight: 700; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">No "Dev Dump"</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Eliminates concerns about founder selling</div>
         </div>
         
-        <div class="benefit-item">
-          <div class="benefit-icon">
-            <i class="fas fa-lock"></i>
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(0, 255, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid #00ff00;">
+            <i class="fas fa-lock" style="color: #00ff00; font-size: 1.8rem;"></i>
           </div>
-          <div class="benefit-title">Zero Cliff</div>
-          <div class="benefit-desc">No immediate access to tokens</div>
+          <div style="font-weight: 700; color: #00ff00; margin-bottom: var(--spacing-sm);">Zero Cliff</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">No immediate access to tokens</div>
         </div>
         
-        <div class="benefit-item">
-          <div class="benefit-icon">
-            <i class="fas fa-eye"></i>
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid var(--rebel-gold);">
+            <i class="fas fa-eye" style="color: var(--rebel-gold); font-size: 1.8rem;"></i>
           </div>
-          <div class="benefit-title">Full Transparency</div>
-          <div class="benefit-desc">Publicly verifiable vesting contract</div>
+          <div style="font-weight: 700; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Full Transparency</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Publicly verifiable vesting contract</div>
         </div>
         
-        <div class="benefit-item">
-          <div class="benefit-icon">
-            <i class="fas fa-handshake"></i>
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(0, 170, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid #00aaff;">
+            <i class="fas fa-handshake" style="color: #00aaff; font-size: 1.8rem;"></i>
           </div>
-          <div class="benefit-title">Long-term Alignment</div>
-          <div class="benefit-desc">Founder success = Community success</div>
+          <div style="font-weight: 700; color: #00aaff; margin-bottom: var(--spacing-sm);">Long-term Alignment</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Founder success = Community success</div>
         </div>
       </div>
     </div>
     
-    <!-- Vesting Progress -->
-    <div class="progress-section">
-      <div class="progress-header">
-        <h4><i class="fas fa-chart-line"></i> Vesting Progress</h4>
-        <span class="progress-percentage" id="founderProgressText">8%</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="founderProgressBar" style="width: 8%;"></div>
-      </div>
-      <div class="progress-dates">
-        <span>Start: Nov 1, 2025</span>
-        <span>End: Nov 1, 2026</span>
+    <!-- Vesting Progress Visualization -->
+    <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid #00aaff;">
+      <h5 style="color: #00aaff; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-chart-line"></i> Vesting Progress & Timeline
+      </h5>
+      
+      <!-- Overall Progress -->
+      <div style="margin-bottom: var(--spacing-xl);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+          <span style="color: #00aaff; font-weight: 700; font-size: 1.1rem;">Overall Vesting Progress</span>
+          <span style="color: #00aaff; font-weight: 700; font-size: 1.1rem;" id="founderProgressText">8%</span>
+        </div>
+        <div style="height: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; margin-bottom: var(--spacing-sm);">
+          <div id="founderProgressBar" style="height: 100%; background: linear-gradient(90deg, #00aaff, #0099ff); width: 8%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+          <span>Start: Nov 1, 2025</span>
+          <span>End: Nov 1, 2026</span>
+        </div>
       </div>
       
       <!-- Detailed Progress -->
-      <div class="detailed-progress">
-        <div class="progress-item">
-          <div class="progress-number" id="founderUnlockedAmount">13.49M</div>
-          <div class="progress-label">Already Unlocked</div>
-          <div class="progress-sub">8% of total commitment</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: #00aaff; font-weight: 900; margin-bottom: var(--spacing-sm);" id="founderUnlockedAmountAccordion">13.49M</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Already Unlocked</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">8% of total commitment</div>
         </div>
         
-        <div class="progress-item">
-          <div class="progress-number" id="founderDaysElapsed">~56</div>
-          <div class="progress-label">Days Elapsed</div>
-          <div class="progress-sub">Of 365 total days</div>
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);" id="founderDaysElapsed">~30</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Days Elapsed</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Of 365 total days</div>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">13.49M</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Next Unlock Amount</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Monthly distribution</div>
         </div>
       </div>
     </div>
     
-    <!-- Next Unlock -->
-    <div class="next-unlock">
-      <h4><i class="fas fa-calendar-check"></i> Next Unlock Details</h4>
-      <div class="unlock-details">
-        <div class="unlock-item">
-          <i class="fas fa-calendar-alt"></i>
-          <div class="unlock-title">Date</div>
-          <div class="unlock-value" id="founderNextUnlockDate">Dec 31, 2025</div>
+    <!-- Next Unlock Section -->
+    <div style="background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 170, 255, 0.2)); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid #00ff00;">
+      <h5 style="color: #00ff00; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-calendar-check"></i> Next Unlock Details
+      </h5>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);" id="founderNextUnlockDateAccordion">Dec 31, 2025</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Next unlock date</div>
         </div>
         
-        <div class="unlock-item">
-          <i class="fas fa-clock"></i>
-          <div class="unlock-title">Countdown</div>
-          <div class="unlock-value" id="nextUnlockCountdown">4d 7h</div>
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: #00aaff; font-weight: 900; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);" id="nextUnlockCountdown">Loading...</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Until next unlock</div>
         </div>
         
-        <div class="unlock-item">
-          <i class="fas fa-coins"></i>
-          <div class="unlock-title">Amount</div>
-          <div class="unlock-value">13.49M REBL</div>
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-coins"></i>
+          </div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">13.49M REBL</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Tokens to be released</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+          <i class="fas fa-info-circle" style="color: #00aaff;"></i>
+          Next unlock represents ~8.33% of monthly allocation
         </div>
       </div>
     </div>
     
     <!-- Action Buttons -->
-    <div class="action-buttons">
+    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg); justify-content: center; margin-top: var(--spacing-xl);">
       <a href="https://app.streamflow.finance/contract/solana/mainnet/Gr2Ej69EusSQSGrVjin3NZ6ZRYQhWZaWUwuFEqWLJFy9" 
          target="_blank" rel="noopener noreferrer" 
-         class="action-button verify-btn">
+         class="accordion-button" style="background: linear-gradient(135deg, #00aaff, #0099ff); min-width: 220px;">
         <i class="fas fa-external-link-alt"></i> Verify Vesting Contract
       </a>
-      <a href="governance.html" class="action-button governance-btn">
+      <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, #1DA1F2, #1DA1F2); min-width: 220px;">
+        <i class="fab fa-twitter"></i> View Announcement
+      </a>
+      <a href="governance.html" 
+         class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); min-width: 220px;">
         <i class="fas fa-vote-yea"></i> Governance Details
       </a>
     </div>
     
     <!-- Final Note -->
-    <div class="info-note">
-      <i class="fas fa-info-circle"></i>
-      <div>
-        <strong>Commitment to Success</strong>
-        <p>This lock demonstrates 100% commitment to RebelInuX's long-term success. The founder's financial incentives are perfectly aligned with the community, ensuring focused development and sustainable growth without "dev dump" concerns.</p>
+    <div style="background: rgba(0, 170, 255, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-top: var(--spacing-xl); border-left: 4px solid #00aaff;">
+      <div style="display: flex; align-items: flex-start;">
+        <i class="fas fa-info-circle" style="color: #00aaff; font-size: 1.5rem; margin-right: var(--spacing-md); margin-top: 2px;"></i>
+        <div>
+          <div style="font-weight: 700; color: #00aaff; margin-bottom: var(--spacing-sm);">Commitment to Success</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">
+            This lock demonstrates 100% commitment to RebelInuX's long-term success. The founder's financial incentives are perfectly aligned with the community, ensuring focused development and sustainable growth without "dev dump" concerns.
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
         
-    <!-- ZORA Rewards Treasury - SUPER ENHANCED -->
-<div class="accordion-item zora-accordion">
+ <!-- ZORA Rewards Treasury - SUPER ENHANCED -->
+<div class="accordion-item">
   <button class="accordion-header">
     <span>
-      <i class="fas fa-award" style="margin-right: 0.5rem; color: #9C27B0;"></i>
+      <i class="fas fa-award" style="margin-right: var(--spacing-sm); color: #9C27B0;"></i>
       ZORA Rewards Treasury
-      <span class="accordion-subtitle">160M REBL • 16% • Cross-Chain Rewards</span>
+      <span style="margin-left: var(--spacing-sm); font-size: 0.9rem; color: #9C27B0;">
+        (160M REBL • 16%)
+      </span>
     </span>
     <i class="fas fa-chevron-down accordion-icon"></i>
   </button>
   <div class="accordion-content">
     <!-- Hero Section -->
-    <div class="accordion-hero zora-hero">
-      <div class="hero-icon">
-        <i class="fas fa-award"></i>
+    <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+      <div style="width: 100px; height: 100px; background: rgba(156, 39, 176, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 3px solid #9C27B0; box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);">
+        <i class="fas fa-award" style="color: #9C27B0; font-size: 3rem;"></i>
       </div>
-      <h3>Cross-Chain Rewards Engine</h3>
-      <p>Weekly $REBL rewards for $rebelinux Creator Coin holders + Community incentives for ZORA ecosystem growth</p>
+      <h3 style="color: #9C27B0; margin-bottom: var(--spacing-sm); font-size: 1.8rem;">
+        Cross-Chain Rewards Engine
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto; font-size: 1.1rem;">
+        Weekly $REBL rewards for $rebelinux Creator Coin holders + Community incentives for ZORA ecosystem growth
+      </p>
     </div>
     
     <!-- Allocation Breakdown -->
-    <div class="allocation-section">
-      <h4><i class="fas fa-chart-pie"></i> Allocation Breakdown</h4>
-      <div class="allocation-grid">
-        <div class="allocation-card asset-rewards">
-          <div class="allocation-icon">
-            <i class="fas fa-gift"></i>
-          </div>
-          <div class="allocation-amount">128M REBL</div>
-          <div class="allocation-title">Asset Holder Rewards</div>
-          <div class="allocation-percentage">80% of treasury</div>
-          <div class="allocation-desc">Weekly epoch distributions to $rebelinux holders</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+      <!-- Asset Holder Rewards -->
+      <div style="text-align: center; padding: var(--spacing-xl); background: rgba(156, 39, 176, 0.1); border-radius: var(--border-radius); border: 2px solid #9C27B0;">
+        <div style="width: 80px; height: 80px; background: rgba(156, 39, 176, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); border: 3px solid #9C27B0;">
+          <i class="fas fa-gift" style="color: #9C27B0; font-size: 2.5rem;"></i>
         </div>
+        <div style="font-size: 3rem; color: #9C27B0; font-weight: 900; margin-bottom: var(--spacing-sm);">128M REBL</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm); font-size: 1.2rem;">Asset Holder Rewards</div>
+        <div style="color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-lg);">80% of treasury • Weekly epoch distributions</div>
         
-        <div class="allocation-card community-incentives">
-          <div class="allocation-icon">
-            <i class="fas fa-users"></i>
+        <div style="background: rgba(156, 39, 176, 0.2); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <div style="color: #BA68C8; font-weight: 700; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-calendar-week"></i> Weekly Distribution
           </div>
-          <div class="allocation-amount">32M REBL</div>
-          <div class="allocation-title">Community Incentives</div>
-          <div class="allocation-percentage">20% of treasury</div>
-          <div class="allocation-desc">Contests & community initiatives</div>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+            Proportional rewards based on $rebelinux holdings
+          </div>
+        </div>
+      </div>
+      
+      <!-- Community Incentives -->
+      <div style="text-align: center; padding: var(--spacing-xl); background: rgba(233, 30, 99, 0.1); border-radius: var(--border-radius); border: 2px solid #E91E63;">
+        <div style="width: 80px; height: 80px; background: rgba(233, 30, 99, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); border: 3px solid #E91E63;">
+          <i class="fas fa-users" style="color: #E91E63; font-size: 2.5rem;"></i>
+        </div>
+        <div style="font-size: 3rem; color: #E91E63; font-weight: 900; margin-bottom: var(--spacing-sm);">32M REBL</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm); font-size: 1.2rem;">Community Incentives</div>
+        <div style="color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-lg);">20% of treasury • Contests & initiatives</div>
+        
+        <div style="background: rgba(233, 30, 99, 0.2); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <div style="color: #F48FB1; font-weight: 700; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-trophy"></i> Community Programs
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
+            Contests, special events, and community initiatives
+          </div>
         </div>
       </div>
     </div>
     
-    <!-- Contract Stats -->
-    <div class="contract-stats">
-      <h4><i class="fas fa-chart-bar"></i> Contract Status</h4>
-      <div class="stats-grid compact">
-        <div class="stat-card">
-          <div class="stat-number">76M</div>
-          <div class="stat-label">Already Unlocked</div>
-          <div class="stat-desc">From initial 40% cliff</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number">160M</div>
-          <div class="stat-label">Total in Contract</div>
-          <div class="stat-desc">Full allocation</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number">4M/mo</div>
-          <div class="stat-label">Unlock Rate</div>
-          <div class="stat-desc">Linear monthly unlocks</div>
-        </div>
+    <!-- Contract Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); margin: var(--spacing-xl) 0;">
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">76M</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Already Unlocked</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">From initial 40% cliff</div>
+      </div>
+      
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">160M</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Total in Contract</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Full allocation</div>
+      </div>
+      
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="font-size: 2rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">40%</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Cliff Unlock</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Immediate availability</div>
+      </div>
+      
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">4M/mo</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Unlock Rate</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Linear monthly unlocks</div>
       </div>
     </div>
     
     <!-- Vesting Timeline -->
-    <div class="vesting-timeline">
-      <h4><i class="fas fa-road"></i> Vesting Timeline</h4>
-      <div class="timeline">
-        <!-- Phase 1 -->
-        <div class="timeline-phase">
-          <div class="phase-dot phase-1"></div>
-          <div class="phase-content">
-            <div class="phase-title">Cliff Unlock</div>
-            <div class="phase-amount">64M REBL (40%)</div>
-            <div class="phase-date">Sep 14, 2025</div>
-            <div class="phase-desc">Unlocked immediately</div>
+    <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid #9C27B0;">
+      <h5 style="color: #9C27B0; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-road"></i> Vesting Timeline & Schedule
+      </h5>
+      
+      <div style="position: relative; max-width: 800px; margin: 0 auto;">
+        <!-- Timeline Line -->
+        <div style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 4px; background: linear-gradient(to bottom, #9C27B0, #E91E63); transform: translateX(-50%);"></div>
+        
+        <!-- Phase 1: Cliff Unlock -->
+        <div style="display: flex; align-items: center; margin-bottom: var(--spacing-xl);">
+          <div style="flex: 1; text-align: right; padding-right: var(--spacing-xl);">
+            <div style="background: rgba(0, 255, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid #00ff00;">
+              <div style="font-weight: 700; color: #00ff00; margin-bottom: var(--spacing-sm); font-size: 1.1rem;">
+                <i class="fas fa-bolt"></i> Cliff Unlock
+              </div>
+              <div style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: var(--spacing-sm);">64M REBL (40%)</div>
+              <div style="color: rgba(255, 255, 255, 0.9);">Unlocked immediately on Sep 14, 2025</div>
+            </div>
+          </div>
+          
+          <div style="position: relative; z-index: 2;">
+            <div style="width: 40px; height: 40px; background: #00ff00; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 var(--spacing-lg); border: 3px solid white;">
+              <span style="color: white; font-weight: bold;">1</span>
+            </div>
+          </div>
+          
+          <div style="flex: 1;"></div>
+        </div>
+        
+        <!-- Phase 2: Next Unlock -->
+        <div style="display: flex; align-items: center; margin-bottom: var(--spacing-xl);">
+          <div style="flex: 1;"></div>
+          
+          <div style="position: relative; z-index: 2;">
+            <div style="width: 40px; height: 40px; background: var(--rebel-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 var(--spacing-lg); border: 3px solid white;">
+              <span style="color: var(--dark-bg); font-weight: bold;">2</span>
+            </div>
+          </div>
+          
+          <div style="flex: 1; text-align: left; padding-left: var(--spacing-xl);">
+            <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+              <div style="font-weight: 700; color: var(--rebel-gold); margin-bottom: var(--spacing-sm); font-size: 1.1rem;">
+                <i class="fas fa-play-circle"></i> Monthly Unlocks Begin
+              </div>
+              <div style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: var(--spacing-sm);">Jan 14, 2026</div>
+              <div style="color: rgba(255, 255, 255, 0.9);">4M REBL monthly linear unlocks start</div>
+            </div>
           </div>
         </div>
         
-        <!-- Phase 2 -->
-        <div class="timeline-phase">
-          <div class="phase-dot phase-2"></div>
-          <div class="phase-content">
-            <div class="phase-title">Monthly Unlocks Begin</div>
-            <div class="phase-amount">4M REBL/month</div>
-            <div class="phase-date">Jan 14, 2026</div>
-            <div class="phase-desc">Linear vesting starts</div>
+        <!-- Phase 3: Final Unlock -->
+        <div style="display: flex; align-items: center;">
+          <div style="flex: 1; text-align: right; padding-right: var(--spacing-xl);">
+            <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
+              <div style="font-weight: 700; color: var(--rebel-red); margin-bottom: var(--spacing-sm); font-size: 1.1rem;">
+                <i class="fas fa-flag-checkered"></i> Fully Vested
+              </div>
+              <div style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: var(--spacing-sm);">Sep 14, 2027</div>
+              <div style="color: rgba(255, 255, 255, 0.9);">Contract completes 2-year vesting</div>
+            </div>
+          </div>
+          
+          <div style="position: relative; z-index: 2;">
+            <div style="width: 40px; height: 40px; background: var(--rebel-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 var(--spacing-lg); border: 3px solid white;">
+              <span style="color: white; font-weight: bold;">3</span>
+            </div>
+          </div>
+          
+          <div style="flex: 1;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Progress Visualization -->
+    <div style="margin: var(--spacing-xl) 0;">
+      <h5 style="color: #9C27B0; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-chart-bar"></i> Vesting Progress
+      </h5>
+      
+      <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-xl); border-radius: var(--border-radius);">
+        <!-- Overall Progress -->
+        <div style="margin-bottom: var(--spacing-xl);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+            <span style="color: #9C27B0; font-weight: 700; font-size: 1.1rem;">Overall Vesting Progress</span>
+            <span style="color: #9C27B0; font-weight: 700; font-size: 1.1rem;" id="contractProgress">47.5%</span>
+          </div>
+          <div style="height: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 6px; overflow: hidden; margin-bottom: var(--spacing-sm);">
+            <div id="contractProgressBar" style="height: 100%; background: linear-gradient(90deg, #9C27B0, #E91E63); width: 47.5%;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+            <span>Cliff: Sep 14, 2025</span>
+            <span>End: Sep 14, 2027</span>
           </div>
         </div>
         
-        <!-- Phase 3 -->
-        <div class="timeline-phase">
-          <div class="phase-dot phase-3"></div>
-          <div class="phase-content">
-            <div class="phase-title">Fully Vested</div>
-            <div class="phase-amount">Contract complete</div>
-            <div class="phase-date">Sep 14, 2027</div>
-            <div class="phase-desc">2-year vesting ends</div>
+        <!-- Breakdown -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
+          <div style="text-align: center;">
+            <div style="font-size: 1.5rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">76M</div>
+            <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Already Distributed</div>
+            <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">To ZORA holders</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <div style="font-size: 1.5rem; color: #9C27B0; font-weight: 900; margin-bottom: var(--spacing-sm);">84M</div>
+            <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Remaining</div>
+            <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">For future distributions</div>
+          </div>
+          
+          <div style="text-align: center;">
+            <div style="font-size: 1.5rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">24 mos</div>
+            <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Remaining Vesting</div>
+            <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Until full distribution</div>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Progress Section -->
-    <div class="progress-section zora-progress">
-      <div class="progress-header">
-        <h4><i class="fas fa-chart-line"></i> Vesting Progress</h4>
-        <span class="progress-percentage" id="zoraProgressText">47.5%</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="zoraProgressBar" style="width: 47.5%; background: linear-gradient(90deg, #9C27B0, #E91E63);"></div>
-      </div>
-      <div class="progress-dates">
-        <span>Start: Sep 14, 2025</span>
-        <span>End: Sep 14, 2027</span>
-      </div>
-    </div>
-    
-    <!-- Reward Distribution Flow -->
-    <div class="distribution-flow">
-      <h4><i class="fas fa-gift"></i> How Rewards Work</h4>
-      <div class="flow-steps">
-        <div class="flow-step">
-          <div class="step-icon">
-            <i class="fas fa-coins"></i>
+    <!-- Reward Distribution Info -->
+    <div style="background: rgba(156, 39, 176, 0.1); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid #9C27B0;">
+      <h5 style="color: #9C27B0; margin-bottom: var(--spacing-lg); text-align: center; font-size: 1.3rem;">
+        <i class="fas fa-gift"></i> Reward Distribution Mechanism
+      </h5>
+      
+      <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: rgba(156, 39, 176, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid #9C27B0;">
+            <i class="fas fa-coins" style="color: #9C27B0; font-size: 2rem;"></i>
           </div>
-          <div class="step-title">Hold $rebelinux</div>
-          <div class="step-desc">Creator Coin on ZORA</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Hold $rebelinux</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Creator Coin on ZORA</div>
         </div>
         
-        <div class="flow-arrow">
+        <div style="font-size: 2rem; color: #9C27B0;">
           <i class="fas fa-arrow-right"></i>
         </div>
         
-        <div class="flow-step">
-          <div class="step-icon">
-            <i class="fas fa-calendar-week"></i>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: rgba(233, 30, 99, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid #E91E63;">
+            <i class="fas fa-calendar-week" style="color: #E91E63; font-size: 2rem;"></i>
           </div>
-          <div class="step-title">Weekly Epochs</div>
-          <div class="step-desc">Snapshot taken weekly</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Weekly Epochs</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Snapshot taken weekly</div>
         </div>
         
-        <div class="flow-arrow">
+        <div style="font-size: 2rem; color: #9C27B0;">
           <i class="fas fa-arrow-right"></i>
         </div>
         
-        <div class="flow-step">
-          <div class="step-icon">
-            <i class="fas fa-gift"></i>
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid var(--rebel-gold);">
+            <i class="fas fa-gift" style="color: var(--rebel-gold); font-size: 2rem;"></i>
           </div>
-          <div class="step-title">Claim $REBL</div>
-          <div class="step-desc">Proportional rewards</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Claim $REBL</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Proportional rewards</div>
         </div>
       </div>
       
-      <div class="flow-note">
-        <i class="fas fa-lightbulb"></i>
+      <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="epoch-rewards.html" class="accordion-button" style="background: linear-gradient(135deg, #9C27B0, #E91E63); min-width: 250px;">
+          <i class="fas fa-play-circle"></i> Start Earning Rewards
+        </a>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg); justify-content: center; margin-top: var(--spacing-xl);">
+      <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, #9C27B0, #E91E63); min-width: 220px;">
+        <i class="fas fa-external-link-alt"></i> View Vesting Contract
+      </a>
+      <a href="epoch-rewards.html" 
+         class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); min-width: 220px;">
+        <i class="fas fa-gift"></i> Claim Weekly Rewards
+      </a>
+      <a href="https://zora.co/@rebelinux" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, #0066FF, #0099FF); min-width: 220px;">
+        <i class="fas fa-cube"></i> View ZORA Collection
+      </a>
+    </div>
+    
+    <!-- Final Note -->
+    <div style="background: rgba(156, 39, 176, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-top: var(--spacing-xl); border-left: 4px solid #9C27B0;">
+      <div style="display: flex; align-items: flex-start;">
+        <i class="fas fa-info-circle" style="color: #9C27B0; font-size: 1.5rem; margin-right: var(--spacing-md); margin-top: 2px;"></i>
         <div>
-          <strong>The Deflationary Flywheel:</strong> More ZORA activity → More revenue → More $REBL burned → Higher $REBL value → More incentive to hold ZORA assets
+          <div style="font-weight: 700; color: #9C27B0; margin-bottom: var(--spacing-sm);">Cross-Chain Value Creation</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">
+            The ZORA Rewards Treasury creates a powerful flywheel: ZORA Creator Coin holders earn $REBL rewards, incentivizing more ZORA activity, which in turn generates revenue for $REBL buy-back & burn. This creates sustainable value across both chains.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+<!-- Team Fund - ENHANCED -->
+<div class="accordion-item">
+  <button class="accordion-header">
+    <span>
+      <i class="fas fa-users-cog" style="margin-right: var(--spacing-sm); color: #4bc0c0;"></i>
+      Team Fund Vesting
+      <span style="margin-left: var(--spacing-sm); font-size: 0.9rem; color: #4bc0c0;">
+        (70M REBL • 7%)
+      </span>
+    </span>
+    <i class="fas fa-chevron-down accordion-icon"></i>
+  </button>
+  <div class="accordion-content">
+    <!-- Hero Section -->
+    <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+      <div style="width: 80px; height: 80px; background: rgba(75, 192, 192, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 3px solid #4bc0c0;">
+        <i class="fas fa-users-cog" style="color: #4bc0c0; font-size: 2.5rem;"></i>
+      </div>
+      <h3 style="color: #4bc0c0; margin-bottom: var(--spacing-sm);">
+        Core Team Compensation & Development
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;">
+        Dedicated to compensating and retaining core contributors with transparent vesting for optimal long-term alignment
+      </p>
+    </div>
+    
+    <!-- Allocation Breakdown -->
+    <div style="margin: var(--spacing-xl) 0;">
+      <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-chart-pie"></i> Allocation Breakdown
+      </h5>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+        <div style="background: rgba(0, 255, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); text-align: center; border: 2px solid #00ff00;">
+          <div style="font-size: 2rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">28M</div>
+          <div style="font-weight: 700; color: white;">Immediate Operations</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">40% • Strategic initiatives</div>
+        </div>
+        
+        <div style="background: rgba(75, 192, 192, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); text-align: center; border: 2px solid #4bc0c0;">
+          <div style="font-size: 2rem; color: #4bc0c0; font-weight: 900; margin-bottom: var(--spacing-sm);">42M</div>
+          <div style="font-weight: 700; color: white;">Long-Term Vesting</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">60% • 3-year linear</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Vesting Schedule -->
+    <div class="info-box" style="margin: var(--spacing-xl) 0;">
+      <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-md);">
+        <i class="fas fa-calendar-alt"></i> Vesting Schedule Details
+      </h5>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+        <div>
+          <div style="font-weight: 700; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Initial Cliff</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">40% unlocked immediately for operational needs</div>
+        </div>
+        <div>
+          <div style="font-weight: 700; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Vesting Period</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">3-year linear vesting for remaining 60%</div>
+        </div>
+        <div>
+          <div style="font-weight: 700; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Purpose</div>
+          <div style="color: rgba(255, 255, 255, 0.9);">Team salaries, bonuses, and retention</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Progress Visualization -->
+    <div style="margin: var(--spacing-xl) 0;">
+      <h5 style="color: #4bc0c0; margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-chart-line"></i> Vesting Progress
+      </h5>
+      <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius);">
+        <!-- Immediate Operations Progress -->
+        <div style="margin-bottom: var(--spacing-lg);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+            <span style="color: #00ff00; font-weight: 700;">Immediate Operations</span>
+            <span style="color: #00ff00; font-weight: 700;">40% • 28M REBL</span>
+          </div>
+          <div style="height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden;">
+            <div style="height: 100%; background: linear-gradient(90deg, #00ff00, #4CAF50); width: 100%;"></div>
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Unlocked immediately for team operations and development
+          </div>
+        </div>
+        
+        <!-- Long-Term Vesting Progress -->
+        <div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+            <span style="color: #4bc0c0; font-weight: 700;">Long-Term Vesting</span>
+            <span style="color: #4bc0c0; font-weight: 700;">60% • 42M REBL</span>
+          </div>
+          <div style="height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; overflow: hidden;">
+            <div style="height: 100%; background: linear-gradient(90deg, #4bc0c0, #36a2b5); width: 60%;"></div>
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Linear vesting over 3 years with 40% initial cliff
+          </div>
         </div>
       </div>
     </div>
     
     <!-- Action Buttons -->
-    <div class="action-buttons">
-      <a href="https://app.streamflow.finance/contract/solana/mainnet/BAPQbfCF7EKUZJVURbXj4k3K4wJUZ8UcechNDKKZd4U9" 
+    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center; margin-top: var(--spacing-xl);">
+      <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL" 
          target="_blank" rel="noopener noreferrer" 
-         class="action-button verify-btn" style="background: linear-gradient(135deg, #9C27B0, #E91E63);">
-        <i class="fas fa-external-link-alt"></i> View Vesting Contract
-      </a>
-      <a href="epoch-rewards.html" class="action-button rewards-btn">
-        <i class="fas fa-gift"></i> Claim Weekly Rewards
-      </a>
-    </div>
-    
-    <!-- Final Note -->
-    <div class="info-note zora-note">
-      <i class="fas fa-info-circle"></i>
-      <div>
-        <strong>Cross-Chain Value Creation</strong>
-        <p>The ZORA Rewards Treasury creates a powerful flywheel: ZORA Creator Coin holders earn $REBL rewards, incentivizing more ZORA activity, which in turn generates revenue for $REBL buy-back & burn. This creates sustainable value across both chains.</p>
-      </div>
-    </div>
-  </div>
-</div>
-        <!-- Team Fund -->
-        <div class="accordion-item">
-       <button class="accordion-header">
-  <span>
-    <i class="fas fa-users-cog" style="margin-right: var(--spacing-sm); color: #4bc0c0;"></i>
-    Team Fund Vesting
-  </span>
-  <i class="fas fa-chevron-down accordion-icon"></i>
-</button>
-          <div class="accordion-content">
-            <p>The Team Fund (<strong>70M REBL, 7%</strong>) is dedicated to compensating and retaining core contributors, with a transparent vesting structure for optimal long-term alignment.</p>
-            <ul style="text-align: left; margin-top: var(--spacing-sm);">
-              <li><strong>Immediate Operations (40%)</strong>: 28M REBL available for strategic initiatives and essential costs.</li>
-              <li><strong>Long-Term Alignment (60%)</strong>: 42M REBL secured in 3-year linear vesting with 40% initial cliff.</li>
-            </ul>
-            <div style="margin-top: var(--spacing-sm);">
-              <a href="https://app.streamflow.finance/contract/solana/mainnet/2vyMez3M8qatsg61JGAukmVipRVHWeFRAAX92R7hEfEL?ref=funereally-exemplary-jackal" target="_blank" rel="noopener noreferrer" class="accordion-button">
-                <i class="fas fa-external-link-alt"></i> Vesting Contract
-              </a>
-              <a href="https://solscan.io/account/8zzcDm3FWxAXsVw2iok5EoXj9q8XCG9tSu9UeenHcp52" target="_blank" rel="noopener noreferrer" class="accordion-button">
-                <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
-              </a>
-            </div>
-          </div>
-        </div>
-        
-  <!-- Ecosystem Fund -->
-<div class="accordion-item">
-<button class="accordion-header">
-  <span>
-    <i class="fas fa-vault" style="margin-right: var(--spacing-sm); color: #ffce56;"></i>
-    Ecosystem Fund Vesting
-  </span>
-  <i class="fas fa-chevron-down accordion-icon"></i>
-</button>
-  <div class="accordion-content">
-    <p>The Ecosystem Fund (<strong>60M REBL, 6%</strong>) is allocated for development, audits, and marketing, with a <strong>6-month cliff</strong> and <strong>18-month linear vesting</strong>.</p>
-    <ul style="text-align: left; margin-top: var(--spacing-sm);">
-      <li><strong>Initial Operations (0.5%)</strong>: 5M REBL for essential costs during the first 6 months.</li>
-      <li><strong>Sustained Growth (5.5%)</strong>: 55M REBL, subject to a 6-month cliff, then 20% unlocked followed by linear vesting over 18 months.</li>
-    </ul>
-    <div style="margin-top: var(--spacing-sm);">
-      <a href="https://app.streamflow.finance/contract/solana/mainnet/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7" target="_blank" rel="noopener noreferrer" class="accordion-button">
+         class="accordion-button" style="background: linear-gradient(135deg, #4bc0c0, #36a2b5);">
         <i class="fas fa-external-link-alt"></i> Vesting Contract
       </a>
-      <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" target="_blank" rel="noopener noreferrer" class="accordion-button">
-        <i class="fas fa-external-link-alt"></i> Multi-Sig Wallet
+      <a href="https://solscan.io/account/8zzcDm3FWxAXsVw2iok5EoXj9q8XCG9tSu9UeenHcp52" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button">
+        <i class="fas fa-vault"></i> Multi-Sig Wallet
+      </a>
+      <a href="governance.html" class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+        <i class="fas fa-vote-yea"></i> Governance
       </a>
     </div>
   </div>
 </div>
         
-        <!-- Community DAO Reserve -->
-        <div class="accordion-item">
-<button class="accordion-header">
-  <span>
-    <i class="fas fa-users" style="margin-right: var(--spacing-sm); color: #4CAF50;"></i>
-    Community DAO Reserve
-  </span>
-  <i class="fas fa-chevron-down accordion-icon"></i>
-</button>
-          <div class="accordion-content">
-            <p>The Community DAO Reserve (<strong>10M REBL, 1%</strong>) is locked until <strong>July 1, 2026</strong>, then vests linearly over 24 months.</p>
-            <p><strong>Use cases:</strong> Strategic partnerships, community grants, exchange listings, and ecosystem incentives.</p>
-            <div style="margin-top: var(--spacing-sm);">
-              <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" target="_blank"  rel="noopener noreferrer" class="accordion-button">
-                <i class="fas fa-external-link-alt"></i> Vesting Contract
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Cross-Chain Value Acceleration -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>
-              <i class="fas fa-link" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
-              Cross-Chain Value Acceleration
-            </span>
-            <i class="fas fa-chevron-down accordion-icon"></i>
-          </button>
-          <div class="accordion-content">
-            <p>
-              Revenue from ZORA assets (Creator Coins & Content Coin NFTs) is used to <strong>buy back and burn $REBL</strong>, increasing scarcity and value for holders.
-            </p>
-            <p>
-              <strong>How it works:</strong>
-            </p>
-            <ul style="text-align: left; margin-top: var(--spacing-sm);">
-              <li><strong>80% Buy-Back & Burn:</strong> ETH revenue is bridged to Solana to <strong>permanently burn $REBL</strong>.</li>
-              <li><strong>15% Community DAO:</strong> Funds future initiatives and buy-back campaigns.</li>
-              <li><strong>5% Operations:</strong> Covers essential costs.</li>
-            </ul>
-            <p style="font-size: 0.95em; font-style: italic; color: var(--rebel-gold); margin-top: var(--spacing-sm);">
-              <strong>Result:</strong> Trading activity on ZORA directly boosts $REBL value on Solana through deflationary pressure.
-            </p>
-          </div>
-        </div>
-        
-        <!-- Decentralization & Security -->
-        <div class="accordion-item">
-          <button class="accordion-header">
-            <span>
-              <i class="fas fa-shield-alt" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
-              Decentralization & Security
-            </span>
-            <i class="fas fa-chevron-down accordion-icon"></i>
-          </button>
-          <div class="accordion-content">
-            <p><strong>Solana ($REBL):</strong> Mint, freeze, and update authorities are renounced. LP tokens locked for 1 year.</p>
-            <p><strong>ZORA (NFTs):</strong> Founder's Creator Coins are vested over 5 years. Smart contracts are non-upgradeable.</p>
-          </div>
-        </div>
-        
-        <!-- Governance Framework -->
-      <div class="accordion-item">
+<!-- Ecosystem Fund - ENHANCED -->
+<div class="accordion-item">
   <button class="accordion-header">
     <span>
-      <i class="fas fa-vote-yea" style="margin-right: var(--spacing-sm); color: var(--rebel-gold);"></i>
-      Governance Framework
+      <i class="fas fa-seedling" style="margin-right: var(--spacing-sm); color: #ffce56;"></i>
+      Ecosystem Fund Vesting
+      <span style="margin-left: var(--spacing-sm); font-size: 0.9rem; color: #ffce56;">
+        (60M REBL • 6%)
+      </span>
     </span>
     <i class="fas fa-chevron-down accordion-icon"></i>
   </button>
   <div class="accordion-content">
-    <p style="font-size: 1.1rem; color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-lg);">
-      <strong>Community-Driven Decision Making with $REBL</strong>
-    </p>
+    <!-- Hero Section -->
+    <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+      <div style="width: 80px; height: 80px; background: rgba(255, 206, 86, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 3px solid #ffce56;">
+        <i class="fas fa-seedling" style="color: #ffce56; font-size: 2.5rem;"></i>
+      </div>
+      <h3 style="color: #ffce56; margin-bottom: var(--spacing-sm);">
+        Sustainable Growth & Development
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;">
+        Fueling long-term ecosystem development, security audits, marketing, and strategic partnerships
+      </p>
+    </div>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
-      <!-- Voting Power -->
-      <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
-        <div style="text-align: center; margin-bottom: var(--spacing-md);">
-          <div style="width: 60px; height: 60px; background: rgba(255, 51, 102, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 2px solid var(--rebel-red);">
-            <i class="fas fa-vote-yea" style="color: var(--rebel-red); font-size: 1.5rem;"></i>
-          </div>
+    <!-- Fund Allocation -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin: var(--spacing-xl) 0;">
+      <!-- Initial Operations -->
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 152, 0, 0.1); border-radius: var(--border-radius); border: 2px solid #FF9800;">
+        <div style="width: 60px; height: 60px; background: rgba(255, 152, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+          <i class="fas fa-rocket" style="color: #FF9800; font-size: 1.8rem;"></i>
         </div>
-        <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm); text-align: center;">$REBL Voting Power</h5>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; text-align: center;">
-          1 $REBL = 1 Vote. Future DAO proposals decided by $REBL holders.
-        </p>
+        <div style="font-size: 2rem; color: #FF9800; font-weight: 900; margin-bottom: var(--spacing-sm);">5M REBL</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Initial Operations</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+          8.3% for essential costs during first 6 months
+        </div>
       </div>
       
-      <!-- Enhanced Rights -->
-      <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
-        <div style="text-align: center; margin-bottom: var(--spacing-md);">
-          <div style="width: 60px; height: 60px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 2px solid var(--rebel-gold);">
-            <i class="fas fa-crown" style="color: var(--rebel-gold); font-size: 1.5rem;"></i>
-          </div>
+      <!-- Sustained Growth -->
+      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <div style="width: 60px; height: 60px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+          <i class="fas fa-chart-line" style="color: var(--rebel-gold); font-size: 1.8rem;"></i>
         </div>
-        <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">Enhanced Governance</h5>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; text-align: center;">
-          Holders of both Creator Coin + Content Coin NFT may receive enhanced voting rights.
-        </p>
-      </div>
-      
-      <!-- Treasury Control -->
-      <div style="background: rgba(76, 175, 80, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid #4CAF50;">
-        <div style="text-align: center; margin-bottom: var(--spacing-md);">
-          <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 2px solid #4CAF50;">
-            <i class="fas fa-vault" style="color: #4CAF50; font-size: 1.5rem;"></i>
-          </div>
+        <div style="font-size: 2rem; color: var(--rebel-gold); font-weight: 900; margin-bottom: var(--spacing-sm);">55M REBL</div>
+        <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Sustained Growth</div>
+        <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">
+          91.7% for long-term ecosystem development
         </div>
-        <h5 style="color: #4CAF50; margin-bottom: var(--spacing-sm); text-align: center;">DAO Treasury</h5>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; text-align: center;">
-          Community DAO Reserve controlled by $REBL holders through governance proposals.
-        </p>
       </div>
     </div>
     
-    <!-- Governance Timeline -->
-    <div style="background: rgba(0, 0, 0, 0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-top: var(--spacing-lg); border: 1px solid var(--rebel-gold);">
-      <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
-        <i class="fas fa-road"></i> Governance Evolution Timeline
+    <!-- Vesting Timeline -->
+    <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid var(--rebel-gold);">
+      <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-road"></i> Vesting Timeline
       </h5>
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-sm);">
-        <div style="text-align: center; flex: 1; min-width: 150px;">
-          <div style="width: 40px; height: 40px; background: var(--rebel-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: white; font-weight: bold;">1</div>
-          <div style="font-weight: 600; color: var(--rebel-red);">Current</div>
-          <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Community Feedback</div>
+      
+      <div style="position: relative; max-width: 600px; margin: 0 auto;">
+        <!-- Timeline Line -->
+        <div style="position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, #FF9800, var(--rebel-gold));"></div>
+        
+        <!-- Phase 1: Initial Operations -->
+        <div style="display: flex; align-items: flex-start; margin-bottom: var(--spacing-xl); position: relative;">
+          <div style="width: 40px; height: 40px; background: #FF9800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: var(--spacing-lg); border: 3px solid white; z-index: 2;">
+            <span style="color: white; font-weight: bold;">1</span>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; color: #FF9800; font-size: 1.1rem; margin-bottom: var(--spacing-sm);">
+              Initial Operations Phase
+            </div>
+            <div style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-sm);">
+              <strong>5M REBL (8.3%)</strong> available for essential operational costs
+            </div>
+            <div style="background: rgba(255, 152, 0, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius);">
+              <div style="color: #FF9800; font-size: 0.9rem;">
+                <i class="fas fa-clock"></i> First 6 months • Immediate needs
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div style="flex: 0 0 40px; text-align: center;">
-          <i class="fas fa-arrow-right" style="color: var(--rebel-gold);"></i>
+        <!-- Phase 2: 6-Month Cliff -->
+        <div style="display: flex; align-items: flex-start; margin-bottom: var(--spacing-xl); position: relative;">
+          <div style="width: 40px; height: 40px; background: var(--rebel-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: var(--spacing-lg); border: 3px solid white; z-index: 2;">
+            <span style="color: white; font-weight: bold;">2</span>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; color: var(--rebel-red); font-size: 1.1rem; margin-bottom: var(--spacing-sm);">
+              6-Month Cliff
+            </div>
+            <div style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-sm);">
+              <strong>55M REBL (91.7%)</strong> locked for first 6 months
+            </div>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius);">
+              <div style="color: var(--rebel-red); font-size: 0.9rem;">
+                <i class="fas fa-lock"></i> No access during cliff period
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div style="text-align: center; flex: 1; min-width: 150px;">
-          <div style="width: 40px; height: 40px; background: var(--rebel-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: var(--dark-bg); font-weight: bold;">2</div>
-          <div style="font-weight: 600; color: var(--rebel-gold);">Q2 2026</div>
-          <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Snapshot Voting</div>
-        </div>
-        
-        <div style="flex: 0 0 40px; text-align: center;">
-          <i class="fas fa-arrow-right" style="color: var(--rebel-gold);"></i>
-        </div>
-        
-        <div style="text-align: center; flex: 1; min-width: 150px;">
-          <div style="width: 40px; height: 40px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: white; font-weight: bold;">3</div>
-          <div style="font-weight: 600; color: #4CAF50;">Q4 2026</div>
-          <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Full DAO Launch</div>
+        <!-- Phase 3: Linear Vesting -->
+        <div style="display: flex; align-items: flex-start; position: relative;">
+          <div style="width: 40px; height: 40px; background: var(--rebel-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: var(--spacing-lg); border: 3px solid white; z-index: 2;">
+            <span style="color: var(--dark-bg); font-weight: bold;">3</span>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 700; color: var(--rebel-gold); font-size: 1.1rem; margin-bottom: var(--spacing-sm);">
+              18-Month Linear Vesting
+            </div>
+            <div style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-sm);">
+              <strong>55M REBL</strong> released linearly over 18 months
+            </div>
+            <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius);">
+              <div style="color: var(--rebel-gold); font-size: 0.9rem;">
+                <i class="fas fa-chart-line"></i> Sustained, predictable release
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     
-    <!-- Governance Actions -->
-    <div style="margin-top: var(--spacing-lg); text-align: center;">
-      <a href="governance.html" class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
-        <i class="fas fa-external-link-alt"></i> Explore Governance Page
+    <!-- Use Cases -->
+    <div style="margin: var(--spacing-xl) 0;">
+      <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-list-check"></i> Fund Use Cases
+      </h5>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+        <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div style="font-size: 2rem; color: #2196F3; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-code"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">Development</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Platform features and tools
+          </div>
+        </div>
+        
+        <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div style="font-size: 2rem; color: #4CAF50; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">Security Audits</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Smart contract security reviews
+          </div>
+        </div>
+        
+        <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div style="font-size: 2rem; color: #9C27B0; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-bullhorn"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">Marketing</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Community growth initiatives
+          </div>
+        </div>
+        
+        <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <div style="font-size: 2rem; color: #FF9800; margin-bottom: var(--spacing-sm);">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">Partnerships</div>
+          <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: var(--spacing-sm);">
+            Strategic collaborations
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center; margin-top: var(--spacing-xl);">
+      <a href="https://app.streamflow.finance/contract/solana/mainnet/B477oon9LQ1ypqyKFPR3S5ADqkgd76RGCqCzC6sum7" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button gold">
+        <i class="fas fa-external-link-alt"></i> Vesting Contract
       </a>
-      <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" class="accordion-button" style="background: linear-gradient(135deg, #5865F2, #7289DA);">
-        <i class="fab fa-discord"></i> Join Governance Discussion
+      <a href="https://solscan.io/account/DGRMGRm6fWLs53ghWR7RFJ1JC8UvcKWQP9LtunQ1sa7R" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+        <i class="fas fa-vault"></i> Multi-Sig Wallet
+      </a>
+      <a href="roadmap.html" class="accordion-button" style="background: linear-gradient(135deg, #2196F3, #21CBF3);">
+        <i class="fas fa-map-signs"></i> Roadmap
       </a>
     </div>
   </div>
 </div>
+        
+<!-- Community Governance & DAO Treasury - COMBINED -->
+<div class="accordion-item">
+  <button class="accordion-header">
+    <span>
+      <i class="fas fa-vote-yea" style="margin-right: var(--spacing-sm); color: #4CAF50;"></i>
+      Community Governance & DAO Treasury
+      <span style="margin-left: var(--spacing-sm); font-size: 0.9rem; color: #4CAF50;">
+        (10M REBL • 1% • Community-Controlled)
+      </span>
+    </span>
+    <i class="fas fa-chevron-down accordion-icon"></i>
+  </button>
+  <div class="accordion-content">
+    <!-- Hero Section -->
+    <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+      <div style="width: 80px; height: 80px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 3px solid #4CAF50;">
+        <i class="fas fa-users" style="color: #4CAF50; font-size: 2.5rem;"></i>
+      </div>
+      <h3 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">
+        Community-Driven Treasury & Governance
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;">
+        10M $REBL reserved for community initiatives, controlled by $REBL holders through decentralized governance
+      </p>
+    </div>
+    
+    <!-- Two-Column Layout: Treasury + Governance -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+      
+      <!-- Left Column: DAO Treasury -->
+      <div style="background: rgba(76, 175, 80, 0.1); padding: var(--spacing-xl); border-radius: var(--border-radius); border: 2px solid #4CAF50;">
+        <h4 style="color: #4CAF50; margin-bottom: var(--spacing-lg); text-align: center;">
+          <i class="fas fa-vault"></i> DAO Treasury (10M REBL)
+        </h4>
+        
+        <!-- Treasury Stats -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+          <div style="text-align: center;">
+            <div style="font-size: 1.8rem; color: #4CAF50; font-weight: 900;">10M</div>
+            <div style="color: white; font-size: 0.9rem;">$REBL Reserved</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 1.8rem; color: #4CAF50; font-weight: 900;">1%</div>
+            <div style="color: white; font-size: 0.9rem;">Of Total Supply</div>
+          </div>
+        </div>
+        
+        <!-- Use Cases -->
+        <div style="margin-bottom: var(--spacing-lg);">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
+            <i class="fas fa-bullseye"></i> Treasury Use Cases
+          </h5>
+          <ul style="margin: 0; padding-left: var(--spacing-md);">
+            <li>Community grants & developer incentives</li>
+            <li>Strategic partnerships & exchange listings</li>
+            <li>Marketing initiatives & community events</li>
+            <li>Buy-back campaigns & liquidity incentives</li>
+          </ul>
+        </div>
+        
+        <!-- Vesting Info -->
+        <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); font-size: 0.95rem;">
+            <i class="fas fa-calendar-alt"></i> Vesting Schedule
+          </h5>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">
+            <strong>Locked until July 1, 2026</strong>, then linear vesting over 24 months
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Column: Governance Framework -->
+      <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-xl); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+          <i class="fas fa-vote-yea"></i> Governance Framework
+        </h4>
+        
+        <!-- Voting Power -->
+        <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+          <div style="font-size: 2.5rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
+            1 $REBL = 1 Vote
+          </div>
+          <div style="color: white; font-size: 1.1rem;">
+            Proportional voting power for all holders
+          </div>
+        </div>
+        
+        <!-- Governance Evolution -->
+        <div style="margin-bottom: var(--spacing-lg);">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
+            <i class="fas fa-road"></i> Governance Evolution
+          </h5>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-sm);">
+            <div style="text-align: center; flex: 1; min-width: 100px;">
+              <div style="width: 40px; height: 40px; background: var(--rebel-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: white; font-weight: bold;">1</div>
+              <div style="font-weight: 600; color: var(--rebel-red);">Current</div>
+              <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Community Feedback</div>
+            </div>
+            <div style="text-align: center; flex: 1; min-width: 100px;">
+              <div style="width: 40px; height: 40px; background: var(--rebel-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: var(--dark-bg); font-weight: bold;">2</div>
+              <div style="font-weight: 600; color: var(--rebel-gold);">Q2 2026</div>
+              <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Snapshot Voting</div>
+            </div>
+            <div style="text-align: center; flex: 1; min-width: 100px;">
+              <div style="width: 40px; height: 40px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-sm); color: white; font-weight: bold;">3</div>
+              <div style="font-weight: 600; color: #4CAF50;">Q4 2026</div>
+              <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7);">Full DAO Control</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Enhanced Rights -->
+        <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius);">
+          <h5 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm); font-size: 0.95rem;">
+            <i class="fas fa-crown"></i> Enhanced Governance Rights
+          </h5>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">
+            Holders of both Creator Coin + Content Coin NFT may receive enhanced voting power
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- How It Works Together -->
+    <div style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-xl); border-radius: var(--border-radius); margin: var(--spacing-xl) 0; border: 2px solid var(--rebel-gold);">
+      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fas fa-handshake"></i> How Treasury & Governance Work Together
+      </h4>
+      <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--spacing-xl);">
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid #4CAF50;">
+            <i class="fas fa-vault" style="color: #4CAF50; font-size: 1.8rem;"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">DAO Treasury</div>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">10M REBL for community use</div>
+        </div>
+        
+        <div style="font-size: 2rem; color: var(--rebel-gold);">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid var(--rebel-gold);">
+            <i class="fas fa-vote-yea" style="color: var(--rebel-gold); font-size: 1.8rem;"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">$REBL Holders Vote</div>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">Decide how to use treasury funds</div>
+        </div>
+        
+        <div style="font-size: 2rem; color: var(--rebel-gold);">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="width: 60px; height: 60px; background: rgba(255, 51, 102, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md); border: 2px solid var(--rebel-red);">
+            <i class="fas fa-rocket" style="color: var(--rebel-red); font-size: 1.8rem;"></i>
+          </div>
+          <div style="font-weight: 700; color: white;">Community Growth</div>
+          <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">Funded initiatives drive ecosystem</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center; margin-top: var(--spacing-xl);">
+      <a href="governance.html" 
+         class="accordion-button" style="background: linear-gradient(135deg, #4CAF50, #8BC34A); min-width: 200px;">
+        <i class="fas fa-external-link-alt"></i> Governance Details
+      </a>
+      <a href="https://solscan.io/account/2i2UE92x4Rg7schBhyfGYCyKKYAinWSye5ZvSgnt368X" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); min-width: 200px;">
+        <i class="fas fa-vault"></i> Treasury Contract
+      </a>
+      <a href="https://discord.gg/s8dkuyD3cZ" 
+         target="_blank" rel="noopener noreferrer" 
+         class="accordion-button" style="background: linear-gradient(135deg, #5865F2, #7289DA); min-width: 200px;">
+        <i class="fab fa-discord"></i> Join Discussion
+      </a>
+    </div>
+  </div>
+</div>
+
     </section>
     
    <!-- Cross-Chain Value - ENHANCED -->
@@ -1726,58 +2775,77 @@
       <i class="fas fa-rocket"></i> How ZORA Revenue Fuels $REBL Value
     </h3>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; position: relative; z-index: 1;">
+    <div class="cross-chain-grid">
       <!-- 80% Buy-Back & Burn -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); transition: var(--transition);">
-        <div style="width: 100px; height: 100px; background: rgba(255, 51, 102, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); border: 3px solid var(--rebel-red);">
-          <i class="fas fa-fire" style="font-size: 3rem; color: var(--rebel-red);"></i>
+      <div class="cross-chain-card">
+        <div class="cross-chain-icon">
+          <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--rebel-red);"></i>
         </div>
-        <h4 style="color: var(--rebel-red); margin-bottom: var(--spacing-md); font-size: 1.3rem;">
-          <span style="background: var(--rebel-red); color: white; padding: 2px 10px; border-radius: 20px;">80%</span> Buy-Back & Burn
+        <div class="cross-chain-percentage">80%</div>
+        <h4 style="color: var(--rebel-red); margin-bottom: var(--spacing-md); font-size: 1.2rem;">
+          Buy-Back & Burn
         </h4>
-        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6;">
+        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.5; font-size: 0.95rem;">
           ETH revenue from ZORA assets is bridged to Solana to <strong>permanently burn $REBL</strong>, creating deflationary pressure and increasing token scarcity.
         </p>
         <div style="margin-top: var(--spacing-md);">
-          <div style="display: inline-block; background: rgba(255, 51, 102, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; color: var(--rebel-red);">
+          <div style="display: inline-block; background: rgba(255, 51, 102, 0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; color: var(--rebel-red);">
             <i class="fas fa-chart-line"></i> Deflationary Mechanism
           </div>
         </div>
       </div>
       
       <!-- 15% Community DAO -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); transition: var(--transition);">
-        <div style="width: 100px; height: 100px; background: rgba(255, 204, 0, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); border: 3px solid var(--rebel-gold);">
-          <i class="fas fa-users" style="font-size: 3rem; color: var(--rebel-gold);"></i>
+      <div class="cross-chain-card gold">
+        <div class="cross-chain-icon">
+          <i class="fas fa-users" style="font-size: 2.5rem; color: var(--rebel-gold);"></i>
         </div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1.3rem;">
-          <span style="background: var(--rebel-gold); color: var(--dark-bg); padding: 2px 10px; border-radius: 20px;">15%</span> Community DAO
+        <div class="cross-chain-percentage">15%</div>
+        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1.2rem;">
+          Community DAO
         </h4>
-        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6;">
+        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.5; font-size: 0.95rem;">
           Funds future community initiatives, strategic partnerships, and community-driven buy-back campaigns. Controlled by DAO governance.
         </p>
         <div style="margin-top: var(--spacing-md);">
-          <div style="display: inline-block; background: rgba(255, 204, 0, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; color: var(--rebel-gold);">
+          <div style="display: inline-block; background: rgba(255, 204, 0, 0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; color: var(--rebel-gold);">
             <i class="fas fa-vote-yea"></i> DAO Controlled
           </div>
         </div>
       </div>
       
       <!-- 5% Operations -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(76, 175, 80, 0.1); border-radius: var(--border-radius); border: 2px solid #4CAF50; transition: var(--transition);">
-        <div style="width: 100px; height: 100px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); border: 3px solid #4CAF50;">
-          <i class="fas fa-cogs" style="font-size: 3rem; color: #4CAF50;"></i>
+      <div class="cross-chain-card green">
+        <div class="cross-chain-icon">
+          <i class="fas fa-cogs" style="font-size: 2.5rem; color: #4CAF50;"></i>
         </div>
-        <h4 style="color: #4CAF50; margin-bottom: var(--spacing-md); font-size: 1.3rem;">
-          <span style="background: #4CAF50; color: white; padding: 2px 10px; border-radius: 20px;">5%</span> Operations
+        <div class="cross-chain-percentage">5%</div>
+        <h4 style="color: #4CAF50; margin-bottom: var(--spacing-md); font-size: 1.2rem;">
+          Operations
         </h4>
-        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.6;">
+        <p style="color: rgba(255, 255, 255, 0.9); line-height: 1.5; font-size: 0.95rem;">
           Covers essential operational costs: infrastructure, security audits, development tools, and ecosystem maintenance for sustainable growth.
         </p>
         <div style="margin-top: var(--spacing-md);">
-          <div style="display: inline-block; background: rgba(76, 175, 80, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; color: #4CAF50;">
+          <div style="display: inline-block; background: rgba(76, 175, 80, 0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; color: #4CAF50;">
             <i class="fas fa-shield-alt"></i> Sustainable Growth
           </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- ====== ADD THE FLYWHEEL ELEMENT HERE ====== -->
+    <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-lg); border-radius: var(--border-radius); margin: var(--spacing-lg) 0; border-left: 4px solid var(--rebel-gold); position: relative; z-index: 1;">
+      <div style="display: flex; align-items: flex-start; gap: var(--spacing-md);">
+        <i class="fas fa-lightbulb" style="color: var(--rebel-gold); font-size: 1.2rem; margin-top: 3px;"></i>
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: 0.5rem; font-size: 1.1rem;">The Deflationary Flywheel</h4>
+          <p style="color: rgba(255, 255, 255, 0.9); margin: 0; line-height: 1.5; font-size: 0.95rem;">
+            <strong>More ZORA activity → More revenue → More $REBL burned → Higher $REBL value → More incentive to hold ZORA assets</strong>
+          </p>
+          <p style="color: rgba(255, 255, 255, 0.8); margin: var(--spacing-sm) 0 0 0; font-size: 0.95rem;">
+            This creates a self-reinforcing cycle that benefits both ZORA asset holders and $REBL token holders.
+          </p>
         </div>
       </div>
     </div>
@@ -1825,7 +2893,7 @@
       </div>
       
       <div style="text-align: center; margin-top: var(--spacing-lg);">
-        <a href="epoch-rewards.html" class="cta-button" style="font-size: 1rem; padding: 0.8rem 2rem;">
+        <a href="epoch-rewards.html" class="cta-button" style="font-size: 1rem; padding: 0.8rem 2rem; width: 100%; max-width: 300px;">
           <i class="fas fa-play-circle"></i> Start Earning $REBL
         </a>
       </div>
@@ -1842,136 +2910,101 @@
     </div>
   </div>
 </section>
-    <!-- Basic Security Info -->
-   <section id="security">
-  <h2><i class="fas fa-shield-alt"></i> Security & Decentralization</h2>
-  <div style="background: var(--section-bg); padding: var(--spacing-xl); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); position: relative; overflow: hidden;">
+  
     
-    <!-- Background Pattern -->
-    <div style="position: absolute; top: 0; left: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255, 51, 102, 0.1) 0%, transparent 70%); z-index: 0;"></div>
+<!-- Security Overview in Tokenomics - SIMPLIFIED VERSION -->
+<section id="security-overview" style="margin-top: var(--spacing-xl);">
+  <h2><i class="fas fa-shield-alt"></i> Security Overview</h2>
+  <div style="background: var(--section-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
     
-    <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-xl); text-align: center; position: relative; z-index: 1;">
-      <i class="fas fa-lock"></i> Maximum Security & Trustless Design
-    </h3>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl); position: relative; z-index: 1;">
-      <!-- Mint Authority -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(76, 175, 80, 0.1); border-radius: var(--border-radius); border: 2px solid #4CAF50;">
-        <div style="width: 80px; height: 80px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
-          <i class="fas fa-ban" style="font-size: 2.5rem; color: #4CAF50;"></i>
-        </div>
-        <h4 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">Mint Authority</h4>
-        <div style="font-size: 2rem; color: #4CAF50; font-weight: 900; margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-          Permanently renounced. No new tokens can ever be created.
-        </p>
+    <!-- Header inspired by your security page -->
+    <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+      <div style="width: 60px; height: 60px; background: rgba(76, 175, 80, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
+        <i class="fas fa-shield-alt" style="color: #4CAF50; font-size: 1.8rem;"></i>
       </div>
-      
-      <!-- Freeze Authority -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(33, 150, 243, 0.1); border-radius: var(--border-radius); border: 2px solid #2196F3;">
-        <div style="width: 80px; height: 80px; background: rgba(33, 150, 243, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
-          <i class="fas fa-snowflake" style="font-size: 2.5rem; color: #2196F3;"></i>
-        </div>
-        <h4 style="color: #2196F3; margin-bottom: var(--spacing-sm);">Freeze Authority</h4>
-        <div style="font-size: 2rem; color: #2196F3; font-weight: 900; margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-          Permanently renounced. Tokens can never be frozen.
-        </p>
-      </div>
-      
-      <!-- LP Tokens -->
-      <div style="text-align: center; padding: var(--spacing-lg); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius); border: 2px solid var(--rebel-red);">
-        <div style="width: 80px; height: 80px; background: rgba(255, 51, 102, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-md);">
-          <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--rebel-red);"></i>
-        </div>
-        <h4 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">LP Tokens</h4>
-        <div style="font-size: 2rem; color: var(--rebel-red); font-weight: 900; margin-bottom: var(--spacing-sm);">
-          98.57%
-        </div>
-        <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
-          Burned forever. No rug pull possible.
-        </p>
+      <h3 style="color: var(--rebel-gold); margin-bottom: 0.5rem;">Maximum Security & Trustless Design</h3>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 1rem; border-radius: 20px; background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; font-weight: 600;">
+        <i class="fas fa-check-circle"></i>
+        <span>VERIFIED & SECURE</span>
       </div>
     </div>
     
-    <!-- Additional Security Features -->
-    <div style="background: rgba(0, 0, 0, 0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); margin-top: var(--spacing-lg); position: relative; z-index: 1;">
-      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg); text-align: center;">
-        <i class="fas fa-list-check"></i> Additional Security Features
-      </h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
-        <div style="text-align: center;">
-          <div style="color: #4CAF50; font-size: 1.5rem; margin-bottom: var(--spacing-sm);">
-            <i class="fas fa-file-contract"></i>
-          </div>
-          <div style="font-weight: 600; color: var(--rebel-gold);">Verified Contracts</div>
-          <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">All contracts publicly verified</div>
+    <!-- Quick Stats (from your security page) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin: var(--spacing-lg) 0;">
+      <div style="text-align: center;">
+        <div style="color: #4CAF50; font-size: 2rem; margin-bottom: 0.5rem;">
+          <i class="fas fa-check-circle"></i>
         </div>
-        
-        <div style="text-align: center;">
-          <div style="color: #2196F3; font-size: 1.5rem; margin-bottom: var(--spacing-sm);">
-            <i class="fas fa-vault"></i>
-          </div>
-          <div style="font-weight: 600; color: var(--rebel-gold);">Multi-Sig Wallets</div>
-          <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">Team funds secured with multi-sig</div>
+        <div style="font-weight: 600; color: var(--rebel-gold);">Mint Authority</div>
+        <div>Renounced</div>
+      </div>
+      
+      <div style="text-align: center;">
+        <div style="color: #4CAF50; font-size: 2rem; margin-bottom: 0.5rem;">
+          <i class="fas fa-check-circle"></i>
         </div>
-        
-        <div style="text-align: center;">
-          <div style="color: #9C27B0; font-size: 1.5rem; margin-bottom: var(--spacing-sm);">
-            <i class="fas fa-code-branch"></i>
-          </div>
-          <div style="font-weight: 600; color: var(--rebel-gold);">Non-Upgradeable</div>
-          <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">Smart contracts cannot be changed</div>
+        <div style="font-weight: 600; color: var(--rebel-gold);">Freeze Authority</div>
+        <div>Renounced</div>
+      </div>
+      
+      <div style="text-align: center;">
+        <div style="color: var(--rebel-red); font-size: 2rem; margin-bottom: 0.5rem;">
+          <i class="fas fa-fire"></i>
         </div>
-        
-        <div style="text-align: center;">
-          <div style="color: #FF9800; font-size: 1.5rem; margin-bottom: var(--spacing-sm);">
-            <i class="fas fa-search"></i>
-          </div>
-          <div style="font-weight: 600; color: var(--rebel-gold);">Audit Ready</div>
-          <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">Code open for security review</div>
+        <div style="font-weight: 600; color: var(--rebel-gold);">LP Tokens</div>
+        <div>98.57% Burned</div>
+      </div>
+      
+      <div style="text-align: center;">
+        <div style="color: #2196F3; font-size: 2rem; margin-bottom: 0.5rem;">
+          <i class="fas fa-lock"></i>
         </div>
+        <div style="font-weight: 600; color: var(--rebel-gold);">Vested Tokens</div>
+        <div>33.12% Locked</div>
       </div>
     </div>
     
-    <!-- Action Buttons -->
-    <div style="margin-top: var(--spacing-xl); text-align: center; position: relative; z-index: 1;">
-      <a href="trade.html#contract-verify" class="cta-button" style="margin-right: var(--spacing-md);">
-        <i class="fas fa-file-contract"></i> Full Contract Verification
-      </a>
-      <a href="security.html" class="cta-button gold">
-        <i class="fas fa-shield-alt"></i> Security Details
-      </a>
+    <!-- Simple description (shorter than your security page) -->
+    <p style="text-align: center; color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-lg);">
+      The $REBL token has been designed with maximum security and transparency. All critical authorities have been renounced, and liquidity is permanently locked.
+    </p>
+    
+    <!-- Link to Full Security Page -->
+    <div style="text-align: center; margin-top: var(--spacing-lg);">
+      <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+        <a href="security.html" class="cta-button" style="width: 100%; max-width: 300px;">
+          <i class="fas fa-shield-alt"></i> View Full Security Details
+        </a>
+        <a href="trade.html#contract-verify" class="cta-button gold" style="width: 100%; max-width: 300px;">
+          <i class="fas fa-file-contract"></i> Verify Contracts
+        </a>
+      </div>
     </div>
   </div>
 </section>
-
+    
     <!-- Related Pages -->
     <section id="related">
       <h2>Explore More</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
-        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+      <div class="related-grid">
+        <a href="governance.html" class="related-card">
+          <div class="related-icon">
             <i class="fas fa-vote-yea"></i>
           </div>
           <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Community-led voting and DAO structure</p>
         </a>
         
-        <a href="roadmap.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+        <a href="roadmap.html" class="related-card red">
+          <div class="related-icon">
             <i class="fas fa-map-signs"></i>
           </div>
           <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Roadmap</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Development timeline and future plans</p>
         </a>
         
-        <a href="trade.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+        <a href="trade.html" class="related-card">
+          <div class="related-icon">
             <i class="fas fa-chart-line"></i>
           </div>
           <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Live Trading</h3>
@@ -2003,18 +3036,20 @@
         <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); width: 100%; max-width: 300px; margin: 0 auto;">
           <i class="fas fa-shopping-cart"></i> BUY $REBL
         </a>
       </div>
       
       <div style="margin-bottom: var(--spacing-md); text-align: center;">
-        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
-        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
-        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
-        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
-        <a href="roadmap.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Roadmap</a>
-        <a href="privacy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy</a>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1rem;">
+          <a href="index.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Home</a>
+          <a href="trade.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Trade</a>
+          <a href="security.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Security</a>
+          <a href="governance.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Governance</a>
+          <a href="roadmap.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Roadmap</a>
+          <a href="privacy.html" style="color: var(--rebel-gold); font-size: 0.85rem;">Privacy</a>
+        </div>
       </div>
       
       <div style="text-align: center; font-size: 0.8em; color: #ccc;">
@@ -2040,14 +3075,17 @@
         mobileToggle.addEventListener('click', function() {
           const nav = document.getElementById('nav-desktop');
           const icon = this.querySelector('i');
+          const body = document.body;
           
           nav.classList.toggle('active');
           if (nav.classList.contains('active')) {
             icon.classList.remove('fa-bars');
             icon.classList.add('fa-times');
+            body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
           } else {
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
+            body.style.overflow = '';
           }
         });
       }
@@ -2062,8 +3100,28 @@
               toggleIcon.classList.remove('fa-times');
               toggleIcon.classList.add('fa-bars');
             }
+            document.body.style.overflow = '';
           }
         });
+      });
+      
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        const nav = document.getElementById('nav-desktop');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        if (window.innerWidth <= 768 && 
+            nav.classList.contains('active') && 
+            !nav.contains(event.target) && 
+            !toggle.contains(event.target)) {
+          nav.classList.remove('active');
+          const toggleIcon = toggle.querySelector('i');
+          if (toggleIcon) {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+          }
+          document.body.style.overflow = '';
+        }
       });
       
       // Back to top button
@@ -2089,183 +3147,206 @@
       initializeAccordion();
       
       // Initialize progress calculations
+      updateFounderCommitmentProgress();
       updateContractProgress();
       updateDAOReserveProgress();
       
       // Set up intervals for live updates
-      setInterval(updateContractProgress, 60000); // Update every minute
+      setInterval(updateFounderCommitmentProgress, 60000);
+      setInterval(updateContractProgress, 60000);
+      
+      // Mobile touch improvements
+      initializeMobileTouch();
+      
+      // Handle orientation change
+      window.addEventListener('orientationchange', function() {
+        // Reset chart on orientation change
+        if (window.tokenomicsChart) {
+          setTimeout(function() {
+            window.tokenomicsChart.resize();
+          }, 200);
+        }
+        
+        // Close mobile menu on orientation change
+        if (window.innerWidth > 768) {
+          const nav = document.getElementById('nav-desktop');
+          if (nav) nav.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
     });
     
-// Tokenomics Chart - CORRECTED VERSION
-function initializeTokenomicsChart() {
-  const ctx = document.getElementById('distributionChart');
-  if (!ctx) return;
-  
-  // Destroy existing chart if it exists
-  if (window.tokenomicsChart) {
-    window.tokenomicsChart.destroy();
-  }
-  
-  // Create new chart
-  window.tokenomicsChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: [
-        'Bonding Curve (53.77%)',
-        'Founder\'s Commitment (16.23%)',
-        'ZORA Rewards Treasury (16%)',
-        'Team Fund (7%)',
-        'Ecosystem Fund (6%)',
-        'Community DAO (1%)'
-      ],
-      datasets: [{
-        data: [53.77, 16.23, 16, 7, 6, 1],
-        backgroundColor: [
-          'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
-          'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
-          'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
-          'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
-          'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
-          'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
-        ],
-        borderColor: [
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)'
-        ],
-        borderWidth: 2,
-        hoverOffset: 15
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: {
-            font: {
-              size: 14,
-              family: 'Montserrat',
-              weight: '600'
-            },
-            color: 'white',
-            padding: 20,
-            usePointStyle: true,
-            pointStyle: 'circle'
-          }
+    // Tokenomics Chart - CORRECTED VERSION
+    function initializeTokenomicsChart() {
+      const ctx = document.getElementById('distributionChart');
+      if (!ctx) return;
+      
+      // Destroy existing chart if it exists
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.destroy();
+      }
+      
+      // Create new chart
+      window.tokenomicsChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [
+            'Bonding Curve (53.77%)',
+            'Founder\'s Commitment (16.23%)',
+            'ZORA Rewards Treasury (16%)',
+            'Team Fund (7%)',
+            'Ecosystem Fund (6%)',
+            'Community DAO Reserve (1%)'
+          ],
+          datasets: [{
+            data: [53.77, 16.23, 16, 7, 6, 1],
+            backgroundColor: [
+              'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
+              'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
+              'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
+              'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
+              'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
+              'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
+            ],
+            borderColor: [
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)'
+            ],
+            borderWidth: 2,
+            hoverOffset: 15
+          }]
         },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.label}: ${context.raw}%`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: window.innerWidth <= 768 ? 'bottom' : 'right',
+              labels: {
+                font: {
+                  size: window.innerWidth <= 768 ? 10 : 14,
+                  family: 'Montserrat',
+                  weight: '600'
+                },
+                color: 'white',
+                padding: 15,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw}%`;
+                }
+              },
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: 'var(--rebel-gold)',
+              bodyColor: 'white',
+              titleFont: {
+                size: 14
+              },
+              bodyFont: {
+                size: 13
+              }
             }
           },
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: 'var(--rebel-gold)',
-          bodyColor: 'white'
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1000
+          }
         }
-      },
-      animation: {
-        animateScale: true,
-        animateRotate: true,
-        duration: 1000
-      }
+      });
     }
-  });
-}
-
-// Founder's Commitment - Accurate Progress Calculator
-function updateFounderCommitmentProgress() {
-  // Exact contract dates from Streamflow
-  const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
-  const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
-  const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
-  
-  const now = new Date();
-  const totalDuration = endDate - startDate; // Total milliseconds in 1 year
-  const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
-  
-  // Calculate time-based progress (0-100%)
-  const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
-  
-  // Calculate days elapsed/remaining
-  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-  const daysTotal = 365; // 1 year
-  const daysRemaining = Math.max(0, daysTotal - daysElapsed);
-  
-  // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
-  const unlockedPercent = 8;
-  const unlockedAmount = 13.49; // In millions
-  
-  // Update progress bars
-  const unlockedBar = document.getElementById('founderUnlockedBar');
-  const timeBar = document.getElementById('founderTimeBar');
-  const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
-  const timeProgressEl = document.getElementById('founderTimeProgress');
-  const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
-  const daysCountEl = document.getElementById('founderDaysCount');
-  
-  if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
-  if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
-  
-  if (unlockedAmountEl) {
-    unlockedAmountEl.textContent = `${unlockedAmount}M REBL (${unlockedPercent}%)`;
-  }
-  
-  if (timeProgressEl) {
-    timeProgressEl.textContent = `${timeProgressPercent.toFixed(1)}%`;
-  }
-  
-  if (nextUnlockDateEl) {
-    nextUnlockDateEl.textContent = `Dec 31, 2025`;
-  }
-  
-  if (daysCountEl) {
-    daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong> • 13.49M REBL/month`;
-  }
-  
-  // Calculate and display next unlock countdown
-  const timeToNextUnlock = nextUnlockDate - now;
-  if (timeToNextUnlock > 0) {
-    const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
-    const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     
-    // Update the next unlock display with countdown
-    if (nextUnlockDateEl) {
-      nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
+    // Founder's Commitment - Accurate Progress Calculator
+    function updateFounderCommitmentProgress() {
+      // Exact contract dates from Streamflow
+      const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
+      const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
+      const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
+      
+      const now = new Date();
+      const totalDuration = endDate - startDate; // Total milliseconds in 1 year
+      const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
+      
+      // Calculate time-based progress (0-100%)
+      const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
+      
+      // Calculate days elapsed/remaining
+      const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      const daysTotal = 365; // 1 year
+      const daysRemaining = Math.max(0, daysTotal - daysElapsed);
+      
+      // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
+      const unlockedPercent = 8;
+      const unlockedAmount = 13.49; // In millions
+      
+      // Update progress bars
+      const unlockedBar = document.getElementById('founderUnlockedBar');
+      const timeBar = document.getElementById('founderTimeBar');
+      const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
+      const timeProgressEl = document.getElementById('founderTimeProgress');
+      const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
+      const daysCountEl = document.getElementById('founderDaysCount');
+      
+      if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
+      if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
+      
+      if (unlockedAmountEl) {
+        unlockedAmountEl.textContent = `${unlockedAmount}M REBL`;
+      }
+      
+      if (timeProgressEl) {
+        timeProgressEl.textContent = `${daysElapsed} days`;
+      }
+      
+      if (nextUnlockDateEl) {
+        nextUnlockDateEl.textContent = `Dec 31, 2025`;
+      }
+      
+      if (daysCountEl) {
+        daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong>`;
+      }
+      
+      // Calculate and display next unlock countdown
+      const timeToNextUnlock = nextUnlockDate - now;
+      if (timeToNextUnlock > 0) {
+        const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+        const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        // Update the next unlock display with countdown
+        if (nextUnlockDateEl) {
+          nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
+        }
+      }
+      
+      // Update accordion progress if it exists
+      const founderProgressBar = document.getElementById('founderProgressBar');
+      const founderProgressText = document.getElementById('founderProgressText');
+      const founderUnlockedAmountAccordion = document.getElementById('founderUnlockedAmountAccordion');
+      const founderNextUnlockDateAccordion = document.getElementById('founderNextUnlockDateAccordion');
+      
+      if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
+      if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
+      if (founderUnlockedAmountAccordion) founderUnlockedAmountAccordion.textContent = `${unlockedAmount}M`;
+      if (founderNextUnlockDateAccordion) founderNextUnlockDateAccordion.textContent = 'Dec 31, 2025';
     }
-  }
-  
-  // Update accordion progress if it exists
-  const founderProgressBar = document.getElementById('founderProgressBar');
-  const founderProgressText = document.getElementById('founderProgressText');
-  
-  if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
-  if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
-}
-
-// Initialize and update
-updateFounderCommitmentProgress();
-setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
     
     // Update contract progress dynamically
     function updateContractProgress() {
       const cliffDate = new Date("2025-09-14T17:36:00Z"); // Sep 14, 2025, 06:36 PM GMT+1
-      const nextUnlockDate = new Date("2026-01-14T08:35:00Z"); // Jan 14, 2026, 09:35 AM GMT+1
       const endDate = new Date("2027-09-14T17:33:00Z"); // Sep 14, 2027, 06:33 PM GMT+1
       const now = new Date();
       
       let progress = 47.5; // Base: 76M already unlocked out of 160M
       
-      // More detailed calculation based on current date
-      if (now > cliffDate && now < nextUnlockDate) {
-        progress = 40.0; // Just the cliff
-      } else if (now >= nextUnlockDate) {
-        // Linear progress calculation
+      if (now > cliffDate) {
         const totalDuration = endDate - cliffDate;
         const elapsed = now - cliffDate;
         const linearProgress = Math.min(60, (elapsed / totalDuration) * 60);
@@ -2317,15 +3398,14 @@ setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
     // Accordion functionality
     function initializeAccordion() {
       document.querySelectorAll('.accordion-header').forEach(header => {
-        header.addEventListener('click', () => {
+        header.addEventListener('click', (e) => {
+          e.preventDefault();
           const content = header.nextElementSibling;
           const isActive = content.classList.contains('active');
 
           // Close all accordion items
           document.querySelectorAll('.accordion-content').forEach(item => {
             item.classList.remove('active');
-            item.style.maxHeight = null;
-            item.style.padding = '0 var(--spacing-md)';
           });
           document.querySelectorAll('.accordion-header').forEach(h => {
             h.classList.remove('active');
@@ -2334,14 +3414,51 @@ setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
           // Open clicked item if it wasn't already active
           if (!isActive) {
             content.classList.add('active');
-            content.style.maxHeight = content.scrollHeight + 100 + 'px';
             header.classList.add('active');
           }
         });
       });
     }
     
-    // Progress bar animations
+    // Mobile touch improvements
+    function initializeMobileTouch() {
+      // Prevent zoom on double-tap
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+      
+      // Resize chart on window resize
+      let resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (window.tokenomicsChart) {
+            window.tokenomicsChart.resize();
+            // Update legend position for mobile
+            window.tokenomicsChart.options.plugins.legend.position = window.innerWidth <= 768 ? 'bottom' : 'right';
+            window.tokenomicsChart.update();
+          }
+        }, 250);
+      });
+      
+      // Add touch feedback for buttons
+      document.querySelectorAll('a, button').forEach(element => {
+        element.addEventListener('touchstart', function() {
+          this.classList.add('touch-active');
+        });
+        
+        element.addEventListener('touchend', function() {
+          this.classList.remove('touch-active');
+        });
+      });
+    }
+    
+    // Progress bar animations on scroll
     document.addEventListener('scroll', function() {
       const progressBars = document.querySelectorAll('.progress-fill');
       progressBars.forEach(bar => {
@@ -2357,6 +3474,11 @@ setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
       document.querySelectorAll('.progress-fill').forEach(bar => {
         bar.style.transition = 'width 1.5s ease-in-out';
       });
+      
+      // Initial chart update
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.update();
+      }
     }, 500);
   </script>
 </body>
