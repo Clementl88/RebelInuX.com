@@ -1302,51 +1302,110 @@
   }
 }
 
-/* Mobile dropdown - will be controlled by JavaScript */
+/* ========== MOBILE DROPDOWN STYLES ========== */
 @media (max-width: 768px) {
   .dropdown {
     width: 100%;
+    margin-bottom: 0.5rem;
   }
   
   .dropdown-content {
-    position: relative;
-    display: none;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(156, 39, 176, 0.3);
-    border-radius: 8px;
-    margin-top: 5px;
-    padding: 0;
+    position: relative !important;
+    display: none !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px !important;
+    margin: 5px 0 15px 0 !important;
+    padding: 10px 0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    width: 100% !important;
+    animation: fadeIn 0.3s ease;
   }
   
   .dropdown-content.active {
-    display: block;
+    display: block !important;
+    animation: slideDown 0.3s ease;
   }
   
   .dropdown-content a {
-    padding: 15px 20px;
-    margin-bottom: 2px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 15px 20px !important;
+    margin: 2px 10px !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 56px !important;
+    font-size: 1rem !important;
+    border-left: 3px solid transparent !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .dropdown-content a:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding-left: 25px !important;
+    border-left-color: currentColor !important;
+  }
+  
+  .dropdown-content a i {
+    margin-right: 12px !important;
+    width: 20px !important;
+    text-align: center !important;
   }
   
   .dropbtn {
-    width: 100%;
-    justify-content: space-between;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    background: rgba(156, 39, 176, 0.1) !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 15px 20px !important;
+    margin: 5px 0 !important;
+    border-radius: 8px !important;
+    background: rgba(156, 39, 176, 0.15) !important;
+    border: 1px solid rgba(156, 39, 176, 0.3) !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: #9C27B0 !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .dropbtn:hover {
+    background: rgba(156, 39, 176, 0.25) !important;
+  }
+  
+  .dropbtn.active {
+    background: rgba(156, 39, 176, 0.3) !important;
+    border-color: #9C27B0 !important;
   }
   
   .dropbtn:after {
-    content: "▼";
-    font-size: 0.8em;
-    margin-left: auto;
-    transition: transform 0.3s ease;
+    content: "▼" !important;
+    font-size: 0.8em !important;
+    margin-left: 10px !important;
+    transition: transform 0.3s ease !important;
   }
   
   .dropbtn.active:after {
-    transform: rotate(180deg);
+    transform: rotate(180deg) !important;
+  }
+  
+  /* Animations */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
 /* ========== END DROPDOWN ========== */
@@ -3460,45 +3519,106 @@ header {
         });
       }
 
-      // ========== ADD DROPDOWN CODE HERE ==========
-// Mobile dropdown toggle
-const dropbtn = document.querySelector('.dropbtn');
-if (dropbtn && window.innerWidth <= 768) {
+// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
+function initializeMobileDropdown() {
+  const dropbtn = document.querySelector('.dropbtn');
+  const navDesktop = document.getElementById('nav-desktop');
+  
+  if (!dropbtn) return;
+  
+  // Mobile dropdown toggle
   dropbtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const dropdownContent = this.nextElementSibling;
-    const isActive = dropdownContent.style.display === 'block';
-    
-    // Close all other dropdowns first
-    document.querySelectorAll('.dropdown-content').forEach(content => {
-      content.style.display = 'none';
-    });
-    document.querySelectorAll('.dropbtn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-    
-    // Toggle this dropdown
-    if (!isActive) {
-      dropdownContent.style.display = 'block';
-      this.classList.add('active');
-    } else {
-      dropdownContent.style.display = 'none';
-      this.classList.remove('active');
+    // Only handle on mobile
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const dropdownContent = this.nextElementSibling;
+      const isActive = dropdownContent.style.display === 'block' || 
+                      dropdownContent.classList.contains('active');
+      
+      // Close all other dropdowns first
+      document.querySelectorAll('.dropdown-content').forEach(content => {
+        content.style.display = 'none';
+        content.classList.remove('active');
+      });
+      
+      // Toggle this dropdown
+      if (!isActive) {
+        dropdownContent.style.display = 'block';
+        dropdownContent.classList.add('active');
+        this.classList.add('active');
+      } else {
+        dropdownContent.style.display = 'none';
+        dropdownContent.classList.remove('active');
+        this.classList.remove('active');
+      }
     }
   });
   
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (mobile only)
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.style.display = 'none';
-      });
-      document.querySelectorAll('.dropbtn').forEach(btn => {
-        btn.classList.remove('active');
-      });
+    if (window.innerWidth <= 768) {
+      const dropdown = document.querySelector('.dropdown');
+      const dropdownContent = document.querySelector('.dropdown-content');
+      const dropbtn = document.querySelector('.dropbtn');
+      
+      if (!e.target.closest('.dropdown') && 
+          dropdownContent && 
+          dropbtn) {
+        dropdownContent.style.display = 'none';
+        dropdownContent.classList.remove('active');
+        dropbtn.classList.remove('active');
+      }
     }
+  });
+  
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    const dropdownContent = document.querySelector('.dropdown-content');
+    const dropbtn = document.querySelector('.dropbtn');
+    
+    if (window.innerWidth > 768) {
+      // Reset styles for desktop
+      if (dropdownContent) {
+        dropdownContent.style.display = '';
+        dropdownContent.classList.remove('active');
+      }
+      if (dropbtn) {
+        dropbtn.classList.remove('active');
+      }
+    }
+  });
+  
+  // Close dropdown when clicking a link inside it
+  document.querySelectorAll('.dropdown-content a').forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        const dropdownContent = this.closest('.dropdown-content');
+        const dropbtn = document.querySelector('.dropbtn');
+        
+        if (dropdownContent) {
+          dropdownContent.style.display = 'none';
+          dropdownContent.classList.remove('active');
+        }
+        if (dropbtn) {
+          dropbtn.classList.remove('active');
+        }
+        
+        // Also close the mobile menu if it's open
+        const mobileMenu = document.getElementById('nav-desktop');
+        const toggleIcon = document.getElementById('mobileNavToggle')?.querySelector('i');
+        
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+          mobileMenu.classList.remove('active');
+          if (toggleIcon) {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+          }
+          document.body.style.overflow = '';
+        }
+      }
+    });
   });
 }
 // ========== END DROPDOWN CODE ==========
@@ -3988,6 +4108,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
+
+  // Initialize mobile dropdown
+  initializeMobileDropdown();
 });
   </script>
 </body>
