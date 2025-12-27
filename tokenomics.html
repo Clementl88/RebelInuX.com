@@ -1200,29 +1200,31 @@
       }
     }
 
-    /* Fix for accordion content display */
-.accordion-content.active {
-  max-height: 5000px !important; /* Large enough to fit all content */
-  opacity: 1 !important;
-  visibility: visible !important;
-}
 
+/* Fix for accordion content display */
 .accordion-content {
   max-height: 0;
   opacity: 0;
   visibility: hidden;
   overflow: hidden;
-  transition: all 0.5s ease;
-}
-
-/* Ensure accordion content is visible when active */
-.accordion-item.active .accordion-content {
+  transition: max-height 0.5s ease, opacity 0.3s ease, visibility 0.3s ease, padding 0.3s ease;
+  padding: 0 var(--spacing-md);
   display: block !important;
 }
 
-/* Remove any conflicting styles that might be hiding content */
-[style*="display: none"] {
-  display: block !important;
+.accordion-content.active {
+  max-height: 5000px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  padding: var(--spacing-md) var(--spacing-md) 2rem !important;
+}
+
+.accordion-header .accordion-icon {
+  transition: transform 0.3s ease;
+}
+
+.accordion-header.active .accordion-icon {
+  transform: rotate(180deg) !important;
 }
   </style>
 </head>
@@ -3088,16 +3090,14 @@
   <script>
 
     
+<script>
 document.addEventListener('DOMContentLoaded', function() {
   // Hide loader
   setTimeout(function() {
-    document.getElementById('loader').classList.add('hidden');
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('hidden');
   }, 1000);
   
-  // Initialize accordion FIRST
-  initializeAccordion();
-  
-  // Then initialize other components
   // Mobile menu toggle
   const mobileToggle = document.getElementById('mobileNavToggle');
   if (mobileToggle) {
@@ -3119,6 +3119,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
+  // Close mobile menu when clicking links
+  document.querySelectorAll('#nav-desktop a').forEach(link => {
+    link.addEventListener('click', function() {
+      const nav = document.getElementById('nav-desktop');
+      const mobileToggle = document.getElementById('mobileNavToggle');
+      if (nav && mobileToggle && nav.classList.contains('active')) {
+        nav.classList.remove('active');
+        mobileToggle.querySelector('i').classList.remove('fa-times');
+        mobileToggle.querySelector('i').classList.add('fa-bars');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+  
   // Back to top button
   const backToTop = document.getElementById('backToTop');
   if (backToTop) {
@@ -3135,21 +3149,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Initialize chart
+  // Initialize components
+  initializeAccordion();
   initializeTokenomicsChart();
-  
-  // Initialize progress calculations
-  updateFounderCommitmentProgress();
-  updateContractProgress();
-  updateDAOReserveProgress();
+  updateProgressCalculations();
   
   // Set up intervals for live updates
-  setInterval(updateFounderCommitmentProgress, 60000);
-  setInterval(updateContractProgress, 60000);
-});
-    
-  // Mobile touch improvements
-  initializeMobileTouch();
+  setInterval(updateProgressCalculations, 60000);
   
   // Handle orientation change
   window.addEventListener('orientationchange', function() {
@@ -3167,9 +3173,20 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = '';
     }
   });
+  
+  // Resize chart on window resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.resize();
+      }
+    }, 250);
+  });
 });
-    
-// Tokenomics Chart - CORRECTED VERSION
+
+// Tokenomics Chart
 function initializeTokenomicsChart() {
   const ctx = document.getElementById('distributionChart');
   if (!ctx) return;
@@ -3194,12 +3211,12 @@ function initializeTokenomicsChart() {
       datasets: [{
         data: [53.77, 16.23, 16, 7, 6, 1],
         backgroundColor: [
-          'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
-          'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
-          'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
-          'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
-          'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
-          'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
+          'rgba(255, 51, 102, 0.9)',
+          'rgba(0, 170, 255, 0.9)',
+          'rgba(156, 39, 176, 0.9)',
+          'rgba(75, 192, 192, 0.9)',
+          'rgba(255, 206, 86, 0.9)',
+          'rgba(75, 192, 86, 0.9)'
         ],
         borderColor: [
           'rgba(255, 255, 255, 1)',
@@ -3257,123 +3274,142 @@ function initializeTokenomicsChart() {
   });
 }
 
-// Founder's Commitment - Accurate Progress Calculator - UPDATED VERSION
-function updateFounderCommitmentProgress() {
-  // Exact contract dates from Streamflow
-  const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
-  const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
-  const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
+// Accordion functionality - FIXED VERSION
+function initializeAccordion() {
+  const accordionHeaders = document.querySelectorAll('.accordion-header');
   
-  const now = new Date();
-  const totalDuration = endDate - startDate; // Total milliseconds in 1 year
-  const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
+  accordionHeaders.forEach(header => {
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const content = this.nextElementSibling;
+      const isActive = this.classList.contains('active');
+      
+      // Close all accordions
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        item.classList.remove('active');
+        item.style.maxHeight = '0';
+        item.style.opacity = '0';
+        item.style.visibility = 'hidden';
+        item.style.padding = '0 var(--spacing-md)';
+      });
+      
+      document.querySelectorAll('.accordion-header').forEach(h => {
+        h.classList.remove('active');
+        const icon = h.querySelector('.accordion-icon');
+        if (icon) {
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+      
+      // Open clicked accordion if it wasn't active
+      if (!isActive) {
+        this.classList.add('active');
+        content.classList.add('active');
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.style.opacity = '1';
+        content.style.visibility = 'visible';
+        content.style.padding = 'var(--spacing-md) var(--spacing-md) 2rem';
+        
+        const icon = this.querySelector('.accordion-icon');
+        if (icon) {
+          icon.style.transform = 'rotate(180deg)';
+        }
+      }
+    });
+  });
   
-  // Calculate time-based progress (0-100%)
-  const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
-  
-  // Calculate days elapsed/remaining
-  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-  const daysTotal = 365; // 1 year
-  
-  // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
-  const unlockedPercent = 8;
-  const unlockedAmount = 13.49; // In millions
-  
-  // --- UPDATE VESTING CARD ELEMENTS ---
-  const unlockedBar = document.getElementById('founderUnlockedBar');
-  const timeBar = document.getElementById('founderTimeBar');
-  const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
-  const timeProgressEl = document.getElementById('founderTimeProgress');
-  const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
-  const daysCountEl = document.getElementById('founderDaysCount');
-  
-  if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
-  if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
-  
-  if (unlockedAmountEl) {
-    unlockedAmountEl.textContent = `${unlockedAmount}M REBL`;
-  }
-  
-  if (timeProgressEl) {
-    timeProgressEl.textContent = `${daysElapsed} days`;
-  }
-  
-  if (nextUnlockDateEl) {
-    nextUnlockDateEl.textContent = `Dec 31, 2025`;
-  }
-  
-  if (daysCountEl) {
-    daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong>`;
-  }
-  
-  // --- UPDATE ACCORDION ELEMENTS ---
-  const founderProgressBar = document.getElementById('founderProgressBar');
-  const founderProgressText = document.getElementById('founderProgressText');
-  const founderUnlockedAmountAccordion = document.getElementById('founderUnlockedAmountAccordion');
-  const founderDaysElapsed = document.getElementById('founderDaysElapsed');
-  const founderNextUnlockDateAccordion = document.getElementById('founderNextUnlockDateAccordion');
-  const nextUnlockCountdownEl = document.getElementById('nextUnlockCountdown');
-  
-  // Update progress bar and text in accordion
-  if (founderProgressBar) {
-    founderProgressBar.style.width = `${unlockedPercent}%`;
-  }
-  if (founderProgressText) {
-    founderProgressText.textContent = `${unlockedPercent}%`;
-  }
-  if (founderUnlockedAmountAccordion) {
-    founderUnlockedAmountAccordion.textContent = `${unlockedAmount}M`;
-  }
-  if (founderDaysElapsed) {
-    founderDaysElapsed.textContent = daysElapsed;
-  }
-  if (founderNextUnlockDateAccordion) {
-    founderNextUnlockDateAccordion.textContent = 'Dec 31, 2025';
-  }
-  
-  // Calculate and display next unlock countdown
-  const timeToNextUnlock = nextUnlockDate - now;
-  if (timeToNextUnlock > 0) {
-    const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
-    const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutesToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60)) / (1000 * 60));
+  // Open first accordion by default
+  const firstHeader = document.querySelector('.accordion-header');
+  const firstContent = document.querySelector('.accordion-content');
+  if (firstHeader && firstContent) {
+    firstHeader.classList.add('active');
+    firstContent.classList.add('active');
+    firstContent.style.maxHeight = firstContent.scrollHeight + 'px';
+    firstContent.style.opacity = '1';
+    firstContent.style.visibility = 'visible';
+    firstContent.style.padding = 'var(--spacing-md) var(--spacing-md) 2rem';
     
-    // Update countdown display
-    if (nextUnlockCountdownEl) {
-      nextUnlockCountdownEl.innerHTML = `<strong>${daysToNext}d ${hoursToNext}h ${minutesToNext}m</strong>`;
+    const icon = firstHeader.querySelector('.accordion-icon');
+    if (icon) {
+      icon.style.transform = 'rotate(180deg)';
     }
-    
-    // Update the next unlock display in vesting card
-    if (nextUnlockDateEl) {
-      nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
-    }
-  } else {
-    // If countdown has passed
-    if (nextUnlockCountdownEl) {
-      nextUnlockCountdownEl.innerHTML = `<strong style="color: #00ff00;">Unlocked!</strong>`;
-    }
-  }
-  
-  // Update days count in vesting card
-  if (daysCountEl) {
-    daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong> • ${unlockedAmount}M REBL/month`;
   }
 }
 
-// Update contract progress dynamically - UPDATED VERSION
-function updateContractProgress() {
-  const cliffDate = new Date("2025-09-14T17:36:00Z"); // Sep 14, 2025, 06:36 PM GMT+1
-  const nextUnlockDate = new Date("2026-01-14T08:35:00Z"); // Jan 14, 2026, 09:35 AM GMT+1
-  const endDate = new Date("2027-09-14T17:33:00Z"); // Sep 14, 2027, 06:33 PM GMT+1
+// Update all progress calculations
+function updateProgressCalculations() {
+  updateFounderCommitmentProgress();
+  updateContractProgress();
+  updateDAOReserveProgress();
+}
+
+// Founder's Commitment Progress
+function updateFounderCommitmentProgress() {
+  const startDate = new Date("2025-11-01T01:28:00Z");
+  const endDate = new Date("2026-11-01T01:27:00Z");
+  const nextUnlockDate = new Date("2025-12-31T21:28:00Z");
   const now = new Date();
   
-  let progress = 47.5; // Base: 76M already unlocked out of 160M
+  const totalDuration = endDate - startDate;
+  const elapsed = Math.max(0, now - startDate);
+  const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
+  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+  const daysTotal = 365;
   
-  // More detailed calculation based on current date
+  // Update elements
+  const elements = {
+    'founderUnlockedBar': `${8}%`,
+    'founderTimeBar': `${timeProgressPercent.toFixed(1)}%`,
+    'founderUnlockedAmount': `${13.49}M REBL`,
+    'founderTimeProgress': `${daysElapsed} days`,
+    'founderNextUnlockDate': `Dec 31, 2025`,
+    'founderDaysCount': `${daysElapsed} of ${daysTotal} days`,
+    'founderProgressBar': `${8}%`,
+    'founderProgressText': `${8}%`,
+    'founderUnlockedAmountAccordion': `${13.49}M`,
+    'founderDaysElapsed': daysElapsed,
+    'founderNextUnlockDateAccordion': 'Dec 31, 2025'
+  };
+  
+  Object.keys(elements).forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      if (id.includes('Bar')) {
+        element.style.width = elements[id];
+      } else {
+        element.textContent = elements[id];
+      }
+    }
+  });
+  
+  // Update countdown
+  const nextUnlockCountdownEl = document.getElementById('nextUnlockCountdown');
+  if (nextUnlockCountdownEl) {
+    const timeToNextUnlock = nextUnlockDate - now;
+    if (timeToNextUnlock > 0) {
+      const days = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeToNextUnlock % (1000 * 60 * 60)) / (1000 * 60));
+      nextUnlockCountdownEl.innerHTML = `<strong>${days}d ${hours}h ${minutes}m</strong>`;
+    } else {
+      nextUnlockCountdownEl.innerHTML = `<strong style="color: #00ff00;">Unlocked!</strong>`;
+    }
+  }
+}
+
+// Contract Progress
+function updateContractProgress() {
+  const cliffDate = new Date("2025-09-14T17:36:00Z");
+  const nextUnlockDate = new Date("2026-01-14T08:35:00Z");
+  const endDate = new Date("2027-09-14T17:33:00Z");
+  const now = new Date();
+  
+  let progress = 47.5;
   if (now > cliffDate && now < nextUnlockDate) {
-    progress = 40.0; // Just the cliff
+    progress = 40.0;
   } else if (now >= nextUnlockDate) {
-    // Linear progress calculation
     const totalDuration = endDate - cliffDate;
     const elapsed = now - cliffDate;
     const linearProgress = Math.min(60, (elapsed / totalDuration) * 60);
@@ -3381,153 +3417,65 @@ function updateContractProgress() {
     progress = Math.min(100, progress);
   }
   
-  // Update ZORA Rewards Treasury accordion elements
   const progressBar = document.getElementById('contractProgressBar');
   const progressText = document.getElementById('contractProgress');
   
-  if (progressBar) {
-    progressBar.style.width = `${progress}%`;
-  }
-  if (progressText) {
-    progressText.textContent = `${progress.toFixed(1)}%`;
-  }
+  if (progressBar) progressBar.style.width = `${progress}%`;
+  if (progressText) progressText.textContent = `${progress.toFixed(1)}%`;
 }
 
-// Community DAO Reserve progress calculation
+// DAO Reserve Progress
 function updateDAOReserveProgress() {
-  const lockupEnd = new Date("2026-07-01T00:00:00Z"); // July 1, 2026
-  const vestingEnd = new Date("2028-07-01T00:00:00Z"); // 24 months later
+  const lockupEnd = new Date("2026-07-01T00:00:00Z");
+  const vestingEnd = new Date("2028-07-01T00:00:00Z");
   const now = new Date();
   
   let progress = 0;
-  
   if (now >= lockupEnd) {
     if (now >= vestingEnd) {
       progress = 100;
     } else {
-      // Calculate linear progress after lockup
       const vestingDuration = vestingEnd - lockupEnd;
       const elapsedAfterLockup = now - lockupEnd;
       progress = Math.min(100, (elapsedAfterLockup / vestingDuration) * 100);
     }
   }
   
-  // Update progress bars for DAO Reserve card
   const daoProgressBars = document.querySelectorAll('.vesting-card:last-child .progress-fill');
   if (daoProgressBars.length >= 2) {
-    // First bar (lockup period)
     daoProgressBars[0].style.width = now >= lockupEnd ? '100%' : '0%';
-    
-    // Second bar (linear vesting)
     daoProgressBars[1].style.width = `${progress}%`;
   }
 }
 
-// Accordion functionality - FIXED VERSION
-function initializeAccordion() {
-  document.querySelectorAll('.accordion-header').forEach(header => {
-    header.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const content = header.nextElementSibling;
-      const isActive = content.classList.contains('active');
-
-      // Close all accordion items
-      document.querySelectorAll('.accordion-content').forEach(item => {
-        item.classList.remove('active');
-        item.style.display = 'none';
-      });
-      document.querySelectorAll('.accordion-header').forEach(h => {
-        h.classList.remove('active');
-      });
-
-      // Open clicked item if it wasn't already active
-      if (!isActive) {
-        content.classList.add('active');
-        content.style.display = 'block';
-        header.classList.add('active');
-      } else {
-        content.classList.remove('active');
-        content.style.display = 'none';
-        header.classList.remove('active');
-      }
-    });
-  });
-
-  // Initialize first accordion as open
-  const firstAccordion = document.querySelector('.accordion-item:first-child');
-  if (firstAccordion) {
-    const firstHeader = firstAccordion.querySelector('.accordion-header');
-    const firstContent = firstAccordion.querySelector('.accordion-content');
-    if (firstHeader && firstContent) {
-      firstHeader.classList.add('active');
-      firstContent.classList.add('active');
-      firstContent.style.display = 'block';
+// Add CSS for touch feedback
+const style = document.createElement('style');
+style.textContent = `
+  .touch-active {
+    transform: scale(0.95);
+    opacity: 0.9;
+    transition: transform 0.1s, opacity 0.1s;
+  }
+  
+  .accordion-content {
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+  }
+  
+  .accordion-content.active {
+    max-height: 5000px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+  
+  @media (max-width: 768px) {
+    .accordion-content.active {
+      max-height: 10000px !important;
     }
   }
-}
-
-// Mobile touch improvements
-function initializeMobileTouch() {
-  // Prevent zoom on double-tap
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function(event) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-      event.preventDefault();
-    }
-    lastTouchEnd = now;
-  }, false);
-  
-  // Resize chart on window resize
-  let resizeTimer;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      if (window.tokenomicsChart) {
-        window.tokenomicsChart.resize();
-        // Update legend position for mobile
-        window.tokenomicsChart.options.plugins.legend.position = window.innerWidth <= 768 ? 'bottom' : 'right';
-        window.tokenomicsChart.update();
-      }
-    }, 250);
-  });
-  
-  // Add touch feedback for buttons
-  document.querySelectorAll('a, button').forEach(element => {
-    element.addEventListener('touchstart', function() {
-      this.classList.add('touch-active');
-    });
-    
-    element.addEventListener('touchend', function() {
-      this.classList.remove('touch-active');
-    });
-  });
-}
-
-// Progress bar animations on scroll
-document.addEventListener('scroll', function() {
-  const progressBars = document.querySelectorAll('.progress-fill');
-  progressBars.forEach(bar => {
-    const rect = bar.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100) {
-      bar.style.transition = 'width 1.5s ease-in-out';
-    }
-  });
-});
-    
-    // Trigger initial progress bar animations
-    setTimeout(() => {
-      document.querySelectorAll('.progress-fill').forEach(bar => {
-        bar.style.transition = 'width 1.5s ease-in-out';
-      });
-      
-      // Initial chart update
-      if (window.tokenomicsChart) {
-        window.tokenomicsChart.update();
-      }
-    }, 500);
-  </script>
+`;
+document.head.appendChild(style);
+</script>
 </body>
 </html>
