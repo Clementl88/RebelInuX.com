@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
-  <!-- COPY ALL HEAD CONTENT FROM YOUR TOKENOMICS.HTML FILE -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Whitepaper Download - Complete technical documentation" />
@@ -35,48 +34,699 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- PASTE THE ENTIRE <style> SECTION FROM YOUR tokenomics.html HERE -->
-  <!-- I'll simulate the key parts, but you should copy the actual CSS -->
   <style>
-    /* PASTE ALL YOUR EXISTING CSS FROM TOKENOMICS.HTML HERE */
-    /* This includes everything from :root to the end of media queries */
-    
-    /* Just adding a couple whitepaper-specific styles at the end */
-    .whitepaper-download-card {
-      background: var(--card-bg);
-      padding: var(--spacing-xl);
-      border-radius: var(--border-radius);
-      border: 2px solid var(--rebel-gold);
-      text-align: center;
-      max-width: 600px;
-      margin: var(--spacing-xl) auto;
+    :root {
+      --rebel-red: #ff3366;
+      --rebel-gold: #ffcc00;
+      --dark-bg: #1a1a1a;
+      --light-bg: #f4e4c1;
+      --text-light: #ffffff;
+      --text-dark: #4b3d2e;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(0, 0, 0, 0.4);
+      --section-bg: rgba(0, 0, 0, 0.3);
     }
     
-    .pdf-icon-large {
-      font-size: 4rem;
-      color: var(--rebel-red);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: rgba(255, 51, 102, 0.3);
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      padding: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rebel-gold);
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    #nav-desktop {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-left: var(--spacing-md);
+    }
+    
+    #nav-desktop a {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 30px;
+      font-weight: 600;
+      position: relative;
+      transition: var(--transition);
+    }
+    
+    #nav-desktop a:hover {
+      background: rgba(255, 51, 102, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--rebel-gold);
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      z-index: 1001;
+    }
+    
+    /* Main Content */
+    main {
+      padding: var(--spacing-xl) var(--spacing-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    section {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      color: var(--rebel-gold);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 4px solid var(--rebel-red);
+      display: inline-block;
+      padding-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+    
+    /* Hero Section */
+    .page-hero {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-xl) var(--spacing-md);
+      background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
+      border-radius: var(--border-radius);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero p {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      max-width: 800px;
+      margin: 0 auto;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+    }
+    
+    /* Cards */
+    .vesting-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-red);
+      overflow: hidden;
+    }
+    
+    .vesting-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
       margin-bottom: var(--spacing-lg);
     }
     
-    .file-details {
-      background: rgba(0, 0, 0, 0.3);
-      padding: var(--spacing-lg);
-      border-radius: var(--border-radius);
-      margin: var(--spacing-lg) 0;
-      border-left: 4px solid var(--rebel-red);
+    .vesting-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--rebel-red);
+      flex-shrink: 0;
     }
     
-    .download-options {
+    .vesting-title {
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--rebel-gold);
+    }
+    
+    .vesting-details {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .vesting-item {
       display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       flex-wrap: wrap;
-      gap: var(--spacing-md);
+    }
+    
+    .vesting-label {
+      color: rgba(255, 255, 255, 0.7);
+      margin-right: 1rem;
+    }
+    
+    .vesting-value {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      text-align: right;
+      flex: 1;
+    }
+    
+    /* Buttons */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      background: var(--rebel-red);
+      color: white;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: 50px;
+      font-weight: 700;
+      margin: var(--spacing-sm);
+      transition: var(--transition);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+      gap: var(--spacing-sm);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      border: none;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--box-shadow-hover);
+      background: linear-gradient(90deg, var(--rebel-red), #d62828);
+    }
+    
+    .cta-button.gold {
+      background: var(--rebel-gold);
+      color: var(--dark-bg);
+    }
+    
+    .cta-button.full-width {
+      display: flex;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      border-top: 1px solid var(--rebel-gold);
       margin-top: var(--spacing-xl);
     }
     
-    .back-home {
-      margin-top: var(--spacing-lg);
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
+      transform: translateY(-5px);
+    }
+    
+    /* Dropdown Styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropbtn {
+      background: transparent;
+      color: white;
+      padding: 12px 16px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      min-width: 200px;
+      border: 1px solid var(--rebel-gold);
+      border-radius: 8px;
+      z-index: 1000;
+      padding: 10px 0;
+      backdrop-filter: blur(10px);
+    }
+    
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-content a:hover {
+      background: rgba(255, 51, 102, 0.2);
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    /* Color-coded navigation */
+    #nav-desktop a.nav-trade {
+      color: var(--rebel-red);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      background: rgba(255, 51, 102, 0.05);
+    }
+    
+    #nav-desktop a.nav-rewards {
+      color: var(--rebel-gold);
+      border: 1px solid rgba(255, 204, 0, 0.3);
+      background: rgba(255, 204, 0, 0.05);
+    }
+    
+    #nav-desktop a.nav-tokenomics {
+      color: #00aaff;
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      background: rgba(0, 170, 255, 0.05);
+    }
+    
+    #nav-desktop a.nav-security {
+      color: #4CAF50;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      background: rgba(76, 175, 80, 0.05);
+    }
+    
+    #nav-desktop a.nav-more {
+      color: #9C27B0;
+      border: 1px solid rgba(156, 39, 176, 0.3);
+      background: rgba(156, 39, 176, 0.05);
+    }
+    
+    #nav-desktop a.nav-whitepaper {
+      color: #FF9800;
+      border: 1px solid rgba(255, 152, 0, 0.3);
+      background: rgba(255, 152, 0, 0.05);
+    }
+    
+    #nav-desktop a.active {
+      background: rgba(255, 152, 0, 0.2) !important;
+      border-color: #FF9800 !important;
+      color: white !important;
+      box-shadow: 0 0 15px rgba(255, 152, 0, 0.3);
+    }
+    
+    .brand-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    .brand-link:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+    
+    .header-container h1 {
+      margin: 0;
+    }
+    
+    /* Related Pages */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .related-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
       text-align: center;
+      transition: var(--transition);
+      display: block;
+    }
+    
+    .related-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .related-card.red {
+      border-color: var(--rebel-red);
+    }
+    
+    .related-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .related-card.red .related-icon {
+      color: var(--rebel-red);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 80px var(--spacing-md) var(--spacing-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto;
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      #nav-desktop a {
+        padding: var(--spacing-md);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+        min-height: 56px;
+      }
+      
+      /* Header title fix */
+      header {
+        padding: 12px 16px;
+      }
+      
+      .header-container {
+        gap: 12px;
+      }
+      
+      .brand-link {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+      
+      .header-container h1 {
+        font-size: clamp(1rem, 4.5vw, 1.3rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        margin: 0;
+      }
+      
+      .mobile-nav-toggle {
+        flex-shrink: 0;
+      }
+      
+      /* Mobile dropdown */
+      .dropdown-content {
+        position: static;
+        background: transparent;
+        border: none;
+        padding-left: 20px;
+      }
+      
+      .dropdown-content a {
+        padding: 15px 20px;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        display: block;
+        width: 100%;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+      
+      .related-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      
+      .header-container {
+        padding: 0.5rem;
+      }
+      
+      .page-hero {
+        padding: 1.5rem 0.75rem;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.6rem;
+      }
+      
+      .page-hero p {
+        font-size: 0.95rem;
+      }
+      
+      .social-icons a {
+        font-size: 1.5rem;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .cta-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+      
+      button, .cta-button, #nav-desktop a {
+        min-height: 48px;
+      }
+      
+      .mobile-nav-toggle {
+        width: 48px;
+        height: 48px;
+      }
     }
   </style>
 </head>
@@ -91,7 +741,7 @@
     <i class="fas fa-arrow-up"></i>
   </div>
   
-  <!-- Header - SAME AS TOKENOMICS.HTML -->
+  <!-- Header -->
   <header>
     <div class="header-container">
       <a href="index.html" class="brand-link">
@@ -101,7 +751,6 @@
         <i class="fas fa-bars"></i>
       </button>
       <nav id="nav-desktop" aria-label="Main navigation">
-        <!-- SAME NAVIGATION AS TOKENOMICS.HTML -->
         <a href="trade.html" class="nav-trade">
           <i class="fas fa-chart-line"></i> Trade
         </a>
@@ -144,78 +793,66 @@
   </header>
   
   <main>
-    <!-- Hero Section - SIMILAR TO TOKENOMICS -->
+    <!-- Hero Section -->
     <section class="page-hero">
       <h1>Whitepaper Download</h1>
       <p>Download the complete RebelInuX technical documentation</p>
     </section>
     
-    <!-- Download Card -->
-    <section>
-      <div class="whitepaper-download-card">
-        <div class="pdf-icon-large">
-          <i class="fas fa-file-pdf"></i>
-        </div>
-        
-        <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          RebelInuX Whitepaper
-        </h2>
-        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-lg);">
-          Complete technical documentation and implementation details
-        </p>
-        
-        <div class="file-details">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
-            <div>
-              <div style="font-weight: 700; color: var(--rebel-gold);">File</div>
-              <div>RebelInuX_White_Paper.pdf</div>
-            </div>
-            <div>
-              <div style="font-weight: 700; color: var(--rebel-gold);">Size</div>
-              <div>2.4 MB</div>
-            </div>
-            <div>
-              <div style="font-weight: 700; color: var(--rebel-gold);">Pages</div>
-              <div>45</div>
-            </div>
-            <div>
-              <div style="font-weight: 700; color: var(--rebel-gold);">Updated</div>
-              <div>Dec 2025</div>
-            </div>
+    <!-- Download Section -->
+    <section style="max-width: 600px; margin: 0 auto;">
+      <div class="vesting-card" style="border-color: var(--rebel-gold); text-align: center;">
+        <div class="vesting-header">
+          <div class="vesting-icon" style="background: rgba(255, 51, 102, 0.2); color: var(--rebel-red);">
+            <i class="fas fa-file-pdf" style="font-size: 1.8rem;"></i>
           </div>
-          
-          <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: 8px; margin-top: var(--spacing-md);">
-            <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 0.9rem;">
-              <i class="fas fa-info-circle" style="color: var(--rebel-gold);"></i>
-              Contains full technical specifications, tokenomics, and roadmap
-            </p>
+          <div>
+            <h3 class="vesting-title">RebelInuX Whitepaper</h3>
+            <div style="color: var(--rebel-gold); font-size: 1.1rem;">Complete Technical Documentation</div>
           </div>
         </div>
         
-        <div class="download-options">
+        <div class="vesting-details">
+          <div class="vesting-item">
+            <span class="vesting-label">File</span>
+            <span class="vesting-value">RebelInuX_White_Paper.pdf</span>
+          </div>
+          <div class="vesting-item">
+            <span class="vesting-label">Size</span>
+            <span class="vesting-value">2.4 MB</span>
+          </div>
+          <div class="vesting-item">
+            <span class="vesting-label">Pages</span>
+            <span class="vesting-value">45</span>
+          </div>
+          <div class="vesting-item">
+            <span class="vesting-label">Updated</span>
+            <span class="vesting-value">December 2025</span>
+          </div>
+        </div>
+        
+        <div style="margin-top: var(--spacing-xl);">
           <a href="RebelInuX_White_Paper.pdf" 
              download="RebelInuX_White_Paper.pdf"
-             class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), #d62828); min-width: 200px;">
+             class="cta-button full-width" style="background: linear-gradient(135deg, var(--rebel-red), #d62828);">
             <i class="fas fa-download"></i> Download PDF
           </a>
           
           <a href="RebelInuX_White_Paper.pdf" 
              target="_blank"
              rel="noopener noreferrer"
-             class="cta-button gold" style="min-width: 200px;">
+             class="cta-button gold full-width" style="margin-top: 1rem;">
             <i class="fas fa-external-link-alt"></i> Open in Browser
           </a>
-        </div>
-        
-        <div class="back-home">
-          <a href="index.html" class="cta-button" style="background: transparent; border: 2px solid var(--rebel-gold); color: var(--rebel-gold);">
-            <i class="fas fa-arrow-left"></i> Back to Homepage
+          
+          <a href="index.html" class="cta-button full-width" style="background: transparent; border: 2px solid var(--rebel-gold); color: var(--rebel-gold); margin-top: 1rem;">
+            <i class="fas fa-arrow-left"></i> Back to Home
           </a>
         </div>
       </div>
     </section>
     
-    <!-- Related Pages (Optional - matches tokenomics style) -->
+    <!-- Related Pages -->
     <section id="related">
       <h2>Explore More</h2>
       <div class="related-grid">
@@ -227,26 +864,26 @@
           <p>Detailed $REBL distribution and vesting</p>
         </a>
         
-        <a href="roadmap.html" class="related-card red">
-          <div class="related-icon">
-            <i class="fas fa-map-signs"></i>
-          </div>
-          <h3>Roadmap</h3>
-          <p>Development timeline and future plans</p>
-        </a>
-        
-        <a href="security.html" class="related-card">
+        <a href="security.html" class="related-card red">
           <div class="related-icon">
             <i class="fas fa-shield-alt"></i>
           </div>
           <h3>Security</h3>
           <p>Contract audits and security measures</p>
         </a>
+        
+        <a href="roadmap.html" class="related-card">
+          <div class="related-icon">
+            <i class="fas fa-map-signs"></i>
+          </div>
+          <h3>Roadmap</h3>
+          <p>Development timeline and future plans</p>
+        </a>
       </div>
     </section>
   </main>
   
-  <!-- Footer - COPY FROM TOKENOMICS.HTML -->
+  <!-- Footer -->
   <footer>
     <div style="max-width: 1200px; margin: 0 auto;">
       <div class="social-icons">
@@ -293,10 +930,7 @@
     </div>
   </footer>
 
-  <!-- COPY THE ENTIRE <script> SECTION FROM TOKENOMICS.HTML -->
   <script>
-    // PASTE ALL JAVASCRIPT FROM YOUR TOKENOMICS.HTML HERE
-    
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
       // Hide loader
@@ -325,6 +959,40 @@
         });
       }
       
+      // Close mobile nav when clicking on a link
+      document.querySelectorAll('#nav-desktop a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            document.getElementById('nav-desktop').classList.remove('active');
+            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
+            if (toggleIcon) {
+              toggleIcon.classList.remove('fa-times');
+              toggleIcon.classList.add('fa-bars');
+            }
+            document.body.style.overflow = '';
+          }
+        });
+      });
+      
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        const nav = document.getElementById('nav-desktop');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        if (window.innerWidth <= 768 && 
+            nav.classList.contains('active') && 
+            !nav.contains(event.target) && 
+            !toggle.contains(event.target)) {
+          nav.classList.remove('active');
+          const toggleIcon = toggle.querySelector('i');
+          if (toggleIcon) {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+          }
+          document.body.style.overflow = '';
+        }
+      });
+      
       // Back to top button
       const backToTop = document.getElementById('backToTop');
       if (backToTop) {
@@ -341,19 +1009,14 @@
         });
       }
       
-      // Close mobile nav when clicking on a link
-      document.querySelectorAll('#nav-desktop a').forEach(link => {
-        link.addEventListener('click', function() {
-          if (window.innerWidth <= 768) {
-            document.getElementById('nav-desktop').classList.remove('active');
-            const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
-            if (toggleIcon) {
-              toggleIcon.classList.remove('fa-times');
-              toggleIcon.classList.add('fa-bars');
-            }
-            document.body.style.overflow = '';
-          }
-        });
+      // Handle orientation change
+      window.addEventListener('orientationchange', function() {
+        // Close mobile menu on orientation change
+        if (window.innerWidth > 768) {
+          const nav = document.getElementById('nav-desktop');
+          if (nav) nav.classList.remove('active');
+          document.body.style.overflow = '';
+        }
       });
     });
   </script>
