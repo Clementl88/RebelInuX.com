@@ -678,9 +678,9 @@
 }
 
 .accordion-content.active {
-  padding: var(--spacing-md) var(--spacing-md) 2rem !important;
-  max-height: 10000px !important; /* Large enough for all content */
-  transition: max-height 0.5s ease, padding 0.3s ease, opacity 0.3s ease;
+  padding: var(--spacing-lg) !important;
+  max-height: 5000px !important; /* Large enough for content */
+  transition: max-height 0.8s ease, padding 0.3s ease, opacity 0.3s ease;
   opacity: 1;
   visibility: visible;
 }
@@ -3428,48 +3428,52 @@
       }
     }
     
-    // Accordion functionality
-    function initializeAccordion() {
+// Accordion functionality - CORRECTED VERSION
+function initializeAccordion() {
   // Create and add Expand All button
   const accordionContainer = document.querySelector('.accordion');
-  const expandAllBtn = document.createElement('button');
-  expandAllBtn.className = 'accordion-button';
-  expandAllBtn.style.margin = '0 auto 20px';
-  expandAllBtn.style.display = 'block';
-  expandAllBtn.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All Sections';
-  expandAllBtn.addEventListener('click', expandAllAccordions);
-  
-  accordionContainer.insertBefore(expandAllBtn, accordionContainer.firstChild);
-  
-// Add to your initializeAccordion() function
-header.addEventListener('click', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  const content = header.nextElementSibling;
-  const isActive = content.classList.contains('active');
-  
-  // Toggle just this item
-  if (isActive) {
-    content.classList.remove('active');
-    header.classList.remove('active');
-  } else {
-    content.classList.add('active');
-    header.classList.add('active');
+  if (accordionContainer) {
+    const expandAllBtn = document.createElement('button');
+    expandAllBtn.className = 'accordion-button';
+    expandAllBtn.style.margin = '0 auto 20px';
+    expandAllBtn.style.display = 'block';
+    expandAllBtn.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All Sections';
+    expandAllBtn.addEventListener('click', expandAllAccordions);
     
-    // Smooth scroll to expanded section
-    setTimeout(() => {
-      content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 300);
-  }
-});
+    accordionContainer.insertBefore(expandAllBtn, accordionContainer.firstChild);
+    
+    // Add click event to all accordion headers
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const content = header.nextElementSibling;
+        const isActive = content.classList.contains('active');
+        
+        // Toggle just this item
+        if (isActive) {
+          content.classList.remove('active');
+          header.classList.remove('active');
+        } else {
+          content.classList.add('active');
+          header.classList.add('active');
+          
+          // Smooth scroll to expanded section
+          setTimeout(() => {
+            content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        }
+      });
+    });
     
     // Open first accordion by default
-    if (header === document.querySelectorAll('.accordion-header')[0]) {
-      const firstContent = header.nextElementSibling;
+    const firstHeader = document.querySelector('.accordion-header');
+    if (firstHeader) {
+      const firstContent = firstHeader.nextElementSibling;
       firstContent.classList.add('active');
-      header.classList.add('active');
+      firstHeader.classList.add('active');
     }
-  });
+  }
 }
 
 // Function to expand all accordions
