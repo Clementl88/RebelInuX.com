@@ -876,9 +876,7 @@
     margin: 0.5rem 0;
   }
 }
-      .mobile-section {
-    display: block;
-  }
+
     /* Info Box */
     .info-box {
       background: rgba(255, 51, 102, 0.1);
@@ -998,83 +996,43 @@
       color: var(--rebel-red);
     }
     
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .mobile-nav-toggle {
-        display: flex;
-      }
-      
-      #nav-desktop {
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
-        padding: 80px var(--spacing-md) var(--spacing-md);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        overflow-y: auto;
-      }
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mobile-nav-toggle {
+    display: flex;
+  }
+  
+  #nav-desktop {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 80px var(--spacing-md) var(--spacing-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow-y: auto;
+  }
 
-        /* Improved mobile dropdown */
-  .dropdown {
-    width: 100%;
+  /* REMOVE THE BROKEN DROPDOWN STYLES FROM HERE */
+  /* They are already defined in the second @media section */
+  
+  #nav-desktop.active {
+    display: flex;
   }
   
-  .dropdown-content {
-    position: relative !important;
-    display: block !important;
-    background: transparent !important;
-    border: none !important;
-    padding-left: 20px !important;
-    box-shadow: none !important;
-    width: 100% !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-  
-  .dropdown-content a {
-    padding: 12px 16px !important;
-    margin-bottom: 4px !important;
-    border-radius: 8px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-  }
-  
-  .dropbtn {
-    width: 100%;
-    justify-content: space-between;
-    padding: 12px 16px;
-    margin-bottom: 8px;
+  #nav-desktop a {
+    padding: var(--spacing-md);
     border-radius: 8px;
-    background: rgba(156, 39, 176, 0.1) !important;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    justify-content: flex-start;
+    min-height: 56px;
   }
   
-  .dropbtn:after {
-    content: "▼";
-    font-size: 0.8em;
-    margin-left: auto;
-    transition: transform 0.3s ease;
-  }
-  
-  .dropbtn.active:after {
-    transform: rotate(180deg);
-  }
-      
-      #nav-desktop.active {
-        display: flex;
-      }
-      
-      #nav-desktop a {
-        padding: var(--spacing-md);
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
-        font-size: 1.1rem;
-        justify-content: flex-start;
-        min-height: 56px;
-      }
   /* ========== END MOBILE SECTION HEADERS ========== */
       
       .header-container h1 {
@@ -1675,12 +1633,41 @@ header {
   animation: headerSlideIn 0.5s ease-out;
 }
 
-    /* TEMPORARY FIX - Force community link visibility */
+/* ========== URGENT FIX: Force ALL dropdown links to be visible ========== */
 @media (max-width: 768px) {
-  .dropdown-content a.nav-community {
-    display: flex !important;
+  /* Override ALL conflicting rules */
+  .dropdown-content,
+  .dropdown-content a,
+  .dropdown-content a.nav-community,
+  .dropdown-content a.nav-whitepaper,
+  .dropdown-content a.nav-governance,
+  .dropdown-content a.nav-roadmap,
+  .dropdown-content a.nav-integrity,
+  .dropdown-content a.nav-artwork {
+    display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+  }
+  
+  .dropdown-content a {
+    display: flex !important;
+  }
+  
+  /* Specifically ensure no parent is hiding content */
+  #nav-desktop.active .dropdown-content,
+  #nav-desktop.active .dropdown-content a {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  #nav-desktop.active .dropdown-content a {
+    display: flex !important;
+  }
+  
+  /* Debug border - remove after testing */
+  .dropdown-content {
+    border: 2px solid #00ff00 !important;
   }
 }
   </style>
