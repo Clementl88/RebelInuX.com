@@ -677,8 +677,8 @@
     
 .accordion-content.active {
   padding: var(--spacing-md) var(--spacing-md) 2rem;
-  max-height: none; /* Allows natural height */
-  overflow: visible;
+  max-height: 5000px; /* Large enough for content, but still closable */
+  overflow: hidden;
   transition: max-height 0.5s ease, padding 0.3s ease;
 }
     
@@ -962,10 +962,12 @@
     -webkit-overflow-scrolling: touch;
   }
   
+@media (max-width: 768px) {
   .accordion-content.active {
-    max-height: none;
-    overflow-y: visible;
+    max-height: 5000px; /* Keep consistent with desktop */
+    overflow-y: hidden;
   }
+}
     
       .cross-chain-grid {
         grid-template-columns: 1fr;
@@ -3188,12 +3190,9 @@
     });
 
 
-    function fixAccordionHeights() {
+function fixAccordionHeights() {
   document.querySelectorAll('.accordion-content.active').forEach(content => {
-    // Force recalc
-    content.style.maxHeight = 'none';
-    const height = content.scrollHeight;
-    content.style.maxHeight = height + 'px';
+    content.style.maxHeight = content.scrollHeight + 'px';
   });
 }
 
@@ -3205,31 +3204,39 @@ function initializeAccordion() {
       const content = header.nextElementSibling;
       const isActive = content.classList.contains('active');
 
-      // Close all accordion items
-      document.querySelectorAll('.accordion-content').forEach(item => {
-        item.classList.remove('active');
-        item.style.maxHeight = null;
-      });
-      document.querySelectorAll('.accordion-header').forEach(h => {
-        h.classList.remove('active');
-      });
-
-      // Open clicked item if it wasn't already active
+      // Toggle current item
       if (!isActive) {
+        // Close all other accordion items
+        document.querySelectorAll('.accordion-content').forEach(item => {
+          item.classList.remove('active');
+          item.style.maxHeight = null;
+        });
+        document.querySelectorAll('.accordion-header').forEach(h => {
+          h.classList.remove('active');
+        });
+        
+        // Open clicked item
         content.classList.add('active');
         header.classList.add('active');
-        // Set explicit height
         content.style.maxHeight = content.scrollHeight + 'px';
-        
-        // Fix for mobile
-        setTimeout(() => {
-          if (window.innerWidth <= 768) {
-            content.style.maxHeight = 'none';
-          }
-        }, 500);
+      } else {
+        // Close clicked item
+        content.classList.remove('active');
+        header.classList.remove('active');
+        content.style.maxHeight = null;
       }
     });
   });
+  
+ // Close all accordions on page load
+  document.querySelectorAll('.accordion-content').forEach(item => {
+    item.classList.remove('active');
+    item.style.maxHeight = null;
+  });
+  document.querySelectorAll('.accordion-header').forEach(h => {
+    h.classList.remove('active');
+  });
+}
   
   // Also fix on window resize
   window.addEventListener('resize', fixAccordionHeights);
