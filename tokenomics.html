@@ -3274,7 +3274,7 @@ function initializeTokenomicsChart() {
   });
 }
 
-// Accordion functionality - FIXED VERSION
+// Accordion functionality
 function initializeAccordion() {
   const accordionHeaders = document.querySelectorAll('.accordion-header');
   
@@ -3360,15 +3360,15 @@ function updateFounderCommitmentProgress() {
   
   // Update elements
   const elements = {
-    'founderUnlockedBar': `${8}%`,
+    'founderUnlockedBar': '8%',
     'founderTimeBar': `${timeProgressPercent.toFixed(1)}%`,
-    'founderUnlockedAmount': `${13.49}M REBL`,
+    'founderUnlockedAmount': '13.49M REBL',
     'founderTimeProgress': `${daysElapsed} days`,
-    'founderNextUnlockDate': `Dec 31, 2025`,
+    'founderNextUnlockDate': 'Dec 31, 2025',
     'founderDaysCount': `${daysElapsed} of ${daysTotal} days`,
-    'founderProgressBar': `${8}%`,
-    'founderProgressText': `${8}%`,
-    'founderUnlockedAmountAccordion': `${13.49}M`,
+    'founderProgressBar': '8%',
+    'founderProgressText': '8%',
+    'founderUnlockedAmountAccordion': '13.49M',
     'founderDaysElapsed': daysElapsed,
     'founderNextUnlockDateAccordion': 'Dec 31, 2025'
   };
@@ -3378,6 +3378,8 @@ function updateFounderCommitmentProgress() {
     if (element) {
       if (id.includes('Bar')) {
         element.style.width = elements[id];
+      } else if (id === 'founderDaysElapsed') {
+        element.textContent = daysElapsed;
       } else {
         element.textContent = elements[id];
       }
