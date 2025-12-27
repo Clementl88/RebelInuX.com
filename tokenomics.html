@@ -666,20 +666,24 @@
       transform: rotate(180deg);
     }
     
-    .accordion-content {
-      padding: 0 var(--spacing-md);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 0 0 8px 8px;
-    }
-    
-    .accordion-content.active {
-      padding: var(--spacing-md) var(--spacing-md) 2rem;
-      max-height: 2000px;
-      transition: max-height 0.5s ease, padding 0.3s ease;
-    }
+.accordion-content {
+  padding: 0 var(--spacing-md);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease, opacity 0.3s ease;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.accordion-content.active {
+  padding: var(--spacing-md) var(--spacing-md) 2rem !important;
+  max-height: 10000px !important; /* Large enough for all content */
+  transition: max-height 0.5s ease, padding 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  visibility: visible;
+}
     
     .accordion-button {
       display: inline-flex;
@@ -716,6 +720,19 @@
       width: 100%;
       margin: 0.5rem 0;
     }
+
+    /* Improve mobile view for accordions */
+@media (max-width: 768px) {
+  .accordion-content.active {
+    padding: 1rem !important;
+    max-height: none !important;
+  }
+  
+  .accordion-button {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
     
     /* Info Box */
     .info-box {
@@ -1189,7 +1206,23 @@
         color: #000;
         background: #fff;
       }
-      
+      .accordion-content {
+    max-height: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    padding: 1rem !important;
+  }
+  
+  .accordion-header {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+  }
+  
+  .accordion-header .accordion-icon {
+    display: none !important;
+  }
+}
       .page-hero {
         background: #fff !important;
         color: #000 !important;
@@ -3397,28 +3430,83 @@
     
     // Accordion functionality
     function initializeAccordion() {
-      document.querySelectorAll('.accordion-header').forEach(header => {
-        header.addEventListener('click', (e) => {
-          e.preventDefault();
-          const content = header.nextElementSibling;
-          const isActive = content.classList.contains('active');
-
-          // Close all accordion items
-          document.querySelectorAll('.accordion-content').forEach(item => {
-            item.classList.remove('active');
-          });
-          document.querySelectorAll('.accordion-header').forEach(h => {
-            h.classList.remove('active');
-          });
-
-          // Open clicked item if it wasn't already active
-          if (!isActive) {
-            content.classList.add('active');
-            header.classList.add('active');
-          }
-        });
-      });
+  // Create and add Expand All button
+  const accordionContainer = document.querySelector('.accordion');
+  const expandAllBtn = document.createElement('button');
+  expandAllBtn.className = 'accordion-button';
+  expandAllBtn.style.margin = '0 auto 20px';
+  expandAllBtn.style.display = 'block';
+  expandAllBtn.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All Sections';
+  expandAllBtn.addEventListener('click', expandAllAccordions);
+  
+  accordionContainer.insertBefore(expandAllBtn, accordionContainer.firstChild);
+  
+// Add to your initializeAccordion() function
+header.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const content = header.nextElementSibling;
+  const isActive = content.classList.contains('active');
+  
+  // Toggle just this item
+  if (isActive) {
+    content.classList.remove('active');
+    header.classList.remove('active');
+  } else {
+    content.classList.add('active');
+    header.classList.add('active');
+    
+    // Smooth scroll to expanded section
+    setTimeout(() => {
+      content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+});
+    
+    // Open first accordion by default
+    if (header === document.querySelectorAll('.accordion-header')[0]) {
+      const firstContent = header.nextElementSibling;
+      firstContent.classList.add('active');
+      header.classList.add('active');
     }
+  });
+}
+
+// Function to expand all accordions
+function expandAllAccordions() {
+  document.querySelectorAll('.accordion-content').forEach(content => {
+    content.classList.add('active');
+  });
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.classList.add('active');
+  });
+  
+  // Change button text
+  const expandBtn = document.querySelector('.accordion-button');
+  if (expandBtn) {
+    expandBtn.innerHTML = '<i class="fas fa-compress-alt"></i> Collapse All Sections';
+    expandBtn.removeEventListener('click', expandAllAccordions);
+    expandBtn.addEventListener('click', collapseAllAccordions);
+  }
+}
+
+// Function to collapse all accordions
+function collapseAllAccordions() {
+  document.querySelectorAll('.accordion-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.classList.remove('active');
+  });
+  
+  // Change button text back
+  const collapseBtn = document.querySelector('.accordion-button');
+  if (collapseBtn) {
+    collapseBtn.innerHTML = '<i class="fas fa-expand-alt"></i> Expand All Sections';
+    collapseBtn.removeEventListener('click', collapseAllAccordions);
+    collapseBtn.addEventListener('click', expandAllAccordions);
+  }
+}
     
     // Mobile touch improvements
     function initializeMobileTouch() {
