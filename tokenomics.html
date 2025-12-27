@@ -2,7 +2,8 @@
 <html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- FIXED: Removed restrictive viewport settings to allow zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Tokenomics - Detailed $REBL token distribution, vesting schedules, and governance model" />
   <meta name="keywords" content="$REBL tokenomics, token distribution, vesting, RebelInuX rewards, supply metrics" />
   <meta property="og:title" content="RebelInuX Tokenomics - $REBL Token Details" />
@@ -76,6 +77,7 @@
       line-height: 1.6;
       overflow-x: hidden;
       max-width: 100%;
+      -webkit-text-size-adjust: 100%;
     }
     
     a {
@@ -96,6 +98,12 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      font-family: inherit;
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important; /* Prevent zoom on iOS */
     }
     
     img {
@@ -106,7 +114,7 @@
     
     /* Header */
     header {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       padding: var(--spacing-md);
       position: sticky;
       top: 0;
@@ -160,6 +168,7 @@
       cursor: pointer;
       width: 44px;
       height: 44px;
+      z-index: 1001;
     }
     
     /* Main Content */
@@ -174,7 +183,7 @@
     }
     
     h2 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       margin-bottom: var(--spacing-lg);
       color: var(--rebel-gold);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -190,7 +199,7 @@
     .page-hero {
       text-align: center;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-xl) 0;
+      padding: var(--spacing-xl) var(--spacing-md);
       background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
       border-radius: var(--border-radius);
       position: relative;
@@ -210,12 +219,12 @@
     }
     
     .page-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
       margin-bottom: var(--spacing-md);
     }
     
     .page-hero p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       max-width: 800px;
       margin: 0 auto;
       color: rgba(255, 255, 255, 0.9);
@@ -258,7 +267,7 @@
     }
     
     .stat-value {
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
       font-weight: 900;
       color: var(--text-light);
       margin-bottom: 0.5rem;
@@ -278,6 +287,7 @@
       border-radius: var(--border-radius);
       margin-bottom: var(--spacing-xl);
       border: 2px solid var(--rebel-gold);
+      overflow: hidden;
     }
     
     .chart-wrapper {
@@ -299,6 +309,7 @@
       padding: var(--spacing-lg);
       border-radius: var(--border-radius);
       border: 2px solid var(--rebel-red);
+      overflow: hidden;
     }
     
     .vesting-header {
@@ -318,10 +329,11 @@
       justify-content: center;
       font-size: 1.5rem;
       color: var(--rebel-red);
+      flex-shrink: 0;
     }
     
     .vesting-title {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
       color: var(--rebel-gold);
     }
     
@@ -334,15 +346,19 @@
       justify-content: space-between;
       padding: var(--spacing-sm) 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
     }
     
     .vesting-label {
       color: rgba(255, 255, 255, 0.7);
+      margin-right: 1rem;
     }
     
     .vesting-value {
       color: var(--rebel-gold);
       font-weight: 600;
+      text-align: right;
+      flex: 1;
     }
     
     /* Progress Bars */
@@ -426,6 +442,7 @@
       padding: var(--spacing-lg);
       border-radius: var(--border-radius);
       margin-bottom: var(--spacing-xl);
+      overflow: hidden;
     }
     
     .supply-item {
@@ -437,6 +454,8 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
       border-left: 4px solid var(--rebel-red);
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     
     .supply-name {
@@ -444,17 +463,21 @@
       align-items: center;
       gap: var(--spacing-sm);
       font-weight: 600;
+      flex: 1;
+      min-width: 200px;
     }
     
     .supply-color {
       width: 20px;
       height: 20px;
       border-radius: 4px;
+      flex-shrink: 0;
     }
     
     .supply-amount {
       color: var(--rebel-gold);
       font-weight: 700;
+      margin-right: 1rem;
     }
     
     .supply-percentage {
@@ -476,6 +499,9 @@
       transition: var(--transition);
       box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
       gap: var(--spacing-sm);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      border: none;
     }
     
     .cta-button:hover {
@@ -518,6 +544,7 @@
       transition: var(--transition);
       width: 50px;
       height: 50px;
+      flex-shrink: 0;
     }
     
     .social-icons a:hover {
@@ -615,6 +642,7 @@
       border-radius: 8px;
       margin-bottom: 4px;
       min-height: 60px;
+      text-align: left;
     }
     
     .accordion-header:hover {
@@ -630,6 +658,8 @@
     
     .accordion-header .accordion-icon {
       transition: transform 0.3s;
+      margin-left: 1rem;
+      flex-shrink: 0;
     }
     
     .accordion-header.active .accordion-icon {
@@ -815,14 +845,16 @@
       #nav-desktop {
         display: none;
         flex-direction: column;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
         left: 0;
         width: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        padding: var(--spacing-md);
-        border-top: 1px solid var(--rebel-gold);
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 80px var(--spacing-md) var(--spacing-md);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto;
       }
       
       #nav-desktop.active {
@@ -833,25 +865,52 @@
         padding: var(--spacing-md);
         border-radius: 8px;
         margin-bottom: 0.5rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+        min-height: 56px;
+      }
+      
+      .header-container h1 {
+        font-size: 1.3rem;
+        max-width: 70%;
       }
       
       .stats-overview {
         grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .stat-card {
+        padding: 1.2rem;
       }
       
       .vesting-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
       
       .vesting-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.75rem;
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1rem;
       }
       
       .vesting-icon {
-        margin: 0 auto;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .vesting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+      
+      .vesting-value {
+        text-align: left;
+        width: 100%;
       }
       
       .timeline::before {
@@ -861,10 +920,18 @@
       .timeline-item {
         width: 100%;
         padding-left: 70px;
+        padding-right: 0;
+        padding-top: 0;
+        padding-bottom: var(--spacing-lg);
       }
       
       .timeline-dot {
         left: 30px;
+        top: 20px;
+      }
+      
+      .timeline-content {
+        padding: 1.2rem;
       }
       
       .chart-wrapper {
@@ -873,40 +940,55 @@
       
       .accordion-header {
         font-size: 0.9rem;
-        padding: 0.875rem;
+        padding: 1rem;
+      }
+      
+      .accordion-header span {
+        flex: 1;
+      }
+      
+      .accordion-content {
+        padding: 0 1rem;
       }
       
       .accordion-content.active {
-        padding: 0.875rem;
+        padding: 1rem;
         font-size: 0.95rem;
       }
       
       .cross-chain-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
       
       .related-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
       
       .hero-buttons {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 0.75rem;
       }
       
       .cta-button {
         width: 100%;
-        max-width: 300px;
+        max-width: none;
+        margin: 0;
       }
       
       .accordion-button {
         width: 100%;
         margin: 0.5rem 0;
+        justify-content: center;
       }
       
       h2 {
         font-size: 1.5rem;
         margin-bottom: 1.2rem;
+        display: block;
+        width: 100%;
       }
       
       .page-hero h1 {
@@ -944,12 +1026,43 @@
         font-size: 1.1rem !important;
         text-align: center !important;
       }
+      
+      .supply-name {
+        min-width: auto;
+      }
+      
+      .supply-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .supply-amount, .supply-percentage {
+        width: 100%;
+        text-align: left;
+      }
+      
+      /* Fix overflow in accordion content */
+      .accordion-content > div {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+      
+      /* Prevent horizontal scrolling */
+      body {
+        overflow-x: hidden;
+      }
+      
+      main, section, .chart-container, .vesting-card, .timeline-content {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
     }
     
     /* Extra Small Screens */
     @media (max-width: 480px) {
       h1 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
       }
       
       .header-container {
@@ -981,15 +1094,15 @@
       }
       
       .timeline-item {
-        padding: 1.2rem 0.75rem 1.2rem 40px;
+        padding-left: 40px;
       }
       
       .timeline-content {
-        padding: 1.2rem;
+        padding: 1rem;
       }
       
       .supply-breakdown {
-        padding: 1.2rem;
+        padding: 1rem;
       }
       
       .social-icons a {
@@ -1000,24 +1113,31 @@
       
       .accordion-header {
         font-size: 0.85rem;
+        padding: 0.875rem;
       }
       
       .accordion-content.active {
         font-size: 0.9rem;
-      }
-      
-      .vesting-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-      }
-      
-      .vesting-value {
-        text-align: left;
+        padding: 0.875rem;
       }
       
       .accordion-content .stat-number {
         font-size: 1.5rem !important;
+      }
+      
+      .cta-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+      
+      /* Improve touch targets for very small screens */
+      button, .cta-button, .accordion-button, #nav-desktop a {
+        min-height: 48px;
+      }
+      
+      .mobile-nav-toggle {
+        width: 48px;
+        height: 48px;
       }
     }
     
@@ -1038,12 +1158,45 @@
       .related-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      
+      .chart-wrapper {
+        height: 350px;
+      }
     }
     
-    /* Prevent zoom on input focus for iOS */
-    @media screen and (max-width: 768px) {
-      input, select, textarea {
-        font-size: 16px !important;
+    /* Large Desktop */
+    @media (min-width: 1400px) {
+      main {
+        padding: var(--spacing-xl) 0;
+      }
+    }
+    
+    /* High-resolution screens */
+    @media (min-width: 1920px) {
+      :root {
+        --spacing-xl: 4rem;
+        --spacing-lg: 3rem;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      .loader, .back-to-top, .mobile-nav-toggle, .hero-buttons {
+        display: none !important;
+      }
+      
+      body {
+        color: #000;
+        background: #fff;
+      }
+      
+      .page-hero {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      
+      .page-hero::before {
+        display: none;
       }
     }
   </style>
@@ -1152,7 +1305,7 @@
       </div>
     </section>
 
-    <!-- Add this RIGHT AFTER the Quick Stats section -->
+    <!-- Important Connection -->
     <div class="info-box">
       <p style="margin: 0;">
         <i class="fas fa-link" style="color: var(--rebel-gold); margin-right: var(--spacing-sm);"></i>
@@ -1725,7 +1878,7 @@
       <!-- Detailed Progress -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
         <div style="text-align: center;">
-          <div style="font-size: 2rem; color: #00aaff; font-weight: 900; margin-bottom: var(--spacing-sm);" id="founderUnlockedAmount">13.49M</div>
+          <div style="font-size: 2rem; color: #00aaff; font-weight: 900; margin-bottom: var(--spacing-sm);" id="founderUnlockedAmountAccordion">13.49M</div>
           <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);">Already Unlocked</div>
           <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">8% of total commitment</div>
         </div>
@@ -1755,7 +1908,7 @@
           <div style="font-size: 2rem; color: #00ff00; font-weight: 900; margin-bottom: var(--spacing-sm);">
             <i class="fas fa-calendar-alt"></i>
           </div>
-          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);" id="founderNextUnlockDate">Dec 31, 2025</div>
+          <div style="font-weight: 700; color: white; margin-bottom: var(--spacing-sm);" id="founderNextUnlockDateAccordion">Dec 31, 2025</div>
           <div style="color: rgba(255, 255, 255, 0.9);">Next unlock date</div>
         </div>
         
@@ -2776,14 +2929,17 @@
         mobileToggle.addEventListener('click', function() {
           const nav = document.getElementById('nav-desktop');
           const icon = this.querySelector('i');
+          const body = document.body;
           
           nav.classList.toggle('active');
           if (nav.classList.contains('active')) {
             icon.classList.remove('fa-bars');
             icon.classList.add('fa-times');
+            body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
           } else {
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
+            body.style.overflow = '';
           }
         });
       }
@@ -2798,8 +2954,28 @@
               toggleIcon.classList.remove('fa-times');
               toggleIcon.classList.add('fa-bars');
             }
+            document.body.style.overflow = '';
           }
         });
+      });
+      
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        const nav = document.getElementById('nav-desktop');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        if (window.innerWidth <= 768 && 
+            nav.classList.contains('active') && 
+            !nav.contains(event.target) && 
+            !toggle.contains(event.target)) {
+          nav.classList.remove('active');
+          const toggleIcon = toggle.querySelector('i');
+          if (toggleIcon) {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+          }
+          document.body.style.overflow = '';
+        }
       });
       
       // Back to top button
@@ -2835,169 +3011,186 @@
       
       // Mobile touch improvements
       initializeMobileTouch();
+      
+      // Handle orientation change
+      window.addEventListener('orientationchange', function() {
+        // Reset chart on orientation change
+        if (window.tokenomicsChart) {
+          setTimeout(function() {
+            window.tokenomicsChart.resize();
+          }, 200);
+        }
+        
+        // Close mobile menu on orientation change
+        if (window.innerWidth > 768) {
+          const nav = document.getElementById('nav-desktop');
+          if (nav) nav.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
     });
     
-// Tokenomics Chart - CORRECTED VERSION
-function initializeTokenomicsChart() {
-  const ctx = document.getElementById('distributionChart');
-  if (!ctx) return;
-  
-  // Destroy existing chart if it exists
-  if (window.tokenomicsChart) {
-    window.tokenomicsChart.destroy();
-  }
-  
-  // Create new chart
-  window.tokenomicsChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: [
-        'Bonding Curve (53.77%)',
-        'Founder\'s Commitment (16.23%)',
-        'ZORA Rewards Treasury (16%)',
-        'Team Fund (7%)',
-        'Ecosystem Fund (6%)',
-        'Community DAO  Reserve (1%)'
-      ],
-      datasets: [{
-        data: [53.77, 16.23, 16, 7, 6, 1],
-        backgroundColor: [
-          'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
-          'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
-          'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
-          'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
-          'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
-          'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
-        ],
-        borderColor: [
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)',
-          'rgba(255, 255, 255, 1)'
-        ],
-        borderWidth: 2,
-        hoverOffset: 15
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: window.innerWidth <= 768 ? 'bottom' : 'right',
-          labels: {
-            font: {
-              size: window.innerWidth <= 768 ? 11 : 14,
-              family: 'Montserrat',
-              weight: '600'
-            },
-            color: 'white',
-            padding: 15,
-            usePointStyle: true,
-            pointStyle: 'circle'
-          }
+    // Tokenomics Chart - CORRECTED VERSION
+    function initializeTokenomicsChart() {
+      const ctx = document.getElementById('distributionChart');
+      if (!ctx) return;
+      
+      // Destroy existing chart if it exists
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.destroy();
+      }
+      
+      // Create new chart
+      window.tokenomicsChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [
+            'Bonding Curve (53.77%)',
+            'Founder\'s Commitment (16.23%)',
+            'ZORA Rewards Treasury (16%)',
+            'Team Fund (7%)',
+            'Ecosystem Fund (6%)',
+            'Community DAO Reserve (1%)'
+          ],
+          datasets: [{
+            data: [53.77, 16.23, 16, 7, 6, 1],
+            backgroundColor: [
+              'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
+              'rgba(0, 170, 255, 0.9)',      // Blue - Founder's Commitment
+              'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards Treasury
+              'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
+              'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
+              'rgba(75, 192, 86, 0.9)'       // Green - Community DAO
+            ],
+            borderColor: [
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)'
+            ],
+            borderWidth: 2,
+            hoverOffset: 15
+          }]
         },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.label}: ${context.raw}%`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: window.innerWidth <= 768 ? 'bottom' : 'right',
+              labels: {
+                font: {
+                  size: window.innerWidth <= 768 ? 10 : 14,
+                  family: 'Montserrat',
+                  weight: '600'
+                },
+                color: 'white',
+                padding: 15,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw}%`;
+                }
+              },
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: 'var(--rebel-gold)',
+              bodyColor: 'white',
+              titleFont: {
+                size: 14
+              },
+              bodyFont: {
+                size: 13
+              }
             }
           },
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: 'var(--rebel-gold)',
-          bodyColor: 'white',
-          titleFont: {
-            size: 14
-          },
-          bodyFont: {
-            size: 13
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1000
           }
         }
-      },
-      animation: {
-        animateScale: true,
-        animateRotate: true,
-        duration: 1000
-      }
+      });
     }
-  });
-}
-
-// Founder's Commitment - Accurate Progress Calculator
-function updateFounderCommitmentProgress() {
-  // Exact contract dates from Streamflow
-  const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
-  const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
-  const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
-  
-  const now = new Date();
-  const totalDuration = endDate - startDate; // Total milliseconds in 1 year
-  const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
-  
-  // Calculate time-based progress (0-100%)
-  const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
-  
-  // Calculate days elapsed/remaining
-  const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-  const daysTotal = 365; // 1 year
-  const daysRemaining = Math.max(0, daysTotal - daysElapsed);
-  
-  // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
-  const unlockedPercent = 8;
-  const unlockedAmount = 13.49; // In millions
-  
-  // Update progress bars
-  const unlockedBar = document.getElementById('founderUnlockedBar');
-  const timeBar = document.getElementById('founderTimeBar');
-  const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
-  const timeProgressEl = document.getElementById('founderTimeProgress');
-  const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
-  const daysCountEl = document.getElementById('founderDaysCount');
-  
-  if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
-  if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
-  
-  if (unlockedAmountEl) {
-    unlockedAmountEl.textContent = `${unlockedAmount}M REBL`;
-  }
-  
-  if (timeProgressEl) {
-    timeProgressEl.textContent = `${daysElapsed} days`;
-  }
-  
-  if (nextUnlockDateEl) {
-    nextUnlockDateEl.textContent = `Dec 31, 2025`;
-  }
-  
-  if (daysCountEl) {
-    daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong>`;
-  }
-  
-  // Calculate and display next unlock countdown
-  const timeToNextUnlock = nextUnlockDate - now;
-  if (timeToNextUnlock > 0) {
-    const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
-    const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     
-    // Update the next unlock display with countdown
-    if (nextUnlockDateEl) {
-      nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
+    // Founder's Commitment - Accurate Progress Calculator
+    function updateFounderCommitmentProgress() {
+      // Exact contract dates from Streamflow
+      const startDate = new Date("2025-11-01T01:28:00Z"); // Nov 1, 2025, 02:28 AM GMT+1
+      const endDate = new Date("2026-11-01T01:27:00Z");   // Nov 1, 2026, 02:27 AM GMT+1
+      const nextUnlockDate = new Date("2025-12-31T21:28:00Z"); // Dec 31, 2025, 10:28 PM GMT+1
+      
+      const now = new Date();
+      const totalDuration = endDate - startDate; // Total milliseconds in 1 year
+      const elapsed = Math.max(0, now - startDate); // Milliseconds elapsed
+      
+      // Calculate time-based progress (0-100%)
+      const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
+      
+      // Calculate days elapsed/remaining
+      const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      const daysTotal = 365; // 1 year
+      const daysRemaining = Math.max(0, daysTotal - daysElapsed);
+      
+      // From Streamflow: 8% already unlocked (13.4863M of 161.8367M)
+      const unlockedPercent = 8;
+      const unlockedAmount = 13.49; // In millions
+      
+      // Update progress bars
+      const unlockedBar = document.getElementById('founderUnlockedBar');
+      const timeBar = document.getElementById('founderTimeBar');
+      const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
+      const timeProgressEl = document.getElementById('founderTimeProgress');
+      const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
+      const daysCountEl = document.getElementById('founderDaysCount');
+      
+      if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
+      if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
+      
+      if (unlockedAmountEl) {
+        unlockedAmountEl.textContent = `${unlockedAmount}M REBL`;
+      }
+      
+      if (timeProgressEl) {
+        timeProgressEl.textContent = `${daysElapsed} days`;
+      }
+      
+      if (nextUnlockDateEl) {
+        nextUnlockDateEl.textContent = `Dec 31, 2025`;
+      }
+      
+      if (daysCountEl) {
+        daysCountEl.innerHTML = `<strong>${daysElapsed} of ${daysTotal} days</strong>`;
+      }
+      
+      // Calculate and display next unlock countdown
+      const timeToNextUnlock = nextUnlockDate - now;
+      if (timeToNextUnlock > 0) {
+        const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+        const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        // Update the next unlock display with countdown
+        if (nextUnlockDateEl) {
+          nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: #FFD700; font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
+        }
+      }
+      
+      // Update accordion progress if it exists
+      const founderProgressBar = document.getElementById('founderProgressBar');
+      const founderProgressText = document.getElementById('founderProgressText');
+      const founderUnlockedAmountAccordion = document.getElementById('founderUnlockedAmountAccordion');
+      const founderNextUnlockDateAccordion = document.getElementById('founderNextUnlockDateAccordion');
+      
+      if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
+      if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
+      if (founderUnlockedAmountAccordion) founderUnlockedAmountAccordion.textContent = `${unlockedAmount}M`;
+      if (founderNextUnlockDateAccordion) founderNextUnlockDateAccordion.textContent = 'Dec 31, 2025';
     }
-  }
-  
-  // Update accordion progress if it exists
-  const founderProgressBar = document.getElementById('founderProgressBar');
-  const founderProgressText = document.getElementById('founderProgressText');
-  
-  if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
-  if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
-}
-
-// Initialize and update
-updateFounderCommitmentProgress();
-setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
     
     // Update contract progress dynamically
     function updateContractProgress() {
@@ -3092,22 +3285,6 @@ setInterval(updateFounderCommitmentProgress, 3600000); // Update every hour
         }
         lastTouchEnd = now;
       }, false);
-      
-      // Handle orientation change
-      window.addEventListener('orientationchange', function() {
-        // Reset chart on orientation change
-        if (window.tokenomicsChart) {
-          setTimeout(function() {
-            window.tokenomicsChart.resize();
-          }, 200);
-        }
-        
-        // Close mobile menu on orientation change
-        if (window.innerWidth > 768) {
-          const nav = document.getElementById('nav-desktop');
-          if (nav) nav.classList.remove('active');
-        }
-      });
       
       // Resize chart on window resize
       let resizeTimer;
