@@ -122,7 +122,19 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--rebel-gold);
     }
-    
+    /* Brand link styling */
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.brand-link:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
     .header-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -154,11 +166,70 @@
       transition: var(--transition);
     }
     
-    #nav-desktop a:hover {
-      background: rgba(255, 51, 102, 0.1);
-      transform: translateY(-2px);
-    }
-    
+#nav-desktop a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Color-coded navigation links */
+#nav-desktop a.nav-trade {
+  color: var(--rebel-red);
+  border: 1px solid rgba(255, 51, 102, 0.3);
+  background: rgba(255, 51, 102, 0.05);
+}
+
+#nav-desktop a.nav-rewards {
+  color: var(--rebel-gold);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  background: rgba(255, 204, 0, 0.05);
+}
+
+#nav-desktop a.nav-tokenomics {
+  color: #00aaff;
+  border: 1px solid rgba(0, 170, 255, 0.3);
+  background: rgba(0, 170, 255, 0.05);
+}
+
+#nav-desktop a.nav-security {
+  color: #4CAF50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(76, 175, 80, 0.05);
+}
+
+#nav-desktop a.nav-more {
+  color: #9C27B0;
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  background: rgba(156, 39, 176, 0.05);
+}
+
+/* Color-specific hover effects */
+#nav-desktop a.nav-trade:hover {
+  background: rgba(255, 51, 102, 0.15) !important;
+}
+
+#nav-desktop a.nav-rewards:hover {
+  background: rgba(255, 204, 0, 0.15) !important;
+}
+
+#nav-desktop a.nav-tokenomics:hover {
+  background: rgba(0, 170, 255, 0.15) !important;
+}
+
+#nav-desktop a.nav-security:hover {
+  background: rgba(76, 175, 80, 0.15) !important;
+}
+
+#nav-desktop a.nav-more:hover {
+  background: rgba(156, 39, 176, 0.15) !important;
+}
+
+   /* Active state highlight */
+#nav-desktop a.active {
+  background: rgba(0, 170, 255, 0.2) !important;
+  border-color: #00aaff !important;
+  color: white !important;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+} 
     .mobile-nav-toggle {
       display: none;
       background: transparent;
@@ -1141,7 +1212,30 @@
 }
 
 .dropdown-content a:hover {
-  background: rgba(255, 51, 102, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 20px;
+  transition: padding 0.3s ease;
+}
+
+/* Dropdown item colors */
+.dropdown-content a.nav-governance {
+  color: #FF9800;
+}
+
+.dropdown-content a.nav-roadmap {
+  color: var(--rebel-red);
+}
+
+.dropdown-content a.nav-integrity {
+  color: var(--rebel-gold);
+}
+
+.dropdown-content a.nav-artwork {
+  color: #9C27B0;
+}
+
+.dropdown-content a.nav-community {
+  color: #2196F3;
 }
 
 /* Show dropdown on hover */
@@ -1322,6 +1416,24 @@
     display: none;
   }
 }
+
+
+    /* ========== HEADER ANIMATION ========== */
+@keyframes headerSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+header {
+  animation: headerSlideIn 0.5s ease-out;
+}
+    
   </style>
 </head>
 <body>
@@ -1350,7 +1462,8 @@
     </button>
     
 <nav id="nav-desktop">
-  <!-- PRIMARY ACTIONS with color coding -->
+  <!-- PRIMARY ACTIONS -->
+  <div class="mobile-section">Primary Actions</div>
   <a href="trade.html" class="nav-trade">
     <i class="fas fa-chart-line"></i> Trade
   </a>
@@ -1358,7 +1471,8 @@
     <i class="fas fa-gift"></i> Rewards
   </a>
   
-  <!-- ESSENTIAL INFO with Tokenomics icon -->
+  <!-- ESSENTIAL INFO -->
+  <div class="mobile-section">Essential Info</div>
   <a href="tokenomics.html" class="nav-tokenomics active">
     <i class="fas fa-coins"></i> Tokenomics
   </a>
@@ -1366,21 +1480,75 @@
     <i class="fas fa-shield-alt"></i> Security
   </a>
   
-  <!-- DROPDOWN -->
+  <!-- ADDITIONAL LINKS -->
+  <div class="mobile-section">More Options</div>
   <div class="dropdown">
     <button class="dropbtn nav-more">
       <i class="fas fa-ellipsis-h"></i> More
     </button>
-        <div class="dropdown-content">
-          <a href="governance.html"><i class="fas fa-vote-yea"></i> Governance</a>
-          <a href="roadmap.html"><i class="fas fa-map-signs"></i> Roadmap</a>
-          <a href="integrity.html"><i class="fas fa-handshake"></i> Integrity</a>
-          <a href="artwork.html"><i class="fas fa-palette"></i> Artwork</a>
-          <a href="community.html"><i class="fas fa-users"></i> Community</a>
-        </div>
-      </div>
-    </nav>
+    <div class="dropdown-content">
+      <a href="governance.html" class="nav-governance">
+        <i class="fas fa-vote-yea"></i> Governance
+      </a>
+      <a href="roadmap.html" class="nav-roadmap">
+        <i class="fas fa-map-signs"></i> Roadmap
+      </a>
+      <a href="integrity.html" class="nav-integrity">
+        <i class="fas fa-handshake"></i> Integrity
+      </a>
+      <a href="artwork.html" class="nav-artwork">
+        <i class="fas fa-palette"></i> Artwork
+      </a>
+      <a href="community.html" class="nav-community">
+        <i class="fas fa-users"></i> Community
+      </a>
+    </div>
   </div>
+</nav>
+    <nav id="nav-desktop">
+  <!-- PRIMARY ACTIONS -->
+  <div class="mobile-section">Primary Actions</div>
+  <a href="trade.html" class="nav-trade">
+    <i class="fas fa-chart-line"></i> Trade
+  </a>
+  <a href="epoch-rewards.html" class="nav-rewards">
+    <i class="fas fa-gift"></i> Rewards
+  </a>
+  
+  <!-- ESSENTIAL INFO -->
+  <div class="mobile-section">Essential Info</div>
+  <a href="tokenomics.html" class="nav-tokenomics active">
+    <i class="fas fa-coins"></i> Tokenomics
+  </a>
+  <a href="security.html" class="nav-security">
+    <i class="fas fa-shield-alt"></i> Security
+  </a>
+  
+  <!-- ADDITIONAL LINKS -->
+  <div class="mobile-section">More Options</div>
+  <div class="dropdown">
+    <button class="dropbtn nav-more">
+      <i class="fas fa-ellipsis-h"></i> More
+    </button>
+    <div class="dropdown-content">
+      <a href="governance.html" class="nav-governance">
+        <i class="fas fa-vote-yea"></i> Governance
+      </a>
+      <a href="roadmap.html" class="nav-roadmap">
+        <i class="fas fa-map-signs"></i> Roadmap
+      </a>
+      <a href="integrity.html" class="nav-integrity">
+        <i class="fas fa-handshake"></i> Integrity
+      </a>
+      <a href="artwork.html" class="nav-artwork">
+        <i class="fas fa-palette"></i> Artwork
+      </a>
+      <a href="community.html" class="nav-community">
+        <i class="fas fa-users"></i> Community
+      </a>
+    </div>
+  </div>
+</nav>
 </header>
   
   <main>
