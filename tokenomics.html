@@ -666,7 +666,7 @@
       transform: rotate(180deg);
     }
     
-    .accordion-content {
+  
       padding: 0 var(--spacing-md);
       max-height: 0;
       overflow: hidden;
@@ -675,11 +675,12 @@
       border-radius: 0 0 8px 8px;
     }
     
-    .accordion-content.active {
-      padding: var(--spacing-md) var(--spacing-md) 2rem;
-      max-height: 2000px;
-      transition: max-height 0.5s ease, padding 0.3s ease;
-    }
+.accordion-content.active {
+  padding: var(--spacing-md) var(--spacing-md) 2rem;
+  max-height: none; /* Allows natural height */
+  overflow: visible;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+}
     
     .accordion-button {
       display: inline-flex;
@@ -947,7 +948,7 @@
         flex: 1;
       }
       
-      .accordion-content {
+    
         padding: 0 1rem;
       }
       
@@ -955,7 +956,17 @@
         padding: 1rem;
         font-size: 0.95rem;
       }
-      
+
+  .accordion-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .accordion-content.active {
+    max-height: none;
+    overflow-y: visible;
+  }
+    
       .cross-chain-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -3175,7 +3186,54 @@
         }
       });
     });
-    
+
+
+    function fixAccordionHeights() {
+  document.querySelectorAll('.accordion-content.active').forEach(content => {
+    // Force recalc
+    content.style.maxHeight = 'none';
+    const height = content.scrollHeight;
+    content.style.maxHeight = height + 'px';
+  });
+}
+
+// Call it after opening an accordion and on window resize
+function initializeAccordion() {
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', (e) => {
+      e.preventDefault();
+      const content = header.nextElementSibling;
+      const isActive = content.classList.contains('active');
+
+      // Close all accordion items
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        item.classList.remove('active');
+        item.style.maxHeight = null;
+      });
+      document.querySelectorAll('.accordion-header').forEach(h => {
+        h.classList.remove('active');
+      });
+
+      // Open clicked item if it wasn't already active
+      if (!isActive) {
+        content.classList.add('active');
+        header.classList.add('active');
+        // Set explicit height
+        content.style.maxHeight = content.scrollHeight + 'px';
+        
+        // Fix for mobile
+        setTimeout(() => {
+          if (window.innerWidth <= 768) {
+            content.style.maxHeight = 'none';
+          }
+        }, 500);
+      }
+    });
+  });
+  
+  // Also fix on window resize
+  window.addEventListener('resize', fixAccordionHeights);
+}
     // Tokenomics Chart - CORRECTED VERSION
     function initializeTokenomicsChart() {
       const ctx = document.getElementById('distributionChart');
