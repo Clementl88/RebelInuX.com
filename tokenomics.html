@@ -1633,43 +1633,40 @@ header {
   animation: headerSlideIn 0.5s ease-out;
 }
 
-/* ========== URGENT FIX: Force ALL dropdown links to be visible ========== */
+/* ========== CRITICAL FIX: Ensure ALL dropdown links are visible ========== */
 @media (max-width: 768px) {
-  /* Override ALL conflicting rules */
-  .dropdown-content,
-  .dropdown-content a,
-  .dropdown-content a.nav-community,
-  .dropdown-content a.nav-whitepaper,
-  .dropdown-content a.nav-governance,
-  .dropdown-content a.nav-roadmap,
-  .dropdown-content a.nav-integrity,
-  .dropdown-content a.nav-artwork {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
-  .dropdown-content a {
-    display: flex !important;
-  }
-  
-  /* Specifically ensure no parent is hiding content */
+  /* Override any conflicting rules with !important */
   #nav-desktop.active .dropdown-content,
-  #nav-desktop.active .dropdown-content a {
+  #nav-desktop.active .dropdown-content a,
+  #nav-desktop.active .dropdown-content a.nav-community,
+  #nav-desktop .dropdown-content,
+  #nav-desktop .dropdown-content a,
+  #nav-desktop .dropdown-content a.nav-community {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  
+  /* Ensure the dropdown itself is properly visible */
+  .dropdown-content.active {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    max-height: 500px !important;
+    overflow-y: auto !important;
   }
   
-  #nav-desktop.active .dropdown-content a {
-    display: flex !important;
-  }
-  
-  /* Debug border - remove after testing */
-  .dropdown-content {
-    border: 2px solid #00ff00 !important;
+  /* Fix any parent hiding issues */
+  #nav-desktop.active,
+  #nav-desktop.active .dropdown,
+  #nav-desktop.active .dropdown-content {
+    overflow: visible !important;
   }
 }
+  
   </style>
 </head>
 <body>
@@ -3596,32 +3593,34 @@ header {
 
   <script>
     // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-      // Hide loader
-      setTimeout(function() {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1000);
+  document.addEventListener('DOMContentLoaded', function() {
+  // Hide loader
+  setTimeout(function() {
+    document.getElementById('loader').classList.add('hidden');
+  }, 1000);
+  
+  // Mobile menu toggle
+  const mobileToggle = document.getElementById('mobileNavToggle');
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', function() {
+      const nav = document.getElementById('nav-desktop');
+      const icon = this.querySelector('i');
+      const body = document.body;
       
-      // Mobile menu toggle
-      const mobileToggle = document.getElementById('mobileNavToggle');
-      if (mobileToggle) {
-        mobileToggle.addEventListener('click', function() {
-          const nav = document.getElementById('nav-desktop');
-          const icon = this.querySelector('i');
-          const body = document.body;
-          
-          nav.classList.toggle('active');
-          if (nav.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-            body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-          } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-            body.style.overflow = '';
-          }
-        });
+      nav.classList.toggle('active');
+      if (nav.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+        body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+        body.style.overflow = '';
       }
+    });
+  }
+ // Initialize mobile dropdown - MAKE SURE THIS IS CALLED
+  initializeMobileDropdown();
 
 // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
 function initializeMobileDropdown() {
@@ -3653,12 +3652,22 @@ function initializeMobileDropdown() {
         dropdownContent.classList.add('active');
         this.classList.add('active');
         
-        // Ensure all links are visible
+        // Force all links to be visible - IMPORTANT FIX
         dropdownContent.querySelectorAll('a').forEach(link => {
           link.style.display = 'flex';
-          link.style.opacity = '1';
           link.style.visibility = 'visible';
+          link.style.opacity = '1';
+          link.style.height = 'auto';
+          link.style.overflow = 'visible';
         });
+        
+        // Specifically ensure community link is visible
+        const communityLink = dropdownContent.querySelector('.nav-community');
+        if (communityLink) {
+          communityLink.style.display = 'flex';
+          communityLink.style.visibility = 'visible';
+          communityLink.style.opacity = '1';
+        }
       } else {
         dropdownContent.style.display = 'none';
         dropdownContent.classList.remove('active');
@@ -3697,8 +3706,8 @@ function initializeMobileDropdown() {
         // Reset all links to default
         dropdownContent.querySelectorAll('a').forEach(link => {
           link.style.display = '';
-          link.style.opacity = '';
           link.style.visibility = '';
+          link.style.opacity = '';
         });
       }
       if (dropbtn) {
