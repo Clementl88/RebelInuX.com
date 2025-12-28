@@ -1016,6 +1016,9 @@
     z-index: 1000;
     overflow-y: auto;
   }
+
+  /* REMOVE THE BROKEN DROPDOWN STYLES FROM HERE */
+  /* They are already defined in the second @media section */
   
   #nav-desktop.active {
     display: flex;
@@ -1029,7 +1032,6 @@
     justify-content: flex-start;
     min-height: 56px;
   }
-  
   
   /* ========== END MOBILE SECTION HEADERS ========== */
       
@@ -1246,22 +1248,18 @@
 }
 
 /* Dropdown Content */
-  .dropdown-content {
-    position: relative !important;
-    display: none !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 8px !important;
-    margin: 5px 0 15px 0 !important;
-    padding: 10px 0 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-    width: 100% !important;
-    max-height: 60vh !important; /* Limit height */
-    overflow-y: auto !important; /* Enable vertical scroll */
-    overflow-x: hidden !important;
-    animation: fadeIn 0.3s ease;
-    z-index: 1002;
-  }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  min-width: 200px;
+  border: 1px solid var(--rebel-gold);
+  border-radius: 8px;
+  z-index: 1000;
+  padding: 10px 0;
+  backdrop-filter: blur(10px);
+}
 
 .dropdown-content a {
   color: white;
@@ -1348,7 +1346,7 @@
   }
   
   /* Ensure all dropdown links are visible */
-   .dropdown-content a {
+  .dropdown-content a {
     padding: 15px 20px !important;
     margin: 2px 10px !important;
     border-radius: 6px !important;
@@ -1416,19 +1414,6 @@
   
   .dropbtn.active:after {
     transform: rotate(180deg) !important;
-  }
-    /* Custom scrollbar for dropdown */
-  .dropdown-content::-webkit-scrollbar {
-    width: 6px;
-  }
-    .dropdown-content::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-  }
-  
-  .dropdown-content::-webkit-scrollbar-thumb {
-    background: var(--rebel-gold);
-    border-radius: 3px;
   }
   
   /* Animations */
