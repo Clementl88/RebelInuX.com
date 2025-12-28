@@ -4220,6 +4220,36 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize mobile dropdown
   initializeMobileDropdown();
 });
+
+
+    // ========== ADD THE NEW FUNCTION RIGHT HERE ==========
+function enhanceMobileDropdown() {
+  if (window.innerWidth <= 768) {
+    const dropdownContent = document.querySelector('.dropdown-content');
+    const mainNav = document.getElementById('nav-desktop');
+    
+    if (dropdownContent && mainNav) {
+      // Make sure the nav menu itself is scrollable
+      mainNav.style.overflowY = 'auto';
+      
+      // Set a reasonable max height for dropdown
+      const viewportHeight = window.innerHeight;
+      dropdownContent.style.maxHeight = '300px'; // Fixed height or use vh
+      dropdownContent.style.overflowY = 'auto';
+      
+      // Add scroll hint for long dropdowns
+      if (dropdownContent.scrollHeight > 250) {
+        dropdownContent.style.borderBottom = '2px solid var(--rebel-gold)';
+      }
+    }
+  }
+}
+
+// Call on load and resize
+document.addEventListener('DOMContentLoaded', enhanceMobileDropdown);
+window.addEventListener('resize', enhanceMobileDropdown);
+// ========== END OF NEW FUNCTION ==========
+    
   </script>
 </body>
 </html>
