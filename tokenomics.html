@@ -3591,7 +3591,7 @@ header {
  // Initialize mobile dropdown - MAKE SURE THIS IS CALLED
   initializeMobileDropdown();
 
-// ========== FIXED MOBILE DROPDOWN FUNCTIONALITY ==========
+// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
 function initializeMobileDropdown() {
   const dropbtn = document.querySelector('.dropbtn');
   const navDesktop = document.getElementById('nav-desktop');
@@ -3606,16 +3606,13 @@ function initializeMobileDropdown() {
       e.stopPropagation();
       
       const dropdownContent = this.nextElementSibling;
-      const isActive = dropdownContent.classList.contains('active');
+      const isActive = dropdownContent.style.display === 'block' || 
+                      dropdownContent.classList.contains('active');
       
       // Close all other dropdowns first
       document.querySelectorAll('.dropdown-content').forEach(content => {
         content.style.display = 'none';
         content.classList.remove('active');
-      });
-      
-      document.querySelectorAll('.dropbtn').forEach(btn => {
-        btn.classList.remove('active');
       });
       
       // Toggle this dropdown
@@ -3624,25 +3621,22 @@ function initializeMobileDropdown() {
         dropdownContent.classList.add('active');
         this.classList.add('active');
         
-        // IMPORTANT: Make sure ALL dropdown links are visible
-        setTimeout(() => {
-          const allLinks = dropdownContent.querySelectorAll('a');
-          allLinks.forEach(link => {
-            link.style.display = 'flex';
-            link.style.visibility = 'visible';
-            link.style.opacity = '1';
-            link.style.height = 'auto';
-            link.style.overflow = 'visible';
-            link.style.position = 'relative';
-          });
-          
-          // Force reflow to ensure display
-          dropdownContent.style.height = 'auto';
-          dropdownContent.offsetHeight; // Trigger reflow
-          
-          // Scroll into view if needed
-          dropdownContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 10);
+        // Force all links to be visible - IMPORTANT FIX
+        dropdownContent.querySelectorAll('a').forEach(link => {
+          link.style.display = 'flex';
+          link.style.visibility = 'visible';
+          link.style.opacity = '1';
+          link.style.height = 'auto';
+          link.style.overflow = 'visible';
+        });
+        
+        // Specifically ensure community link is visible
+        const communityLink = dropdownContent.querySelector('.nav-community');
+        if (communityLink) {
+          communityLink.style.display = 'flex';
+          communityLink.style.visibility = 'visible';
+          communityLink.style.opacity = '1';
+        }
       } else {
         dropdownContent.style.display = 'none';
         dropdownContent.classList.remove('active');
@@ -3660,10 +3654,10 @@ function initializeMobileDropdown() {
       
       if (!e.target.closest('.dropdown') && 
           dropdownContent && 
-          dropdownContent.classList.contains('active')) {
+          dropbtn) {
         dropdownContent.style.display = 'none';
         dropdownContent.classList.remove('active');
-        if (dropbtn) dropbtn.classList.remove('active');
+        dropbtn.classList.remove('active');
       }
     }
   });
@@ -3678,15 +3672,11 @@ function initializeMobileDropdown() {
       if (dropdownContent) {
         dropdownContent.style.display = '';
         dropdownContent.classList.remove('active');
-        dropdownContent.style.height = '';
-        
         // Reset all links to default
         dropdownContent.querySelectorAll('a').forEach(link => {
           link.style.display = '';
           link.style.visibility = '';
           link.style.opacity = '';
-          link.style.height = '';
-          link.style.position = '';
         });
       }
       if (dropbtn) {
@@ -3726,7 +3716,7 @@ function initializeMobileDropdown() {
     });
   });
 }
-// ========== END FIXED DROPDOWN CODE ==========
+// ========== END DROPDOWN CODE ==========
       
       // Close mobile nav when clicking on a link
       document.querySelectorAll('#nav-desktop a').forEach(link => {
