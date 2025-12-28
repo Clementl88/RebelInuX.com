@@ -996,7 +996,7 @@
       color: var(--rebel-red);
     }
     
-/* ========== MOBILE RESPONSIVE ========== */
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .mobile-nav-toggle {
     display: flex;
@@ -1010,12 +1010,15 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(0, 0, 0, 0.95);
     padding: 80px var(--spacing-md) var(--spacing-md);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     overflow-y: auto;
   }
+
+  /* REMOVE THE BROKEN DROPDOWN STYLES FROM HERE */
+  /* They are already defined in the second @media section */
   
   #nav-desktop.active {
     display: flex;
@@ -1028,160 +1031,7 @@
     font-size: 1.1rem;
     justify-content: flex-start;
     min-height: 56px;
-    width: 100%;
-    box-sizing: border-box;
   }
-  
-  /* Mobile section headers */
-  .mobile-section {
-    display: block !important;
-    color: var(--rebel-gold);
-    font-weight: 700;
-    padding: 15px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 10px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    width: 100%;
-  }
-  
-  /* Remove section headers on desktop */
-  @media (min-width: 769px) {
-    .mobile-section {
-      display: none !important;
-    }
-  }
-  
-  /* ========== MOBILE DROPDOWN STYLES ========== */
-  .dropdown {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-  
-  .dropdown-content {
-    position: relative !important;
-    display: none !important;
-    background: rgba(0, 0, 0, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 8px !important;
-    margin: 5px 0 15px 0 !important;
-    padding: 10px 0 !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-    width: 100% !important;
-    animation: fadeIn 0.3s ease;
-    z-index: 1002;
-  }
-  
-  .dropdown-content.active {
-    display: block !important;
-    animation: slideDown 0.3s ease;
-  }
-  
-  /* Make sure all dropdown links are visible */
-  .dropdown-content a {
-    padding: 15px 20px !important;
-    margin: 2px 10px !important;
-    border-radius: 6px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    min-height: 56px !important;
-    font-size: 1rem !important;
-    border-left: 3px solid transparent !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  /* Make sure community link is specifically visible */
-  .dropdown-content a.nav-community {
-    display: flex !important;
-    color: #2196F3 !important;
-  }
-  
-  .dropdown-content a:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    padding-left: 25px !important;
-    border-left-color: currentColor !important;
-  }
-  
-  .dropdown-content a i {
-    margin-right: 12px !important;
-    width: 20px !important;
-    text-align: center !important;
-  }
-  
-  .dropbtn {
-    width: 100% !important;
-    justify-content: space-between !important;
-    padding: 15px 20px !important;
-    margin: 5px 0 !important;
-    border-radius: 8px !important;
-    background: rgba(156, 39, 176, 0.15) !important;
-    border: 1px solid rgba(156, 39, 176, 0.3) !important;
-    font-size: 1.05rem !important;
-    font-weight: 600 !important;
-    color: #9C27B0 !important;
-    transition: all 0.3s ease !important;
-  }
-  
-  .dropbtn:hover {
-    background: rgba(156, 39, 176, 0.25) !important;
-  }
-  
-  .dropbtn.active {
-    background: rgba(156, 39, 176, 0.3) !important;
-    border-color: #9C27B0 !important;
-  }
-  
-  .dropbtn:after {
-    content: "▼" !important;
-    font-size: 0.8em !important;
-    margin-left: 10px !important;
-    transition: transform 0.3s ease !important;
-  }
-  
-  .dropbtn.active:after {
-    transform: rotate(180deg) !important;
-  }
-  
-  /* Animations */
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* Ensure mobile nav menu doesn't hide dropdown content */
-  #nav-desktop.active {
-    display: flex !important;
-    flex-direction: column;
-    overflow-y: auto;
-    height: 100vh;
-  }
-  
-  #nav-desktop.active .dropdown-content {
-    position: relative !important;
-    display: none !important;
-  }
-  
-  #nav-desktop.active .dropdown-content.active {
-    display: block !important;
-  }
-}
   
   /* ========== END MOBILE SECTION HEADERS ========== */
       
@@ -1837,7 +1687,6 @@ header {
   </a>
   
   <!-- ESSENTIAL INFO -->
-  <div class="mobile-section">Essential Info</div>
   <a href="tokenomics.html" class="nav-tokenomics active">
     <i class="fas fa-coins"></i> Tokenomics
   </a>
@@ -1845,15 +1694,14 @@ header {
     <i class="fas fa-shield-alt"></i> Security
   </a>
 
-  <!-- MORE PAGES -->
-  <div class="mobile-section">More</div>
+  
   <!-- DROPDOWN -->
   <div class="dropdown">
     <button class="dropbtn nav-more">
       <i class="fas fa-ellipsis-h"></i> More
     </button>
     <div class="dropdown-content">
-      <a href="whitepaper.html" class="nav-whitepaper">
+            <a href="whitepaper.html" class="nav-whitepaper">
         <i class="fas fa-file-contract"></i> Whitepaper
       </a>
       <a href="governance.html" class="nav-governance">
