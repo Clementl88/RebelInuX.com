@@ -4151,96 +4151,7 @@ function collapseAllAccordions() {
       });
     }
     
-    // Progress bar animations on scroll
-    document.addEventListener('scroll', function() {
-      const progressBars = document.querySelectorAll('.progress-fill');
-      progressBars.forEach(bar => {
-        const rect = bar.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-          bar.style.transition = 'width 1.5s ease-in-out';
-        }
-      });
-    });
-    
-    // Trigger initial progress bar animations
-    setTimeout(() => {
-      document.querySelectorAll('.progress-fill').forEach(bar => {
-        bar.style.transition = 'width 1.5s ease-in-out';
-      });
-      
-      // Initial chart update
-      if (window.tokenomicsChart) {
-        window.tokenomicsChart.update();
-      }
-    }, 500);
-
-    // Mobile dropdown toggle
-document.addEventListener('DOMContentLoaded', function() {
-  // Dropdown toggle for mobile
-  const dropBtns = document.querySelectorAll('.dropbtn');
-  
-  dropBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const dropdown = this.parentElement;
-        const dropdownContent = dropdown.querySelector('.dropdown-content');
-        
-        // Toggle active class on button
-        this.classList.toggle('active');
-        
-        // Toggle dropdown content
-        dropdownContent.classList.toggle('active');
-        
-        // Close other dropdowns
-        dropBtns.forEach(otherBtn => {
-          if (otherBtn !== this) {
-            otherBtn.classList.remove('active');
-            otherBtn.parentElement.querySelector('.dropdown-content')?.classList.remove('active');
-          }
-        });
-      }
-    });
-  });
-  
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function(e) {
-    if (window.innerWidth <= 768) {
-      if (!e.target.closest('.dropdown')) {
-        dropBtns.forEach(btn => {
-          btn.classList.remove('active');
-          btn.parentElement.querySelector('.dropdown-content')?.classList.remove('active');
-        });
-      }
-    }
-  });
-
- // Progress bar animations on scroll
-    document.addEventListener('scroll', function() {
-      const progressBars = document.querySelectorAll('.progress-fill');
-      progressBars.forEach(bar => {
-        const rect = bar.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-          bar.style.transition = 'width 1.5s ease-in-out';
-        }
-      });
-    });
-    
-    // Trigger initial progress bar animations
-    setTimeout(() => {
-      document.querySelectorAll('.progress-fill').forEach(bar => {
-        bar.style.transition = 'width 1.5s ease-in-out';
-      });
-      
-      // Initial chart update
-      if (window.tokenomicsChart) {
-        window.tokenomicsChart.update();
-      }
-    }, 500);
-
-    // Mobile dropdown toggle
+        // Mobile dropdown toggle
     document.addEventListener('DOMContentLoaded', function() {
       // Dropdown toggle for mobile
       const dropBtns = document.querySelectorAll('.dropbtn');
@@ -4286,10 +4197,36 @@ document.addEventListener('DOMContentLoaded', function() {
       // Initialize mobile dropdown
       initializeMobileDropdown();
     });
-  </script>
-
-
     
+    // ========== ADD THE NEW FUNCTION HERE ==========
+    function enhanceMobileDropdown() {
+      if (window.innerWidth <= 768) {
+        const dropdownContent = document.querySelector('.dropdown-content');
+        const mainNav = document.getElementById('nav-desktop');
+        
+        if (dropdownContent && mainNav) {
+          // Make sure the nav menu itself is scrollable
+          mainNav.style.overflowY = 'auto';
+          
+          // Set a reasonable max height for dropdown
+          const viewportHeight = window.innerHeight;
+          dropdownContent.style.maxHeight = '300px';
+          dropdownContent.style.overflowY = 'auto';
+          
+          // Add scroll hint for long dropdowns
+          if (dropdownContent.scrollHeight > 250) {
+            dropdownContent.style.borderBottom = '2px solid var(--rebel-gold)';
+          }
+        }
+      }
+    }
+
+
+    // Call on load and resize
+    document.addEventListener('DOMContentLoaded', enhanceMobileDropdown);
+    window.addEventListener('resize', enhanceMobileDropdown);
+    // ========== END OF NEW FUNCTION ==========
+        
   </script>
 </body>
 </html>
