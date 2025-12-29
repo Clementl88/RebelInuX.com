@@ -2,7 +2,7 @@
 <html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Security Details - Complete security audit, contract verification, and risk analysis" />
   <meta name="keywords" content="$REBL security, smart contract audit, token safety, RugCheck verification, Solscan" />
   <meta property="og:title" content="RebelInuX Security - Complete Safety Analysis" />
@@ -14,6 +14,12 @@
   <meta name="twitter:title" content="RebelInuX Security - Complete Safety Analysis">
   <meta name="twitter:description" content="Full security details, contract verification, and safety checks for $REBL token.">
   <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Mobile Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <!-- Favicon -->
   <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
@@ -52,6 +58,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: rgba(255, 51, 102, 0.3);
     }
     
     html {
@@ -65,12 +72,34 @@
       color: var(--text-light);
       line-height: 1.6;
       overflow-x: hidden;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
     }
     
     a {
       text-decoration: none;
       color: inherit;
       transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important; /* Prevent zoom on iOS */
     }
     
     img {
@@ -81,12 +110,26 @@
     
     /* Header */
     header {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       padding: var(--spacing-md);
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rebel-gold);
+    }
+    
+    .brand-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    .brand-link:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
     }
     
     .header-container {
@@ -120,9 +163,99 @@
       transition: var(--transition);
     }
     
-    #nav-desktop a:hover {
-      background: rgba(255, 51, 102, 0.1);
-      transform: translateY(-2px);
+    /* Color-coded navigation links */
+    #nav-desktop a.nav-trade {
+      color: var(--rebel-red);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      background: rgba(255, 51, 102, 0.05);
+    }
+    
+    #nav-desktop a.nav-rewards {
+      color: #9C27B0; /* ZORA Purple */
+      border: 1px solid rgba(156, 39, 176, 0.3);
+      background: rgba(156, 39, 176, 0.05);
+    }
+    
+    #nav-desktop a.nav-tokenomics {
+      color: #00aaff; /* Blue */
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      background: rgba(0, 170, 255, 0.05);
+    }
+    
+    #nav-desktop a.nav-security {
+      color: #4CAF50;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      background: rgba(76, 175, 80, 0.05);
+    }
+    
+    #nav-desktop a.nav-more {
+      color: #FFD700 !important; /* Gold/Yellow */
+      border: 1px solid rgba(255, 215, 0, 0.3) !important;
+      background: rgba(255, 215, 0, 0.05) !important;
+    }
+    
+    /* Color-specific hover effects */
+    #nav-desktop a.nav-trade:hover {
+      background: rgba(255, 51, 102, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-rewards:hover {
+      background: rgba(156, 39, 176, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-tokenomics:hover {
+      background: rgba(0, 170, 255, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-security:hover {
+      background: rgba(76, 175, 80, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-more:hover {
+      background: rgba(255, 152, 0, 0.15) !important;
+    }
+    
+    .dropbtn.nav-more {
+      color: #FFD700 !important; /* Gold/Yellow */
+    }
+    
+    .dropdown-content a.nav-whitepaper {
+      color: #795548 !important;
+    }
+    
+    .dropdown-content a.nav-governance {
+      color: #FF7F50 !important;
+    }
+    
+    .dropdown-content a.nav-roadmap {
+      color: #E91E63 !important; /* Pink */
+    }
+    
+    .dropdown-content a.nav-integrity {
+      color: #00BCD4 !important;
+    }
+    
+    .dropdown-content a.nav-artwork {
+      color: #E0B0FF !important;
+    }
+    
+    .dropdown-content a.nav-community {
+      color: #FFFFF0 !important;
+    }
+    
+    /* ICON SPACING IN HEADER */
+    #nav-desktop a i {
+      margin-right: 8px; /* Adjust this value for more/less spacing */
+    }
+    
+    /* For the dropdown button specifically */
+    .dropbtn i {
+      margin-right: 8px; /* Same spacing for consistency */
+    }
+    
+    /* For dropdown items */
+    .dropdown-content a i {
+      margin-right: 10px; /* Slightly more spacing in dropdown */
     }
     
     .mobile-nav-toggle {
@@ -132,12 +265,15 @@
       font-size: 1.5rem;
       color: var(--rebel-gold);
       cursor: pointer;
+      width: 44px;
+      height: 44px;
+      z-index: 1001;
     }
     
     /* Main Content */
     main {
       padding: var(--spacing-xl) var(--spacing-md);
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
     
@@ -146,7 +282,7 @@
     }
     
     h2 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       margin-bottom: var(--spacing-lg);
       color: var(--rebel-gold);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -162,7 +298,7 @@
     .page-hero {
       text-align: center;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-xl) 0;
+      padding: var(--spacing-xl) var(--spacing-md);
       background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
       border-radius: var(--border-radius);
       position: relative;
@@ -182,18 +318,33 @@
     }
     
     .page-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
       margin-bottom: var(--spacing-md);
     }
     
     .page-hero p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       max-width: 800px;
       margin: 0 auto;
       color: rgba(255, 255, 255, 0.9);
     }
     
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+    }
+    
     /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) auto;
+    }
+    
     .card {
       background: var(--card-bg);
       padding: var(--spacing-lg);
@@ -218,7 +369,7 @@
     
     .security-item {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--border-radius);
       padding: var(--spacing-lg);
       text-align: center;
@@ -227,7 +378,8 @@
     
     .security-item:hover {
       border-color: var(--rebel-gold);
-      transform: translateY(-3px);
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
     }
     
     .security-icon {
@@ -246,14 +398,21 @@
       align-items: center;
       gap: var(--spacing-sm);
       margin-bottom: var(--spacing-sm);
-      padding: var(--spacing-sm);
+      padding: var(--spacing-md);
       background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+    
+    .checklist li:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
     }
     
     .checklist i {
       color: #4CAF50;
       font-size: 1.2rem;
+      flex-shrink: 0;
     }
     
     /* Buttons */
@@ -270,6 +429,10 @@
       transition: var(--transition);
       box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
       gap: var(--spacing-sm);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      border: none;
+      min-height: 44px;
     }
     
     .cta-button:hover {
@@ -283,27 +446,35 @@
       color: var(--dark-bg);
     }
     
+    .cta-button.full-width {
+      display: flex;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    
     /* Verification Tools */
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--spacing-md);
+      gap: var(--spacing-lg);
       margin: var(--spacing-lg) 0;
     }
     
     .tool-card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--border-radius);
       padding: var(--spacing-lg);
       text-align: center;
       text-decoration: none;
       transition: var(--transition);
+      display: block;
     }
     
     .tool-card:hover {
       transform: translateY(-5px);
       border-color: var(--rebel-gold);
+      box-shadow: var(--box-shadow-hover);
     }
     
     /* Footer */
@@ -327,41 +498,14 @@
       font-size: 1.8rem;
       color: var(--rebel-red);
       transition: var(--transition);
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
     }
     
     .social-icons a:hover {
       color: var(--rebel-gold);
       transform: translateY(-5px);
-    }
-    
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .mobile-nav-toggle {
-        display: block;
-      }
-      
-      #nav-desktop {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        padding: var(--spacing-md);
-      }
-      
-      #nav-desktop.active {
-        display: flex;
-      }
-      
-      .security-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .tools-grid {
-        grid-template-columns: 1fr;
-      }
     }
     
     /* Loading Animation */
@@ -431,12 +575,14 @@
     
     /* Badges */
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       padding: 0.3rem 0.8rem;
       border-radius: 20px;
       font-size: 0.8rem;
       font-weight: 600;
       margin: 0.2rem;
+      gap: 0.3rem;
     }
     
     .badge.green {
@@ -460,12 +606,14 @@
     /* Contract Address */
     .contract-address {
       background: rgba(0, 0, 0, 0.6);
-      border: 1px solid var(--rebel-gold);
-      border-radius: 8px;
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius);
       padding: var(--spacing-md);
       font-family: 'Courier New', monospace;
       word-break: break-all;
       margin: var(--spacing-md) 0;
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      text-align: center;
     }
     
     /* Status Indicators */
@@ -473,10 +621,11 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.3rem 0.8rem;
+      padding: 0.5rem 1rem;
       border-radius: 20px;
       font-size: 0.9rem;
       font-weight: 600;
+      min-height: 44px;
     }
     
     .status-good {
@@ -496,6 +645,513 @@
       color: #2196F3;
       border: 1px solid #2196F3;
     }
+    
+    /* DROPDOWN STYLES */
+    /* Dropdown Container */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    /* Dropdown Button */
+    .dropbtn {
+      background: transparent;
+      color: white;
+      padding: 12px 16px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Dropdown Content */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      min-width: 200px;
+      border: 1px solid var(--rebel-gold);
+      border-radius: 8px;
+      z-index: 1000;
+      padding: 10px 0;
+      backdrop-filter: blur(10px);
+    }
+    
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-content a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 20px;
+      transition: padding 0.3s ease;
+    }
+    
+    /* Dropdown item colors */
+    .dropdown-content a.nav-governance {
+      color: #FF9800;
+    }
+    
+    .dropdown-content a.nav-roadmap {
+      color: var(--rebel-red);
+    }
+    
+    .dropdown-content a.nav-integrity {
+      color: var(--rebel-gold);
+    }
+    
+    .dropdown-content a.nav-artwork {
+      color: #9C27B0;
+    }
+    
+    .dropdown-content a.nav-community {
+      color: #2196F3;
+    }
+    
+    .dropdown-content a.nav-whitepaper {
+      color: #795548; 
+    }
+    
+    /* Show dropdown on hover for desktop only */
+    @media (min-width: 769px) {
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+    }
+    
+    /* HEADER ANIMATION */
+    @keyframes headerSlideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    header {
+      animation: headerSlideIn 0.5s ease-out;
+    }
+    
+    /* Related Pages */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .related-card {
+      background: var(--card-bg);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+      border: 2px solid var(--rebel-gold);
+      text-align: center;
+      transition: var(--transition);
+      display: block;
+    }
+    
+    .related-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-hover);
+    }
+    
+    .related-card.red {
+      border-color: var(--rebel-red);
+    }
+    
+    .related-icon {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .related-card.red .related-icon {
+      color: var(--rebel-red);
+    }
+    
+    /* ========== RESPONSIVE STYLES ========== */
+    
+    /* Tablet */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .security-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      #nav-desktop a i {
+        margin-right: 8px;
+      }
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 80px var(--spacing-md) var(--spacing-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      #nav-desktop a {
+        padding: var(--spacing-md);
+        border-radius: 8px;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+        justify-content: flex-start;
+        min-height: 56px;
+      }
+      
+      #nav-desktop a i {
+        margin-right: 10px;
+        min-width: 20px;
+        text-align: center;
+      }
+      
+      .header-container h1 {
+        font-size: 1.1rem;
+        max-width: 70%;
+      }
+      
+      .security-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .related-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+      }
+      
+      .card {
+        padding: 1.2rem;
+      }
+      
+      .security-item {
+        padding: 1.2rem;
+      }
+      
+      .tool-card {
+        padding: 1.2rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        display: block;
+        width: 100%;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+      
+      /* MOBILE DROPDOWN STYLES */
+      .dropdown {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      
+      .dropdown-content {
+        position: relative !important;
+        display: none !important;
+        font-size: clamp(0.85rem, 2.5vw, 0.95rem) !important;
+        background: rgba(0, 0, 0, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 8px !important;
+        margin: 5px 0 15px 0 !important;
+        padding: 10px 0 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        width: 100% !important;
+        max-height: calc(100vh - 200px) !important; /* Dynamic based on screen */
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        animation: fadeIn 0.3s ease;
+        z-index: 1002;
+      }
+      
+      .dropdown-content.active {
+        display: block !important;
+        animation: slideDown 0.3s ease;
+      }
+      
+      .dropdown-content a {
+        padding: clamp(10px, 3vw, 14px) 20px !important;
+        margin: 2px 10px !important;
+        border-radius: 6px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 56px !important;
+        font-size: clamp(0.85rem, 2.5vw, 0.95rem) !important;
+        border-left: 3px solid transparent !important;
+        transition: all 0.3s ease !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      
+      .dropdown-content a.nav-community {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        color: #2196F3 !important;
+      }
+      
+      .dropdown-content a:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        padding-left: 25px !important;
+        border-left-color: currentColor !important;
+      }
+      
+      .dropdown-content a i {
+        margin-right: 12px !important;
+        width: 20px !important;
+        text-align: center !important;
+      }
+      
+      .dropbtn {
+        width: 100% !important;
+        justify-content: space-between !important;
+        padding: 15px 20px !important;
+        margin: 5px 0 !important;
+        border-radius: 8px !important;
+        background: rgba(156, 39, 176, 0.15) !important;
+        border: 1px solid rgba(156, 39, 176, 0.3) !important;
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        color: #9C27B0 !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      .dropbtn:hover {
+        background: rgba(156, 39, 176, 0.25) !important;
+      }
+      
+      .dropbtn.active {
+        background: rgba(156, 39, 176, 0.3) !important;
+        border-color: #9C27B0 !important;
+      }
+      
+      .dropbtn:after {
+        content: "▼" !important;
+        font-size: 0.8em !important;
+        margin-left: 10px !important;
+        transition: transform 0.3s ease !important;
+      }
+      
+      .dropbtn.active:after {
+        transform: rotate(180deg) !important;
+      }
+      
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      
+      /* Footer mobile fixes */
+      footer > div > div:nth-child(4) {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--spacing-lg) !important;
+        text-align: left !important;
+      }
+      
+      footer > div > div:last-child {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: var(--spacing-md) !important;
+      }
+      
+      .social-icons {
+        gap: var(--spacing-md);
+      }
+      
+      .social-icons a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* Extra Small Screens */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      
+      .header-container {
+        padding: 0.5rem;
+      }
+      
+      .page-hero {
+        padding: 1.5rem 0.75rem;
+      }
+      
+      .page-hero h1 {
+        font-size: 1.6rem;
+      }
+      
+      .page-hero p {
+        font-size: 0.95rem;
+      }
+      
+      .social-icons a {
+        font-size: 1.5rem;
+        width: 45px;
+        height: 45px;
+      }
+      
+      .cta-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+      }
+      
+      /* Improve touch targets for very small screens */
+      button, .cta-button, #nav-desktop a {
+        min-height: 48px;
+      }
+      
+      footer > div > div:nth-child(4) {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+      }
+      
+      .mobile-nav-toggle {
+        width: 48px;
+        height: 48px;
+      }
+      
+      .dropdown-content a {
+        padding: 10px 16px !important;
+        font-size: 0.85rem !important;
+        min-height: 44px !important;
+      }
+      
+      .contract-address {
+        font-size: 0.7rem;
+        padding: 0.75rem;
+      }
+    }
+    
+    /* Large Desktop */
+    @media (min-width: 1400px) {
+      main {
+        padding: var(--spacing-xl) 0;
+      }
+    }
+    
+    /* High-resolution screens */
+    @media (min-width: 1920px) {
+      :root {
+        --spacing-xl: 4rem;
+        --spacing-lg: 3rem;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      .loader, .back-to-top, .mobile-nav-toggle, .hero-buttons {
+        display: none !important;
+      }
+      
+      body {
+        color: #000;
+        background: #fff;
+      }
+      
+      .page-hero {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      
+      .page-hero::before {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -512,18 +1168,73 @@
   <!-- Header -->
   <header>
     <div class="header-container">
-      <h1>RebelInuX Security</h1>
+      <!-- Brand header links to home -->
+      <a href="index.html" class="brand-link">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="https://i.imgur.com/gEuSg1Y.webp" 
+               alt="RebelInuX Logo" 
+               width="40" 
+               height="40"
+               loading="eager"
+               style="height: 40px; width: 40px; border-radius: 6px; object-fit: contain; display: block;">
+          <div>
+            <div style="font-size: 1.8rem; font-weight: 900; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+              RebelInuX
+            </div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); font-weight: 600; letter-spacing: 1px;">
+              $REBL Security
+            </div>
+          </div>
+        </div>
+      </a>
+      
       <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
       </button>
-      <nav id="nav-desktop" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="trade.html">Trade</a>
-        <a href="tokenomics.html">Tokenomics</a>
-        <a href="governance.html">Governance</a>
-        <a href="security.html" class="active">Security</a>
-        <a href="roadmap.html">Roadmap</a>
-        <a href="community.html">Community</a>
+      
+      <nav id="nav-desktop">
+        <!-- PRIMARY ACTIONS -->
+        <a href="trade.html" class="nav-trade">
+          <i class="fas fa-chart-line"></i> Trade
+        </a>
+        <a href="epoch-rewards.html" class="nav-rewards">
+          <i class="fas fa-gift"></i> Rewards
+        </a>
+        
+        <!-- ESSENTIAL INFO -->
+        <a href="tokenomics.html" class="nav-tokenomics">
+          <i class="fas fa-coins"></i> Tokenomics
+        </a>
+        <a href="security.html" class="nav-security active">
+          <i class="fas fa-shield-alt"></i> Security
+        </a>
+        
+        <!-- DROPDOWN -->
+        <div class="dropdown">
+          <button class="dropbtn nav-more">
+            <i class="fas fa-ellipsis-h"></i> More
+          </button>
+          <div class="dropdown-content">
+            <a href="whitepaper.html" class="nav-whitepaper">
+              <i class="fas fa-file-contract"></i> Whitepaper
+            </a>
+            <a href="governance.html" class="nav-governance">
+              <i class="fas fa-vote-yea"></i> Governance
+            </a>
+            <a href="roadmap.html" class="nav-roadmap">
+              <i class="fas fa-map-signs"></i> Roadmap
+            </a>
+            <a href="integrity.html" class="nav-integrity">
+              <i class="fas fa-handshake"></i> Integrity
+            </a>
+            <a href="artwork.html" class="nav-artwork">
+              <i class="fas fa-palette"></i> Artwork
+            </a>
+            <a href="community.html" class="nav-community">
+              <i class="fas fa-users"></i> Community
+            </a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -533,7 +1244,7 @@
     <section class="page-hero">
       <h1>SECURITY DETAILS</h1>
       <p>Complete security analysis, contract verification, and safety checks for the $REBL token ecosystem.</p>
-      <div style="margin-top: var(--spacing-lg);">
+      <div class="hero-buttons">
         <a href="#checklist" class="cta-button">
           <i class="fas fa-list-check"></i> Security Checklist
         </a>
@@ -926,25 +1637,25 @@
     <!-- Related Pages -->
     <section id="related">
       <h2>Related Information</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
-        <a href="trade.html#contract-verify" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+      <div class="related-grid">
+        <a href="trade.html#contract-verify" class="related-card">
+          <div class="related-icon">
             <i class="fas fa-file-contract"></i>
           </div>
           <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Full Contract Verification</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Complete contract details with copy buttons and verification</p>
         </a>
         
-        <a href="tokenomics.html#security" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
+        <a href="tokenomics.html#security" class="related-card red">
+          <div class="related-icon">
             <i class="fas fa-coins"></i>
           </div>
           <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Tokenomics</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Token distribution, vesting schedules, and supply details</p>
         </a>
         
-        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
-          <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+        <a href="governance.html" class="related-card">
+          <div class="related-icon">
             <i class="fas fa-vote-yea"></i>
           </div>
           <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance</h3>
@@ -954,48 +1665,151 @@
     </section>
   </main>
   
-  <!-- Footer -->
   <footer>
     <div style="max-width: 1200px; margin: 0 auto;">
-      <div class="social-icons">
-        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-          <i class="fab fa-telegram"></i>
-        </a>
-        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
-          <i class="fas fa-cube"></i>
+      
+      <!-- Logo Section -->
+      <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+        <a href="index.html" style="display: inline-block; text-decoration: none;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+            <img src="https://i.imgur.com/gEuSg1Y.webp" 
+                 alt="RebelInuX Logo" 
+                 width="40" 
+                 height="40"
+                 loading="lazy"
+                 style="height: 40px; width: 40px; border-radius: 6px; object-fit: contain; display: block;">
+            <div>
+              <div style="font-size: 1.8rem; font-weight: 900; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+                RebelInuX
+              </div>
+              <div style="font-size: 0.85rem; color: var(--rebel-gold); font-weight: 600;">
+                Built by creators. For creators & collectors.
+              </div>
+            </div>
+          </div>
         </a>
       </div>
       
+      <!-- Main CTA -->
       <div style="text-align: center; margin: var(--spacing-lg) 0;">
         <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
-          <i class="fas fa-shopping-cart"></i> BUY $REBL
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); width: 100%; max-width: 300px; margin: 0 auto;">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL NOW
         </a>
       </div>
       
-      <div style="margin-bottom: var(--spacing-md); text-align: center;">
-        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
-        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
-        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
-        <a href="security.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Security</a>
-        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
-        <a href="privacy.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Privacy</a>
+      <!-- 4-Column Grid -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+        
+        <!-- Column 1: Platform -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Platform</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="trade.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Trade $REBL</a>
+            <a href="epoch-rewards.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Claim Rewards</a>
+            <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Vote (Governance)</a>
+            <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Artwork & NFTs</a>
+            <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
+            </a>
+          </div>
+        </div>
+        
+        <!-- Column 2: Protocol -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Protocol</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Tokenomics</a>
+            <a href="security.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Security</a>
+            <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Integrity</a>
+            <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Whitepaper</a>
+            <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Roadmap</a>
+            <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Community Hub</a>
+          </div>
+        </div>
+        
+        <!-- Column 3: Community -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Community</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
+            </a>
+            <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
+            </a>
+            <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
+            </a>
+            <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
+            </a>
+            <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
+            </a>
+          </div>
+        </div>
+        
+        <!-- Column 4: Policies -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Policies</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="terms-of-service.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Terms of Service</a>
+            <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Privacy Policy</a>
+            <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
+          </div>
+        </div>
+        
       </div>
       
-      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
-        <p style="margin: 0.5rem 0;">
-          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
-          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+      <!-- Bottom Section -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);">
+        
+        <!-- Contact Information -->
+        <div style="text-align: center;">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contact</h5>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
+              <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
+              contact@rebelinux.fun
+            </a>
+          </div>
+        </div>
+        
+        <!-- Contract Verification -->
+        <div style="text-align: center;">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contract</h5>
+          <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); word-break: break-all; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
+            F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+          </div>
+          <div>
+            <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+               style="color: #00aaff; font-size: 0.85rem; text-decoration: none;">
+              <i class="fas fa-external-link-alt"></i> Verify on Solscan
+            </a>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Disclaimer Section -->
+      <div style="text-align: center; font-size: 0.8em; color: #ccc; margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(255,255,255,0.1);">
+        <p style="margin: 0.5rem 0; line-height: 1.5;">
+          <strong>Disclaimer:</strong> This website is for informational purposes only. 
+          <a href="disclaimer.html" style="color: var(--rebel-red); text-decoration: underline;">Read full disclaimer</a>
+        </p>
+        <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #999;">
+          <i class="fas fa-exclamation-triangle" style="color: var(--rebel-gold);"></i>
+          Not financial advice. Always do your own research (DYOR). Cryptocurrency investments are volatile and risky.
+        </p>
+        <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #777;">
+          © 2025 RebelInuX. All rights reserved.
         </p>
       </div>
+      
     </div>
   </footer>
 
@@ -1013,18 +1827,24 @@
         mobileToggle.addEventListener('click', function() {
           const nav = document.getElementById('nav-desktop');
           const icon = this.querySelector('i');
+          const body = document.body;
           
           nav.classList.toggle('active');
           if (nav.classList.contains('active')) {
             icon.classList.remove('fa-bars');
             icon.classList.add('fa-times');
+            body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
           } else {
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
+            body.style.overflow = '';
           }
         });
       }
       
+      // Initialize mobile dropdown
+      initializeMobileDropdown();
+
       // Close mobile nav when clicking on a link
       document.querySelectorAll('#nav-desktop a').forEach(link => {
         link.addEventListener('click', function() {
@@ -1035,8 +1855,28 @@
               toggleIcon.classList.remove('fa-times');
               toggleIcon.classList.add('fa-bars');
             }
+            document.body.style.overflow = '';
           }
         });
+      });
+      
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        const nav = document.getElementById('nav-desktop');
+        const toggle = document.getElementById('mobileNavToggle');
+        
+        if (window.innerWidth <= 768 && 
+            nav.classList.contains('active') && 
+            !nav.contains(event.target) && 
+            !toggle.contains(event.target)) {
+          nav.classList.remove('active');
+          const toggleIcon = toggle.querySelector('i');
+          if (toggleIcon) {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+          }
+          document.body.style.overflow = '';
+        }
       });
       
       // Back to top button
@@ -1054,7 +1894,146 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
+      
+      // Mobile touch improvements
+      initializeMobileTouch();
+      
+      // Handle orientation change
+      window.addEventListener('orientationchange', function() {
+        // Close mobile menu on orientation change
+        if (window.innerWidth > 768) {
+          const nav = document.getElementById('nav-desktop');
+          if (nav) nav.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
     });
+    
+    // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
+    function initializeMobileDropdown() {
+      const dropbtn = document.querySelector('.dropbtn');
+      const navDesktop = document.getElementById('nav-desktop');
+      
+      if (!dropbtn) return;
+      
+      // Mobile dropdown toggle
+      dropbtn.addEventListener('click', function(e) {
+        // Only handle on mobile
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const dropdownContent = this.nextElementSibling;
+          const isActive = dropdownContent.style.display === 'block' || 
+                          dropdownContent.classList.contains('active');
+          
+          // Close all other dropdowns first
+          document.querySelectorAll('.dropdown-content').forEach(content => {
+            content.style.display = 'none';
+            content.classList.remove('active');
+          });
+          
+          // Toggle this dropdown
+          if (!isActive) {
+            dropdownContent.style.display = 'block';
+            dropdownContent.classList.add('active');
+            this.classList.add('active');
+            
+            // Force all links to be visible
+            dropdownContent.querySelectorAll('a').forEach(link => {
+              link.style.display = 'flex';
+              link.style.visibility = 'visible';
+              link.style.opacity = '1';
+              link.style.height = 'auto';
+              link.style.overflow = 'visible';
+            });
+            
+            // Specifically ensure community link is visible
+            const communityLink = dropdownContent.querySelector('.nav-community');
+            if (communityLink) {
+              communityLink.style.display = 'flex';
+              communityLink.style.visibility = 'visible';
+              communityLink.style.opacity = '1';
+            }
+          } else {
+            dropdownContent.style.display = 'none';
+            dropdownContent.classList.remove('active');
+            this.classList.remove('active');
+          }
+        }
+      });
+      
+      // Close dropdown when clicking outside (mobile only)
+      document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          const dropdown = document.querySelector('.dropdown');
+          const dropdownContent = document.querySelector('.dropdown-content');
+          const dropbtn = document.querySelector('.dropbtn');
+          
+          if (!e.target.closest('.dropdown') && 
+              dropdownContent && 
+              dropbtn) {
+            dropdownContent.style.display = 'none';
+            dropdownContent.classList.remove('active');
+            dropbtn.classList.remove('active');
+          }
+        }
+      });
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        const dropdownContent = document.querySelector('.dropdown-content');
+        const dropbtn = document.querySelector('.dropbtn');
+        
+        if (window.innerWidth > 768) {
+          // Reset styles for desktop
+          if (dropdownContent) {
+            dropdownContent.style.display = '';
+            dropdownContent.classList.remove('active');
+            // Reset all links to default
+            dropdownContent.querySelectorAll('a').forEach(link => {
+              link.style.display = '';
+              link.style.visibility = '';
+              link.style.opacity = '';
+            });
+          }
+          if (dropbtn) {
+            dropbtn.classList.remove('active');
+          }
+        }
+      });
+      
+      // Close dropdown when clicking a link inside it
+      document.querySelectorAll('.dropdown-content a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            const dropdownContent = this.closest('.dropdown-content');
+            const dropbtn = document.querySelector('.dropbtn');
+            
+            if (dropdownContent) {
+              dropdownContent.style.display = 'none';
+              dropdownContent.classList.remove('active');
+            }
+            if (dropbtn) {
+              dropbtn.classList.remove('active');
+            }
+            
+            // Also close the mobile menu if it's open
+            const mobileMenu = document.getElementById('nav-desktop');
+            const toggleIcon = document.getElementById('mobileNavToggle')?.querySelector('i');
+            
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+              mobileMenu.classList.remove('active');
+              if (toggleIcon) {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
+              }
+              document.body.style.overflow = '';
+            }
+          }
+        });
+      });
+    }
     
     // Copy to clipboard function
     function copyToClipboard(text) {
@@ -1156,6 +2135,30 @@
       }
     `;
     document.head.appendChild(style);
+    
+    // Mobile touch improvements
+    function initializeMobileTouch() {
+      // Prevent zoom on double-tap
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+      
+      // Add touch feedback for buttons
+      document.querySelectorAll('a, button').forEach(element => {
+        element.addEventListener('touchstart', function() {
+          this.classList.add('touch-active');
+        });
+        
+        element.addEventListener('touchend', function() {
+          this.classList.remove('touch-active');
+        });
+      });
+    }
   </script>
 </body>
 </html>
