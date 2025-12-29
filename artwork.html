@@ -2,7 +2,7 @@
 <html lang="en" translate="no">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Artwork Gallery - Community-created artwork, NFT collections, and meme contest winners" />
   <meta name="keywords" content="RebelInuX artwork, NFTs, meme contest, digital art, community art, $REBL" />
   <meta property="og:title" content="RebelInuX Artwork Gallery - Community Creativity" />
@@ -14,6 +14,12 @@
   <meta name="twitter:title" content="RebelInuX Artwork Gallery - Community Creativity">
   <meta name="twitter:description" content="Explore RebelInuX community artwork, NFT collections, and award-winning meme contest entries.">
   <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Mobile Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <!-- Favicon -->
   <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
@@ -52,6 +58,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: rgba(255, 51, 102, 0.3);
     }
     
     html {
@@ -65,12 +72,34 @@
       color: var(--text-light);
       line-height: 1.6;
       overflow-x: hidden;
+      max-width: 100%;
+      -webkit-text-size-adjust: 100%;
     }
     
     a {
       text-decoration: none;
       color: inherit;
       transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    
+    input, select, textarea {
+      font-size: 16px !important;
     }
     
     img {
@@ -81,12 +110,26 @@
     
     /* Header */
     header {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       padding: var(--spacing-md);
       position: sticky;
       top: 0;
       z-index: 1000;
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rebel-gold);
+    }
+    
+    .brand-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    .brand-link:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
     }
     
     .header-container {
@@ -120,9 +163,61 @@
       transition: var(--transition);
     }
     
-    #nav-desktop a:hover {
-      background: rgba(255, 51, 102, 0.1);
-      transform: translateY(-2px);
+    /* Color-coded navigation links */
+    #nav-desktop a.nav-trade {
+      color: var(--rebel-red);
+      border: 1px solid rgba(255, 51, 102, 0.3);
+      background: rgba(255, 51, 102, 0.05);
+    }
+    
+    #nav-desktop a.nav-rewards {
+      color: #9C27B0;
+      border: 1px solid rgba(156, 39, 176, 0.3);
+      background: rgba(156, 39, 176, 0.05);
+    }
+    
+    #nav-desktop a.nav-tokenomics {
+      color: #00aaff;
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      background: rgba(0, 170, 255, 0.05);
+    }
+    
+    #nav-desktop a.nav-security {
+      color: #4CAF50;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      background: rgba(76, 175, 80, 0.05);
+    }
+    
+    #nav-desktop a.nav-artwork {
+      color: #E0B0FF !important;
+      border: 1px solid rgba(224, 176, 255, 0.3) !important;
+      background: rgba(224, 176, 255, 0.05) !important;
+    }
+    
+    /* Color-specific hover effects */
+    #nav-desktop a.nav-trade:hover {
+      background: rgba(255, 51, 102, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-rewards:hover {
+      background: rgba(156, 39, 176, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-tokenomics:hover {
+      background: rgba(0, 170, 255, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-security:hover {
+      background: rgba(76, 175, 80, 0.15) !important;
+    }
+    
+    #nav-desktop a.nav-artwork:hover {
+      background: rgba(224, 176, 255, 0.15) !important;
+    }
+    
+    /* ICON SPACING */
+    #nav-desktop a i {
+      margin-right: 8px;
     }
     
     .mobile-nav-toggle {
@@ -132,6 +227,9 @@
       font-size: 1.5rem;
       color: var(--rebel-gold);
       cursor: pointer;
+      width: 44px;
+      height: 44px;
+      z-index: 1001;
     }
     
     /* Main Content */
@@ -146,7 +244,7 @@
     }
     
     h2 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       margin-bottom: var(--spacing-lg);
       color: var(--rebel-gold);
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -162,7 +260,7 @@
     .page-hero {
       text-align: center;
       margin-bottom: var(--spacing-xl);
-      padding: var(--spacing-xl) 0;
+      padding: var(--spacing-xl) var(--spacing-md);
       background: linear-gradient(135deg, var(--dark-bg) 0%, #3a2f1f 100%);
       border-radius: var(--border-radius);
       position: relative;
@@ -182,15 +280,23 @@
     }
     
     .page-hero h1 {
-      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
       margin-bottom: var(--spacing-md);
     }
     
     .page-hero p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       max-width: 800px;
       margin: 0 auto;
       color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
     }
     
     /* Stats Overview */
@@ -222,7 +328,7 @@
     }
     
     .stat-value {
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 4vw, 2rem);
       font-weight: 900;
       color: var(--text-light);
       margin-bottom: 0.5rem;
@@ -375,6 +481,9 @@
       transition: var(--transition);
       box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
       gap: var(--spacing-sm);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      text-align: center;
+      border: none;
     }
     
     .cta-button:hover {
@@ -386,6 +495,12 @@
     .cta-button.gold {
       background: var(--rebel-gold);
       color: var(--dark-bg);
+    }
+    
+    .cta-button.full-width {
+      display: flex;
+      width: 100%;
+      margin: 0.5rem 0;
     }
     
     /* Footer */
@@ -409,10 +524,78 @@
       font-size: 1.8rem;
       color: var(--rebel-red);
       transition: var(--transition);
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
     }
     
     .social-icons a:hover {
       color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 51, 102, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--rebel-red);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--spacing-lg);
+      right: var(--spacing-lg);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--rebel-red);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background: #d62828;
       transform: translateY(-5px);
     }
     
@@ -483,113 +666,6 @@
       margin-bottom: var(--spacing-md);
     }
     
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .mobile-nav-toggle {
-        display: block;
-      }
-      
-      #nav-desktop {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        padding: var(--spacing-md);
-      }
-      
-      #nav-desktop.active {
-        display: flex;
-      }
-      
-      .stats-overview {
-        grid-template-columns: 1fr;
-      }
-      
-      .gallery-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .collection-cards {
-        grid-template-columns: 1fr;
-      }
-      
-      .slider-item {
-        width: 250px;
-      }
-      
-      .slider-item img {
-        height: 180px;
-      }
-    }
-    
-    /* Loading Animation */
-    .loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--dark-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.5s, visibility 0.5s;
-    }
-    
-    .loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-    
-    .loader-spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(255, 51, 102, 0.2);
-      border-radius: 50%;
-      border-top-color: var(--rebel-red);
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Back to Top */
-    .back-to-top {
-      position: fixed;
-      bottom: var(--spacing-lg);
-      right: var(--spacing-lg);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--rebel-red);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      z-index: 999;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .back-to-top:hover {
-      background: #d62828;
-      transform: translateY(-5px);
-    }
-
     /* Artist Spotlight */
     .artist-spotlight {
       background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(255, 204, 0, 0.1));
@@ -647,6 +723,11 @@
       cursor: pointer;
       font-weight: 600;
       transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .filter-btn:hover,
@@ -700,6 +781,8 @@
       z-index: 2;
       font-size: 1.2rem;
       transition: var(--transition);
+      min-height: 44px;
+      min-width: 44px;
     }
     
     .modal-close:hover {
@@ -722,6 +805,238 @@
     
     .modal-info {
       padding: var(--spacing-lg);
+    }
+    
+    /* DROPDOWN STYLES */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropbtn {
+      background: transparent;
+      color: white;
+      padding: 12px 16px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      min-width: 200px;
+      border: 1px solid var(--rebel-gold);
+      border-radius: 8px;
+      z-index: 1000;
+      padding: 10px 0;
+      backdrop-filter: blur(10px);
+    }
+    
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-content a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 20px;
+      transition: padding 0.3s ease;
+    }
+    
+    /* Dropdown item colors */
+    .dropdown-content a.nav-governance {
+      color: #FF9800;
+    }
+    
+    .dropdown-content a.nav-roadmap {
+      color: var(--rebel-red);
+    }
+    
+    .dropdown-content a.nav-integrity {
+      color: var(--rebel-gold);
+    }
+    
+    .dropdown-content a.nav-artwork {
+      color: #E0B0FF;
+    }
+    
+    .dropdown-content a.nav-community {
+      color: #2196F3;
+    }
+    
+    .dropdown-content a.nav-whitepaper {
+      color: #795548;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      
+      #nav-desktop {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 80px var(--spacing-md) var(--spacing-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        overflow-y: auto;
+      }
+      
+      #nav-desktop.active {
+        display: flex;
+      }
+      
+      #nav-desktop a {
+        padding: var(--spacing-md);
+        border-radius: 8px;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+        justify-content: flex-start;
+        min-height: 56px;
+      }
+      
+      #nav-desktop a i {
+        margin-right: 10px;
+        min-width: 20px;
+        text-align: center;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .collection-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .slider-item {
+        width: 250px;
+      }
+      
+      .slider-item img {
+        height: 180px;
+      }
+      
+      .modal-image {
+        height: 300px;
+      }
+      
+      .artist-profile {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .artist-details {
+        text-align: center;
+        min-width: auto;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+      }
+      
+      .filter-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-btn {
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+      
+      .dropdown-content {
+        position: relative !important;
+        display: none !important;
+        width: 100% !important;
+        margin: 5px 0 15px 0 !important;
+      }
+      
+      .dropdown-content.active {
+        display: block !important;
+      }
+      
+      .dropbtn {
+        width: 100% !important;
+        justify-content: space-between !important;
+      }
+      
+      /* Mobile dropdown specific */
+      .dropbtn.nav-more {
+        color: #FFD700 !important;
+      }
+      
+      footer > div > div:nth-child(4) {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      
+      footer > div > div:last-child {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    
+    /* Extra Small Screens */
+    @media (max-width: 480px) {
+      .slider-item {
+        width: 200px;
+      }
+      
+      .slider-item img {
+        height: 150px;
+      }
+      
+      .modal-image {
+        height: 250px;
+      }
+      
+      .artwork-image {
+        height: 200px;
+      }
+      
+      footer > div > div:nth-child(4) {
+        grid-template-columns: 1fr !important;
+      }
     }
   </style>
 </head>
@@ -759,18 +1074,73 @@
   <!-- Header -->
   <header>
     <div class="header-container">
-      <h1>RebelInuX Artwork Gallery</h1>
+      <!-- Brand header links to home -->
+      <a href="index.html" class="brand-link">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="https://i.imgur.com/gEuSg1Y.webp" 
+               alt="RebelInuX Logo" 
+               width="40" 
+               height="40"
+               loading="eager"
+               style="height: 40px; width: 40px; border-radius: 6px; object-fit: contain; display: block;">
+          <div>
+            <div style="font-size: 1.8rem; font-weight: 900; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+              RebelInuX
+            </div>
+            <div style="font-size: 0.9rem; color: var(--rebel-gold); font-weight: 600; letter-spacing: 1px;">
+              Artwork Gallery
+            </div>
+          </div>
+        </div>
+      </a>
+      
       <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
       </button>
-      <nav id="nav-desktop" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="trade.html">Trade</a>
-        <a href="tokenomics.html">Tokenomics</a>
-        <a href="governance.html">Governance</a>
-        <a href="roadmap.html">Roadmap</a>
-        <a href="artwork.html" class="active">Artwork</a>
-        <a href="community.html">Community</a>
+      
+      <nav id="nav-desktop">
+        <!-- PRIMARY ACTIONS -->
+        <a href="trade.html" class="nav-trade">
+          <i class="fas fa-chart-line"></i> Trade
+        </a>
+        <a href="epoch-rewards.html" class="nav-rewards">
+          <i class="fas fa-gift"></i> Rewards
+        </a>
+        
+        <!-- ESSENTIAL INFO -->
+        <a href="tokenomics.html" class="nav-tokenomics">
+          <i class="fas fa-coins"></i> Tokenomics
+        </a>
+        <a href="security.html" class="nav-security">
+          <i class="fas fa-shield-alt"></i> Security
+        </a>
+        <a href="artwork.html" class="nav-artwork active">
+          <i class="fas fa-palette"></i> Artwork
+        </a>
+        
+        <!-- DROPDOWN -->
+        <div class="dropdown">
+          <button class="dropbtn nav-more">
+            <i class="fas fa-ellipsis-h"></i> More
+          </button>
+          <div class="dropdown-content">
+            <a href="whitepaper.html" class="nav-whitepaper">
+              <i class="fas fa-file-contract"></i> Whitepaper
+            </a>
+            <a href="governance.html" class="nav-governance">
+              <i class="fas fa-vote-yea"></i> Governance
+            </a>
+            <a href="roadmap.html" class="nav-roadmap">
+              <i class="fas fa-map-signs"></i> Roadmap
+            </a>
+            <a href="integrity.html" class="nav-integrity">
+              <i class="fas fa-handshake"></i> Integrity
+            </a>
+            <a href="community.html" class="nav-community">
+              <i class="fas fa-users"></i> Community
+            </a>
+          </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -780,7 +1150,7 @@
     <section class="page-hero">
       <h1>COMMUNITY ARTWORK GALLERY</h1>
       <p>Explore award-winning RebelInuX artwork created by our talented community. From meme contest winners to featured NFT collections.</p>
-      <div style="margin-top: var(--spacing-lg);">
+      <div class="hero-buttons">
         <a href="#featured-art" class="cta-button">
           <i class="fas fa-star"></i> Featured Art
         </a>
@@ -874,7 +1244,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               Award-winning artwork showcasing RebelInuX's foundation and growth.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/WOXZaSg.webp" data-title="REBEL BUILD" data-artist="@DefiMaven5" data-description="Award-winning artwork showcasing RebelInuX's foundation and growth." data-link="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -905,7 +1275,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               Capturing the explosive energy of the RebelInuX community.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/x1kfWUs.webp" data-title="SHIBA ENERGY" data-artist="@DefiMaven5" data-description="Capturing the explosive energy of the RebelInuX community." data-link="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -936,7 +1306,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               RebelInuX's journey to new heights in the crypto space.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/IyP5045.webp" data-title="TO THE MOON" data-artist="@DefiMaven5" data-description="RebelInuX's journey to new heights in the crypto space." data-link="https://zora.co/coin/base:0xfbef2c9843f9a0fa10812ec03884aa1e609c9f0d?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -967,7 +1337,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               Visualizing the triple-asset ecosystem of RebelInuX.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/RgzP2CA.webp" data-title="TRIPLE-ASSET ECOSYSTEM" data-artist="@DefiMaven5" data-description="Visualizing the triple-asset ecosystem of RebelInuX." data-link="https://zora.co/coin/base:0xb850e16792a21f3732ba64bfb89b04109085d263?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -998,7 +1368,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               The meme revolution led by RebelInuX.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/NVIBbOo.webp" data-title="THE MEME REVOLUTION" data-artist="@DefiMaven5" data-description="The meme revolution led by RebelInuX." data-link="https://zora.co/coin/base:0x868db9ba892c7d3497184d76b23452a3e97a8b70?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1029,7 +1399,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               The council of RebelInuX governing the rebellion.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/yMLGNmZ.webp" data-title="THE COUNCIL" data-artist="@DefiMaven5" data-description="The council of RebelInuX governing the rebellion." data-link="https://zora.co/coin/base:0xb850e16792a21f3732ba64bfb89b04109085d263?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1060,7 +1430,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               RebelInuX breaking the chains of traditional finance.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/jXnS27o.webp" data-title="BREAKS CHAINS" data-artist="@PeterGriff9178" data-description="RebelInuX breaking the chains of traditional finance." data-link="https://zora.co/coin/base:0xf480b4b9ab2a45021c435b30a8fee42ba5119ecf?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1091,7 +1461,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               RebelInuX - no hype, just rebellion.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/tU8KDxf.webp" data-title="NO HYPE" data-artist="@PeterGriff9178" data-description="RebelInuX - no hype, just rebellion." data-link="https://zora.co/coin/base:0xd942bb1732e67dcc704d7b701594b0ff4e01ffe1?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1122,7 +1492,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               The council artwork by PeterGriff9178.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/6ECioCX.webp" data-title="THE COUNCIL" data-artist="@PeterGriff9178" data-description="The council artwork by PeterGriff9178." data-link="https://zora.co/coin/base:0x031f93dd91b3c87d801538f4bc9fe9a42f585b10?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1153,7 +1523,7 @@
             <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin-bottom: var(--spacing-md);">
               Buy the dip artwork by Prime__12.
             </p>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <button class="cta-button view-artwork" data-image="https://i.imgur.com/cb5pTtS.webp" data-title="BUY THE DIP" data-artist="@Prime__12" data-description="Buy the dip artwork by Prime__12." data-link="https://zora.co/coin/base:0xe8fe77c982370b7202f2228503e737362f4c28c4?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
                 <i class="fas fa-expand"></i> View Details
               </button>
@@ -1417,7 +1787,7 @@
                 <i class="fas fa-palette"></i> 8+ Artworks
               </span>
             </div>
-            <div style="display: flex; gap: var(--spacing-sm);">
+            <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
               <a href="https://x.com/DefiMaven5" target="_blank" rel="noopener noreferrer" class="cta-button" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
                 <i class="fab fa-twitter"></i> Follow Artist
               </a>
@@ -1498,7 +1868,7 @@
     <section id="related">
       <h2>Explore More</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);">
-        <a href="community.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+        <a href="community.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition); display: block;">
           <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
             <i class="fas fa-users"></i>
           </div>
@@ -1506,7 +1876,7 @@
           <p style="color: rgba(255, 255, 255, 0.9);">Join the rebellion and connect with fellow rebels</p>
         </a>
         
-        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition);">
+        <a href="governance.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-red); text-align: center; transition: var(--transition); display: block;">
           <div style="font-size: 3rem; color: var(--rebel-red); margin-bottom: var(--spacing-sm);">
             <i class="fas fa-vote-yea"></i>
           </div>
@@ -1514,7 +1884,7 @@
           <p style="color: rgba(255, 255, 255, 0.9);">Participate in community voting and decisions</p>
         </a>
         
-        <a href="roadmap.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition);">
+        <a href="roadmap.html" style="background: var(--card-bg); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold); text-align: center; transition: var(--transition); display: block;">
           <div style="font-size: 3rem; color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
             <i class="fas fa-map-signs"></i>
           </div>
@@ -1528,45 +1898,149 @@
   <!-- Footer -->
   <footer>
     <div style="max-width: 1200px; margin: 0 auto;">
-      <div class="social-icons">
-        <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" aria-label="X">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-          <i class="fab fa-telegram"></i>
-        </a>
-        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-          <i class="fab fa-discord"></i>
-        </a>
-        <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" aria-label="Zora">
-          <i class="fas fa-cube"></i>
+      
+      <!-- Logo Section -->
+      <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+        <a href="index.html" style="display: inline-block; text-decoration: none;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 12px;">
+            <img src="https://i.imgur.com/gEuSg1Y.webp" 
+                 alt="RebelInuX Logo" 
+                 width="40" 
+                 height="40"
+                 loading="lazy"
+                 style="height: 40px; width: 40px; border-radius: 6px; object-fit: contain; display: block;">
+            <div>
+              <div style="font-size: 1.8rem; font-weight: 900; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+                RebelInuX
+              </div>
+              <div style="font-size: 0.85rem; color: var(--rebel-gold); font-weight: 600;">
+                Built by creators. For creators & collectors.
+              </div>
+            </div>
+          </div>
         </a>
       </div>
       
+      <!-- Main CTA -->
       <div style="text-align: center; margin: var(--spacing-lg) 0;">
         <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
-          <i class="fas fa-shopping-cart"></i> BUY $REBL
+           class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); width: 100%; max-width: 300px; margin: 0 auto;">
+          <i class="fas fa-shopping-cart"></i> BUY $REBL NOW
         </a>
       </div>
       
-      <div style="margin-bottom: var(--spacing-md); text-align: center;">
-        <a href="index.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Home</a>
-        <a href="trade.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Trade</a>
-        <a href="tokenomics.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Tokenomics</a>
-        <a href="governance.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Governance</a>
-        <a href="roadmap.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Roadmap</a>
-        <a href="artwork.html" style="color: var(--rebel-gold); margin: 0 10px; font-size: 0.9em;">Artwork</a>
+      <!-- 4-Column Grid -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+        
+        <!-- Column 1: Platform -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Platform</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="trade.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Trade $REBL</a>
+            <a href="epoch-rewards.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Claim Rewards</a>
+            <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Vote (Governance)</a>
+            <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Artwork & NFTs</a>
+            <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
+            </a>
+          </div>
+        </div>
+        
+        <!-- Column 2: Protocol -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Protocol</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Tokenomics</a>
+            <a href="security.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Security</a>
+            <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Integrity</a>
+            <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Whitepaper</a>
+            <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Roadmap</a>
+            <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Community Hub</a>
+          </div>
+        </div>
+        
+        <!-- Column 3: Community -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Community</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
+            </a>
+            <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
+            </a>
+            <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
+            </a>
+            <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
+            </a>
+            <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
+            </a>
+          </div>
+        </div>
+        
+        <!-- Column 4: Policies -->
+        <div>
+          <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Policies</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="terms-of-service.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Terms of Service</a>
+            <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Privacy Policy</a>
+            <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
+          </div>
+        </div>
+        
       </div>
       
-      <div style="text-align: center; font-size: 0.8em; color: #ccc;">
-        <p style="margin: 0.5rem 0;">
-          © 2025 RebelInuX. All rights reserved. This is for informational purposes only.
-          <a href="disclaimer.html" style="color: var(--rebel-red);">Read Disclaimer</a>
+      <!-- Bottom Section -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);">
+        
+        <!-- Contact Information -->
+        <div style="text-align: center;">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contact</h5>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
+              <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
+              contact@rebelinux.fun
+            </a>
+          </div>
+        </div>
+        
+        <!-- Contract Verification -->
+        <div style="text-align: center;">
+          <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contract</h5>
+          <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); word-break: break-all; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
+            F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+          </div>
+          <div>
+            <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+               target="_blank" 
+               style="color: #00aaff; font-size: 0.85rem; text-decoration: none;">
+              <i class="fas fa-external-link-alt"></i> Verify on Solscan
+            </a>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Disclaimer Section -->
+      <div style="text-align: center; font-size: 0.8em; color: #ccc; margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(255,255,255,0.1);">
+        <p style="margin: 0.5rem 0; line-height: 1.5;">
+          <strong>Disclaimer:</strong> This website is for informational purposes only. 
+          <a href="disclaimer.html" style="color: var(--rebel-red); text-decoration: underline;">Read full disclaimer</a>
+        </p>
+        <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #999;">
+          <i class="fas fa-exclamation-triangle" style="color: var(--rebel-gold);"></i>
+          Not financial advice. Always do your own research (DYOR). Cryptocurrency investments are volatile and risky.
+        </p>
+        <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #777;">
+          © 2025 RebelInuX. All rights reserved.
         </p>
       </div>
+      
     </div>
   </footer>
 
@@ -1584,14 +2058,17 @@
         mobileToggle.addEventListener('click', function() {
           const nav = document.getElementById('nav-desktop');
           const icon = this.querySelector('i');
+          const body = document.body;
           
           nav.classList.toggle('active');
           if (nav.classList.contains('active')) {
             icon.classList.remove('fa-bars');
             icon.classList.add('fa-times');
+            body.style.overflow = 'hidden';
           } else {
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
+            body.style.overflow = '';
           }
         });
       }
@@ -1606,8 +2083,51 @@
               toggleIcon.classList.remove('fa-times');
               toggleIcon.classList.add('fa-bars');
             }
+            document.body.style.overflow = '';
           }
         });
+      });
+      
+      // Mobile dropdown functionality
+      const dropbtn = document.querySelector('.dropbtn');
+      if (dropbtn) {
+        dropbtn.addEventListener('click', function(e) {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropdownContent = this.nextElementSibling;
+            const isActive = dropdownContent.style.display === 'block' || 
+                            dropdownContent.classList.contains('active');
+            
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown-content').forEach(content => {
+              content.style.display = 'none';
+              content.classList.remove('active');
+            });
+            
+            // Toggle this dropdown
+            if (!isActive) {
+              dropdownContent.style.display = 'block';
+              dropdownContent.classList.add('active');
+            } else {
+              dropdownContent.style.display = 'none';
+              dropdownContent.classList.remove('active');
+            }
+          }
+        });
+      }
+      
+      // Close dropdown when clicking outside (mobile only)
+      document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          const dropdown = document.querySelector('.dropdown');
+          const dropdownContent = document.querySelector('.dropdown-content');
+          
+          if (!e.target.closest('.dropdown') && dropdownContent) {
+            dropdownContent.style.display = 'none';
+            dropdownContent.classList.remove('active');
+          }
+        }
       });
       
       // Back to top button
@@ -1747,7 +2267,7 @@
       window.addEventListener('scroll', animateCollectionCards);
       animateCollectionCards(); // Initial call
       
-      // Random artwork rotation in slider (optional)
+      // Random artwork rotation in slider
       function rotateSliderArtwork() {
         const sliderContainer = document.querySelector('.slider-container');
         if (sliderContainer) {
@@ -1757,12 +2277,21 @@
             setTimeout(() => {
               sliderContainer.style.animation = 'slide 30s linear infinite';
             }, 10);
-          }, 30000); // Reset every 30 seconds
+          }, 30000);
         }
       }
       
       // Start slider rotation
       setTimeout(rotateSliderArtwork, 5000);
+      
+      // Handle window resize for mobile dropdown
+      window.addEventListener('resize', function() {
+        const dropdownContent = document.querySelector('.dropdown-content');
+        if (window.innerWidth > 768 && dropdownContent) {
+          dropdownContent.style.display = '';
+          dropdownContent.classList.remove('active');
+        }
+      });
     });
   </script>
 </body>
