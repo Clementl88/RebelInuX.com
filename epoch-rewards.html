@@ -1180,21 +1180,40 @@ footer > div > div:nth-child(4) {
     text-align: center !important;
   }
 }
-
-/* Fix the bottom section */
+    /* The bottom section (Contact & Contract) should NOT be grid */
 footer > div > div:last-child {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
-  gap: var(--spacing-lg) !important;
-  margin: var(--spacing-xl) 0 !important;
+  display: block !important; /* Change from grid to block */
   padding: var(--spacing-lg) !important;
   background: rgba(0,0,0,0.3) !important;
   border-radius: var(--border-radius) !important;
+  margin: var(--spacing-xl) 0 !important;
 }
 
-/* Adjust the contact and contract sections */
+/* The bottom section (Contact & Contract) should NOT be grid */
+footer > div > div:last-child {
+  display: block !important; /* Change from grid to block */
+  padding: var(--spacing-lg) !important;
+  background: rgba(0,0,0,0.3) !important;
+  border-radius: var(--border-radius) !important;
+  margin: var(--spacing-xl) 0 !important;
+}
+
+/* Style the Contact & Contract as two columns inside the bottom section */
 footer > div > div:last-child > div {
+  display: inline-block !important;
+  vertical-align: top !important;
+  width: 48% !important;
   text-align: center !important;
+  margin-bottom: var(--spacing-md) !important;
+}
+
+/* Mobile: stack Contact & Contract vertically */
+@media (max-width: 768px) {
+  footer > div > div:last-child > div {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: var(--spacing-lg) !important;
+  }
 }
 
 /* Ensure social icons work properly */
@@ -2555,56 +2574,39 @@ footer > div > div:last-child > div {
           <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
         </div>
       </div>
-      
+            </div>
     </div>
     
-    <!-- Bottom Section -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);">
-      
-      <!-- Contact Information -->
-      <div style="text-align: center;">
-        <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contact</h5>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
-            <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
-            contact@rebelinux.fun
-          </a>
-        </div>
-      </div>
-      
-      <!-- Contract Verification -->
-      <div style="text-align: center;">
-        <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contract</h5>
-        <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); word-break: break-all; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
-          F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
-        </div>
-        <div>
-          <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-             target="_blank" 
-             style="color: #00aaff; font-size: 0.85rem; text-decoration: none;">
-            <i class="fas fa-external-link-alt"></i> Verify on Solscan
-          </a>
-        </div>
-      </div>
-      
+    <!-- Bottom Section - Contact & Contract (not in 4-col grid) -->
+<div style="display: block; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius); margin: var(--spacing-xl) 0;">
+  
+  <!-- Contact Information -->
+  <div style="display: inline-block; vertical-align: top; width: 48%; text-align: center;">
+    <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contact</h5>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
+        <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
+        contact@rebelinux.fun
+      </a>
     </div>
-    
-    <!-- Disclaimer Section -->
-    <div style="text-align: center; font-size: 0.8em; color: #ccc; margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(255,255,255,0.1);">
-      <p style="margin: 0.5rem 0; line-height: 1.5;">
-        <strong>Disclaimer:</strong> This website is for informational purposes only. 
-        <a href="disclaimer.html" style="color: var(--rebel-red); text-decoration: underline;">Read full disclaimer</a>
-      </p>
-      <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #999;">
-        <i class="fas fa-exclamation-triangle" style="color: var(--rebel-gold);"></i>
-        Not financial advice. Always do your own research (DYOR). Cryptocurrency investments are volatile and risky.
-      </p>
-      <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #777;">
-        © 2026 RebelInuX. All rights reserved.
-      </p>
-    </div>
-    
   </div>
+  
+  <!-- Contract Verification -->
+  <div style="display: inline-block; vertical-align: top; width: 48%; text-align: center;">
+    <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contract</h5>
+    <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); word-break: break-all; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
+      F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+    </div>
+    <div>
+      <a href="https://solscan.io/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
+         target="_blank" 
+         style="color: #00aaff; font-size: 0.85rem; text-decoration: none;">
+        <i class="fas fa-external-link-alt"></i> Verify on Solscan
+      </a>
+    </div>
+  </div>
+  
+</div>
 </footer>
       
   <script>
