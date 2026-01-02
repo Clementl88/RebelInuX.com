@@ -1010,6 +1010,9 @@
        .takeaways-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+        .related-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
     }
     
     /* Mobile Responsive */
@@ -1146,6 +1149,29 @@
     display: flex !important;
     flex-direction: column !important;
     gap: var(--spacing-md) !important;
+  }
+        /* Related grid mobile */
+  .related-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem !important;
+  }
+  
+  .related-card {
+    padding: 1.2rem !important;
+  }
+  
+  .related-icon {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .related-card h3 {
+    font-size: 1rem !important;
+  }
+  
+  .related-card p {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
   }
       .social-icons {
         gap: var(--spacing-md);
@@ -1382,20 +1408,57 @@
       gap: var(--spacing-lg);
     }
   
-  .related-card {
-    padding: 1.2rem !important;
-  }
-  
-  .related-card h3 {
-    font-size: 1rem !important;
-  }
-  
-  .related-card p {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
-  }
+.related-card {
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: 2px solid var(--rebel-gold);
+  text-align: center;
+  transition: var(--transition);
+  display: block;
 }
-    }
+.related-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.related-card.red {
+  border-color: var(--rebel-red);
+}
+
+.related-icon {
+  font-size: 2.5rem;
+  color: var(--rebel-gold);
+  margin-bottom: var(--spacing-md);
+}
+
+.related-card.red .related-icon {
+  color: var(--rebel-red);
+}
+
+/* Related Pages with colored borders (from tokenomics page) */
+.related-card[style*="border-color: #9C27B0"] {
+  background: rgba(156, 39, 176, 0.1) !important;
+}
+
+.related-card[style*="border-color: #00aaff"] {
+  background: rgba(0, 170, 255, 0.1) !important;
+}
+
+.related-card[style*="border-color: #4CAF50"] {
+  background: rgba(76, 175, 80, 0.1) !important;
+}
+
+/* Arrow indicators for related cards */
+.related-card div[style*="font-size: 0.9rem"] {
+  margin-top: var(--spacing-sm);
+  font-size: 0.9rem !important;
+}
+
+.related-card:hover div[style*="font-size: 0.9rem"] {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+} 
     
     /* Extra Small Screens */
     @media (max-width: 480px) {
@@ -2177,46 +2240,44 @@
 <section id="related">
   <h2>Related Information</h2>
   <div class="related-grid">
-    
     <!-- Tokenomics -->
     <a href="tokenomics.html" class="related-card" 
-       style="border-color: #00aaff;">
+       style="border-color: #00aaff; background: rgba(0, 170, 255, 0.1);">
       <div class="related-icon" style="color: #00aaff;">
         <i class="fas fa-coins"></i>
       </div>
       <h3 style="color: #00aaff; margin-bottom: var(--spacing-sm);">Tokenomics</h3>
-      <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-md);">Token distribution, vesting schedules, and supply details</p>
+      <p style="color: rgba(255, 255, 255, 0.9);">Token distribution, vesting schedules, and supply details</p>
       <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: #00aaff;">
         <i class="fas fa-arrow-right"></i> View Token Details
       </div>
     </a>
     
-    <!-- Security -->
-    <a href="security.html" class="related-card" 
-       style="border-color: #4CAF50;">
+    <!-- Trade -->
+    <a href="trade.html#contract-verify" class="related-card" 
+       style="border-color: var(--rebel-red); background: rgba(255, 51, 102, 0.1);">
+      <div class="related-icon" style="color: var(--rebel-red);">
+        <i class="fas fa-file-contract"></i>
+      </div>
+      <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Full Contract Verification</h3>
+      <p style="color: rgba(255, 255, 255, 0.9);">Complete contract details with copy buttons and verification</p>
+      <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-red);">
+        <i class="fas fa-arrow-right"></i> Verify Contracts
+      </div>
+    </a>
+    
+    <!-- Governance -->
+    <a href="governance.html" class="related-card" 
+       style="border-color: #4CAF50; background: rgba(76, 175, 80, 0.1);">
       <div class="related-icon" style="color: #4CAF50;">
-        <i class="fas fa-shield-alt"></i>
+        <i class="fas fa-vote-yea"></i>
       </div>
-      <h3 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">Security Details</h3>
-      <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-md);">Complete security checklist and verification tools</p>
+      <h3 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">Governance</h3>
+      <p style="color: rgba(255, 255, 255, 0.9);">Community voting and decentralized decision-making</p>
       <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: #4CAF50;">
-        <i class="fas fa-arrow-right"></i> Verify Safety
+        <i class="fas fa-arrow-right"></i> Start Voting
       </div>
     </a>
-    
-    <!-- Rewards -->
-    <a href="epoch-rewards.html" class="related-card" 
-       style="border-color: #9C27B0;">
-      <div class="related-icon" style="color: #9C27B0;">
-        <i class="fas fa-gift"></i>
-      </div>
-      <h3 style="color: #9C27B0; margin-bottom: var(--spacing-sm);">Rewards</h3>
-      <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: var(--spacing-md);">Claim weekly $REBL rewards for ZORA holders</p>
-      <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: #9C27B0;">
-        <i class="fas fa-arrow-right"></i> Claim Rewards
-      </div>
-    </a>
-    
   </div>
 </section>
   </main>
