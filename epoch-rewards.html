@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
@@ -700,40 +701,6 @@
       color: var(--dark-bg);
     }
     
-    /* Footer */
-    footer {
-      background: var(--dark-bg);
-      padding: var(--spacing-xl) var(--spacing-md);
-      text-align: center;
-      border-top: 1px solid var(--rebel-gold);
-      margin-top: var(--spacing-xl);
-    }
-    
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-lg);
-      margin: var(--spacing-lg) 0;
-      flex-wrap: wrap;
-    }
-    
-    .social-icons a {
-      font-size: 1.8rem;
-      color: var(--rebel-red);
-      transition: var(--transition);
-      width: 50px;
-      height: 50px;
-      flex-shrink: 0;
-    }
-    
-    .social-icons a:hover {
-      color: var(--rebel-gold);
-      transform: translateY(-5px);
-    }
-      .social-icons a:hover {
-      color: var(--rebel-gold);
-      transform: translateY(-5px);
-    }
     /* Loading Animation */
     .loader {
       position: fixed;
@@ -796,6 +763,29 @@
     
     .back-to-top:hover {
       background: #d62828;
+      transform: translateY(-5px);
+    }
+    
+    /* Social Icons */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      flex-wrap: wrap;
+    }
+    
+    .social-icons a {
+      font-size: 1.8rem;
+      color: var(--rebel-red);
+      transition: var(--transition);
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+    
+    .social-icons a:hover {
+      color: var(--rebel-gold);
       transform: translateY(-5px);
     }
     
@@ -868,7 +858,7 @@
     /* Step by Step Guide */
     .steps-guide {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: var(--spacing-lg);
       margin: var(--spacing-xl) 0;
     }
@@ -1159,52 +1149,150 @@
     padding-left: 25px !important;
   }
 }
-    
-/* FOOTER FIXES */
-/* Reset the container for proper grid layout */
-footer > div > div:nth-child(4) {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: var(--spacing-xl) !important;
-  text-align: left !important;
-  margin: var(--spacing-xl) 0 !important;
+
+/* FOOTER STYLES */
+footer {
+  background: var(--dark-bg);
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: center;
+  border-top: 1px solid var(--rebel-gold);
+  margin-top: var(--spacing-xl);
 }
 
-/* Mobile - 1 column */
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* FOOTER GRID - 4 COLUMNS ON DESKTOP, 1 COLUMN ON MOBILE */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-column h4 {
+  color: var(--rebel-gold);
+  margin-bottom: var(--spacing-md);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.footer-column a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.25rem 0;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.footer-column a:hover {
+  color: var(--rebel-gold);
+  transform: translateX(5px);
+}
+
+/* FOOTER BOTTOM SECTION */
+.footer-bottom {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.footer-bottom-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-bottom-column h5 {
+  color: var(--rebel-gold);
+  margin-bottom: var(--spacing-md);
+  font-size: 1rem;
+}
+
+/* MOBILE RESPONSIVE FOOTER */
 @media (max-width: 768px) {
-  footer > div > div:nth-child(4) {
-display: grid !important; /* ADD THIS LINE */
+  footer {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  /* 4-COLUMN GRID BECOMES 1 COLUMN ON MOBILE */
+  .footer-grid {
     grid-template-columns: 1fr !important;
     gap: var(--spacing-lg) !important;
     text-align: center !important;
   }
-}
-
-/* The bottom section (Contact & Contract) should NOT be grid */
-footer > div > div:last-child {
-  display: block !important; /* Change from grid to block */
-  padding: var(--spacing-lg) !important;
-  background: rgba(0,0,0,0.3) !important;
-  border-radius: var(--border-radius) !important;
-  margin: var(--spacing-xl) 0 !important;
-}
-
-/* Style the Contact & Contract as two columns inside the bottom section */
-footer > div > div:last-child > div {
-  display: inline-block !important;
-  vertical-align: top !important;
-  width: 48% !important;
-  text-align: center !important;
-  margin-bottom: var(--spacing-md) !important;
-}
-
-/* Ensure social icons work properly */
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-lg);
-  margin: var(--spacing-lg) 0;
-  flex-wrap: wrap;
+  
+  .footer-column {
+    align-items: center;
+  }
+  
+  .footer-column h4 {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-column a {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* BOTTOM SECTION BECOMES 1 COLUMN ON MOBILE */
+  .footer-bottom {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    padding: var(--spacing-md);
+  }
+  
+  .footer-bottom-column {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .footer-bottom-column:last-child {
+    margin-bottom: 0;
+  }
+  
+  .social-icons {
+    gap: var(--spacing-md);
+  }
+  
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  
+  /* RELATED PAGES */
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
+  .related-card {
+    padding: 1.2rem !important;
+  }
+  
+  .related-icon {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
 }
     
 /* Related Pages Grid */
@@ -1244,6 +1332,7 @@ footer > div > div:last-child > div {
   grid-template-columns: 1fr !important;
   gap: 1rem !important;
 }
+
  /* DROPDOWN STYLES */
     /* Dropdown Container */
     .dropdown {
@@ -1327,26 +1416,6 @@ footer > div > div:last-child > div {
     .dropdown-content a.nav-whitepaper {
       color: #795548; 
     }
-@media (max-width: 768px) {
-  .related-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1rem !important;
-  }
-  
-  .related-card {
-    padding: 1.2rem !important;
-  }
-  
-  .related-icon {
-    font-size: 2rem !important;
-    margin-bottom: 0.75rem !important;
-  }
-  
-  footer > div > div:nth-child(4) {
-    grid-template-columns: 1fr !important;
-    text-align: center !important;
-  }
-}
   </style>
 </head>
 <body>
@@ -2461,7 +2530,7 @@ footer > div > div:last-child > div {
   </main>
   
 <footer>
-  <div style="max-width: 1200px; margin: 0 auto;">
+  <div class="footer-container">
     
     <!-- Logo Section -->
     <div style="text-align: center; margin-bottom: var(--spacing-xl);">
@@ -2496,86 +2565,76 @@ footer > div > div:last-child > div {
     </div>
     
     <!-- 4-Column Grid -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+    <div class="footer-grid">
       
       <!-- Column 1: Platform -->
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Platform</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="trade.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Trade $REBL</a>
-          <a href="epoch-rewards.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Claim Rewards</a>
-          <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Vote (Governance)</a>
-          <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Artwork & NFTs</a>
-          <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
-          </a>
-        </div>
+      <div class="footer-column">
+        <h4>Platform</h4>
+        <a href="trade.html">Trade $REBL</a>
+        <a href="epoch-rewards.html">Claim Rewards</a>
+        <a href="governance.html">Vote (Governance)</a>
+        <a href="artwork.html">Artwork & NFTs</a>
+        <a href="https://zora.co/@rebelinux" target="_blank">
+          <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
+        </a>
       </div>
       
       <!-- Column 2: Protocol -->
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Protocol</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Tokenomics</a>
-          <a href="security.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Security</a>
-          <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Integrity</a>
-          <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Whitepaper</a>
-          <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Roadmap</a>
-          <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Community Hub</a>
-        </div>
+      <div class="footer-column">
+        <h4>Protocol</h4>
+        <a href="tokenomics.html">Tokenomics</a>
+        <a href="security.html">Security</a>
+        <a href="integrity.html">Integrity</a>
+        <a href="whitepaper.html">Whitepaper</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="community.html">Community Hub</a>
       </div>
       
       <!-- Column 3: Community -->
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Community</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
-          </a>
-          <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
-          </a>
-          <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
-          </a>
-          <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
-          </a>
-          <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-            <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
-          </a>
-        </div>
+      <div class="footer-column">
+        <h4>Community</h4>
+        <a href="https://x.com/RebelInuX" target="_blank">
+          <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
+        </a>
+        <a href="https://discord.gg/s8dkuyD3cZ" target="_blank">
+          <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank">
+          <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
+        </a>
+        <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank">
+          <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
+        </a>
+        <a href="https://www.tiktok.com/@rebelinux" target="_blank">
+          <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
+        </a>
       </div>
       
       <!-- Column 4: Policies -->
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Policies</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="terms-of-service.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Terms of Service</a>
-          <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Privacy Policy</a>
-          <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
-        </div>
+      <div class="footer-column">
+        <h4>Policies</h4>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="disclaimer.html">Disclaimer</a>
       </div>
       
     </div>
     
     <!-- Bottom Section - Contact & Contract -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);">
+    <div class="footer-bottom">
       
       <!-- Contact Information -->
-      <div style="text-align: center;">
-        <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contact</h5>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
-            <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
-            contact@rebelinux.fun
-          </a>
-        </div>
+      <div class="footer-bottom-column">
+        <h5>Contact</h5>
+        <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">
+          <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
+          contact@rebelinux.fun
+        </a>
       </div>
       
       <!-- Contract Verification -->
-      <div style="text-align: center;">
-        <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Contract</h5>
+      <div class="footer-bottom-column">
+        <h5>Contract</h5>
         <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); word-break: break-all; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;">
           F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
         </div>
@@ -2588,6 +2647,25 @@ footer > div > div:last-child > div {
         </div>
       </div>
       
+    </div>
+    
+    <!-- Social Icons -->
+    <div class="social-icons">
+      <a href="https://x.com/RebelInuX" target="_blank" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" aria-label="Discord">
+        <i class="fab fa-discord"></i>
+      </a>
+      <a href="https://t.me/RebelInuX_Official" target="_blank" aria-label="Telegram">
+        <i class="fab fa-telegram"></i>
+      </a>
+      <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://www.tiktok.com/@rebelinux" target="_blank" aria-label="TikTok">
+        <i class="fab fa-tiktok"></i>
+      </a>
     </div>
     
     <!-- Disclaimer Section -->
