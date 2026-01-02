@@ -1260,28 +1260,6 @@
         text-align: center;
       }
       
-  /* What If Calculator Mobile Optimizations */
-  .what-if-container {
-    padding: 1rem !important;
-  }
-      .what-if-result {
-    padding: 1rem !important;
-  }
-  
-  #whatIfReward {
-    font-size: 1.8rem !important;
-    line-height: 1.2;
-  }
-  
-  .slider-container {
-    margin-bottom: 1.5rem;
-  }
-  
-  .scenario-btn {
-    font-size: 0.8rem !important;
-    padding: 0.6rem 0.8rem !important;
-    text-align: center;
-  }
       .header-container h1 {
         font-size: 1.1rem;
         max-width: 70%;
@@ -2545,101 +2523,89 @@
       </div>
     </div>
     
- <!-- SIMPLIFIED What If Calculator -->
-<div class="what-if-container">
-  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
-    <i class="fas fa-chart-line"></i> Growth Simulator
-  </h4>
-  
-  <!-- Simple Instructions -->
-  <div style="text-align: center; margin-bottom: var(--spacing-lg);">
-    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
-      See how holding longer affects your rewards
-    </p>
-  </div>
-  
-  <!-- Mobile-Optimized Controls -->
-  <div style="margin-bottom: var(--spacing-lg);">
-    <!-- Amount Slider -->
-    <div style="margin-bottom: var(--spacing-lg);">
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
-        <label style="color: var(--rebel-gold); font-weight: 600;">Token Amount</label>
-        <span id="whatIfAmountValue" style="color: white; font-weight: bold;">10M</span>
+    <!-- What If Calculator -->
+    <div class="what-if-container">
+      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+        <i class="fas fa-chart-line"></i> Growth Simulator: Project Your Earnings
+      </h4>
+      
+      <div style="background: rgba(255, 204, 0, 0.05); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); border-left: 3px solid var(--rebel-gold);">
+        <p style="margin: 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">
+          <strong>See how your strategy affects rewards:</strong> Adjust the sliders to simulate buying more tokens or holding through multiple epochs. Watch how the <strong>age bonus</strong> and <strong>compounding effect</strong> multiply your $REBL earnings.
+        </p>
       </div>
-      <input type="range" id="whatIfAmount" min="0" max="500000000" step="100000" value="10000000" 
-             oninput="updateWhatIfMobile()" class="slider"
-             style="width: 100%;">
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 0.5rem;">
-        <span>0</span>
-        <span>250M</span>
-        <span>500M</span>
+      
+      <!-- Sliders -->
+      <div class="slider-group">
+        <div class="slider-container">
+          <label>
+            Token Amount:
+            <span id="whatIfAmountValue" class="slider-value">10,000,000</span>
+          </label>
+          <input type="range" id="whatIfAmount" min="0" max="500000000" step="100000" value="10000000" oninput="updateWhatIf()" class="slider">
+        </div>
+        
+        <div class="slider-container">
+          <label>
+            Hold Time (Epochs):
+            <span id="whatIfEpochsValue" class="slider-value">10</span>
+          </label>
+          <input type="range" id="whatIfEpochs" min="1" max="20" value="10" oninput="updateWhatIf()" class="slider">
+        </div>
       </div>
-    </div>
-    
-    <!-- Epochs Slider -->
-    <div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
-        <label style="color: var(--rebel-gold); font-weight: 600;">Hold Time</label>
-        <span id="whatIfEpochsValue" style="color: white; font-weight: bold;">10 epochs</span>
-      </div>
-      <input type="range" id="whatIfEpochs" min="1" max="20" value="10" 
-             oninput="updateWhatIfMobile()" class="slider"
-             style="width: 100%;">
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 0.5rem;">
-        <span>1</span>
-        <span>10</span>
-        <span>20</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- Quick Presets - Stacked for Mobile -->
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: var(--spacing-lg);">
-    <div style="font-size: 0.9rem; color: var(--rebel-gold); text-align: center; margin-bottom: 0.5rem;">
-      Quick Examples:
-    </div>
-    <button onclick="setWhatIfScenario(1000000, 5)" class="scenario-btn" style="width: 100%; text-align: center;">
-      <i class="fas fa-user-graduate"></i> Starter: 1M tokens for 5 epochs
-    </button>
-    <button onclick="setWhatIfScenario(10000000, 10)" class="scenario-btn" style="width: 100%; text-align: center;">
-      <i class="fas fa-chart-line"></i> Standard: 10M tokens for 10 epochs
-    </button>
-    <button onclick="setWhatIfScenario(50000000, 20)" class="scenario-btn" style="width: 100%; text-align: center;">
-      <i class="fas fa-whale"></i> Whale: 50M tokens for 20 epochs
-    </button>
+      <!-- Preset Scenarios -->
+      <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+        <button onclick="setWhatIfScenario(1000000, 5)" class="scenario-btn">Starter (1M, 5 Epochs)</button>
+        <button onclick="setWhatIfScenario(10000000, 10)" class="scenario-btn">Established (10M, 10 Epochs)</button>
+        <button onclick="setWhatIfScenario(50000000, 20)" class="scenario-btn">Whale (50M, 20 Epochs)</button>
+      </div>
+      
+      <!-- Results -->
+      <div class="what-if-result" style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+          <i class="fas fa-crown"></i> Projected Reward
+        </h4>
+        <div id="whatIfReward" style="font-size: 2.5rem; font-weight: 900; color: var(--rebel-red); margin: var(--spacing-sm) 0;">
+          1,866,448.24 $REBL
+        </div>
+        
+<!-- Context -->
+<div class="grid-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-top: var(--spacing-md); font-size: 0.9rem;">
+  <div id="returnPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
+<div style="color: var(--rebel-gold); font-weight: bold;" id="returnPercentValue">18.66%</div>
+    <div style="color: rgba(255, 255, 255, 0.7);">Return on $rebelinux</div>
   </div>
-  
-  <!-- SIMPLIFIED Results Display -->
-  <div class="what-if-result" style="background: rgba(0, 0, 0, 0.3); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
-    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
-      <i class="fas fa-crown"></i> Projected Reward
-    </h4>
-    
-    <!-- Main Reward - RESPONSIVE Font Size -->
-    <div id="whatIfReward" style="font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 900; color: var(--rebel-red); margin: var(--spacing-sm) 0; text-align: center; word-break: break-word;">
-      1,866,448.24 $REBL
-    </div>
-    
-    <!-- Compact Stats -->
-    <div style="display: flex; justify-content: space-around; margin-top: var(--spacing-md);">
-      <div style="text-align: center;">
-        <div style="color: var(--rebel-red); font-weight: bold; font-size: 1.1rem;" id="returnPercentValue">18.66%</div>
-        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.8rem;">Return</div>
-      </div>
-      <div style="text-align: center;">
-        <div style="color: var(--rebel-gold); font-weight: bold; font-size: 1.1rem;" id="poolPercentValue">3.41%</div>
-        <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.8rem;">Of Pool</div>
-      </div>
-    </div>
-    
-    <!-- Simple Insight -->
-    <div style="margin-top: var(--spacing-lg); padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
-      <div style="color: var(--rebel-gold); font-size: 0.9rem; text-align: center;">
-        <i class="fas fa-lightbulb"></i> Holding longer increases rewards via age bonus
+  <div id="poolPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
+    <div style="color: var(--rebel-gold); font-weight: bold;" id="poolPercentValue">3.41%</div>
+    <div style="color: rgba(255, 255, 255, 0.7);">Of Epoch Pool</div>
+  </div>
+</div>
+      
+<!-- Insight -->
+<div style="margin-top: var(--spacing-lg); text-align: center;">
+  <div style="display: inline-flex; align-items: center; gap: var(--spacing-sm); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
+    <i class="fas fa-lightbulb" style="color: var(--rebel-gold); font-size: 1.2rem;"></i>
+    <div style="text-align: left;">
+      <div style="font-weight: bold; color: var(--rebel-gold); font-size: 0.9rem;">Insight:</div>
+      <div class="insight-text" style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">
+        Holding for <strong>10 epochs</strong> with <strong>10M $rebelinux</strong> earns you <strong>1.87M $REBL</strong>—equivalent to <strong>3.41% of the entire epoch pool!</strong>
       </div>
     </div>
   </div>
 </div>
+    
+    <!-- Formula Explanation -->
+    <div style="margin-top: var(--spacing-xl); padding: var(--spacing-md); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+      <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+        <i class="fas fa-calculator"></i> Reward Formula
+      </h4>
+      <p style="text-align: center; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8);">
+        <strong>Your $REBL reward = (Your Weighted Share / Current Creator Supply) × Epoch Reward Pool</strong><br>
+        <strong>Weighted Share =</strong> Sum of (Token Batch × (1 + 0.07 × min(Age, 20))) for all batches
+      </p>
+    </div>
+  </div>
 </section>
     
 
@@ -3633,25 +3599,15 @@ function updateWhatIf() {
   const epochsValue = document.getElementById('whatIfEpochsValue');
   const rewardElement = document.getElementById('whatIfReward');
   
- if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+  if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
   
   const amount = parseInt(amountSlider.value);
   const epochs = parseInt(epochsSlider.value);
   
-  // Format amount for display
-  let amountDisplay;
-  if (amount >= 1000000) {
-    amountDisplay = (amount / 1000000).toFixed(1) + 'M';
-  } else if (amount >= 1000) {
-    amountDisplay = (amount / 1000).toFixed(1) + 'K';
-  } else {
-    amountDisplay = amount.toLocaleString();
-  }
+  amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+  epochsValue.textContent = epochs;
   
-  amountValue.textContent = amountDisplay + ' $rebelinux';
-  epochsValue.textContent = epochs + (epochs === 1 ? ' epoch' : ' epochs');
-  
-  // Calculate reward
+  // Calculate what-if reward
   const CS = 499242047.00;
   const ERP = 54812320.11;
   const k = 0.07;
@@ -3664,19 +3620,13 @@ function updateWhatIf() {
   const returnPercentage = ((estimatedReward / amount) * 100).toFixed(2);
   const poolPercentage = ((estimatedReward / ERP) * 100).toFixed(2);
   
-  // Format reward for display - responsive formatting
-  let rewardDisplay;
-  if (estimatedReward >= 1000000) {
-    rewardDisplay = (estimatedReward / 1000000).toFixed(2) + 'M';
-  } else if (estimatedReward >= 1000) {
-    rewardDisplay = (estimatedReward / 1000).toFixed(1) + 'K';
-  } else {
-    rewardDisplay = estimatedReward.toFixed(2);
-  }
+  // Update reward display
+  rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }) + ' $REBL';
   
-  rewardElement.innerHTML = `<span style="font-size: clamp(1.8rem, 5vw, 2.5rem);">${rewardDisplay}</span><br><span style="font-size: 0.9rem;">$REBL</span>`;
-  
-  // Update percentages
+  // Update the percentage displays - FIXED SELECTORS
   const returnPercentValue = document.getElementById('returnPercentValue');
   const poolPercentValue = document.getElementById('poolPercentValue');
   
@@ -3687,30 +3637,17 @@ function updateWhatIf() {
   if (poolPercentValue) {
     poolPercentValue.textContent = poolPercentage + '%';
   }
-}
-
-// Update the scenario function too
-function setWhatIfScenario(amount, epochs) {
-  document.getElementById('whatIfAmount').value = amount;
-  document.getElementById('whatIfEpochs').value = epochs;
-  updateWhatIfMobile();
   
-  // Visual feedback
-  const buttons = document.querySelectorAll('.scenario-btn');
-  buttons.forEach(btn => {
-    btn.style.background = 'rgba(255, 51, 102, 0.15)';
-    btn.style.boxShadow = 'none';
-  });
-  
-  if (event && event.target) {
-    event.target.style.background = 'rgba(255, 51, 102, 0.3)';
-    event.target.style.boxShadow = '0 0 10px rgba(255, 51, 102, 0.5)';
+  // Update the insight text
+  const insightText = document.querySelector('.insight-text');
+  if (insightText) {
+    insightText.innerHTML = `Holding for <strong>${epochs} epochs</strong> with <strong>${amount.toLocaleString()} $rebelinux</strong> earns you <strong>${estimatedReward.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} $REBL</strong>—equivalent to <strong>${poolPercentage}% of the entire epoch pool!</strong>`;
   }
-}
-
-// Initialize with mobile version
-function updateWhatIf() {
-  updateWhatIfMobile(); // Use mobile version for all devices
+  
+  // Debug logging - remove this after it works
+  console.log('Amount:', amount, 'Epochs:', epochs);
+  console.log('Estimated Reward:', estimatedReward);
+  console.log('Return %:', returnPercentage, 'Pool %:', poolPercentage);
 }
     
     // Tab functionality for stats
