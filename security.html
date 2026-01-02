@@ -790,6 +790,43 @@
       color: var(--rebel-red);
     }
     
+    /* ========== NEW STYLES FROM TOKENOMICS PAGE ========== */
+    
+    /* Key Takeaways (from tokenomics page) */
+    .key-takeaways {
+      margin-top: -1.5rem !important;
+    }
+    
+    .takeaways-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-md);
+    }
+    
+    /* Related Pages with colored borders (from tokenomics page) */
+    .related-card[style*="border-color: #9C27B0"] {
+      background: rgba(156, 39, 176, 0.1) !important;
+    }
+    
+    .related-card[style*="border-color: #00aaff"] {
+      background: rgba(0, 170, 255, 0.1) !important;
+    }
+    
+    .related-card[style*="border-color: #4CAF50"] {
+      background: rgba(76, 175, 80, 0.1) !important;
+    }
+    
+    /* Arrow indicators for related cards */
+    .related-card div[style*="font-size: 0.9rem"] {
+      margin-top: var(--spacing-sm);
+      font-size: 0.9rem !important;
+    }
+    
+    .related-card:hover div[style*="font-size: 0.9rem"] {
+      transform: translateX(5px);
+      transition: transform 0.3s ease;
+    }
+    
     /* ========== RESPONSIVE STYLES ========== */
     
     /* Tablet */
@@ -808,6 +845,10 @@
       
       #nav-desktop a i {
         margin-right: 8px;
+      }
+      
+      .takeaways-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
     
@@ -915,7 +956,7 @@
         font-size: 1rem;
       }
       
-      /* MOBILE DROPDOWN STYLES */
+      /* Mobile dropdown styles */
       .dropdown {
         width: 100%;
         margin-bottom: 0.5rem;
@@ -932,7 +973,7 @@
         padding: 10px 0 !important;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
         width: 100% !important;
-        max-height: calc(100vh - 200px) !important; /* Dynamic based on screen */
+        max-height: calc(100vh - 200px) !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
         animation: fadeIn 0.3s ease;
@@ -1033,7 +1074,45 @@
         }
       }
       
+      /* Key Takeaways mobile */
+      .key-takeaways {
+        margin-top: -1rem !important;
+      }
+      
+      .takeaways-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+      
+      /* Related grid mobile */
+      .related-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+      }
+      
+      .related-card {
+        padding: 1.2rem !important;
+      }
+      
+      .related-icon {
+        font-size: 2rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+      
+      .related-card h3 {
+        font-size: 1rem !important;
+      }
+      
+      .related-card p {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+      }
+      
       /* Footer mobile fixes */
+      footer {
+        padding: var(--spacing-lg) var(--spacing-md);
+      }
+      
       footer > div > div:nth-child(4) {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: var(--spacing-lg) !important;
@@ -1111,9 +1190,8 @@
         min-height: 44px !important;
       }
       
-      .contract-address {
-        font-size: 0.7rem;
-        padding: 0.75rem;
+      .related-grid {
+        grid-template-columns: 1fr !important;
       }
     }
     
@@ -1254,6 +1332,79 @@
         <a href="#tools" class="cta-button">
           <i class="fas fa-shield-alt"></i> Verification Tools
         </a>
+      </div>
+    </section>
+    
+    <!-- ========== KEY TAKEAWAYS SECTION (ADDED FROM TOKENOMICS) ========== -->
+    <section class="key-takeaways">
+      <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.15), rgba(0, 170, 255, 0.15)); 
+                  padding: var(--spacing-lg); 
+                  border-radius: var(--border-radius); 
+                  border: 2px solid var(--rebel-gold);
+                  margin-bottom: var(--spacing-xl);">
+        
+        <div style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+          <div style="width: 40px; height: 40px; background: var(--rebel-red); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-bolt" style="color: white; font-size: 1.2rem;"></i>
+          </div>
+          <h3 style="color: var(--rebel-gold); margin: 0; font-size: 1.3rem;">Security Key Takeaways</h3>
+        </div>
+        
+        <div class="takeaways-grid">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+            
+            <!-- Mint Authority -->
+            <div style="background: rgba(255, 255, 255, 0.1); padding: var(--spacing-md); border-radius: 8px; border-left: 4px solid var(--rebel-red);">
+              <div style="font-weight: 700; color: var(--rebel-red); margin-bottom: 0.5rem;">
+                <i class="fas fa-ban"></i> Mint Authority
+              </div>
+              <div style="color: white; font-size: 1.1rem; font-weight: 600;">Renounced</div>
+              <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 0.25rem;">
+                No new tokens can be created
+              </div>
+            </div>
+            
+            <!-- LP Tokens -->
+            <div style="background: rgba(255, 255, 255, 0.1); padding: var(--spacing-md); border-radius: 8px; border-left: 4px solid #FF9800;">
+              <div style="font-weight: 700; color: #FF9800; margin-bottom: 0.5rem;">
+                <i class="fas fa-fire"></i> LP Tokens
+              </div>
+              <div style="color: white; font-size: 1.1rem; font-weight: 600;">98.57% Burned</div>
+              <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 0.25rem;">
+                Liquidity permanently locked
+              </div>
+            </div>
+            
+            <!-- Freeze Authority -->
+            <div style="background: rgba(255, 255, 255, 0.1); padding: var(--spacing-md); border-radius: 8px; border-left: 4px solid #00aaff;">
+              <div style="font-weight: 700; color: #00aaff; margin-bottom: 0.5rem;">
+                <i class="fas fa-snowflake"></i> Freeze Authority
+              </div>
+              <div style="color: white; font-size: 1.1rem; font-weight: 600;">Renounced</div>
+              <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 0.25rem;">
+                No wallet freezing possible
+              </div>
+            </div>
+            
+            <!-- Contract Verification -->
+            <div style="background: rgba(255, 255, 255, 0.1); padding: var(--spacing-md); border-radius: 8px; border-left: 4px solid #4CAF50;">
+              <div style="font-weight: 700; color: #4CAF50; margin-bottom: 0.5rem;">
+                <i class="fas fa-check-circle"></i> Contract Verified
+              </div>
+              <div style="color: white; font-size: 1.1rem; font-weight: 600;">Solscan & RugCheck</div>
+              <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 0.25rem;">
+                Transparent code verification
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: var(--spacing-md);">
+          <a href="#detailed-security" style="color: var(--rebel-gold); font-weight: 600; text-decoration: none; font-size: 0.9rem;">
+            <i class="fas fa-arrow-down"></i> See detailed security analysis below
+          </a>
+        </div>
       </div>
     </section>
     
@@ -1634,32 +1785,47 @@
       </div>
     </section>
     
-    <!-- Related Pages -->
+    <!-- ========== UPDATED RELATED PAGES (WITH COLORED BORDERS & ARROWS) ========== -->
     <section id="related">
       <h2>Related Information</h2>
       <div class="related-grid">
-        <a href="trade.html#contract-verify" class="related-card">
-          <div class="related-icon">
-            <i class="fas fa-file-contract"></i>
-          </div>
-          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Full Contract Verification</h3>
-          <p style="color: rgba(255, 255, 255, 0.9);">Complete contract details with copy buttons and verification</p>
-        </a>
-        
-        <a href="tokenomics.html#security" class="related-card red">
-          <div class="related-icon">
+        <!-- Tokenomics -->
+        <a href="tokenomics.html" class="related-card" 
+           style="border-color: #00aaff; background: rgba(0, 170, 255, 0.1);">
+          <div class="related-icon" style="color: #00aaff;">
             <i class="fas fa-coins"></i>
           </div>
-          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Tokenomics</h3>
+          <h3 style="color: #00aaff; margin-bottom: var(--spacing-sm);">Tokenomics</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Token distribution, vesting schedules, and supply details</p>
+          <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: #00aaff;">
+            <i class="fas fa-arrow-right"></i> View Token Details
+          </div>
         </a>
         
-        <a href="governance.html" class="related-card">
-          <div class="related-icon">
+        <!-- Trade -->
+        <a href="trade.html#contract-verify" class="related-card" 
+           style="border-color: var(--rebel-red); background: rgba(255, 51, 102, 0.1);">
+          <div class="related-icon" style="color: var(--rebel-red);">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <h3 style="color: var(--rebel-red); margin-bottom: var(--spacing-sm);">Full Contract Verification</h3>
+          <p style="color: rgba(255, 255, 255, 0.9);">Complete contract details with copy buttons and verification</p>
+          <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: var(--rebel-red);">
+            <i class="fas fa-arrow-right"></i> Verify Contracts
+          </div>
+        </a>
+        
+        <!-- Governance -->
+        <a href="governance.html" class="related-card" 
+           style="border-color: #4CAF50; background: rgba(76, 175, 80, 0.1);">
+          <div class="related-icon" style="color: #4CAF50;">
             <i class="fas fa-vote-yea"></i>
           </div>
-          <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">Governance</h3>
+          <h3 style="color: #4CAF50; margin-bottom: var(--spacing-sm);">Governance</h3>
           <p style="color: rgba(255, 255, 255, 0.9);">Community voting and decentralized decision-making</p>
+          <div style="margin-top: var(--spacing-sm); font-size: 0.9rem; color: #4CAF50;">
+            <i class="fas fa-arrow-right"></i> Start Voting
+          </div>
         </a>
       </div>
     </section>
