@@ -1153,57 +1153,58 @@
     padding-left: 25px !important;
   }
 }
-        /* === ADD FOOTER FIX RIGHT HERE === */
-  /* SIMPLE MOBILE FOOTER FIX */
-  footer > div > div {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-  
-  /* Stack the 4-column layout */
+    
+/* FOOTER FIXES */
+/* Reset the container for proper grid layout */
+footer > div > div:nth-child(4) {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: var(--spacing-xl) !important;
+  text-align: left !important;
+  margin: var(--spacing-xl) 0 !important;
+}
+
+/* Tablet - 2 columns */
+@media (max-width: 992px) and (min-width: 769px) {
   footer > div > div:nth-child(4) {
-    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: var(--spacing-lg) !important;
-    text-align: left !important;
-  }
-@media (min-width: 993px) {
-  footer > div > div:nth-child(4) {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: var(--spacing-xl) !important;
-  }
-}
-/* Tablet - keep 2 columns */
-@media (max-width: 992px) and (min-width: 577px) {
-  footer > div > div:nth-child(4) {
-    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
 /* Mobile - 1 column */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   footer > div > div:nth-child(4) {
     grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
     text-align: center !important;
   }
 }
 
-      /* Better bottom section layout */
-  footer > div > div:last-child {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: var(--spacing-md) !important;
-  }
-  .social-icons {
-    gap: var(--spacing-md);
-  }
-  
-  .social-icons a {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
+/* Fix the bottom section */
+footer > div > div:last-child {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: var(--spacing-lg) !important;
+  margin: var(--spacing-xl) 0 !important;
+  padding: var(--spacing-lg) !important;
+  background: rgba(0,0,0,0.3) !important;
+  border-radius: var(--border-radius) !important;
+}
+
+/* Adjust the contact and contract sections */
+footer > div > div:last-child > div {
+  text-align: center !important;
+}
+
+/* Ensure social icons work properly */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+  flex-wrap: wrap;
+}
     
 /* Related Pages Grid */
 .related-grid {
@@ -1325,13 +1326,6 @@
     .dropdown-content a.nav-whitepaper {
       color: #795548; 
     }
-    footer > div > div:nth-child(4) {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
-  gap: var(--spacing-xl) !important;
-  text-align: left !important;
-  margin: var(--spacing-xl) 0 !important;
-}
 @media (max-width: 768px) {
   .related-grid {
     grid-template-columns: repeat(2, 1fr) !important;
