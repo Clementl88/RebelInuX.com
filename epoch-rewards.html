@@ -1429,8 +1429,8 @@ footer {
     <i class="fas fa-arrow-up"></i>
   </div>
   
-<!-- Header -->
-<header>
+  <!-- Header -->
+  <header>
   <div class="header-container">
     <!-- Brand header links to home -->
     <a href="index.html" class="brand-link">
@@ -1461,18 +1461,18 @@ footer {
       <a href="trade.html" class="nav-trade">
         <i class="fas fa-chart-line"></i> Trade
       </a>
+      
+      <!-- ESSENTIAL INFO -->
       <a href="epoch-rewards.html" class="nav-rewards active">
         <i class="fas fa-gift"></i> Rewards
       </a>
-      
-      <!-- ESSENTIAL INFO -->
       <a href="tokenomics.html" class="nav-tokenomics">
         <i class="fas fa-coins"></i> Tokenomics
       </a>
       <a href="security.html" class="nav-security">
         <i class="fas fa-shield-alt"></i> Security
       </a>
-      
+
       <!-- DROPDOWN -->
       <div class="dropdown">
         <button class="dropbtn nav-more">
@@ -2756,8 +2756,7 @@ function loadExampleCase(type) {
   }
 } 
 
-  // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
-function initializeMobileDropdown() {
+    function initializeMobileDropdown() {
   const dropbtn = document.querySelector('.dropbtn');
   const navDesktop = document.getElementById('nav-desktop');
   
@@ -2765,7 +2764,6 @@ function initializeMobileDropdown() {
   
   // Mobile dropdown toggle
   dropbtn.addEventListener('click', function(e) {
-    // Only handle on mobile
     if (window.innerWidth <= 768) {
       e.preventDefault();
       e.stopPropagation();
@@ -2773,6 +2771,12 @@ function initializeMobileDropdown() {
       const dropdownContent = this.nextElementSibling;
       const isActive = dropdownContent.style.display === 'block' || 
                       dropdownContent.classList.contains('active');
+      
+      // Close all other dropdowns first
+      document.querySelectorAll('.dropdown-content').forEach(content => {
+        content.style.display = 'none';
+        content.classList.remove('active');
+      });
       
       // Toggle this dropdown
       if (!isActive) {
@@ -2786,10 +2790,9 @@ function initializeMobileDropdown() {
       }
     }
   });
-}
   
   // Close dropdown when clicking outside (mobile only)
-  document.addEventListener('DOMContentLoaded', function(e) {
+  document.addEventListener('click', function(e) {
     if (window.innerWidth <= 768) {
       const dropdown = document.querySelector('.dropdown');
       const dropdownContent = document.querySelector('.dropdown-content');
