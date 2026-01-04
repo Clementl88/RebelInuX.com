@@ -3010,6 +3010,497 @@
       document.getElementById('minutes2').textContent = minutes.toString().padStart(2, '0');
       document.getElementById('seconds2').textContent = seconds.toString().padStart(2, '0');
     }
+
+      // Calculator Functions
+    function addTokenBatch(amount = '', age = '') {
+      const table = document.querySelector('#token-batches-table tbody');
+      if (!table) return;
+      
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <input type="number" class="batch-amount" value="${amount}" placeholder="Amount" oninput="updateRowCalculations(this)">
+        </td>
+        <td>
+          <input type="number" class="batch-age" value="${age}" placeholder="Age" min="0" max="20" oninput="updateRowCalculations(this)">
+        </td>
+        <td class="batch-weighted-value" style="color: var(--rebel-gold);">0</td>
+        <td class="batch-estimated-reward" style="color: var(--rebel-red); font-weight: bold;">0 $REBL</td>
+        <td><button onclick="removeTokenBatch(this)" class="batch-btn" style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer;">×</button></td>
+      `;
+      table.appendChild(row);
+      
+      if (amount || age) {
+        updateRowCalculations(row.querySelector('.batch-amount'));
+      }
+    }
+    
+    function removeTokenBatch(button) {
+      const row = button.closest('tr');
+      if (row) {
+        row.remove();
+        calculateRewards();
+      }
+    }
+    
+       function clearTokenBatches() {
+      const table = document.querySelector('#token-batches-table tbody');
+      const tableFooter = document.getElementById('table-footer');
+      
+      if (table) {
+        table.innerHTML = '';
+        addTokenBatch();
+        document.getElementById('reward-result').innerHTML = 'Enter your token batches above to see your estimated rewards!';
+        hideChart();
+      }
+      
+      if (tableFooter) {
+        tableFooter.style.display = 'none';
+      }
+    }
+    
+    function updateRowCalculations(input) {
+      const row = input.closest('tr');
+      if (!row) return;
+      
+      const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+      const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+      
+      // Constants
+      const CS = 499242047.00;
+      const ERP = 54812320.11;
+      const k = 0.07;
+      const A_max = 20;
+      
+      // Calculate weighted value
+      const weightedValue = amount * (1 + k * Math.min(age, A_max));
+      
+      // Calculate estimated reward
+      const estimatedReward = (weightedValue / CS) * ERP;
+      
+      // Update display
+      const weightedValueCell = row.querySelector('.batch-weighted-value');
+      const estimatedRewardCell = row.querySelector('.batch-estimated-reward');
+      
+      if (weightedValueCell) {
+        weightedValueCell.textContent = weightedValue.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
+      
+      if (estimatedRewardCell) {
+        estimatedRewardCell.textContent = estimatedReward.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + ' $REBL';
+      }
+      
+      calculateRewards();
+    }
+    
+         function calculateRewards() {
+      const CS = 499242047.00;
+      const ERP = 54812320.11;
+      const rows = document.querySelectorAll('#token-batches-table tbody tr');
+      let WS = 0;
+      let totalAmount = 0;
+      let totalReward = 0;
+      let totalAge = 0;
+      let batchCount = 0;
+      
+      // Store batch data for chart
+      const batchData = [];
+      
+      rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+        const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+        const k = 0.07;
+        const A_max = 20;
+        
+        const weightedValue = amount * (1 + k * Math.min(age, A_max));
+        WS += weightedValue;
+        totalAmount += amount;
+        totalAge += age;
+        
+        const batchReward = (weightedValue / CS) * ERP;
+        totalReward += batchReward;
+        
+        if (amount > 0) {
+          batchCount++;
+          batchData.push({
+            amount: amount,
+            age: age,
+            weightedValue: weightedValue,
+            reward: batchReward
+          });
+        }
+      });
+      
+      const resultElement = document.getElementById('reward-result');
+      
+      if (WS <= 0 || isNaN(totalReward) || batchData.length === 0) {
+        resultElement.innerHTML = 'Please enter valid token batches!';
+        resultElement.style.color = 'var(--rebel-red)';
+        hideChart();
+        return;
+      }
+      
+      // Calculate averages
+      const avgAmount = totalAmount / batchCount;
+      const avgAge = totalAge / batchCount;
+      const avgReward = totalReward / batchCount;
+      const sharePercentage = ((WS / CS) * 100).toFixed(6);
+      
+      resultElement.innerHTML = `
+        <div style="text-align: left;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Batches:</strong></span>
+            <span style="color: var(--rebel-gold);">${batchCount}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Total $rebelinux:</strong></span>
+            <span style="color: var(--rebel-gold);">${totalAmount.toLocaleString()} $rebelinux</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Average per Batch:</strong></span>
+            <span style="color: var(--rebel-gold);">${avgAmount.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            })} $rebelinux</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Average Age:</strong></span>
+            <span style="color: var(--rebel-gold);">${avgAge.toFixed(1)} epochs</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Total Weighted Share:</strong></span>
+            <span style="color: var(--rebel-gold);">${WS.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+            <span><strong>Your Share of Pool:</strong></span>
+            <span style="color: var(--rebel-gold);">${sharePercentage}%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 1.1em;">
+            <span><strong>Average Reward per Batch:</strong></span>
+            <span style="color: var(--rebel-gold); font-weight: bold;">${avgReward.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })} $REBL</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-top: 0.5em; padding-top: 0.5em; border-top: 1px solid rgba(255, 204, 0, 0.3);">
+            <span><strong>Total Estimated Reward:</strong></span>
+            <span style="color: var(--rebel-red); font-weight: bold;">${totalReward.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })} $REBL</span>
+          </div>
+        </div>
+      `;
+      resultElement.style.color = 'var(--rebel-gold)';
+      
+      // Update the chart with batch data
+      updateChart(batchData, totalReward);
+    }
+    
+    function loadExampleData() {
+      clearTokenBatches();
+      addTokenBatch('1000000', '5');
+      addTokenBatch('500000', '12');
+      addTokenBatch('2500000', '1');
+      
+      // Wait a moment for the rows to be added, then calculate
+      setTimeout(() => {
+        calculateRewards();
+      }, 100);
+    }
+    
+    // Chart Functions
+    // Update setupChartPlaceholder function
+    function setupChartPlaceholder() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
+      
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex'; // Show placeholder
+      }
+      if (canvas) {
+        canvas.style.display = 'none'; // Hide canvas
+      }
+    }
+    
+    // Update hideChart function
+    function hideChart() {
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
+      
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'flex'; // Show placeholder
+      }
+      if (canvas) {
+        canvas.style.display = 'none'; // Hide canvas
+      }
+      
+      // Destroy chart instance if it exists
+      if (rewardChart) {
+        rewardChart.destroy();
+        rewardChart = null;
+      }
+    }
+    
+    // Update updateChart function - REMOVE THE DUPLICATE
+    function updateChart(batchData, totalReward) {
+      const ctx = document.getElementById('rewardChart').getContext('2d');
+      const chartPlaceholder = document.getElementById('chartPlaceholder');
+      const canvas = document.getElementById('rewardChart');
+      
+      // Hide placeholder and show chart
+      if (chartPlaceholder) {
+        chartPlaceholder.style.display = 'none';
+      }
+      if (canvas) {
+        canvas.style.display = 'block';
+      }
+      
+      // Destroy existing chart if it exists
+      if (rewardChart) {
+        rewardChart.destroy();
+      }
+      
+      // Prepare chart data
+      const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+      const rewards = batchData.map(batch => batch.reward);
+      const percentages = batchData.map(batch => ((batch.reward / totalReward) * 100).toFixed(1));
+      
+      // Colors for the chart
+      const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(75, 192, 192, 0.8)',
+        'rgba(153, 102, 255, 0.8)',
+        'rgba(255, 159, 64, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 99, 132, 0.8)'
+      ];
+      
+      const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 99, 132, 1)'
+      ];
+      
+      // Create new chart
+      rewardChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: rewards,
+            backgroundColor: backgroundColors.slice(0, batchData.length),
+            borderColor: borderColors.slice(0, batchData.length),
+            borderWidth: 2,
+            hoverOffset: 15
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: 'white',
+                font: {
+                  family: 'Montserrat',
+                  size: 12
+                },
+                padding: 15,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const batch = batchData[context.dataIndex];
+                  const percentage = percentages[context.dataIndex];
+                  return [
+                    `Batch ${context.dataIndex + 1}: ${batch.reward.toLocaleString()} $REBL`,
+                    `Amount: ${batch.amount.toLocaleString()} $rebelinux`,
+                    `Age: ${batch.age} epochs`,
+                    `Share: ${percentage}% of total`
+                  ];
+                }
+              },
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleColor: 'var(--rebel-gold)',
+              bodyColor: 'white',
+              borderColor: 'var(--rebel-gold)',
+              borderWidth: 1
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1000
+          }
+        }
+      });
+    }
+    
+// What If Calculator - Fixed version
+function updateWhatIf() {
+  const amountSlider = document.getElementById('whatIfAmount');
+  const epochsSlider = document.getElementById('whatIfEpochs');
+  const amountValue = document.getElementById('whatIfAmountValue');
+  const epochsValue = document.getElementById('whatIfEpochsValue');
+  const rewardElement = document.getElementById('whatIfReward');
+  
+  if (!amountSlider || !epochsSlider || !amountValue || !epochsValue || !rewardElement) return;
+  
+  const amount = parseInt(amountSlider.value);
+  const epochs = parseInt(epochsSlider.value);
+  
+  amountValue.textContent = amount.toLocaleString() + ' $rebelinux';
+  epochsValue.textContent = epochs;
+  
+  // Calculate what-if reward
+  const CS = 499242047.00;
+  const ERP = 54812320.11;
+  const k = 0.07;
+  const A_max = 20;
+  
+  const weightedValue = amount * (1 + k * Math.min(epochs, A_max));
+  const estimatedReward = (weightedValue / CS) * ERP;
+  
+  // Calculate percentages
+  const returnPercentage = ((estimatedReward / amount) * 100).toFixed(2);
+  const poolPercentage = ((estimatedReward / ERP) * 100).toFixed(2);
+  
+  // Update reward display
+  rewardElement.textContent = estimatedReward.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }) + ' $REBL';
+  
+  // Update the percentage displays - FIXED SELECTORS
+  const returnPercentValue = document.getElementById('returnPercentValue');
+  const poolPercentValue = document.getElementById('poolPercentValue');
+  
+  if (returnPercentValue) {
+    returnPercentValue.textContent = returnPercentage + '%';
+  }
+  
+  if (poolPercentValue) {
+    poolPercentValue.textContent = poolPercentage + '%';
+  }
+  
+  // Update the insight text
+  const insightText = document.querySelector('.insight-text');
+  if (insightText) {
+    insightText.innerHTML = `Holding for <strong>${epochs} epochs</strong> with <strong>${amount.toLocaleString()} $rebelinux</strong> earns you <strong>${estimatedReward.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} $REBL</strong>—equivalent to <strong>${poolPercentage}% of the entire epoch pool!</strong>`;
+  }
+  
+  // Debug logging - remove this after it works
+  console.log('Amount:', amount, 'Epochs:', epochs);
+  console.log('Estimated Reward:', estimatedReward);
+  console.log('Return %:', returnPercentage, 'Pool %:', poolPercentage);
+}
+
+
+// Updated Vesting Schedule Functions
+function updateVestingSchedule() {
+  // Vesting contract dates
+  const cliffDate = new Date("2025-09-14T17:36:00Z"); // Sep 14, 2025, 06:36 PM GMT+1
+  const nextUnlockDate = new Date("2026-01-14T08:35:00Z"); // Jan 14, 2026, 09:35 AM GMT+1
+  const endDate = new Date("2027-09-14T17:33:00Z"); // Sep 14, 2027, 06:33 PM GMT+1
+  
+  const now = new Date();
+  
+  // Calculate days until next unlock
+  const timeToNext = nextUnlockDate - now;
+  const daysToNext = Math.max(0, Math.floor(timeToNext / (1000 * 60 * 60 * 24)));
+  const hoursToNext = Math.max(0, Math.floor((timeToNext % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  
+  // Update next unlock display
+  const daysElement = document.getElementById('nextUnlockDays');
+  if (daysElement) {
+    daysElement.textContent = daysToNext;
+  }
+  
+  const dateElement = document.getElementById('nextUnlockDate');
+  if (dateElement) {
+    dateElement.textContent = `Jan 14, 2026${hoursToNext > 0 ? ` (+${hoursToNext}h)` : ''}`;
+  }
+  
+  // Calculate overall vesting progress
+  let overallProgress = 47.5; // 76M already unlocked out of 160M = 47.5%
+  
+  // If we're past the cliff but before next monthly unlock
+  if (now > cliffDate && now < nextUnlockDate) {
+    // Progress stays at cliff value until next unlock
+    overallProgress = 40.0; // Cliff was 40%
+  }
+  // If we're past next unlock, calculate based on months elapsed
+  else if (now >= nextUnlockDate) {
+    // Total months from cliff to end: 24 months (Sep 2025 to Sep 2027)
+    // Monthly unlock after cliff: 4M per month
+    // 160M total - 64M cliff = 96M to vest linearly
+    // 96M / 4M per month = 24 months
+    
+    const monthsFromCliff = (now - cliffDate) / (1000 * 60 * 60 * 24 * 30.44); // Average month length
+    const linearProgress = Math.min(60, (monthsFromCliff / 24) * 60); // Max 60% for linear portion
+    overallProgress = 40 + linearProgress; // Cliff (40%) + linear portion
+    overallProgress = Math.min(100, overallProgress); // Cap at 100%
+  }
+  
+  // Update progress bars
+  const overallBar = document.getElementById('overallBar');
+  const overallText = document.getElementById('overallProgress');
+  
+  if (overallBar) {
+    overallBar.style.width = `${overallProgress}%`;
+  }
+  if (overallText) {
+    overallText.textContent = `${overallProgress.toFixed(1)}%`;
+  }
+}
+
+// Update vesting schedule every minute
+updateVestingSchedule();
+setInterval(updateVestingSchedule, 60000);
+    
+    // Tab functionality for stats
+    function showStatTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.stat-tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.stat-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab content
+      document.getElementById(tabName + '-stats').classList.add('active');
+      
+      // Activate selected tab button
+      const tabButtons = document.querySelectorAll('.stat-tab');
+      tabButtons.forEach(button => {
+        if (button.textContent.toLowerCase().includes(tabName) || 
+            (tabName === 'general' && button.textContent.toLowerCase().includes('general')) ||
+            (tabName === 'holders' && button.textContent.toLowerCase().includes('holder')) ||
+            (tabName === 'rewards' && button.textContent.toLowerCase().includes('reward'))) {
+          button.classList.add('active');
+        }
+      });
+    }
+
   </script>
 </body>
 </html>
