@@ -1251,39 +1251,64 @@ footer {
 /* MOBILE RESPONSIVE FOOTER */
 @media (max-width: 768px) {
   footer {
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-lg) var(--spacing-md);
   }
   
-  footer > div {
-    padding: var(--spacing-md) !important;
-  }
-  
-  /* 2-Column grid becomes 1 column */
-  footer > div > div:nth-child(5) {
+  /* 4-COLUMN GRID BECOMES 1 COLUMN ON MOBILE */
+  .footer-grid {
     grid-template-columns: 1fr !important;
     gap: var(--spacing-lg) !important;
     text-align: center !important;
   }
   
-  /* Adjust spacing */
+  .footer-column {
+    align-items: center;
+  }
+  
+  .footer-column h4 {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-column a {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* BOTTOM SECTION BECOMES 1 COLUMN ON MOBILE */
+  .footer-bottom {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    padding: var(--spacing-md);
+  }
+  
+  .footer-bottom-column {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .footer-bottom-column:last-child {
+    margin-bottom: 0;
+  }
+  
   .social-icons {
-    gap: var(--spacing-md) !important;
+    gap: var(--spacing-md);
   }
   
   .social-icons a {
-    width: 45px !important;
-    height: 45px !important;
-    font-size: 1.5rem !important;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
   }
   
-  /* Make contract address smaller */
-  footer > div > div:nth-child(6) {
-    padding: var(--spacing-sm) !important;
+  /* Contract address smaller */
+  .footer-container > div:nth-last-child(2) {
+    padding: var(--spacing-md);
   }
   
-  footer > div > div:nth-child(6) div {
-    font-size: 0.7rem !important;
+  .footer-container > div:nth-last-child(2) div {
+    font-size: 0.7rem;
   }
+}
   
   /* Keep any other mobile styles you need */
   .related-grid {
@@ -2468,32 +2493,28 @@ footer {
       </div>
     </div>
     
-  <!-- 4-Column Grid (KEEP AS IS - Perfect!) -->
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
+ <!-- 4-Column Grid for Desktop, 2-Column for Mobile -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;" class="footer-grid">
+  
   <!-- Column 1: Platform -->
   <div>
     <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Platform</h4>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <a href="trade.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Trade $REBL</a>
       <a href="epoch-rewards.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Claim Rewards</a>
-      <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Vote (Governance)</a>
-      <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Artwork & NFTs</a>
-      <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-        <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
-      </a>
+      <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Governance</a>
+      <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Artwork & NFTs</a>
     </div>
   </div>
   
-  <!-- Column 2: Protocol (KEEP Whitepaper & Security here!) -->
+  <!-- Column 2: Protocol -->
   <div>
     <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Protocol</h4>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Tokenomics</a>
+      <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Tokenomics</a>
       <a href="security.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Security</a>
-      <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Integrity</a>
-      <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Whitepaper</a>
-      <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Roadmap</a>
-      <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Community Hub</a>
+      <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Roadmap</a>
+      <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Whitepaper</a>
     </div>
   </div>
   
@@ -2501,20 +2522,17 @@ footer {
   <div>
     <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Community</h4>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-      <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;display: flex; align-items: center; gap: 0.5rem;">
+      <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
         <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
       </a>
-      <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+      <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
         <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
       </a>
-      <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+      <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
         <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
       </a>
-      <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-        <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
-      </a>
-      <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-        <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
+      <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
       </a>
     </div>
   </div>
@@ -2524,8 +2542,9 @@ footer {
     <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Policies</h4>
     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
       <a href="terms-of-service.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Terms of Service</a>
-      <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Privacy Policy</a>
-      <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
+      <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Privacy Policy</a>
+      <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Disclaimer</a>
+      <a href="mailto:contact@rebelinux.fun" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Contact</a>
     </div>
   </div>
 </div>
