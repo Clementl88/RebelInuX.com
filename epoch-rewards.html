@@ -1191,11 +1191,13 @@ footer {
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-xl);
   margin: var(--spacing-xl) 0;
+  align-items: start; /* ADD THIS LINE - aligns columns to top */
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
+  height: 100%; /* ADD THIS LINE - makes columns equal height */
   gap: 0.5rem;
 }
 
@@ -1204,18 +1206,22 @@ footer {
   margin-bottom: var(--spacing-md);
   font-size: 1rem;
   font-weight: 600;
+  min-height: 40px; /* ADD THIS LINE - fixed height for headings */
+  display: flex;
+  align-items: flex-start; /* CHANGE from default to align headings */
 }
 
 .footer-column a {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.25rem 0;
+  padding: 0.3rem 0; /* CHANGED from 0.25rem to 0.3rem */
   transition: var(--transition);
   display: flex;
-  align-items: center;
+  align-items: center; /* ADD THIS LINE - vertically center links */
   gap: 0.5rem;
   justify-content: flex-start;
+  min-height: 32px; /* ADD THIS LINE - fixed height for links */
 }
 
 .footer-column a:hover {
@@ -1347,61 +1353,54 @@ footer {
       transition: padding 0.3s ease;
     }
 
-        /* Mobile Responsive Footer Styles */
-    @media (max-width: 768px) {
-      footer {
-        padding: var(--spacing-md) !important;
-      }
-      
-      /* Make the 4-column grid become 1 column on mobile */
-      .footer-grid {
-        grid-template-columns: 1fr !important;
-        gap: var(--spacing-lg) !important;
-        text-align: center !important;
-      }
-      
-      /* Center align the headings and links */
-      .footer-grid > div {
-        text-align: center !important;
-      }
-      
-      .footer-grid h4 {
-        text-align: center !important;
-        margin-bottom: 1rem !important;
-      }
-      
-      .footer-grid a {
-        justify-content: center !important;
-        text-align: center !important;
-        font-size: 0.9rem !important;
-        padding: 0.3rem 0 !important;
-      }
-      
-      /* Make the bottom section (contact + contract) stack vertically */
-      .footer-bottom-grid {
-        grid-template-columns: 1fr !important;
-        gap: var(--spacing-lg) !important;
-        padding: var(--spacing-md) !important;
-        margin: var(--spacing-lg) 0 !important;
-      }
-      
-      /* Adjust social icons size if you have them */
-      .social-icons {
-        gap: var(--spacing-md) !important;
-      }
-      
-      .social-icons a {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 1.5rem !important;
-      }
-      
-      /* Adjust disclaimer section */
-      footer > div > div:last-child {
-        font-size: 0.75rem !important;
-        padding-top: var(--spacing-md) !important;
-      }
-    }
+/* MOBILE RESPONSIVE FOOTER - 1 COLUMN LAYOUT */
+/* MOBILE RESPONSIVE FOOTER - 1 COLUMN LAYOUT */
+@media (max-width: 768px) {
+  footer {
+    padding: var(--spacing-md) !important;
+  }
+  
+  /* Make the 4-column grid become 1 column on mobile */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    text-align: center !important;
+  }
+  
+  /* Center align everything on mobile */
+  .footer-column {
+    align-items: center !important; /* ADD THIS LINE */
+    text-align: center !important;
+  }
+  
+  .footer-column h4 {
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+    align-items: center !important; /* ADD THIS LINE */
+    justify-content: center !important; /* ADD THIS LINE */
+  }
+  
+  .footer-column a {
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.9rem !important;
+    padding: 0.3rem 0 !important;
+  }
+  
+  /* Make the bottom section (contact + contract) stack vertically */
+  .footer-bottom-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    padding: var(--spacing-md) !important;
+    margin: var(--spacing-lg) 0 !important;
+  }
+  
+  /* Adjust disclaimer section */
+  footer > div > div:last-child {
+    font-size: 0.75rem !important;
+    padding-top: var(--spacing-md) !important;
+  }
+}
   </style>
 </head>
 <body>
