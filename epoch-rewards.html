@@ -1191,13 +1191,11 @@ footer {
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-xl);
   margin: var(--spacing-xl) 0;
-  align-items: start; /* ADD THIS LINE - aligns columns to top */
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
-  height: 100%; /* ADD THIS LINE - makes columns equal height */
   gap: 0.5rem;
 }
 
@@ -1206,22 +1204,18 @@ footer {
   margin-bottom: var(--spacing-md);
   font-size: 1rem;
   font-weight: 600;
-  min-height: 40px; /* ADD THIS LINE - fixed height for headings */
-  display: flex;
-  align-items: flex-start; /* CHANGE from default to align headings */
 }
 
 .footer-column a {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.3rem 0; /* CHANGED from 0.25rem to 0.3rem */
+  padding: 0.25rem 0;
   transition: var(--transition);
   display: flex;
-  align-items: center; /* ADD THIS LINE - vertically center links */
+  align-items: center;
   gap: 0.5rem;
   justify-content: flex-start;
-  min-height: 32px; /* ADD THIS LINE - fixed height for links */
 }
 
 .footer-column a:hover {
@@ -1254,7 +1248,73 @@ footer {
   font-size: 1rem;
 }
 
+/* MOBILE RESPONSIVE FOOTER */
+@media (max-width: 768px) {
+  footer {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
   
+  /* 4-COLUMN GRID BECOMES 1 COLUMN ON MOBILE */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    text-align: center !important;
+  }
+  
+  .footer-column {
+    align-items: center;
+  }
+  
+  .footer-column h4 {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .footer-column a {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* BOTTOM SECTION BECOMES 1 COLUMN ON MOBILE */
+  .footer-bottom {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+    padding: var(--spacing-md);
+  }
+  
+  .footer-bottom-column {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .footer-bottom-column:last-child {
+    margin-bottom: 0;
+  }
+  
+  .social-icons {
+    gap: var(--spacing-md);
+  }
+  
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  
+  /* RELATED PAGES */
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
+  .related-card {
+    padding: 1.2rem !important;
+  }
+  
+  .related-icon {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+}
     
 /* Related Pages Grid */
 .related-grid {
@@ -1352,55 +1412,7 @@ footer {
       padding-left: 20px;
       transition: padding 0.3s ease;
     }
-
-/* MOBILE RESPONSIVE FOOTER - 1 COLUMN LAYOUT */
-/* MOBILE RESPONSIVE FOOTER - 1 COLUMN LAYOUT */
-@media (max-width: 768px) {
-  footer {
-    padding: var(--spacing-md) !important;
-  }
-  
-  /* Make the 4-column grid become 1 column on mobile */
-  .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: var(--spacing-lg) !important;
-    text-align: center !important;
-  }
-  
-  /* Center align everything on mobile */
-  .footer-column {
-    align-items: center !important; /* ADD THIS LINE */
-    text-align: center !important;
-  }
-  
-  .footer-column h4 {
-    text-align: center !important;
-    margin-bottom: 1rem !important;
-    align-items: center !important; /* ADD THIS LINE */
-    justify-content: center !important; /* ADD THIS LINE */
-  }
-  
-  .footer-column a {
-    justify-content: center !important;
-    text-align: center !important;
-    font-size: 0.9rem !important;
-    padding: 0.3rem 0 !important;
-  }
-  
-  /* Make the bottom section (contact + contract) stack vertically */
-  .footer-bottom-grid {
-    grid-template-columns: 1fr !important;
-    gap: var(--spacing-lg) !important;
-    padding: var(--spacing-md) !important;
-    margin: var(--spacing-lg) 0 !important;
-  }
-  
-  /* Adjust disclaimer section */
-  footer > div > div:last-child {
-    font-size: 0.75rem !important;
-    padding-top: var(--spacing-md) !important;
-  }
-}
+    
   </style>
 </head>
 <body>
@@ -1925,24 +1937,121 @@ footer {
   </p>
 </section>
     
-<!-- Simplified reference section -->
-<section id="supply-reference">
-  <h2><i class="fas fa-link"></i> Connected Supply Details</h2>
-  <div class="content-card" style="text-align: center;">
-    <div style="font-size: 2.5rem; color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
-      <i class="fas fa-coins"></i> 499.2M
+ <!-- ============ FINAL, ACCURATE SUPPLY STATISTICS SECTION ============ -->
+<section id="supply-stats">
+    <h2><i class="fas fa-chart-pie"></i> $rebelinux Supply Breakdown</h2>
+    <div class="content-card">
+        <p style="font-size: 1.1rem; margin-bottom: var(--spacing-lg);">
+            The epoch reward calculation uses the precise <strong>active circulating supply (CS) of 499,242,047 $rebelinux</strong>. This is the supply actively held by participants, derived by subtracting all locked and non-circulating tokens from the total.
+        </p>
+
+        <div class="stats-overview" style="margin-bottom: var(--spacing-xl);">
+            <!-- Total Supply -->
+                <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-layer-group"></i>
+        </div>
+        <div class="stat-value" style="font-size: 1.8rem;">1.0B</div>
+        <div class="stat-label">Total Fixed Supply</div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem; font-family: monospace;">
+            (1,000,000,000)
+        </div>
     </div>
-    <h3 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md);">
-      Active $rebelinux Supply
-    </h3>
-    <p style="margin-bottom: var(--spacing-lg); color: rgba(255, 255, 255, 0.9);">
-      This is the circulating supply used for all epoch reward calculations.
-      See detailed breakdown on the Tokenomics page.
+
+    <!-- Combined Locked & Held -->
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-lock"></i></div>
+        <div class="stat-value">~500.8M</div>
+        <div class="stat-label">Total Locked & Held</div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem;">
+            Creator's Unvested & Vested
+        </div>
+    </div>
+
+    <!-- Zora Burn Account -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-fire"></i>
+        </div>
+        <div class="stat-value">6.03M</div>
+        <div class="stat-label">Zora Burn Account</div>
+        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-top: 0.3rem;">
+            Holds $rebelinux for $REBL burns
+        </div>
+    </div>
+
+            <!-- ACTIVE CIRCULATING SUPPLY (CS) -->
+    <div class="stat-card" style="border-color: var(--rebel-gold); box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);">
+        <div class="stat-icon">
+            <i class="fas fa-coins"></i>
+        </div>
+        <div class="stat-value" style="color: var(--rebel-gold); font-size: 2rem;">499.2M</div>
+        <div class="stat-label" style="font-weight: 900;">ACTIVE SUPPLY (CS)</div>
+        <div style="font-size: 0.75rem; color: var(--rebel-gold); margin-top: 0.3rem; font-weight: 600;">
+            Used for all epoch reward calculations
+        </div>
+    </div>
+</div>
+
+        <!-- The Final, Accurate Formula -->
+        <div style="background: rgba(0,0,0,0.4); padding: var(--spacing-lg); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+            <h4 style="color: var(--rebel-gold); text-align: center; margin-bottom: var(--spacing-md);">
+                <i class="fas fa-calculator"></i> Precise Calculation of Active Supply (CS)
+            </h4>
+       <div style="font-family: monospace; font-size: 1rem; text-align: center; color: white; line-height: 2.2;">
+    <div style="margin-bottom: 0.5rem;">
+        <span style="color: #fff;">1,000,000,000.00</span>
+        <span style="color: rgba(255,255,255,0.6); margin-left: 10px; font-size: 0.9em;">Total Supply</span>
+    </div>
+    <div style="margin-bottom: 0.5rem;">
+        <span style="color: var(--rebel-gold);">−</span>
+        <span style="color: #ff9999;">489,448,313.04</span>
+        <span style="color: rgba(255,255,255,0.6); margin-left: 10px; font-size: 0.9em;">Creator's Unvested (Locked)</span>
+    </div>
+    <div style="margin-bottom: 0.5rem;">
+        <span style="color: var(--rebel-gold);">−</span>
+        <span style="color: #ff9999;">11,309,640.29</span>
+        <span style="color: rgba(255,255,255,0.6); margin-left: 10px; font-size: 0.9em;">Creator's Vested Holdings</span>
+    </div>
+    <div style="border-top: 1px solid rgba(255,204,0,0.3); padding-top: 10px; margin-top: 5px;">
+        <span style="color: var(--rebel-gold);">=</span>
+        <strong style="color: var(--rebel-red); font-size: 1.3rem;">499,242,047.00</strong>
+        <span style="color: var(--rebel-gold); margin-left: 10px;">Active Supply (CS)</span>
+    </div>
+</div>
+
+            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: var(--spacing-md); margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(255,204,0,0.2); font-size: 0.85rem;">
+                <div><strong>Creator's Total 50%:</strong> 500,757,953.33 $rebelinux (Unvested + Vested)</div>
+                <div><strong>Non-CS Supply:</strong> 500,757,953.33 + 6,029,480.40 + ~2,000,000 = ~508.8M $rebelinux</div>
+                <div><strong>Active CS:</strong> <span style="color: var(--rebel-gold);">499,242,047.00 $rebelinux (49.92% of Total)</span></div>
+            </div>
+        </div>
+
+    
+<!-- THE OBLIVION FLAME BOX -->
+
+<div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
+    <h5 style="color: var(--rebel-gold); margin-bottom: 0.5rem;">
+        <i class="fas fa-fire"></i> The Oblivion Flame Mechanism
+    </h5>
+    <p style="font-size: 0.95rem; margin: 0; color: rgba(255, 255, 255, 0.9);">
+        The <strong><a href="https://zora.co/@rebelinux_burn" target="_blank" style="color: var(--rebel-gold);">rebelinux_burn</a></strong> account holds $rebelinux tokens, which qualify it for a share of every epoch's $REBL reward pool <strong>if it submits its Solana address to the active Rebel Key within the epoch window, just like any other participant</strong>. The $REBL tokens it earns are <strong>permanently burned</strong> (sent to an unspendable address), creating deflationary pressure. The original $rebelinux in the account are <strong>not burned</strong> and continue to be eligible for future epochs.
     </p>
-    <a href="tokenomics.html#creator-coin-supply" class="cta-button gold">
-      <i class="fas fa-external-link-alt"></i> View Full Supply Details
-    </a>
-  </div>
+</div>
+      
+        <!-- Key Insight & Link to Calculator -->
+        <div style="display: flex; align-items: flex-start; margin-top: var(--spacing-lg); padding: var(--spacing-md); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius); border-left: 4px solid var(--rebel-red);">
+            <i class="fas fa-link" style="color: var(--rebel-red); font-size: 1.2rem; margin-top: 2px; margin-right: 15px;"></i>
+            <div>
+                <p style="margin: 0 0 0.5rem 0; color: var(--text-light); font-size: 0.95rem;">
+                    <strong>This is the "CS" used in your rewards:</strong> Every epoch reward is calculated using this exact <strong>499,242,047 $rebelinux</strong> as the base supply.
+                </p>
+                <a href="#rebl-calculator" style="color: var(--rebel-gold); font-size: 0.9rem; font-weight: 600;">
+                    <i class="fas fa-arrow-right"></i> Go to Reward Calculator to see it in action
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
 
     
@@ -2418,7 +2527,7 @@ footer {
   </main>
   
 <footer>
-  <div style="max-width: 1200px; margin: 0 auto; padding: var(--spacing-lg);">
+  <div class="footer-container">
     
     <!-- Logo Section -->
     <div style="text-align: center; margin-bottom: var(--spacing-xl);">
@@ -2452,9 +2561,9 @@ footer {
       </a>
     </div>
     
-    <!-- 4-Column Grid on Desktop, 1-Column on Mobile -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;"
-         class="footer-grid">
+
+     <!-- 4-Column Grid (KEEP AS IS - Perfect!) -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0;">
       
       <!-- Column 1: Platform -->
       <div>
@@ -2462,24 +2571,24 @@ footer {
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <a href="trade.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Trade $REBL</a>
           <a href="epoch-rewards.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Claim Rewards</a>
-          <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Vote (Governance)</a>
-          <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Artwork & NFTs</a>
-          <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="governance.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Vote (Governance)</a>
+          <a href="artwork.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Artwork & NFTs</a>
+          <a href="https://zora.co/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fas fa-cube" style="color: #0066FF;"></i> ZORA Collection
           </a>
         </div>
       </div>
       
-      <!-- Column 2: Protocol -->
+      <!-- Column 2: Protocol (KEEP Whitepaper & Security here!) -->
       <div>
         <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Protocol</h4>
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Tokenomics</a>
+          <a href="tokenomics.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Tokenomics</a>
           <a href="security.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Security</a>
-          <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Integrity</a>
-          <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Whitepaper</a>
-          <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Roadmap</a>
-          <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Community Hub</a>
+          <a href="integrity.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Integrity</a>
+          <a href="whitepaper.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Whitepaper</a>
+          <a href="roadmap.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Roadmap</a>
+          <a href="community.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Community Hub</a>
         </div>
       </div>
       
@@ -2487,19 +2596,19 @@ footer {
       <div>
         <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Community</h4>
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="https://x.com/RebelInuX" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;display: flex; align-items: center; gap: 0.5rem;">
             <i class="fab fa-twitter" style="color: #1DA1F2;"></i> Twitter/X
           </a>
-          <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fab fa-discord" style="color: #5865F2;"></i> Discord
           </a>
-          <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="https://t.me/RebelInuX_Official" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fab fa-telegram" style="color: #0088cc;"></i> Telegram
           </a>
-          <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="https://www.youtube.com/@RebelInuX_REBL" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fab fa-youtube" style="color: #FF0000;"></i> YouTube
           </a>
-          <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+          <a href="https://www.tiktok.com/@rebelinux" target="_blank" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
             <i class="fab fa-tiktok" style="color: #000000;"></i> TikTok
           </a>
         </div>
@@ -2510,16 +2619,15 @@ footer {
         <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); font-size: 1rem;">Policies</h4>
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <a href="terms-of-service.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Terms of Service</a>
-          <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Privacy Policy</a>
-          <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 600;">Disclaimer</a>
+          <a href="privacy.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Privacy Policy</a>
+          <a href="disclaimer.html" style="color: rgba(255,255,255,0.8); font-size: 0.9rem;font-weight: 600;">Disclaimer</a>
         </div>
       </div>
       
     </div>
     
-    <!-- Bottom Section (Contact + Contract) - Stacked on Mobile -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);"
-         class="footer-bottom-grid">
+  <!-- SIMPLIFIED Bottom Section (Contact + Contract only) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-xl); margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: rgba(0,0,0,0.3); border-radius: var(--border-radius);">
       
       <!-- Contact Information -->
       <div style="text-align: center;">
@@ -2529,6 +2637,7 @@ footer {
             <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--rebel-red);"></i>
             contact@rebelinux.fun
           </a>
+          <!-- No GitHub for now -->
         </div>
       </div>
       
@@ -2566,7 +2675,6 @@ footer {
     
   </div>
 </footer>
-
       
   <script>
     // Chart.js instance
