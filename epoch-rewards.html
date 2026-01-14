@@ -43,7 +43,15 @@
     }
     
     .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: url('https://i.imgur.com/bfPgAoS.webp') center/cover;
+      opacity: 0.3;
+      z-index: -1;
     }
   </style>
 </head>
@@ -58,8 +66,8 @@
     <i class="fas fa-arrow-up"></i>
   </div>
   
-  <!-- Include Header -->
-  <!--#include virtual="header.html" -->
+  <!-- Header will be inserted here by JavaScript -->
+  <div id="header-container"></div>
   
   <main>
     <!-- Hero Section -->
@@ -91,45 +99,45 @@
           </div>
           
           <div class="takeaways-grid">
-            <div class="takeaway-item">
+            <div class="takeaway-item" style="border-left-color: #9C27B0;">
               <div class="takeaway-icon" style="color: #9C27B0;">
                 <i class="fas fa-calendar-week"></i>
               </div>
               <div class="takeaway-content">
-                <div class="takeaway-title">Weekly Epochs</div>
+                <div class="takeaway-title" style="color: #9C27B0;">Weekly Epochs</div>
                 <div class="takeaway-value">7-Day Cycles</div>
                 <div class="takeaway-sub">New epoch every Sunday</div>
               </div>
             </div>
             
-            <div class="takeaway-item">
+            <div class="takeaway-item" style="border-left-color: var(--rebel-red);">
               <div class="takeaway-icon" style="color: var(--rebel-red);">
                 <i class="fas fa-layer-group"></i>
               </div>
               <div class="takeaway-content">
-                <div class="takeaway-title">Dual Asset System</div>
+                <div class="takeaway-title" style="color: var(--rebel-red);">Dual Asset System</div>
                 <div class="takeaway-value">2 Assets Required</div>
                 <div class="takeaway-sub">$rebelinux + Active Rebel Key</div>
               </div>
             </div>
             
-            <div class="takeaway-item">
+            <div class="takeaway-item" style="border-left-color: var(--rebel-gold);">
               <div class="takeaway-icon" style="color: var(--rebel-gold);">
                 <i class="fas fa-chart-line"></i>
               </div>
               <div class="takeaway-content">
-                <div class="takeaway-title">Age Bonus</div>
+                <div class="takeaway-title" style="color: var(--rebel-gold);">Age Bonus</div>
                 <div class="takeaway-value">Up to 240% Bonus</div>
                 <div class="takeaway-sub">7% per epoch (max 20 epochs)</div>
               </div>
             </div>
             
-            <div class="takeaway-item">
+            <div class="takeaway-item" style="border-left-color: #00aaff;">
               <div class="takeaway-icon" style="color: #00aaff;">
                 <i class="fas fa-piggy-bank"></i>
               </div>
               <div class="takeaway-content">
-                <div class="takeaway-title">Weekly Distribution</div>
+                <div class="takeaway-title" style="color: #00aaff;">Weekly Distribution</div>
                 <div class="takeaway-value">1.28M $REBL</div>
                 <div class="takeaway-sub">3.2M pool × γ(0.4)</div>
               </div>
@@ -569,16 +577,41 @@
     
   </main>
   
-  <!-- Include Footer -->
-  <!--#include virtual="footer.html" -->
+  <!-- Footer will be inserted here by JavaScript -->
+  <div id="footer-container"></div>
   
-  <!-- Common JavaScript -->
+  <!-- JavaScript Includes -->
+  <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
   
   <!-- Page-specific JavaScript -->
   <script>
     // Epoch-rewards specific JavaScript
     document.addEventListener('DOMContentLoaded', function() {
+      // Load header and footer
+      loadComponents().then(() => {
+        // Initialize after components are loaded
+        initializeComponents();
+      });
+    });
+    
+    async function loadComponents() {
+      try {
+        // Load header
+        const headerResponse = await fetch('header.html');
+        const headerHtml = await headerResponse.text();
+        document.getElementById('header-container').innerHTML = headerHtml;
+        
+        // Load footer
+        const footerResponse = await fetch('footer.html');
+        const footerHtml = await footerResponse.text();
+        document.getElementById('footer-container').innerHTML = footerHtml;
+      } catch (error) {
+        console.error('Error loading components:', error);
+      }
+    }
+    
+    function initializeComponents() {
       // Initialize countdowns if they exist
       if (document.getElementById('days1')) {
         updateCountdown1();
@@ -595,7 +628,7 @@
           showStatTab(tabName);
         });
       });
-    });
+    }
     
     function showStatTab(tabName) {
       // Hide all tab contents
