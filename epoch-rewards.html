@@ -2300,17 +2300,17 @@ footer {
         <h4 style="color: var(--rebel-gold); margin: 0;">Your Token Batches            <span class="tooltip-icon" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
               <i class="fas fa-question-circle"></i>
             </span> </h4>
-        <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
-          <button onclick="loadExampleCase('starter')" class="scenario-btn" style="font-size: 0.8rem;">
-            <i class="fas fa-user-graduate"></i> Starter Example
-          </button>
-          <button onclick="loadExampleCase('investor')" class="scenario-btn" style="font-size: 0.8rem;">
-            <i class="fas fa-chart-line"></i> Investor Example
-          </button>
-          <button onclick="loadExampleCase('whale')" class="scenario-btn" style="font-size: 0.8rem;">
-            <i class="fas fa-whale"></i> Whale Example
-          </button>
-        </div>
+     <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+  <button onclick="loadExampleCase('starter')" class="scenario-btn" style="font-size: 0.8rem;">
+    <i class="fas fa-user-graduate"></i> Starter (~173K $rebelinux)
+  </button>
+  <button onclick="loadExampleCase('investor')" class="scenario-btn" style="font-size: 0.8rem;">
+    <i class="fas fa-chart-line"></i> Investor (~10.4M $rebelinux)
+  </button>
+  <button onclick="loadExampleCase('whale')" class="scenario-btn" style="font-size: 0.8rem;">
+    <i class="fas fa-whale"></i> Whale (~18.5M $rebelinux)
+  </button>
+</div>
       </div>
       
       <div class="table-container">
@@ -3296,6 +3296,22 @@ function updateRowCalculations(input) {
     // Update chart
     updateChart(batchData, totalReward);
   }
+
+  // Add to calculateRewards() function after resultElement.innerHTML:
+const exampleType = getCurrentExampleType(batchData);
+if (exampleType) {
+    resultElement.innerHTML += showExampleInsights(exampleType);
+}
+
+function getCurrentExampleType(batchData) {
+    const totalAmount = batchData.reduce((sum, batch) => sum + batch.amount, 0);
+    const batchCount = batchData.length;
+    
+    if (totalAmount < 500000 && batchCount === 2) return 'starter';
+    if (totalAmount > 10000000 && totalAmount < 15000000 && batchCount >= 3) return 'investor';
+    if (totalAmount > 15000000 && batchCount >= 3) return 'whale';
+    return null;
+}
   
   // ========== CHART FUNCTIONS ==========
   function setupChartPlaceholder() {
@@ -3465,41 +3481,125 @@ function updateWhatIf() {
   }
   
   // ========== EXAMPLE CASES ==========
+// ========== EXAMPLE CASES ==========
 function loadExampleCase(type) {
     clearTokenBatches();
     
     switch(type) {
         case 'starter':
-            // Similar to ixxadgreat's first batch
-            addTokenBatch('145317', '8'); // ~145K tokens, 8 epochs
-            addTokenBatch('28077', '7');  // ~28K tokens, 7 epochs
-            // Set realistic participation
-            document.getElementById('activeParticipants').value = 40568558;
+            // Small holder example - entry-level participant
+            addTokenBatch('145317', '8'); // ~145K tokens held for 8 epochs
+            addTokenBatch('28077', '7');  // ~28K tokens held for 7 epochs
+            // Set realistic participation - total WS from Epoch 12 data
+            document.getElementById('activeParticipants').value = 45850783;
             updateParticipation();
             break;
+            
         case 'investor':
-            // Similar to akanbi1's holdings
+            // Medium-sized investor - regular participant
             addTokenBatch('2875253', '4'); // ~2.87M tokens, 4 epochs
             addTokenBatch('6039997', '2'); // ~6.04M tokens, 2 epochs
-            document.getElementById('activeParticipants').value = 40568558;
+            addTokenBatch('1500000', '3'); // ~1.5M tokens, 3 epochs
+            document.getElementById('activeParticipants').value = 45850783;
             updateParticipation();
             break;
+            
         case 'whale':
-            // Similar to odogwuofbini + sirgleam
+            // Large holder - significant stake
             addTokenBatch('6012439', '2'); // ~6.01M tokens, 2 epochs
             addTokenBatch('4390315', '2'); // ~4.39M tokens, 2 epochs
             addTokenBatch('5055383', '1'); // ~5.05M tokens, 1 epoch
-            document.getElementById('activeParticipants').value = 40568558;
+            addTokenBatch('3000000', '5'); // ~3M tokens, 5 epochs (older holding)
+            document.getElementById('activeParticipants').value = 45850783;
             updateParticipation();
             break;
+            
         default:
-            // Medium holder example
-            addTokenBatch('1500000', '1'); // Similar to ayodej651
-            document.getElementById('activeParticipants').value = 40568558;
+            // Fallback to starter
+            addTokenBatch('500000', '1');
+            document.getElementById('activeParticipants').value = 45850783;
             updateParticipation();
     }
     
+    // Add example description
+    const resultElement = document.getElementById('reward-result');
+    if (resultElement) {
+        let description = '';
+        switch(type) {
+            case 'starter':
+                description = 'Starter Example: Small holder with 173K total $rebelinux held across 2 batches. Shows how even modest holdings can earn rewards over time.';
+                break;
+            case 'investor':
+                description = 'Investor Example: Medium investor with 10.4M total $rebelinux across 3 batches. Demonstrates the power of accumulating tokens over multiple epochs.';
+                break;
+            case 'whale':
+                description = 'Whale Example: Large holder with 18.5M total $rebelinux across 4 batches. Shows how substantial holdings capture significant portions of the reward pool.';
+                break;
+        }
+        
+        resultElement.innerHTML = `
+            <div style="text-align: center; margin-bottom: var(--spacing-sm);">
+                <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.1rem;">
+                    <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
+                </span>
+            </div>
+            <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius); margin-bottom: var(--spacing-md);">
+                <p style="margin: 0; font-size: 0.9rem; color: rgba(255, 255, 255, 0.9);">
+                    ${description}
+                </p>
+            </div>
+            <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
+                Click "Calculate Rewards" to see the results!
+            </p>
+        `;
+    }
+    
     setTimeout(() => calculateRewards(), 100);
+}
+
+// Add helper function to display example insights
+function showExampleInsights(type) {
+    const insights = {
+        'starter': {
+            title: 'Starter Strategy Insights',
+            points: [
+                'Even small holdings (under 200K $rebelinux) can earn meaningful rewards',
+                'Holding for 7+ epochs activates maximum age bonus of 49%',
+                'Perfect for testing the system with minimal capital',
+                'Multiple small batches help average entry prices'
+            ]
+        },
+        'investor': {
+            title: 'Investor Strategy Insights',
+            points: [
+                '10M+ $rebelinux holdings capture significant pool percentage',
+                'Staggered purchases (different ages) maximize age bonus benefits',
+                'Regular participation builds consistent reward stream',
+                'Balanced risk with medium-term commitment'
+            ]
+        },
+        'whale': {
+            title: 'Whale Strategy Insights',
+            points: [
+                '18M+ $rebelinux can capture 2-3% of weekly reward pool',
+                'Large holdings significantly impact gamma factor calculations',
+                'Multiple batches allow for flexible entry/exit strategies',
+                'Long-term holding maximizes age bonus up to 240%'
+            ]
+        }
+    };
+    
+    const insight = insights[type];
+    if (!insight) return;
+    
+    return `
+        <div style="background: rgba(0,0,0,0.3); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-md); border-left: 4px solid var(--rebel-gold);">
+            <h5 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">${insight.title}</h5>
+            <ul style="padding-left: var(--spacing-md); margin: 0;">
+                ${insight.points.map(point => `<li style="color: rgba(255,255,255,0.8); margin-bottom: 0.3rem; font-size: 0.9rem;">${point}</li>`).join('')}
+            </ul>
+        </div>
+    `;
 }
   
   // ========== WINDOW RESIZE HANDLER ==========
