@@ -1,4 +1,5 @@
 // js/includes.js - Load header and footer dynamically
+
 async function loadComponents() {
   try {
     // Load header
@@ -23,7 +24,7 @@ async function loadComponents() {
     footerContainer.innerHTML = footerHtml;
     document.body.appendChild(footerContainer);
     
-    console.log('Components loaded successfully');
+    console.log('Header and footer loaded successfully');
     return true;
   } catch (error) {
     console.error('Error loading components:', error);
@@ -33,15 +34,16 @@ async function loadComponents() {
     headerFallback.innerHTML = `
       <div class="header-container">
         <a href="index.html" class="brand-link">
-          <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="brand-content">
             <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX Logo" width="40" height="40">
-            <div>
-              <div style="font-size: 1.8rem; font-weight: 900; background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                RebelInuX
-              </div>
+            <div class="brand-text">
+              <div class="brand-title">RebelInuX</div>
             </div>
           </div>
         </a>
+        <button class="mobile-nav-toggle" id="mobileNavToggle">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     `;
     document.body.insertBefore(headerFallback, document.body.firstChild);
@@ -51,20 +53,11 @@ async function loadComponents() {
 }
 
 // Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    loadComponents().then(() => {
-      // Initialize common scripts after components are loaded
-      if (typeof initializeCommon === 'function') {
-        initializeCommon();
-      }
-    });
-  });
-} else {
-  // DOM already loaded
+document.addEventListener('DOMContentLoaded', function() {
   loadComponents().then(() => {
+    // Initialize common functionality after components are loaded
     if (typeof initializeCommon === 'function') {
       initializeCommon();
     }
   });
-}
+});
