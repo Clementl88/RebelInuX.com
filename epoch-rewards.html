@@ -1041,6 +1041,40 @@
 .dropdown-content a.nav-artwork { color: #E0B0FF; }
 .dropdown-content a.nav-community { color: #FFFFF0; }
 .dropdown-content a.nav-whitepaper { color: #795548; }
+.dropdown-content a.nav-calculator { color: #00aaff; }
+.dropdown-content a.nav-rewards-overview { color: #9C27B0; }
+.dropdown-content a.nav-countdown { color: var(--rebel-gold); }
+.dropdown-content a.nav-claim { color: var(--rebel-red); }
+
+/* ========== REWARDS DROPDOWN SPECIFIC STYLES ========== */
+
+/* Rewards dropdown button */
+.dropbtn.nav-rewards {
+  color: #9C27B0 !important;
+  border: 1px solid rgba(156, 39, 176, 0.3) !important;
+  background: rgba(156, 39, 176, 0.05) !important;
+}
+
+.dropbtn.nav-rewards:hover {
+  background: rgba(156, 39, 176, 0.15) !important;
+}
+
+.dropbtn.nav-rewards.active {
+  background: rgba(156, 39, 176, 0.2) !important;
+}
+
+/* Dropdown divider */
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
+}
+
+/* Active page highlight in dropdown */
+.dropdown-content a.active {
+  background: rgba(156, 39, 176, 0.2) !important;
+  border-left: 3px solid #9C27B0;
+}
 
 /* Show dropdown on hover for desktop only */
 @media (min-width: 769px) {
@@ -1071,12 +1105,6 @@
   background: rgba(255, 51, 102, 0.05);
 }
 
-#nav-desktop a.nav-rewards {
-  color: #9C27B0;
-  border: 1px solid rgba(156, 39, 176, 0.3);
-  background: rgba(156, 39, 176, 0.05);
-}
-
 #nav-desktop a.nav-tokenomics {
   color: #00aaff;
   border: 1px solid rgba(0, 170, 255, 0.3);
@@ -1098,10 +1126,6 @@
 /* Color-specific hover effects */
 #nav-desktop a.nav-trade:hover {
   background: rgba(255, 51, 102, 0.15) !important;
-}
-
-#nav-desktop a.nav-rewards:hover {
-  background: rgba(156, 39, 176, 0.15) !important;
 }
 
 #nav-desktop a.nav-tokenomics:hover {
@@ -1456,26 +1480,40 @@ footer {
     <nav id="nav-desktop">
       <!-- PRIMARY ACTIONS -->
       <a href="trade.html" class="nav-trade">
-        <i class="fas fa-chart-line"></i>Trade
+        <i class="fas fa-chart-line"></i> Trade
       </a>
       
-      <!-- REWARDS ECOSYSTEM (Grouped together) -->
-  <a href="epoch-rewards.html" class="nav-rewards active">
-    <i class="fas fa-gift"></i>Rewards
-  </a>
-  <a href="REBL-calculator.html" class="nav-calculator">
-    <i class="fas fa-calculator"></i>Calculator
-  </a>
-  
-  <!-- CORE INFORMATION -->
-  <a href="tokenomics.html" class="nav-tokenomics">
-    <i class="fas fa-coins"></i>Tokenomics
-  </a>
-  <a href="security.html" class="nav-security">
-    <i class="fas fa-shield-alt"></i>Security
-  </a>
+      <!-- REWARDS DROPDOWN -->
+      <div class="dropdown">
+        <button class="dropbtn nav-rewards">
+          <i class="fas fa-gift"></i> Rewards
+        </button>
+        <div class="dropdown-content">
+          <a href="epoch-rewards.html" class="nav-rewards-overview">
+            <i class="fas fa-info-circle"></i> Rewards Overview
+          </a>
+          <a href="rebl-calculator.html" class="nav-calculator">
+            <i class="fas fa-calculator"></i> Reward Calculator
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="epoch-rewards.html#current-epochs" class="nav-countdown">
+            <i class="fas fa-clock"></i> Live Countdown
+          </a>
+          <a href="epoch-rewards.html#how-to-claim" class="nav-claim">
+            <i class="fas fa-wallet"></i> How to Claim
+          </a>
+        </div>
+      </div>
+      
+      <!-- CORE INFORMATION -->
+      <a href="tokenomics.html" class="nav-tokenomics">
+        <i class="fas fa-coins"></i> Tokenomics
+      </a>
+      <a href="security.html" class="nav-security">
+        <i class="fas fa-shield-alt"></i> Security
+      </a>
 
-      <!-- DROPDOWN -->
+      <!-- MORE DROPDOWN -->
       <div class="dropdown">
         <button class="dropbtn nav-more">
           <i class="fas fa-ellipsis-h"></i> More
@@ -1496,9 +1534,9 @@ footer {
           <a href="artwork.html" class="nav-artwork">
             <i class="fas fa-palette"></i> Artwork
           </a>
-      <a href="community.html" class="nav-community">
-        <i class="fas fa-users"></i> Community
-      </a>
+          <a href="community.html" class="nav-community">
+            <i class="fas fa-users"></i> Community
+          </a>
         </div>
       </div>
     </nav>
@@ -1517,7 +1555,7 @@ footer {
         <a href="#current-epochs" class="cta-button gold">
           <i class="fas fa-clock"></i> Live Countdowns
         </a>
-        <a href="#rebl-calculator" class="cta-button">
+        <a href="rebl-calculator.html" class="cta-button">
           <i class="fas fa-calculator"></i> Reward Calculator
         </a>
       </div>
@@ -1617,7 +1655,7 @@ footer {
       <a href="#new-formula-details" class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));">
         <i class="fas fa-calculator"></i> View New Formula
       </a>
-      <a href="#rebl-calculator" class="cta-button gold">
+      <a href="rebl-calculator.html" class="cta-button gold">
         <i class="fas fa-chart-line"></i> Try Calculator
       </a>
     </div>
@@ -2315,7 +2353,7 @@ footer {
     </div>
     
     <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); justify-content: center; margin: var(--spacing-xl) 0;">
-      <a href="REBL-calculator.html" class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); min-width: 300px; font-size: 1.2rem;">
+      <a href="rebl-calculator.html" class="cta-button" style="background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)); min-width: 300px; font-size: 1.2rem;">
         <i class="fas fa-external-link-alt"></i> OPEN ENHANCED CALCULATOR
       </a>
       <a href="#new-formula-details" class="cta-button gold" style="min-width: 250px;">
@@ -2371,23 +2409,26 @@ footer {
             </p>
           </div>
           
+          <!-- ADD THIS NEW DETAILED QUESTION -->
           <div>
             <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> How are rewards calculated?
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> How are rewards calculated exactly?
             </h4>
             <p style="color: rgba(255, 255, 255, 0.9);">
-              Using the new sustainable formula: Your weighted share ÷ total active weighted shares × 3.2M $REBL × gamma factor.
+              Using our sustainable formula: Rewardᵢ = (WSᵢ / ∑WS) × 3.2M × γ. 
+              <a href="rebl-calculator.html#calculator-faq" style="color: #00aaff; font-weight: 600;">See detailed formula explanations →</a>
             </p>
           </div>
-
+          
+          <!-- UPDATE THIS EXISTING QUESTION TO BE SIMPLER -->
           <div>
-  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-    <i class="fas fa-question-circle" style="margin-right: 10px;"></i> How do I estimate my rewards?
-  </h4>
-  <p style="color: rgba(255, 255, 255, 0.9);">
-    Use our <a href="REBL-calculator.html" style="color: #00aaff; font-weight: 600;">Reward Calculator</a> for personalized estimates based on your token holdings and age.
-  </p>
-</div>
+            <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+              <i class="fas fa-question-circle" style="margin-right: 10px;"></i> How do I estimate my rewards?
+            </h4>
+            <p style="color: rgba(255, 255, 255, 0.9);">
+              Use our <a href="rebl-calculator.html" style="color: #00aaff; font-weight: 600;">Reward Calculator</a> for personalized estimates based on your token holdings and age.
+            </p>
+          </div>
           
           <div>
             <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
@@ -2669,6 +2710,9 @@ footer {
     
     // Animate cards on scroll
     initScrollAnimations();
+    
+    // Set active navigation item
+    setActiveNavItem();
   });
   
   // ========== MOBILE NAVIGATION ==========
@@ -2881,6 +2925,32 @@ footer {
     if (hours2) hours2.textContent = hours.toString().padStart(2, '0');
     if (minutes2) minutes2.textContent = minutes.toString().padStart(2, '0');
     if (seconds2) seconds2.textContent = seconds.toString().padStart(2, '0');
+  }
+  
+  // ========== ACTIVE NAVIGATION HIGHLIGHT ==========
+  function setActiveNavItem() {
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Remove all active classes from nav items
+    document.querySelectorAll('#nav-desktop a, .dropbtn').forEach(el => {
+      el.classList.remove('active');
+    });
+    
+    // Set active based on current page
+    if (currentPage === 'epoch-rewards.html') {
+      document.querySelector('.dropbtn.nav-rewards')?.classList.add('active');
+      document.querySelector('a.nav-rewards-overview')?.classList.add('active');
+    } else if (currentPage === 'rebl-calculator.html') {
+      document.querySelector('.dropbtn.nav-rewards')?.classList.add('active');
+      document.querySelector('a.nav-calculator')?.classList.add('active');
+    } else if (currentPage === 'trade.html') {
+      document.querySelector('a.nav-trade')?.classList.add('active');
+    } else if (currentPage === 'tokenomics.html') {
+      document.querySelector('a.nav-tokenomics')?.classList.add('active');
+    } else if (currentPage === 'security.html') {
+      document.querySelector('a.nav-security')?.classList.add('active');
+    }
+    // Add more conditions for other pages as needed
   }
   
   // ========== WINDOW RESIZE HANDLER ==========
