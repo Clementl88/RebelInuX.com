@@ -1,0 +1,220 @@
+<!-- calculator-embed.html -->
+<div class="calculator-container">
+  <p>
+    <strong>Current $rebelinux Supply (CS):</strong>
+    <span class="tooltip-icon" data-tippy-content="The total circulating supply of $rebelinux tokens.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">499,242,047 $rebelinux</span>
+  </p>
+  <p>
+    <strong>Weekly Epoch Reward Pool (WERP):</strong>
+    <span class="tooltip-icon" data-tippy-content="Fixed weekly distribution of 3.2M $REBL from treasury.">
+      <i class="fas fa-question-circle"></i>
+    </span>
+    <span class="info-value">3,200,000 $REBL</span>
+  </p>
+</div>
+
+<!-- Separated Important Note -->
+<div class="important-note">
+  <i class="fas fa-lightbulb"></i>
+  <p>
+    <strong>New Sustainable Formula:</strong> Rewards are now calculated based on active participants only. Your share is proportional to your weighted tokens among all current epoch participants, with automatic scaling for participation levels.
+  </p>
+</div>
+
+<div class="token-batches-section">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap; gap: var(--spacing-sm);">
+    <h4 style="color: var(--rebel-gold); margin: 0;">Your Token Batches            <span class="tooltip-icon" data-tippy-content="Add each batch of tokens you hold, along with how many epochs you've held them.">
+          <i class="fas fa-question-circle"></i>
+        </span> </h4>
+    <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+      <button onclick="loadExampleCase('starter')" class="scenario-btn" style="font-size: 0.8rem;">
+        <i class="fas fa-user-graduate"></i> Starter (~173K $rebelinux)
+      </button>
+      <button onclick="loadExampleCase('investor')" class="scenario-btn" style="font-size: 0.8rem;">
+        <i class="fas fa-chart-line"></i> Investor (~10.4M $rebelinux)
+      </button>
+      <button onclick="loadExampleCase('whale')" class="scenario-btn" style="font-size: 0.8rem;">
+        <i class="fas fa-whale"></i> Whale (~18.5M $rebelinux)
+      </button>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table id="token-batches-table">
+      <thead>
+        <tr>
+          <th>$rebelinux Amount         <span class="tooltip-icon" data-tippy-content="Amount of $rebelinux tokens you hold">
+      <i class="fas fa-question-circle"></i></th>
+          <th>Age (Epochs)   <span class="tooltip-icon" data-tippy-content="The number of epochs you've held this batch of $rebelinux tokens (max 20)">
+      <i class="fas fa-question-circle"></i>
+    </span></th>
+          <th>Weighted Value  <span class="tooltip-icon" data-tippy-content="The value of this $rebelinux batch, weighted by how long you've held it">
+      <i class="fas fa-question-circle"></i>
+    </span></th>
+          <th>Estimated $REBL  <span class="tooltip-icon" data-tippy-content="Estimated $REBL reward for this $rebelinux batch">
+      <i class="fas fa-question-circle"></i>
+    </span></th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be added dynamically -->
+      </tbody>
+      <tfoot id="table-footer" style="display: none;">
+        <tr style="background: rgba(255, 51, 102, 0.1);">
+          <td><strong>Average:</strong></td>
+          <td><strong id="avg-age">0</strong></td>
+          <td><strong id="avg-weighted">0</strong></td>
+          <td><strong id="avg-reward">0 $REBL</strong></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  
+  <div class="batch-controls">
+    <button onclick="addTokenBatch()" class="batch-btn add-btn">
+      <i class="fas fa-plus"></i> Add Batch
+    </button>
+    <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
+      <i class="fas fa-trash"></i> Clear All
+    </button>
+  </div>
+  
+  <div style="text-align: center; margin: var(--spacing-md) 0;">
+    <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.7);">
+      <i class="fas fa-lightbulb"></i> Click an example above to see how different holding strategies affect rewards
+    </p>
+  </div>
+</div>
+
+<!-- Participation Settings -->
+<div style="background: rgba(0,0,0,0.4); padding: var(--spacing-md); border-radius: var(--border-radius); margin: var(--spacing-lg) 0; border: 1px solid var(--rebel-gold);">
+  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+    <i class="fas fa-users"></i> Participation Settings
+  </h4>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+    <div>
+      <label style="display: flex; justify-content: space-between; color: white; font-size: 0.9rem; margin-bottom: 0.5rem;">
+        Total Active Participants (∑WS):
+        <span id="activeParticipantsValue" style="color: var(--rebel-gold); font-weight: bold;">100M</span>
+      </label>
+      <input type="range" id="activeParticipants" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
+    </div>
+    <div>
+      <label style="display: flex; justify-content: space-between; color: white; font-size: 0.9rem; margin-bottom: 0.5rem;">
+        Gamma Scale (γ):
+        <span id="gammaValue" style="color: #00aaff; font-weight: bold;">1.00</span>
+      </label>
+      <div style="height: 6px; background: linear-gradient(90deg, #ff3366 40%, #ffcc00 100%); border-radius: 3px;"></div>
+    </div>
+  </div>
+</div>
+
+<button onclick="calculateRewards()" class="calculate-btn">
+  <i class="fas fa-calculator"></i> CALCULATE REWARDS
+</button>
+
+<div id="reward-result">
+  Enter your token batches above to see your estimated rewards!
+</div>
+
+<!-- Chart Container -->
+<div class="chart-container">
+  <canvas id="rewardChart"></canvas>
+  <div id="chartPlaceholder" class="chart-placeholder">
+    <i class="fas fa-chart-pie"></i>
+    <p>Your reward distribution will appear here after calculation</p>
+  </div>
+</div>
+
+<!-- What If Calculator -->
+<div class="what-if-container">
+  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
+    <i class="fas fa-chart-line"></i> Growth Simulator: Project Your Earnings
+  </h4>
+  
+  <div style="background: rgba(255, 204, 0, 0.05); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); border-left: 3px solid var(--rebel-gold);">
+    <p style="margin: 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">
+      <strong>See how your strategy affects rewards:</strong> Adjust the sliders to simulate buying more tokens or holding through multiple epochs. Watch how the <strong>age bonus</strong> and <strong>compounding effect</strong> multiply your $REBL earnings.
+    </p>
+  </div>
+  
+  <!-- Sliders -->
+  <div class="slider-group">
+    <div class="slider-container">
+      <label>
+        Token Amount:
+        <span id="whatIfAmountValue" class="slider-value">10,000,000</span>
+      </label>
+      <input type="range" id="whatIfAmount" min="0" max="500000000" step="100000" value="10000000" oninput="updateWhatIf()" class="slider">
+    </div>
+    
+    <div class="slider-container">
+      <label>
+        Hold Time (Epochs):
+        <span id="whatIfEpochsValue" class="slider-value">10</span>
+      </label>
+      <input type="range" id="whatIfEpochs" min="1" max="20" value="10" oninput="updateWhatIf()" class="slider">
+    </div>
+  </div>
+
+  <!-- Preset Scenarios -->
+  <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+    <button onclick="setWhatIfScenario(1000000, 5)" class="scenario-btn">Starter (1M, 5 Epochs)</button>
+    <button onclick="setWhatIfScenario(10000000, 10)" class="scenario-btn">Established (10M, 10 Epochs)</button>
+    <button onclick="setWhatIfScenario(50000000, 20)" class="scenario-btn">Whale (50M, 20 Epochs)</button>
+  </div>
+  
+  <!-- Results -->
+  <div style="text-align: center;">
+    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
+      <i class="fas fa-crown"></i> Projected Reward
+    </h4>
+    <div id="whatIfReward" style="font-size: 2.5rem; font-weight: 900; color: var(--rebel-red); margin: var(--spacing-sm) 0;">
+      64,000 $REBL
+    </div>
+  </div>
+  
+  <!-- Context -->
+  <div class="grid-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-top: var(--spacing-md); font-size: 0.9rem;">
+    <div id="returnPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 51, 102, 0.1); border-radius: var(--border-radius);">
+      <div style="color: var(--rebel-gold); font-weight: bold;" id="returnPercentValue">0.64%</div>
+      <div style="color: rgba(255, 255, 255, 0.7);">Return on $rebelinux</div>
+    </div>
+    <div id="poolPercentage" style="text-align: center; padding: var(--spacing-sm); background: rgba(255, 204, 0, 0.1); border-radius: var(--border-radius);">
+      <div style="color: var(--rebel-gold); font-weight: bold;" id="poolPercentValue">2.00%</div>
+      <div style="color: rgba(255, 255, 255, 0.7);">Of Epoch Pool</div>
+    </div>
+  </div>
+  
+  <!-- Insight -->
+  <div style="margin-top: var(--spacing-lg); text-align: center;">
+    <div style="display: inline-flex; align-items: center; gap: var(--spacing-sm); background: rgba(0, 0, 0, 0.4); padding: var(--spacing-md); border-radius: var(--border-radius); border: 1px solid var(--rebel-red);">
+      <i class="fas fa-lightbulb" style="color: var(--rebel-gold); font-size: 1.2rem;"></i>
+      <div style="text-align: left;">
+        <div style="font-weight: bold; color: var(--rebel-gold); font-size: 0.9rem;">Insight:</div>
+        <div class="insight-text" style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.8);">
+          Holding for <strong>10 epochs</strong> with <strong>10M $rebelinux</strong> earns you <strong>64,000 $REBL</strong>—equivalent to <strong>2% of the weekly pool!</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formula Explanation -->
+<div style="margin-top: var(--spacing-xl); padding: var(--spacing-md); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 1px solid var(--rebel-gold);">
+  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+    <i class="fas fa-calculator"></i> Formula from Actual Execution
+  </h4>
+  <p style="text-align: center; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8);">
+    <strong>Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × 0.4</strong><br>
+    <strong>WSᵢ =</strong> Token Amount × (1 + 0.07 × min(Age, 20))<br>
+    <strong>∑WS =</strong> Total weighted shares of all participants<br>
+    <strong>γ = 0.4 (fixed)</strong><br>
+    <small>Effective distribution: 3.2M × 0.4 = 1.28M $REBL weekly</small>
+  </p>
+</div>
