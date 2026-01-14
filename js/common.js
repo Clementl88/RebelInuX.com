@@ -1,16 +1,14 @@
-// common.js - Shared JavaScript for all pages
-// Global variables
-let rewardChart = null;
+// js/common.js - Common functionality for all pages
 
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize common components
+function initializeCommon() {
   // Hide loader
   setTimeout(function() {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('hidden');
   }, 1000);
   
-  // Initialize Tippy.js tooltips
+  // Initialize Tippy.js tooltips if available
   if (typeof tippy !== 'undefined') {
     tippy('[data-tippy-content]', {
       theme: 'light-border',
@@ -47,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateCountdown1, 1000);
     setInterval(updateCountdown2, 1000);
   }
-});
+}
 
 // ========== MOBILE NAVIGATION ==========
 function initializeMobileNav() {
@@ -149,7 +147,7 @@ function initStatsTabs() {
   const tabButtons = document.querySelectorAll('.stat-tab');
   tabButtons.forEach(button => {
     button.addEventListener('click', function() {
-      const tabName = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+      const tabName = this.dataset.tab;
       showStatTab(tabName);
     });
   });
@@ -171,9 +169,7 @@ function showStatTab(tabName) {
   if (targetTab) targetTab.classList.add('active');
   
   // Activate clicked tab button
-  const activeButton = Array.from(document.querySelectorAll('.stat-tab')).find(btn => 
-    btn.getAttribute('onclick')?.includes(tabName)
-  );
+  const activeButton = document.querySelector(`.stat-tab[data-tab="${tabName}"]`);
   if (activeButton) activeButton.classList.add('active');
 }
 
@@ -200,65 +196,6 @@ function initScrollAnimations() {
   
   window.addEventListener('scroll', animateCards);
   animateCards();
-}
-
-// ========== COUNTDOWN FUNCTIONS ==========
-function updateCountdown1() {
-  const epochEndDate = new Date("2025-12-28T22:00:00").getTime();
-  const now = new Date().getTime();
-  const distance = epochEndDate - now;
-  
-  const days1 = document.getElementById('days1');
-  const hours1 = document.getElementById('hours1');
-  const minutes1 = document.getElementById('minutes1');
-  const seconds1 = document.getElementById('seconds1');
-  
-  if (!days1 || distance < 0) {
-    if (days1) days1.textContent = "00";
-    if (hours1) hours1.textContent = "00";
-    if (minutes1) minutes1.textContent = "00";
-    if (seconds1) seconds1.textContent = "00";
-    return;
-  }
-  
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  
-  if (days1) days1.textContent = days.toString().padStart(2, '0');
-  if (hours1) hours1.textContent = hours.toString().padStart(2, '0');
-  if (minutes1) minutes1.textContent = minutes.toString().padStart(2, '0');
-  if (seconds1) seconds1.textContent = seconds.toString().padStart(2, '0');
-}
-
-function updateCountdown2() {
-  const epochStartDate = new Date("2025-12-28T22:00:00").getTime();
-  const now = new Date().getTime();
-  const distance = epochStartDate - now;
-  
-  const days2 = document.getElementById('days2');
-  const hours2 = document.getElementById('hours2');
-  const minutes2 = document.getElementById('minutes2');
-  const seconds2 = document.getElementById('seconds2');
-  
-  if (!days2 || distance < 0) {
-    if (days2) days2.textContent = "00";
-    if (hours2) hours2.textContent = "00";
-    if (minutes2) minutes2.textContent = "00";
-    if (seconds2) seconds2.textContent = "00";
-    return;
-  }
-  
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  
-  if (days2) days2.textContent = days.toString().padStart(2, '0');
-  if (hours2) hours2.textContent = hours.toString().padStart(2, '0');
-  if (minutes2) minutes2.textContent = minutes.toString().padStart(2, '0');
-  if (seconds2) seconds2.textContent = seconds.toString().padStart(2, '0');
 }
 
 // ========== ACTIVE NAVIGATION HIGHLIGHT ==========
@@ -301,3 +238,8 @@ window.addEventListener('resize', function() {
     if (dropbtn) dropbtn.classList.remove('active');
   }
 });
+
+// Export for use in other scripts
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { initializeCommon };
+}
