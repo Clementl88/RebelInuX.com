@@ -2398,7 +2398,7 @@ footer {
         </div>
     </div>
     
-    <!-- Gamma Factor Breakdown - ADD THIS HERE -->
+    <!-- Gamma Factor Breakdown -->
     <div style="background: rgba(0, 170, 255, 0.1); padding: var(--spacing-md); border-radius: var(--border-radius); margin-top: var(--spacing-md);">
         <h5 style="color: #00aaff; margin-bottom: var(--spacing-sm);">
             <i class="fas fa-cogs"></i> Gamma Factor Components
@@ -2862,6 +2862,17 @@ footer {
     
     // Initialize what-if calculator
     updateWhatIf();
+
+        // DEBUG: Check if new elements exist
+    console.log('Checking gamma elements:');
+    console.log('gammaTerm1:', document.getElementById('gammaTerm1'));
+    console.log('gammaTerm2:', document.getElementById('gammaTerm2'));
+    console.log('gammaResult:', document.getElementById('gammaResult'));
+    console.log('totalActiveWS:', document.getElementById('totalActiveWS'));
+    console.log('gammaDisplay:', document.getElementById('gammaDisplay'));
+    
+    // Initialize gamma display
+    updateParticipation();
     
     // Setup chart placeholder
     setupChartPlaceholder();
@@ -3165,11 +3176,23 @@ function updateParticipation() {
     const gammaTerm2 = document.getElementById('gammaTerm2');
     const gammaResult = document.getElementById('gammaResult');
     
-    if (!activeParticipants || !activeParticipantsValue || !gammaValue) return;
+    // Check if elements exist (they should after DOM loads)
+    if (!activeParticipants) {
+        console.error('activeParticipants element not found');
+        return;
+    }
     
-    const P = parseInt(activeParticipants.value);
-    activeParticipantsValue.textContent = (P/1000000).toFixed(1) + 'M';
-    if (totalActiveWS) totalActiveWS.textContent = P.toLocaleString();
+    const P = parseInt(activeParticipants.value) || 100000000;
+    
+    // Update active participants display
+    if (activeParticipantsValue) {
+        activeParticipantsValue.textContent = (P/1000000).toFixed(1) + 'M';
+    }
+    
+    // Update totalActiveWS if it exists
+    if (totalActiveWS) {
+        totalActiveWS.textContent = P.toLocaleString();
+    }
     
     // Calculate gamma factor based on NEW FORMULA
     const CS = 499242047.00; // Circulating supply
@@ -3177,7 +3200,8 @@ function updateParticipation() {
     const term2 = CS / P;
     const gamma = Math.max(0.4, Math.min(1, term1, term2));
     
-    gammaValue.textContent = gamma.toFixed(2);
+    // Update gamma displays
+    if (gammaValue) gammaValue.textContent = gamma.toFixed(2);
     if (gammaDisplay) gammaDisplay.textContent = gamma.toFixed(2);
     
     // Update gamma components display
@@ -3185,6 +3209,7 @@ function updateParticipation() {
     if (gammaTerm2) gammaTerm2.textContent = term2.toFixed(2);
     if (gammaResult) gammaResult.textContent = gamma.toFixed(2);
     
+    // Recalculate rewards
     calculateRewards();
 }
   
