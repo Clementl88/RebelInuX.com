@@ -735,15 +735,34 @@ footer {
   }
 }
 
-/* ========== DESKTOP-ONLY FIXES ========== */
-@media (min-width: 769px) {
-  /* Hide Mobile Buy Container on desktop */
-  .mobile-buy-container {
+/* ========== GUARANTEED MOBILE DROPDOWN FIX ========== */
+@media (max-width: 768px) {
+  /* Ensure dropdown is hidden by default */
+  .dropdown-content {
     display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
   }
   
-  /* Show Desktop Buy Button */
-  .header-cta.desktop-only {
-    display: flex !important;
+  /* Force show when display:block is set */
+  .dropdown-content[style*="display: block"] {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
   }
+  
+  /* Make sure dropdown button is clickable */
+  .dropbtn {
+    cursor: pointer !important;
+    user-select: none !important;
+  }
+  
+  /* Visual feedback for active dropdown */
+  .dropbtn.active {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+}
 }
