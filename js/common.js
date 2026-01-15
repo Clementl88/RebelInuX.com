@@ -11,9 +11,6 @@ function initializeCommon() {
   // Initialize mobile navigation
   initializeMobileNav();
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
-  
   // Initialize back-to-top button
   initBackToTop();
   
@@ -22,6 +19,9 @@ function initializeCommon() {
   
   // Initialize animations
   initScrollAnimations();
+  
+  // Initialize mobile touch improvements
+  initializeMobileTouch();
   
   console.log('Common components initialized');
 }
@@ -46,7 +46,6 @@ function initializeMobileNav() {
     // Close all dropdowns when menu closes
     document.querySelectorAll('.dropdown-content').forEach(content => {
       content.style.display = 'none';
-      content.classList.remove('active');
     });
     
     document.querySelectorAll('.dropbtn').forEach(btn => {
@@ -103,7 +102,7 @@ function initializeMobileNav() {
   });
 }
 
-// ========== FIXED MOBILE DROPDOWN ==========
+// ========== MOBILE DROPDOWN (SIMPLE & RELIABLE) ==========
 function initializeMobileDropdown() {
   const dropbtns = document.querySelectorAll('.dropbtn');
   
@@ -111,6 +110,14 @@ function initializeMobileDropdown() {
   
   // Add click handler for mobile dropdowns
   dropbtns.forEach(dropbtn => {
+    // Remove any existing listeners to prevent duplicates
+    dropbtn.replaceWith(dropbtn.cloneNode(true));
+  });
+  
+  // Re-select after cloning
+  const freshDropbtns = document.querySelectorAll('.dropbtn');
+  
+  freshDropbtns.forEach(dropbtn => {
     dropbtn.addEventListener('click', function(e) {
       // Only handle on mobile
       if (window.innerWidth <= 768) {
@@ -162,6 +169,21 @@ function initializeMobileDropdown() {
         }
       }
     });
+  });
+  
+  // Close dropdowns when clicking elsewhere (mobile only)
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+      const clickedDropdown = e.target.closest('.dropdown');
+      if (!clickedDropdown) {
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+          content.style.display = 'none';
+        });
+        document.querySelectorAll('.dropbtn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+      }
+    }
   });
   
   // Handle window resize
@@ -260,6 +282,30 @@ function initScrollAnimations() {
   animateCards();
 }
 
+// ========== MOBILE TOUCH IMPROVEMENTS ==========
+function initializeMobileTouch() {
+  // Prevent zoom on double-tap
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+  
+  // Add touch feedback for buttons
+  document.querySelectorAll('a, button').forEach(element => {
+    element.addEventListener('touchstart', function() {
+      this.classList.add('touch-active');
+    });
+    
+    element.addEventListener('touchend', function() {
+      this.classList.remove('touch-active');
+    });
+  });
+}
+
 // ========== ORIENTATION CHANGE ==========
 window.addEventListener('orientationchange', function() {
   // Close mobile menu on orientation change
@@ -270,71 +316,47 @@ window.addEventListener('orientationchange', function() {
   }
 });
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-  initializeCommon();
-  initializeMobileTouch();
-});
-
-// ========== SIMPLE MOBILE DROPDOWN FIX ==========
-// Add this RIGHT HERE - at the very end of the file
-function fixMobileDropdown() {
+// ========== ENSURE MOBILE DROPDOWN WORKS ==========
+// This is the guaranteed fix - call it after everything loads
+function ensureMobileDropdownWorks() {
+  console.log('Ensuring mobile dropdown works...');
+  
   const dropbtns = document.querySelectorAll('.dropbtn');
+  console.log('Found dropdown buttons:', dropbtns.length);
   
   dropbtns.forEach(dropbtn => {
-    dropbtn.addEventListener('click', function(e) {
-      // Only on mobile
+    // Add direct onclick as backup
+    dropbtn.onclick = function(e) {
       if (window.innerWidth <= 768) {
         e.preventDefault();
         e.stopPropagation();
         
         const dropdownContent = this.nextElementSibling;
-        const isActive = dropdownContent.style.display === 'block';
+        console.log('Dropdown button clicked, content:', dropdownContent);
         
-        // Close all other dropdowns
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-          if (content !== dropdownContent) {
-            content.style.display = 'none';
-          }
-        });
-        
-        // Remove active from other buttons
-        document.querySelectorAll('.dropbtn').forEach(btn => {
-          if (btn !== this) {
-            btn.classList.remove('active');
-          }
-        });
-        
-        // Toggle current
-        if (!isActive) {
-          dropdownContent.style.display = 'block';
-          this.classList.add('active');
-        } else {
+        if (dropdownContent.style.display === 'block') {
           dropdownContent.style.display = 'none';
           this.classList.remove('active');
+        } else {
+          dropdownContent.style.display = 'block';
+          this.classList.add('active');
         }
       }
-    });
-  });
-  
-  // Close dropdowns when clicking elsewhere
-  document.addEventListener('click', function(e) {
-    if (window.innerWidth <= 768) {
-      const clickedDropdown = e.target.closest('.dropdown');
-      if (!clickedDropdown) {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-          content.style.display = 'none';
-        });
-        document.querySelectorAll('.dropbtn').forEach(btn => {
-          btn.classList.remove('active');
-        });
-      }
-    }
+    };
   });
 }
 
-// Call it
-document.addEventListener('DOMContentLoaded', fixMobileDropdown);
+// ========== MAIN INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', function() {
+  initializeCommon();
+  initializeMobileDropdown();
+  ensureMobileDropdownWorks();
+  
+  // Debug info
+  console.log('Mobile dropdown initialized');
+  console.log('Window width:', window.innerWidth);
+  console.log('Is mobile?', window.innerWidth <= 768);
+});
 
 // Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
