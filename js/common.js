@@ -77,70 +77,86 @@ function setupMobileNav() {
 function setupMobileDropdown() {
   console.log('Setting up mobile dropdown...');
   
+  // Find all dropdown buttons
+  const dropbtns = document.querySelectorAll('.dropbtn');
+  console.log('Found dropdown buttons:', dropbtns.length);
+  
+  if (!dropbtns.length) {
+    console.log('No dropdown buttons found!');
+    return;
+  }
+  
   // Helper function to close all dropdowns
   function closeAllDropdowns() {
+    console.log('Closing all dropdowns');
     document.querySelectorAll('.dropdown-content').forEach(content => {
       content.style.display = 'none';
+    });
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.classList.remove('active');
     });
     document.querySelectorAll('.dropbtn').forEach(btn => {
       btn.classList.remove('active');
     });
   }
   
-  // Use event delegation for dropdown buttons
-  document.addEventListener('click', function(e) {
-    // Desktop: don't interfere with CSS hover
-    if (window.innerWidth > 768) return;
-    
-    // Check if clicked on dropdown button
-    const dropbtn = e.target.closest('.dropbtn');
-    if (dropbtn) {
+  // Add click handlers to each dropdown button
+  dropbtns.forEach(dropbtn => {
+    dropbtn.addEventListener('click', function(e) {
+      // Only handle on mobile
+      if (window.innerWidth > 768) return;
+      
+      console.log('Dropdown button clicked');
       e.preventDefault();
       e.stopPropagation();
       
-      const dropdown = dropbtn.closest('.dropdown');
+      const dropdown = this.closest('.dropdown');
       const dropdownContent = dropdown.querySelector('.dropdown-content');
       
-      // Check if this dropdown is already open
-      const isOpen = dropdownContent.style.display === 'block';
+      // Check if already open
+      const isOpen = dropdown.classList.contains('active');
       
-      // Close all dropdowns first
+      // Close all other dropdowns
       closeAllDropdowns();
       
-      // Toggle current dropdown if it wasn't open
+      // Toggle this dropdown
       if (!isOpen) {
+        console.log('Opening dropdown');
+        dropdown.classList.add('active');
         dropdownContent.style.display = 'block';
-        dropbtn.classList.add('active');
+        this.classList.add('active');
+      } else {
+        console.log('Dropdown already open, closing it');
       }
-      
-      return; // Stop here, we handled the click
-    }
+    });
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth > 768) return;
     
-    // Close dropdown if clicking a link inside
-    if (e.target.closest('.dropdown-content a')) {
-      setTimeout(() => {
-        closeAllDropdowns();
-      }, 100);
-      return;
-    }
-    
-    // Close dropdown if clicking outside (but not on mobile nav toggle)
-    if (!e.target.closest('.dropdown') && 
-        !e.target.closest('#mobileNavToggle') &&
-        !e.target.closest('#nav-desktop')) {
+    if (!e.target.closest('.dropdown') && !e.target.closest('#mobileNavToggle')) {
       closeAllDropdowns();
     }
   });
   
-  // Handle window resize
+  // Close dropdown when clicking a link inside it
+  document.querySelectorAll('.dropdown-content a').forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        setTimeout(closeAllDropdowns, 100);
+      }
+    });
+  });
+  
+  // Reset on window resize
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) {
-      // Reset for desktop - let CSS handle it
       document.querySelectorAll('.dropdown-content').forEach(content => {
         content.style.display = '';
       });
-      document.querySelectorAll('.dropbtn').forEach(btn => {
-        btn.classList.remove('active');
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        dropdown.classList.remove('active');
       });
     }
   });
