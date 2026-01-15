@@ -8,10 +8,10 @@ function initializeCommon() {
     if (loader) loader.classList.add('hidden');
   }, 500);
   
-  // Initialize mobile navigation
+  // Initialize mobile navigation FIRST
   setupMobileNav();
   
-  // Setup mobile dropdown - SIMPLE VERSION
+  // Setup mobile dropdown
   setupMobileDropdown();
   
   // Other initializations
@@ -31,9 +31,17 @@ function setupMobileNav() {
   
   mobileToggle.addEventListener('click', function(e) {
     e.stopPropagation();
+    e.preventDefault(); // Prevent other handlers
+    
+    const isOpening = !navDesktop.classList.contains('active');
     navDesktop.classList.toggle('active');
     
-    // Toggle between ☰ and × symbols (for text icon)
+    // Close any open dropdowns when opening mobile nav
+    if (isOpening) {
+      closeAllDropdowns();
+    }
+    
+    // Toggle between ☰ and × symbols
     if (navDesktop.classList.contains('active')) {
       this.innerHTML = '×'; // Close icon
       document.body.style.overflow = 'hidden';
@@ -43,9 +51,21 @@ function setupMobileNav() {
     }
   });
   
-  // Close menu when clicking outside
+  // Close menu when clicking outside (mobile only)
   document.addEventListener('click', function(e) {
+    if (window.innerWidth > 768) return; // Desktop: don't handle
+    
     if (!navDesktop.contains(e.target) && !mobileToggle.contains(e.target)) {
+      navDesktop.classList.remove('active');
+      mobileToggle.innerHTML = '☰';
+      document.body.style.overflow = '';
+      closeAllDropdowns();
+    }
+  });
+  
+  // Close menu on window resize to desktop
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
       navDesktop.classList.remove('active');
       mobileToggle.innerHTML = '☰';
       document.body.style.overflow = '';
@@ -57,77 +77,65 @@ function setupMobileNav() {
 function setupMobileDropdown() {
   console.log('Setting up mobile dropdown...');
   
-  // Use event delegation for reliability
+  // Helper function to close all dropdowns
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.style.display = 'none';
+    });
+    document.querySelectorAll('.dropbtn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+  }
+  
+  // Use event delegation for dropdown buttons
   document.addEventListener('click', function(e) {
-    // Check if we're on mobile
+    // Desktop: don't interfere with CSS hover
     if (window.innerWidth > 768) return;
     
     // Check if clicked on dropdown button
-    if (e.target.closest('.dropbtn')) {
-      const dropbtn = e.target.closest('.dropbtn');
-      const dropdown = dropbtn.closest('.dropdown');
-      const dropdownContent = dropdown.querySelector('.dropdown-content');
-      
-      // Prevent default only for mobile
+    const dropbtn = e.target.closest('.dropbtn');
+    if (dropbtn) {
       e.preventDefault();
       e.stopPropagation();
+      
+      const dropdown = dropbtn.closest('.dropdown');
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
       
       // Check if this dropdown is already open
       const isOpen = dropdownContent.style.display === 'block';
       
-      // Close ALL other dropdowns first
-      document.querySelectorAll('.dropdown-content').forEach(content => {
-        if (content !== dropdownContent) {
-          content.style.display = 'none';
-        }
-      });
+      // Close all dropdowns first
+      closeAllDropdowns();
       
-      // Remove active from ALL other buttons
-      document.querySelectorAll('.dropbtn').forEach(btn => {
-        if (btn !== dropbtn) {
-          btn.classList.remove('active');
-        }
-      });
-      
-      // Toggle current dropdown
+      // Toggle current dropdown if it wasn't open
       if (!isOpen) {
         dropdownContent.style.display = 'block';
         dropbtn.classList.add('active');
-      } else {
-        dropdownContent.style.display = 'none';
-        dropbtn.classList.remove('active');
       }
-    }
-    
-    // Close dropdown if clicking outside
-    if (!e.target.closest('.dropdown') && !e.target.closest('.dropbtn')) {
-      document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.style.display = 'none';
-      });
-      document.querySelectorAll('.dropbtn').forEach(btn => {
-        btn.classList.remove('active');
-      });
+      
+      return; // Stop here, we handled the click
     }
     
     // Close dropdown if clicking a link inside
     if (e.target.closest('.dropdown-content a')) {
       setTimeout(() => {
-        const dropdownContent = e.target.closest('.dropdown-content');
-        if (dropdownContent) {
-          dropdownContent.style.display = 'none';
-        }
-        const dropbtn = e.target.closest('.dropdown')?.querySelector('.dropbtn');
-        if (dropbtn) {
-          dropbtn.classList.remove('active');
-        }
+        closeAllDropdowns();
       }, 100);
+      return;
+    }
+    
+    // Close dropdown if clicking outside (but not on mobile nav toggle)
+    if (!e.target.closest('.dropdown') && 
+        !e.target.closest('#mobileNavToggle') &&
+        !e.target.closest('#nav-desktop')) {
+      closeAllDropdowns();
     }
   });
   
   // Handle window resize
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) {
-      // Reset for desktop
+      // Reset for desktop - let CSS handle it
       document.querySelectorAll('.dropdown-content').forEach(content => {
         content.style.display = '';
       });
@@ -216,13 +224,6 @@ function testMobileDropdown() {
   console.log('Is mobile?', window.innerWidth <= 768);
   console.log('Dropdown buttons found:', document.querySelectorAll('.dropbtn').length);
   console.log('Dropdown contents found:', document.querySelectorAll('.dropdown-content').length);
-  
-  // Add test click handlers
-  document.querySelectorAll('.dropbtn').forEach((btn, i) => {
-    btn.addEventListener('click', () => {
-      console.log(`Dropdown button ${i} clicked!`);
-    });
-  });
 }
 
 // ========== INITIALIZE ==========
@@ -230,9 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeCommon();
   testMobileDropdown();
   
-  // Force mobile dropdown to work
-  setTimeout(() => {
-    console.log('Forcing mobile dropdown initialization...');
-    setupMobileDropdown();
-  }, 1000);
+  // Remove the duplicate setTimeout call - it's causing double initialization
+  // setTimeout(() => {
+  //   console.log('Forcing mobile dropdown initialization...');
+  //   setupMobileDropdown();
+  // }, 1000);
 });
