@@ -669,9 +669,13 @@ footer {
     width: 100% !important;
   }
   
-  /* Force show when active */
-  .dropdown-content[style*="display: block"] {
+  /* FIX: Force show when parent menu is active and dropdown is clicked */
+  #nav-desktop.active .dropdown.active .dropdown-content,
+  .dropdown.active .dropdown-content {
     display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
   }
   
   .dropdown-content a {
@@ -711,6 +715,11 @@ footer {
     transform: rotate(180deg) !important;
   }
   
+  /* FIX: Add visual feedback for active dropdown button */
+  .dropbtn.active {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  
   /* Footer Mobile */
   .footer-grid {
     grid-template-columns: 1fr !important;
@@ -737,31 +746,23 @@ footer {
 
 /* ========== GUARANTEED MOBILE DROPDOWN FIX ========== */
 @media (max-width: 768px) {
-  /* Ensure dropdown is hidden by default */
-  .dropdown-content {
-    display: none !important;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-  }
-  
-  /* Force show when display:block is set */
-  .dropdown-content[style*="display: block"] {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-  }
-  
-  /* Make sure dropdown button is clickable */
+  /* Make sure dropdown is clickable */
   .dropbtn {
     cursor: pointer !important;
     user-select: none !important;
   }
   
-  /* Visual feedback for active dropdown */
-  .dropbtn.active {
-    background: rgba(255, 255, 255, 0.1) !important;
+  /* Improved dropdown animation */
+  .dropdown-content {
+    transition: all 0.3s ease !important;
+  }
+  
+  /* FIX: Always show links in dropdown when active */
+  .dropdown.active .dropdown-content a {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }
+
+/* REMOVED THE EXTRA CLOSING BRACE HERE - It was causing the syntax error */
