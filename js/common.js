@@ -237,13 +237,29 @@ function testMobileDropdown() {
 }
 
 // ========== INITIALIZE ==========
+// ========== INITIALIZE ==========
 document.addEventListener('DOMContentLoaded', function() {
-  initializeCommon();
-  testMobileDropdown();
+  console.log('🚀 DOM Content Loaded - Initializing...');
   
-  // Remove the duplicate setTimeout call - it's causing double initialization
-  // setTimeout(() => {
-  //   console.log('Forcing mobile dropdown initialization...');
-  //   setupMobileDropdown();
-  // }, 1000);
+  // Hide loader
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('hidden');
+  }, 500);
+  
+  // Setup mobile navigation FIRST
+  setupMobileNav();
+  
+  // Test dropdown functionality
+  testDropdownFunctionality();
+  
+  // Setup mobile dropdown
+  setupMobileDropdown();
+  
+  // Other initializations
+  initBackToTop();
+  setActiveNavItem();
+  initScrollAnimations();
+  
+  console.log('✅ Common components initialized');
 });
