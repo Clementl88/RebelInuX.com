@@ -19,10 +19,13 @@ async function loadComponent(elementId, url) {
     const html = await response.text();
     document.getElementById(elementId).innerHTML = html;
     
-    // Dispatch event when component is loaded
-    document.dispatchEvent(new CustomEvent('componentLoaded', {
-      detail: { elementId, url }
-    }));
+    // Initialize common functionality after components are loaded
+    setTimeout(() => {
+      if (typeof initializeCommon === 'function') {
+        initializeCommon();
+      }
+    }, 100);
+    
   } catch (error) {
     console.error('Error loading component:', error);
     document.getElementById(elementId).innerHTML = `
