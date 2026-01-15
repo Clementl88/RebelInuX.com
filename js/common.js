@@ -33,15 +33,21 @@ function setupMobileNav() {
     e.stopPropagation();
     navDesktop.classList.toggle('active');
     
-    // Toggle icon
-    const icon = this.querySelector('i');
+    // Toggle between ☰ and × symbols (for text icon)
     if (navDesktop.classList.contains('active')) {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
+      this.innerHTML = '×'; // Close icon
       document.body.style.overflow = 'hidden';
     } else {
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
+      this.innerHTML = '☰'; // Hamburger icon
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!navDesktop.contains(e.target) && !mobileToggle.contains(e.target)) {
+      navDesktop.classList.remove('active');
+      mobileToggle.innerHTML = '☰';
       document.body.style.overflow = '';
     }
   });
