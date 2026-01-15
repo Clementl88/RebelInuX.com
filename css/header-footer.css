@@ -635,4 +635,96 @@ footer {
   .footer-bottom {
     grid-template-columns: 1fr !important;
   }
+
+  /* ========== BUY BUTTON MOBILE FIXES ========== */
+
+/* Desktop Buy Button - visible only on desktop */
+.header-cta.desktop-only {
+  display: block;
+  margin-left: var(--spacing-md);
+}
+
+/* Mobile Buy Button Container */
+.mobile-buy-container {
+  display: none; /* Hidden by default */
+}
+
+/* Mobile Buy Button Styling */
+.mobile-buy-button {
+  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  justify-content: center;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  /* Hide desktop buy button */
+  .header-cta.desktop-only {
+    display: none !important;
+  }
+  
+  /* Show mobile buy container when menu is active */
+  #nav-desktop.active .mobile-buy-container {
+    display: block !important;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 var(--spacing-md);
+    text-align: center;
+    z-index: 1001;
+    animation: slideUp 0.3s ease;
+  }
+  
+  /* Adjust mobile menu padding for button */
+  #nav-desktop.active {
+    padding-bottom: 100px !important;
+  }
+  
+  /* Ensure mobile menu toggle is clickable */
+  .mobile-nav-toggle {
+    z-index: 1002 !important;
+    position: relative;
+  }
+}
+
+/* Animation for mobile buy button */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Desktop hover effects */
+.buy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 167, 106, 0.3);
+}
+
+/* Pulse animation for attention */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(212, 167, 106, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0);
+  }
+}
+
+/* Add pulse to Buy button */
+.buy-button {
+  animation: pulse 2s infinite;
+}
 }
