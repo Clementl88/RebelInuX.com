@@ -11,8 +11,8 @@ function initializeCommon() {
   // Initialize mobile navigation
   initializeMobileNav();
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
+  // Initialize mobile dropdown - USE THE ENHANCED VERSION
+  initializeEnhancedMobileDropdown();
   
   // Initialize back-to-top button
   initBackToTop();
@@ -23,7 +23,10 @@ function initializeCommon() {
   // Initialize animations
   initScrollAnimations();
   
-  console.log('Common components initialized');
+  // Initialize mobile touch
+  initializeMobileTouch();
+  
+  console.log('Common components initialized - Updated for new header');
 }
 
 // ========== MOBILE NAVIGATION ==========
@@ -33,7 +36,9 @@ function initializeMobileNav() {
   
   if (!mobileToggle || !navDesktop) return;
   
-  mobileToggle.addEventListener('click', function() {
+  mobileToggle.addEventListener('click', function(e) {
+    e.stopPropagation(); // Prevent event bubbling
+    
     navDesktop.classList.toggle('active');
     const icon = this.querySelector('i');
     
@@ -41,45 +46,42 @@ function initializeMobileNav() {
       icon.classList.remove('fa-bars');
       icon.classList.add('fa-times');
       document.body.style.overflow = 'hidden';
+      
+      // Add click-outside listener when menu opens
+      setTimeout(() => {
+        document.addEventListener('click', closeMobileMenuOnClickOutside);
+      }, 10);
     } else {
+      closeMobileMenu();
+    }
+  });
+  
+  function closeMobileMenu() {
+    navDesktop.classList.remove('active');
+    const icon = mobileToggle.querySelector('i');
+    if (icon) {
       icon.classList.remove('fa-times');
       icon.classList.add('fa-bars');
-      document.body.style.overflow = '';
     }
-  });
+    document.body.style.overflow = '';
+    document.removeEventListener('click', closeMobileMenuOnClickOutside);
+  }
   
-  // Close mobile nav when clicking on a link
-  document.querySelectorAll('#nav-desktop a').forEach(link => {
+  function closeMobileMenuOnClickOutside(e) {
+    if (!navDesktop.contains(e.target) && 
+        !mobileToggle.contains(e.target) &&
+        navDesktop.classList.contains('active')) {
+      closeMobileMenu();
+    }
+  }
+  
+  // Close mobile nav when clicking on a link (except Buy button)
+  document.querySelectorAll('#nav-desktop a:not(.mobile-buy-button)').forEach(link => {
     link.addEventListener('click', function() {
       if (window.innerWidth <= 768) {
-        navDesktop.classList.remove('active');
-        const icon = mobileToggle.querySelector('i');
-        if (icon) {
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-        document.body.style.overflow = '';
+        closeMobileMenu();
       }
     });
-  });
-  
-  // Close mobile nav when clicking outside
-  document.addEventListener('click', function(event) {
-    const nav = document.getElementById('nav-desktop');
-    const toggle = document.getElementById('mobileNavToggle');
-    
-    if (window.innerWidth <= 768 && 
-        nav.classList.contains('active') && 
-        !nav.contains(event.target) && 
-        !toggle.contains(event.target)) {
-      nav.classList.remove('active');
-      const toggleIcon = toggle.querySelector('i');
-      if (toggleIcon) {
-        toggleIcon.classList.remove('fa-times');
-        toggleIcon.classList.add('fa-bars');
-      }
-      document.body.style.overflow = '';
-    }
   });
 }
 
@@ -220,35 +222,91 @@ function setActiveNavItem() {
     // Home page
     document.querySelector('a[href="index.html"]')?.classList.add('active');
   } else if (currentPage === 'epoch-rewards.html') {
-    document.querySelector('.dropbtn.nav-rewards')?.classList.add('active');
-    document.querySelector('a.nav-rewards-overview')?.classList.add('active');
+    document.querySelector('a.nav-rewards')?.classList.add('active'); // Changed from dropbtn to a
   } else if (currentPage === 'rebl-calculator.html') {
-    document.querySelector('.dropbtn.nav-rewards')?.classList.add('active');
-    document.querySelector('a.nav-calculator')?.classList.add('active');
+    document.querySelector('a.nav-rewards')?.classList.add('active'); // Changed from dropbtn to a
   } else if (currentPage === 'trade.html') {
     document.querySelector('a.nav-trade')?.classList.add('active');
   } else if (currentPage === 'tokenomics.html') {
     document.querySelector('a.nav-tokenomics')?.classList.add('active');
   } else if (currentPage === 'security.html') {
-    document.querySelector('a.nav-security')?.classList.add('active');
+    // Security is now in More dropdown
+    document.querySelector('.dropbtn.nav-more')?.classList.add('active');
   } else if (currentPage === 'community.html') {
-    document.querySelector('a.nav-community')?.classList.add('active');
+    // Community is now in More dropdown
+    document.querySelector('.dropbtn.nav-more')?.classList.add('active');
   } else if (currentPage === 'governance.html') {
     document.querySelector('.dropbtn.nav-more')?.classList.add('active');
-    document.querySelector('a.nav-governance')?.classList.add('active');
   } else if (currentPage === 'roadmap.html') {
     document.querySelector('.dropbtn.nav-more')?.classList.add('active');
-    document.querySelector('a.nav-roadmap')?.classList.add('active');
   } else if (currentPage === 'integrity.html') {
     document.querySelector('.dropbtn.nav-more')?.classList.add('active');
-    document.querySelector('a.nav-integrity')?.classList.add('active');
   } else if (currentPage === 'artwork.html') {
     document.querySelector('.dropbtn.nav-more')?.classList.add('active');
-    document.querySelector('a.nav-artwork')?.classList.add('active');
   } else if (currentPage === 'whitepaper.html') {
     document.querySelector('.dropbtn.nav-more')?.classList.add('active');
-    document.querySelector('a.nav-whitepaper')?.classList.add('active');
   }
+}
+
+// ========== ENHANCED MOBILE DROPDOWN ==========
+function initializeEnhancedMobileDropdown() {
+  const dropbtns = document.querySelectorAll('.dropbtn');
+  
+  if (!dropbtns.length) return;
+  
+  dropbtns.forEach(dropbtn => {
+    dropbtn.addEventListener('click', function(e) {
+      // Only handle on mobile
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const dropdownContent = this.nextElementSibling;
+        const isActive = dropdownContent.style.display === 'block' || 
+                        dropdownContent.classList.contains('active');
+        
+        // Close all other dropdowns first
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+          if (content !== dropdownContent) {
+            content.style.display = 'none';
+            content.classList.remove('active');
+          }
+        });
+        
+        // Remove active class from other dropdown buttons
+        document.querySelectorAll('.dropbtn').forEach(btn => {
+          if (btn !== this) {
+            btn.classList.remove('active');
+          }
+        });
+        
+        // Toggle this dropdown
+        if (!isActive) {
+          dropdownContent.style.display = 'block';
+          dropdownContent.classList.add('active');
+          this.classList.add('active');
+          
+          // Close dropdown when clicking outside
+          setTimeout(() => {
+            const closeDropdown = function(e) {
+              if (!dropdownContent.contains(e.target) && 
+                  !dropbtn.contains(e.target)) {
+                dropdownContent.style.display = 'none';
+                dropdownContent.classList.remove('active');
+                dropbtn.classList.remove('active');
+                document.removeEventListener('click', closeDropdown);
+              }
+            };
+            document.addEventListener('click', closeDropdown);
+          }, 10);
+        } else {
+          dropdownContent.style.display = 'none';
+          dropdownContent.classList.remove('active');
+          this.classList.remove('active');
+        }
+      }
+    });
+  });
 }
 
 // ========== SCROLL ANIMATIONS ==========
