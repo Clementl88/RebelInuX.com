@@ -15,22 +15,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-/* Header CTA Button */
-.header-cta {
-  margin-left: var(--spacing-md);
-}
-
-.buy-button {
-  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
-  animation: pulse 2s infinite;
-  font-weight: 700;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
+  position: relative;
 }
 
 /* Brand Logo */
@@ -143,29 +128,28 @@ header {
 
 /* Color-specific hover effects */
 #nav-desktop a.nav-trade:hover {
-  background: rgba(255, 51, 102, 0.05) !important;
+  background: rgba(255, 51, 102, 0.15);
+}
+
+#nav-desktop a.nav-rewards:hover {
+  background: rgba(156, 39, 176, 0.15);
 }
 
 #nav-desktop a.nav-tokenomics:hover {
-  background: rgba(0, 170, 255, 0.05) !important;
-}
-
-#nav-desktop a.nav-tokenomics:hover {
-  background: rgba(0, 170, 255, 0.05) !important; 
+  background: rgba(0, 170, 255, 0.15);
 }
 
 #nav-desktop a.nav-security:hover {
-  background: rgba(76, 175, 80, 0.05) !important;
-}
-
-#nav-desktop a.nav-more:hover {
-  background: rgba(255, 152, 0, 0.05) !important; 
+  background: rgba(76, 175, 80, 0.15);
 }
 
 #nav-desktop a.nav-community:hover {
-  background: rgba(33, 150, 243, 0.05) !important; 
+  background: rgba(33, 150, 243, 0.15);
 }
 
+#nav-desktop a.nav-more:hover {
+  background: rgba(255, 152, 0, 0.15);
+}
 
 /* Active state */
 #nav-desktop a.active {
@@ -178,6 +162,44 @@ header {
   margin-right: 8px;
 }
 
+/* ========== BUY BUTTON STYLES ========== */
+/* Desktop Buy Button Container */
+.header-cta.desktop-only {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-md);
+}
+
+/* Mobile Buy Container - HIDDEN on desktop */
+.mobile-buy-container {
+  display: none !important;
+}
+
+/* Mobile Buy Button */
+.mobile-buy-button {
+  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
+
+/* Buy Button Animation */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(212, 167, 106, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0);
+  }
+}
+
 .mobile-nav-toggle {
   display: none;
   background: transparent;
@@ -187,7 +209,8 @@ header {
   cursor: pointer;
   width: 44px;
   height: 44px;
-  z-index: 1001;
+  z-index: 1002;
+  position: relative;
 }
 
 /* ========== DROPDOWN STYLES ========== */
@@ -215,6 +238,20 @@ header {
   margin-right: 8px;
 }
 
+/* Rewards dropdown button */
+.dropbtn.nav-rewards {
+  color: #9C27B0 !important;
+  border: 1px solid rgba(156, 39, 176, 0.3) !important;
+  background: rgba(156, 39, 176, 0.05) !important;
+}
+
+.dropbtn.nav-rewards:hover {
+  background: rgba(156, 39, 176, 0.15) !important;
+}
+
+.dropbtn.nav-rewards.active {
+  background: rgba(156, 39, 176, 0.2) !important;
+}
 
 /* More dropdown button */
 .dropbtn.nav-more {
@@ -254,14 +291,9 @@ header {
 }
 
 .dropdown-content a:hover {
-  background: rgba(255, 255, 255, 0.05) !important; /* Reduced opacity */
-  padding-left: 16px !important; /* Remove the padding shift */
-  transition: none; /* Remove transition */
-}
-
-.footer-link:hover {
-  color: rgba(255,255,255,0.8) !important; /* Same as default */
-  transform: none !important; /* Remove the slide effect */
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 20px;
+  transition: padding 0.3s ease;
 }
 
 .dropdown-content a.nav-governance { color: #FF9800; }
@@ -269,7 +301,10 @@ header {
 .dropdown-content a.nav-integrity { color: var(--rebel-gold); }
 .dropdown-content a.nav-artwork { color: #9C27B0; }
 .dropdown-content a.nav-whitepaper { color: #795548; }
-.dropdown-content a.nav-community {color: #FFFFF0 ;}
+.dropdown-content a.nav-rewards-overview { color: #9C27B0; }
+.dropdown-content a.nav-calculator { color: #00aaff; }
+.dropdown-content a.nav-countdown { color: var(--rebel-gold); }
+.dropdown-content a.nav-claim { color: var(--rebel-red); }
 
 .dropdown-divider {
   height: 1px;
@@ -277,15 +312,10 @@ header {
   margin: 8px 0;
 }
 
-/* Add to header-footer.css */
+/* Show dropdown on hover for desktop */
 @media (min-width: 769px) {
-  .mobile-buy-container {
-    display: none !important;
-  }
-  
-  .header-cta.desktop-only {
-    display: flex !important; /* Make sure desktop button shows */
-    align-items: center;
+  .dropdown:hover .dropdown-content {
+    display: block;
   }
 }
 
@@ -381,7 +411,7 @@ footer {
   flex-direction: column;
   gap: 0.5rem;
 }
-/* REPLACE current .footer-link styles with: */
+
 .footer-link {
   color: var(--color-text-muted) !important;
   font-size: 0.9rem;
@@ -400,7 +430,6 @@ footer {
   transform: none !important;
 }
 
-/* Also fix icons: */
 .footer-icon {
   color: var(--color-text-muted) !important;
   margin-right: 0.5rem;
@@ -500,7 +529,7 @@ footer {
   color: #777;
 }
 
-/* ========== RESPONSIVE HEADER/FOOTER ========== */
+/* ========== MOBILE STYLES ========== */
 @media (max-width: 768px) {
   /* Mobile Navigation */
   .mobile-nav-toggle {
@@ -515,10 +544,10 @@ footer {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
-    padding: 80px var(--spacing-md) var(--spacing-md);
+    background: rgba(0, 0, 0, 0.98);
+    padding: 100px var(--spacing-md) var(--spacing-xl);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 1001;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
@@ -530,7 +559,7 @@ footer {
   #nav-desktop a {
     padding: var(--spacing-md);
     border-radius: 8px;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
     justify-content: flex-start;
     min-height: 56px;
@@ -538,13 +567,56 @@ footer {
   }
   
   #nav-desktop a i {
-    margin-right: 10px;
-    min-width: 20px;
+    margin-right: 12px;
+    min-width: 24px;
     text-align: center;
+    font-size: 1.1rem;
   }
   
   .brand-title {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
+  }
+  
+  /* Hide Desktop Buy Button on Mobile */
+  .header-cta.desktop-only {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Show Mobile Buy Button when menu is active */
+  #nav-desktop.active .mobile-buy-container {
+    display: block !important;
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    padding: 0 var(--spacing-lg);
+    text-align: center;
+    z-index: 1002;
+    animation: slideUp 0.3s ease;
+  }
+  
+  /* Mobile Buy Button Animation */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Add space at bottom for buy button */
+  #nav-desktop.active {
+    padding-bottom: 120px !important;
   }
   
   /* Mobile Dropdown */
@@ -559,7 +631,7 @@ footer {
     background: rgba(0, 0, 0, 0.95) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 8px !important;
-    margin: 5px 0 15px 0 !important;
+    margin: 8px 0 16px 0 !important;
     padding: 10px 0 !important;
     width: 100% !important;
     max-height: calc(100vh - 200px) !important;
@@ -582,16 +654,16 @@ footer {
     border-left: 3px solid transparent !important;
   }
   
-.dropdown-content a:hover {
-  background: rgba(255, 255, 255, 0.05); /* Reduced opacity */
-  padding-left: 16px; /* Keep original padding */
-  transition: none; /* Remove animation */
-}
+  .dropdown-content a:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding-left: 25px !important;
+    border-left-color: currentColor !important;
+  }
   
   .dropbtn {
     width: 100% !important;
     justify-content: space-between !important;
-    padding: 15px 20px !important;
+    padding: 16px 20px !important;
     margin: 5px 0 !important;
     border-radius: 8px !important;
     font-size: 1.05rem !important;
@@ -601,6 +673,7 @@ footer {
     content: "▼" !important;
     font-size: 0.8em !important;
     margin-left: 10px !important;
+    transition: transform 0.3s ease;
   }
   
   .dropbtn.active:after {
@@ -640,97 +713,24 @@ footer {
   .footer-bottom {
     grid-template-columns: 1fr !important;
   }
-
-  /* ========== BUY BUTTON MOBILE FIXES ========== */
-
-/* ========== BUY BUTTON FIXES ========== */
-
-/* Desktop Buy Button Container */
-.header-cta.desktop-only {
-  display: block; /* Show on desktop */
-  margin-left: var(--spacing-md);
 }
 
-/* Mobile Buy Button Container - HIDDEN by default */
-.mobile-buy-container {
-  display: none !important;
-}
-
-/* Mobile Buy Button */
-.mobile-buy-button {
-  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
-  width: 100%;
-  max-width: 300px;
-  margin: 20px auto 0;
-  font-weight: 700;
-  font-size: 1.1rem;
-  justify-content: center;
-}
-
-/* ========== MOBILE STYLES ========== */
-@media (max-width: 768px) {
-  .header-cta.desktop-only {
+/* ========== DESKTOP-ONLY FIXES ========== */
+@media (min-width: 769px) {
+  /* Hide Mobile Buy Container on desktop */
+  .mobile-buy-container {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     height: 0 !important;
-    width: 0 !important;
     overflow: hidden !important;
   }
-}
   
-  /* SHOW Mobile Buy Button only when menu is active */
-  #nav-desktop.active .mobile-buy-container {
-    display: block !important;
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    padding: 0 var(--spacing-md);
-    text-align: center;
-    z-index: 1001;
-    animation: slideUp 0.3s ease;
+  /* Show Desktop Buy Button */
+  .header-cta.desktop-only {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
   }
-  
-  /* Add padding to mobile menu for the button */
-  #nav-desktop.active {
-    padding-bottom: 100px !important;
-  }
-}
-
-/* Animation for mobile buy button */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Desktop hover effects */
-.buy-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(212, 167, 106, 0.3);
-}
-
-/* Pulse animation for attention */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(212, 167, 106, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0);
-  }
-}
-
-/* Add pulse to Buy button */
-.buy-button {
-  animation: pulse 2s infinite;
-}
 }
