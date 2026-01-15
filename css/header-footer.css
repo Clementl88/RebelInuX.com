@@ -1,6 +1,6 @@
 /* ========== HEADER STYLES ========== */
 header {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
   padding: var(--spacing-md);
   position: sticky;
   top: 0;
@@ -162,20 +162,20 @@ header {
   margin-right: 8px;
 }
 
-/* ========== BUY BUTTON STYLES ========== */
-/* Desktop Buy Button Container */
+/* ========== BUY BUTTON FIXES ========== */
+/* Desktop Buy Button - ALWAYS show on desktop */
 .header-cta.desktop-only {
   display: flex;
   align-items: center;
   margin-left: var(--spacing-md);
 }
 
-/* Mobile Buy Container - HIDDEN on desktop */
+/* Mobile Buy Container - HIDDEN by default */
 .mobile-buy-container {
   display: none !important;
 }
 
-/* Mobile Buy Button */
+/* Mobile Buy Button Styling */
 .mobile-buy-button {
   background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
   width: 100%;
@@ -185,19 +185,16 @@ header {
   font-size: 1.1rem;
   justify-content: center;
   animation: pulse 2s infinite;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Buy Button Animation */
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(212, 167, 106, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(212, 167, 106, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0); }
 }
 
 .mobile-nav-toggle {
@@ -210,7 +207,6 @@ header {
   width: 44px;
   height: 44px;
   z-index: 1002;
-  position: relative;
 }
 
 /* ========== DROPDOWN STYLES ========== */
@@ -276,7 +272,7 @@ header {
   display: none;
   position: absolute;
   right: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.98);
   min-width: 200px;
   border: 1px solid var(--rebel-gold);
   border-radius: 8px;
@@ -328,6 +324,11 @@ header {
 @media (min-width: 769px) {
   .dropdown:hover .dropdown-content {
     display: block;
+  }
+  
+  /* Hide dropdown arrow on desktop */
+  .dropbtn .dropdown-arrow {
+    display: none;
   }
 }
 
@@ -409,23 +410,23 @@ footer {
 .footer-column {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center column content */
-  text-align: center; /* Center text */
+  align-items: center;
+  text-align: center;
 }
 
 .footer-column-title {
   color: var(--rebel-gold);
   margin-bottom: var(--spacing-md);
   font-size: 1rem;
-  text-align: center; /* Center title */
-  width: 100%; /* Ensure full width for centering */
+  text-align: center;
+  width: 100%;
 }
 
 .footer-links {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  align-items: center; /* Center links */
+  align-items: center;
   width: 100%;
 }
 
@@ -438,9 +439,9 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: center; /* Center link content */
+  justify-content: center;
   text-align: center;
-  width: 100%; /* Make links full width */
+  width: 100%;
 }
 
 .footer-link:hover {
@@ -485,7 +486,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  justify-content: center; /* Center contact links */
+  justify-content: center;
 }
 
 .footer-contact-icon {
@@ -562,6 +563,8 @@ footer {
   /* Mobile Navigation */
   .mobile-nav-toggle {
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   #nav-desktop {
@@ -576,8 +579,8 @@ footer {
     padding: 100px var(--spacing-md) var(--spacing-xl);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     z-index: 1001;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   #nav-desktop.active {
@@ -605,19 +608,15 @@ footer {
     font-size: 1.4rem;
   }
   
-  /* Hide Desktop Buy Button on Mobile */
+  /* BUY BUTTON FIX - MOBILE */
   .header-cta.desktop-only {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
   }
   
-  /* Show Mobile Buy Button when menu is active */
+  .mobile-buy-container {
+    display: none !important;
+  }
+  
   #nav-desktop.active .mobile-buy-container {
     display: block !important;
     position: fixed;
@@ -630,7 +629,6 @@ footer {
     animation: slideUp 0.3s ease;
   }
   
-  /* Mobile Buy Button Animation */
   @keyframes slideUp {
     from {
       opacity: 0;
@@ -642,7 +640,7 @@ footer {
     }
   }
   
-  /* Add space at bottom for buy button */
+  /* Add space for buy button */
   #nav-desktop.active {
     padding-bottom: 120px !important;
   }
@@ -664,7 +662,7 @@ footer {
     width: 100% !important;
   }
   
-  /* Force show when active via JS */
+  /* Force show when active */
   .dropdown-content[style*="display: block"] {
     display: block !important;
   }
@@ -706,17 +704,6 @@ footer {
     transform: rotate(180deg) !important;
   }
   
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
   /* Footer Mobile */
   .footer-grid {
     grid-template-columns: 1fr !important;
@@ -746,22 +733,10 @@ footer {
   /* Hide Mobile Buy Container on desktop */
   .mobile-buy-container {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
   }
   
   /* Show Desktop Buy Button */
   .header-cta.desktop-only {
     display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-  }
-  
-  /* Hide dropdown arrow on desktop (hover shows dropdown) */
-  .dropbtn .dropdown-arrow {
-    display: none;
   }
 }
