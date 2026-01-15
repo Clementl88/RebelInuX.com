@@ -248,21 +248,55 @@ h6, .heading-6 {
   color: var(--color-text-muted-dark);
 }
 
-/* Links */
-a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-contact-link, .contract-link, .disclaimer-link) {
-  color: var(--color-text-muted); /* Changed from rebel-gold */
-  text-decoration: none; /* Changed from underline */
-  transition: var(--transition-fast);
-}
-
-a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-contact-link, .contract-link, .disclaimer-link):hover {
-  color: var(--color-text-muted); /* Changed from rebel-red - now same as default */
-  text-decoration: none; /* Changed from none */
-}
-
-a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-contact-link, .contract-link, .disclaimer-link):hover {
-  color: var(--rebel-red);
+/* ========== LINK NORMALIZATION ========== */
+/* Global link normalization */
+a {
+  color: var(--color-text-muted);
   text-decoration: none;
+  transition: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+/* Exceptions - keep functionality for interactive elements */
+.btn,
+.cta-button,
+.brand-link,
+.footer-brand-link,
+.dropbtn,
+[role="button"],
+button {
+  transition: var(--transition); /* Keep transitions for buttons */
+}
+
+.btn:hover,
+.cta-button:hover,
+.brand-link:hover,
+.footer-brand-link:hover,
+.dropbtn:hover {
+  opacity: 0.9; /* Simple hover for buttons */
+  transform: translateY(-1px); /* Subtle button lift */
+}
+
+/* Specific link types that need different styling */
+.footer-link,
+.footer-contact-link,
+.contract-link,
+.disclaimer-link {
+  color: var(--color-text-muted); /* Override any existing colors */
+}
+
+.footer-link:hover,
+.footer-contact-link:hover,
+.contract-link:hover,
+.disclaimer-link:hover {
+  color: var(--color-text-muted); /* Same color on hover */
+  transform: none; /* Remove any transforms */
 }
 
 /* ========== LAYOUT UTILITIES ========== */
@@ -572,6 +606,7 @@ pre {
   transform: scale(0.98);
   opacity: 0.9;
 }
+
 
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
