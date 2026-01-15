@@ -260,32 +260,83 @@ function initScrollAnimations() {
   animateCards();
 }
 
-// ========== MOBILE TOUCH IMPROVEMENTS ==========
-function initializeMobileTouch() {
-  // Prevent zoom on double-tap
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function(event) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) {
-      event.preventDefault();
-    }
-    lastTouchEnd = now;
-  }, false);
-  
-  // Add touch feedback for buttons
-  document.querySelectorAll('a, button').forEach(element => {
-    element.addEventListener('touchstart', function() {
-      this.classList.add('touch-active');
-    });
-    
-    element.addEventListener('touchend', function() {
-      this.classList.remove('touch-active');
-    });
-  });
-}
+// ========== ORIENTATION CHANGE ==========
+window.addEventListener('orientationchange', function() {
+  // Close mobile menu on orientation change
+  if (window.innerWidth > 768) {
+    const nav = document.getElementById('nav-desktop');
+    if (nav) nav.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+});
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   initializeCommon();
   initializeMobileTouch();
 });
+
+// ========== SIMPLE MOBILE DROPDOWN FIX ==========
+// Add this RIGHT HERE - at the very end of the file
+function fixMobileDropdown() {
+  const dropbtns = document.querySelectorAll('.dropbtn');
+  
+  dropbtns.forEach(dropbtn => {
+    dropbtn.addEventListener('click', function(e) {
+      // Only on mobile
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const dropdownContent = this.nextElementSibling;
+        const isActive = dropdownContent.style.display === 'block';
+        
+        // Close all other dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+          if (content !== dropdownContent) {
+            content.style.display = 'none';
+          }
+        });
+        
+        // Remove active from other buttons
+        document.querySelectorAll('.dropbtn').forEach(btn => {
+          if (btn !== this) {
+            btn.classList.remove('active');
+          }
+        });
+        
+        // Toggle current
+        if (!isActive) {
+          dropdownContent.style.display = 'block';
+          this.classList.add('active');
+        } else {
+          dropdownContent.style.display = 'none';
+          this.classList.remove('active');
+        }
+      }
+    });
+  });
+  
+  // Close dropdowns when clicking elsewhere
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+      const clickedDropdown = e.target.closest('.dropdown');
+      if (!clickedDropdown) {
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+          content.style.display = 'none';
+        });
+        document.querySelectorAll('.dropbtn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+      }
+    }
+  });
+}
+
+// Call it
+document.addEventListener('DOMContentLoaded', fixMobileDropdown);
+
+// Export for use in other scripts
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { initializeCommon };
+}
