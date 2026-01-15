@@ -32,7 +32,7 @@ html {
   --color-accent: var(--rebel-blue);       /* Accent color */
   
   /* Background colors */
-  --color-bg-dark: #1a1a1a;
+  --dark-bg: #1a1a1a;
   --color-bg-light: #FFF8F0;
   --color-bg-card: rgba(212, 167, 106, 0.1);
   --color-bg-section: rgba(26, 26, 26, 0.9);
@@ -124,7 +124,7 @@ html {
 /* ========== BASE STYLES ========== */
 body {
   font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
-  background-color: var(--color-bg-dark);
+  background-color: var(--dark-bg);
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
   font-size: var(--font-size-base);
@@ -134,9 +134,10 @@ body {
   overflow-x: hidden;
 }
 
+/* Add margin-top to main to account for fixed header */
 main {
   flex: 1;
-  margin-top: var(--header-height);
+  padding-top: var(--header-height);
 }
 
 /* Content lock for better readability */
@@ -405,7 +406,9 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-
   padding: var(--spacing-3xl) var(--spacing-md);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--color-bg-dark) 0%, #2a1f14 100%);
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #2a1f14 100%);
+  margin-top: calc(-1 * var(--header-height));
+  padding-top: calc(var(--spacing-3xl) + var(--header-height));
 }
 
 .page-hero::before {
@@ -473,14 +476,14 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-
 .loader {
   position: fixed;
   inset: 0;
-  background: var(--color-bg-dark);
+  background: var(--dark-bg);
   display: grid;
   place-items: center;
   z-index: var(--z-modal);
   transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
-.loader--hidden {
+.loader.hidden {
   opacity: 0;
   visibility: hidden;
 }
@@ -519,7 +522,7 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link, .footer-link, .footer-
   border: none;
 }
 
-.back-to-top--visible {
+.back-to-top.visible {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -560,6 +563,12 @@ pre {
   margin-bottom: var(--spacing-md);
 }
 
+/* Touch active state for mobile */
+.touch-active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
   .grid-2,
@@ -574,7 +583,7 @@ pre {
   }
   
   main {
-    margin-top: 70px;
+    padding-top: 70px;
   }
   
   .container {
@@ -618,6 +627,7 @@ pre {
   
   .page-hero {
     padding: var(--spacing-2xl) var(--spacing-md);
+    padding-top: calc(var(--spacing-2xl) + 70px);
   }
   
   .content-card {
