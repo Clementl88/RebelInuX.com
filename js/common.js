@@ -105,6 +105,111 @@ function setupBuyDropdown() {
   console.log('✅ Buy dropdown setup complete');
 }
 
+// ========== MOBILE BUY DROPDOWN SETUP ==========
+function setupMobileBuyDropdown() {
+  console.log('📱 Setting up mobile buy dropdown...');
+  
+  const mobileBuyToggle = document.querySelector('.mobile-buy-toggle');
+  const mobileBuyDropdown = document.querySelector('.mobile-buy-dropdown');
+  const mobileBuyOverlay = document.querySelector('.mobile-buy-overlay');
+  const mobileBuyClose = document.querySelector('.mobile-buy-close');
+  
+  if (!mobileBuyToggle || !mobileBuyDropdown) {
+    console.warn('⚠️ Mobile buy dropdown elements not found');
+    return;
+  }
+  
+  // Toggle mobile dropdown
+  mobileBuyToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const isActive = mobileBuyDropdown.classList.contains('active');
+    
+    if (!isActive) {
+      mobileBuyDropdown.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('📱 Mobile buy dropdown opened');
+    } else {
+      closeMobileBuyDropdown();
+    }
+  });
+  
+  // Close with X button
+  if (mobileBuyClose) {
+    mobileBuyClose.addEventListener('click', function(e) {
+      e.stopPropagation();
+      closeMobileBuyDropdown();
+    });
+  }
+  
+  // Close with overlay
+  if (mobileBuyOverlay) {
+    mobileBuyOverlay.addEventListener('click', closeMobileBuyDropdown);
+  }
+  
+  // Close when clicking a link
+  document.querySelectorAll('.mobile-buy-option').forEach(option => {
+    option.addEventListener('click', function() {
+      setTimeout(closeMobileBuyDropdown, 300);
+    });
+  });
+  
+  // Close when mobile menu closes
+  const navDesktop = document.getElementById('nav-desktop');
+  if (navDesktop) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+          if (!navDesktop.classList.contains('active')) {
+            closeMobileBuyDropdown();
+          }
+        }
+      });
+    });
+    
+    observer.observe(navDesktop, { attributes: true });
+  }
+  
+  // Handle escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mobileBuyDropdown.classList.contains('active')) {
+      closeMobileBuyDropdown();
+    }
+  });
+  
+  function closeMobileBuyDropdown() {
+    mobileBuyDropdown.classList.remove('active');
+    document.body.style.overflow = '';
+    console.log('📱 Mobile buy dropdown closed');
+  }
+  
+  // Mobile copy function
+  window.copyContractMobile = function() {
+    const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    navigator.clipboard.writeText(contract).then(() => {
+      const message = document.getElementById('copyMessageMobile');
+      if (message) {
+        message.classList.add('show');
+        setTimeout(() => {
+          message.classList.remove('show');
+        }, 2000);
+      }
+    }).catch(err => {
+      console.error('Failed to copy contract on mobile:', err);
+      // Fallback
+      const textArea = document.createElement('textarea');
+      textArea.value = contract;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    });
+  };
+  
+  console.log('✅ Mobile buy dropdown setup complete');
+}
+
 // Global initialization function
 function initializeCommon() {
   console.log('🚀 Initializing common functionality...');
@@ -133,6 +238,8 @@ function initializeCommon() {
   
   // 5. Setup buy dropdown
   setupBuyDropdown();
+    setupMobileBuyDropdown(); // <-- Add this line
+
   
   console.log('✅ Common functionality initialized');
 }
