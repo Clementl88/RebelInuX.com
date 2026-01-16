@@ -487,55 +487,36 @@ header.scrolled {
 
 /* ========== FIXED DROPDOWN BEHAVIOR ========== */
 
-/* For desktop - show on hover OR when active */
-/* ========== FIXED DROPDOWN BEHAVIOR ========== */
-
-/* For desktop - ONLY show on click (when active) */
+/* For desktop - ONLY show when active (click) */
 @media (min-width: 769px) {
   .dropdown.active .dropdown-content {
-    display: block;
+    display: block !important;
     animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .dropdown.active .dropbtn {
     background: linear-gradient(135deg, 
-      rgba(255, 215, 0, 0.2), 
-      rgba(255, 215, 0, 0.1)) !important;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+      rgba(255, 215, 0, 0.25), 
+      rgba(255, 215, 0, 0.15)) !important;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
     transform: translateY(-2px);
+    border-color: var(--rebel-gold) !important;
   }
   
-  /* Keep dropdown arrow visible when active */
+  /* Keep dropdown arrow visible and rotated when active */
   .dropdown.active .dropbtn .dropdown-arrow {
     display: inline-block !important;
     transform: rotate(180deg);
   }
   
-  /* Ensure dropdown stays open when hovering over content */
-  .dropdown.active:hover .dropdown-content {
-    display: block;
+  /* Keep dropdown open when hovering over content */
+  .dropdown.active .dropdown-content:hover {
+    display: block !important;
   }
   
-  /* Fix z-index stacking */
-  .dropdown.active {
-    z-index: 1002;
-  }
-  
-  .dropdown-content {
-    pointer-events: auto;
-  }
-  
-  /* Remove hover functionality for dropdown button */
+  /* Remove hover functionality */
   .dropdown:not(.active):hover .dropdown-content {
     display: none !important;
-  }
-  
-  .dropdown:not(.active):hover .dropbtn {
-    background: linear-gradient(135deg, 
-      rgba(255, 215, 0, 0.1), 
-      rgba(255, 152, 0, 0.05)) !important;
-    transform: none;
-    box-shadow: none;
   }
 }
 
@@ -550,25 +531,9 @@ header.scrolled {
   }
 }
 
-/* Add a visual indicator for active dropdown */
-.dropdown.active .dropbtn {
-  background: linear-gradient(135deg, 
-    rgba(255, 215, 0, 0.25), 
-    rgba(255, 215, 0, 0.15)) !important;
-  border-color: var(--rebel-gold) !important;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3) !important;
-}
-
 /* Ensure dropdown stays open when hovering over content */
 .dropdown-content:hover {
   display: block !important;
-}
-
-/* Remove transition delays for non-active dropdowns */
-@media (min-width: 769px) {
-  .dropdown:not(.active) .dropdown-content {
-    transition-delay: 0s;
-  }
 }
 
 /* ========== BUY BUTTON & DROPDOWN ========== */
