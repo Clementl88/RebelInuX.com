@@ -54,13 +54,8 @@ function setupBuyDropdown() {
       
       const isActive = dropdown.classList.contains('active');
       
-      // Close all other buy dropdowns
-      buyDropdowns.forEach(d => d.classList.remove('active'));
-      
-      // Close all other dropdowns
-      document.querySelectorAll('.dropdown').forEach(d => {
-        d.classList.remove('active');
-      });
+   // Close all other dropdowns first
+closeAllDropdowns();
       
       // Toggle this dropdown
       if (!isActive) {
