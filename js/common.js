@@ -1,54 +1,77 @@
-// js/common.js - SIMPLIFIED & RELIABLE Common functionality
+// js/common.js - Main functionality for all pages
 
-// ========== MAIN INITIALIZATION ==========
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 DOM Content Loaded - Starting initialization...');
+// Global initialization function
+function initializeCommon() {
+  console.log('🚀 Initializing common functionality...');
   
   // 1. Hide loader
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('hidden');
-  }, 500);
+  hideLoader();
   
-  // 2. Setup mobile navigation
-  setupMobileNavigation();
+  // 2. Initialize components (will be called after components load)
+  if (typeof initializeComponents === 'function') {
+    // Wait a bit for components to load
+    setTimeout(() => {
+      if (!window.componentsLoaded) {
+        console.log('⏳ Components not loaded yet, waiting...');
+        // Try again in 500ms
+        setTimeout(initializeCommon, 500);
+        return;
+      }
+    }, 100);
+  }
   
-  // 3. Setup dropdowns (this is the key function)
-  setupDropdowns();
-  
-  // 4. Setup back to top
+  // 3. Setup back to top (can run immediately)
   setupBackToTop();
   
-  // 5. Set active nav item
-  setActiveNavItem();
-  
-  console.log('✅ All common components initialized');
-});
+  console.log('✅ Common functionality initialized');
+}
 
-// ========== SIMPLE MOBILE NAVIGATION ==========
+// ========== LOADER ==========
+function hideLoader() {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader && !loader.classList.contains('hidden')) {
+      loader.classList.add('hidden');
+      console.log('👋 Loader hidden');
+    }
+  }, 500);
+}
+
+// ========== MOBILE NAVIGATION ==========
 function setupMobileNavigation() {
+  console.log('📱 Setting up mobile navigation...');
+  
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
   
-  if (!mobileToggle || !navDesktop) return;
+  if (!mobileToggle || !navDesktop) {
+    console.warn('⚠️ Mobile navigation elements not found');
+    return;
+  }
   
-  mobileToggle.addEventListener('click', function(e) {
+  // Remove any existing event listeners
+  const newToggle = mobileToggle.cloneNode(true);
+  mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+  
+  newToggle.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
     
     const isOpening = !navDesktop.classList.contains('active');
     navDesktop.classList.toggle('active');
     
-    // Toggle icon
+    // Update icon
     this.innerHTML = navDesktop.classList.contains('active') ? '×' : '☰';
     
     // Toggle body scroll
     document.body.style.overflow = navDesktop.classList.contains('active') ? 'hidden' : '';
     
-    // Close all dropdowns when opening nav
+    // Close dropdowns when opening nav
     if (isOpening) {
       closeAllDropdowns();
     }
+    
+    console.log('📱 Mobile nav toggled:', navDesktop.classList.contains('active') ? 'open' : 'closed');
   });
   
   // Close nav when clicking outside (mobile only)
@@ -62,12 +85,7 @@ function setupMobileNavigation() {
     }
   });
   
-  // Close on escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      closeMobileNav();
-    }
-  });
+  console.log('✅ Mobile navigation setup complete');
 }
 
 function closeMobileNav() {
@@ -78,24 +96,67 @@ function closeMobileNav() {
   if (mobileToggle) mobileToggle.innerHTML = '☰';
   document.body.style.overflow = '';
   closeAllDropdowns();
+  
+  console.log('📱 Mobile nav closed');
 }
 
-// ========== DROPDOWNS - SIMPLE & RELIABLE ==========
+// ========== DROPDOWNS ==========
 function setupDropdowns() {
-  console.log('Setting up dropdowns...');
+  console.log('🔽 Setting up dropdowns...');
   
-  // Get ALL dropdown buttons on the page
   const dropbtns = document.querySelectorAll('.dropbtn');
   console.log(`Found ${dropbtns.length} dropdown buttons`);
   
+  if (dropbtns.length === 0) {
+    console.warn('⚠️ No dropdown buttons found');
+    return;
+  }
+  
   // Add click event to each dropdown button
-  dropbtns.forEach(dropbtn => {
-    // Remove any existing listeners (prevent duplicates)
-    const newDropbtn = dropbtn.cloneNode(true);
-    dropbtn.parentNode.replaceChild(newDropbtn, dropbtn);
+  dropbtns.forEach((dropbtn, index) => {
+    // Skip if already has our event listener
+    if (dropbtn.dataset.dropdownInitialized === 'true') {
+      return;
+    }
     
-    // Add click event to the new button
-    newDropbtn.addEventListener('click', handleDropdownClick);
+    dropbtn.dataset.dropdownInitialized = 'true';
+    
+    dropbtn.addEventListener('click', function(e) {
+      console.log(`🎯 Dropdown ${index + 1} clicked`);
+      
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const dropdown = this.closest('.dropdown');
+      if (!dropdown) return;
+      
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
+      if (!dropdownContent) return;
+      
+      const isMobile = window.innerWidth <= 768;
+      const isOpen = dropdownContent.style.display === 'block' || 
+                     dropdownContent.classList.contains('active');
+      
+      // Close all other dropdowns first
+      closeAllDropdowns();
+      
+      // Toggle this dropdown
+      if (!isOpen) {
+        if (isMobile) {
+          // For mobile, use class for CSS animation
+          dropdownContent.classList.add('active');
+          dropdown.classList.add('active');
+        } else {
+          // For desktop, use display
+          dropdownContent.style.display = 'block';
+        }
+        this.classList.add('active');
+        console.log('🟢 Dropdown opened');
+      } else {
+        console.log('🔴 Dropdown closed');
+        // Already closed by closeAllDropdowns()
+      }
+    });
   });
   
   // Close dropdowns when clicking outside
@@ -105,71 +166,42 @@ function setupDropdowns() {
     }
   });
   
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    // On mobile, ensure dropdowns are closed when switching to desktop
-    if (window.innerWidth > 768) {
-      closeAllDropdowns();
-    }
-  });
-}
-
-function handleDropdownClick(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  
-  console.log('Dropdown clicked!');
-  
-  const dropdown = this.closest('.dropdown');
-  const dropdownContent = dropdown.querySelector('.dropdown-content');
-  const isMobile = window.innerWidth <= 768;
-  
-  // If desktop, just toggle
-  if (!isMobile) {
-    const isOpen = dropdownContent.style.display === 'block';
-    
-    // Close all dropdowns first
-    closeAllDropdowns();
-    
-    // Toggle this one
-    if (!isOpen) {
-      dropdownContent.style.display = 'block';
-      this.classList.add('active');
-    }
-    return;
-  }
-  
-  // MOBILE SPECIFIC LOGIC
-  const isOpen = dropdownContent.style.display === 'block';
-  
-  // Close all dropdowns first
-  closeAllDropdowns();
-  
-  // Toggle this dropdown
-  if (!isOpen) {
-    dropdownContent.style.display = 'block';
-    this.classList.add('active');
-    console.log('Mobile dropdown opened');
-  }
-  
-  // Close dropdown when clicking a link inside
-  dropdownContent.querySelectorAll('a').forEach(link => {
+  // Close dropdown when clicking a link inside (mobile)
+  document.querySelectorAll('.dropdown-content a').forEach(link => {
     link.addEventListener('click', function() {
       if (window.innerWidth <= 768) {
         setTimeout(() => {
           closeAllDropdowns();
-          closeMobileNav(); // Also close mobile nav when link is clicked
+          closeMobileNav();
         }, 300);
       }
     });
   });
+  
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    // Close dropdowns when switching to desktop
+    if (window.innerWidth > 768) {
+      closeAllDropdowns();
+    }
+  });
+  
+  console.log('✅ Dropdowns setup complete');
 }
 
 function closeAllDropdowns() {
+  // Hide all dropdown contents
   document.querySelectorAll('.dropdown-content').forEach(content => {
     content.style.display = 'none';
+    content.classList.remove('active');
   });
   
+  // Remove active class from dropdown containers
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    dropdown.classList.remove('active');
+  });
+  
+  // Remove active class from buttons
   document.querySelectorAll('.dropbtn').forEach(btn => {
     btn.classList.remove('active');
   });
@@ -187,11 +219,16 @@ function setupBackToTop() {
   backToTop.addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+  
+  console.log('⬆️ Back to top button setup complete');
 }
 
 // ========== ACTIVE NAVIGATION ==========
 function setActiveNavItem() {
+  console.log('📍 Setting active navigation item...');
+  
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  console.log('Current page:', currentPage);
   
   // Remove active from all
   document.querySelectorAll('#nav-desktop a, .dropbtn').forEach(el => {
@@ -216,20 +253,54 @@ function setActiveNavItem() {
   
   const selector = pageMap[currentPage];
   if (selector) {
-    document.querySelector(selector)?.classList.add('active');
+    const activeElement = document.querySelector(selector);
+    if (activeElement) {
+      activeElement.classList.add('active');
+      console.log(`✅ Active element set: ${selector}`);
+    } else {
+      console.warn(`⚠️ Could not find active element: ${selector}`);
+    }
+  } else {
+    console.log(`ℹ️ No active mapping for: ${currentPage}`);
   }
 }
 
-// ========== DEBUG HELPER ==========
+// ========== DEBUG FUNCTIONS ==========
 function debugDropdowns() {
-  console.log('=== DEBUG INFO ===');
+  console.log('=== DROPDOWN DEBUG ===');
   console.log('Window width:', window.innerWidth);
   console.log('Is mobile?', window.innerWidth <= 768);
   console.log('Dropdown buttons:', document.querySelectorAll('.dropbtn').length);
   console.log('Dropdown contents:', document.querySelectorAll('.dropdown-content').length);
   
-  // Check if event listeners are attached
   document.querySelectorAll('.dropbtn').forEach((btn, i) => {
-    console.log(`Button ${i}:`, btn.outerHTML.substring(0, 50) + '...');
+    console.log(`Button ${i}:`, {
+      text: btn.textContent.trim(),
+      hasListener: btn.dataset.dropdownInitialized === 'true',
+      isActive: btn.classList.contains('active')
+    });
   });
+  
+  // Force re-initialize if needed
+  console.log('🔄 Re-initializing dropdowns...');
+  setupDropdowns();
 }
+
+// ========== INITIALIZE ON DOM READY ==========
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📄 DOM Content Loaded (common.js)');
+  
+  // Start initialization
+  setTimeout(initializeCommon, 100);
+  
+  // Add debug command to window
+  window.debugDropdowns = debugDropdowns;
+});
+
+// Export functions for includes.js
+window.setupMobileNavigation = setupMobileNavigation;
+window.setupDropdowns = setupDropdowns;
+window.setupBackToTop = setupBackToTop;
+window.setActiveNavItem = setActiveNavItem;
+window.closeAllDropdowns = closeAllDropdowns;
+window.closeMobileNav = closeMobileNav;
