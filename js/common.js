@@ -230,22 +230,60 @@ function closeMobileNav() {
 }
 
 // ========== DROPDOWNS ==========
-// ========== DROPDOWNS ==========
 function setupDropdowns() {
   console.log('🔽 Setting up dropdowns...');
   
   const dropbtns = document.querySelectorAll('.dropbtn');
+  const dropdowns = document.querySelectorAll('.dropdown');
   
-  console.log(`Found ${dropbtns.length} dropdown buttons`);
+  console.log(`Found ${dropbtns.length} dropdown buttons and ${dropdowns.length} dropdowns`);
   
   if (dropbtns.length === 0) {
     console.warn('⚠️ Dropdown elements not found');
     return;
   }
   
+  // Track which dropdown is currently open
+  let currentOpenDropdown = null;
+  
+  // Function to close a specific dropdown
+  function closeDropdown(dropdown) {
+    if (!dropdown) return;
+    
+    dropdown.classList.remove('active');
+    const content = dropdown.querySelector('.dropdown-content');
+    if (content) {
+      content.style.display = 'none';
+      content.style.maxHeight = '0';
+      content.style.animation = '';
+    }
+    
+    if (dropdown === currentOpenDropdown) {
+      currentOpenDropdown = null;
+    }
+  }
+  
+  // Function to close all dropdowns except the specified one
+  function closeOtherDropdowns(exceptDropdown) {
+    dropdowns.forEach(dropdown => {
+      if (dropdown !== exceptDropdown && dropdown.classList.contains('active')) {
+        closeDropdown(dropdown);
+      }
+    });
+    
+    // Also close buy dropdowns
+    document.querySelectorAll('.buy-dropdown').forEach(buyDropdown => {
+      buyDropdown.classList.remove('active');
+      const buyOptions = buyDropdown.querySelector('.buy-options');
+      if (buyOptions) {
+        buyOptions.style.display = 'none';
+      }
+    });
+  }
+  
   // Add click event to each dropdown button
   dropbtns.forEach((dropbtn, index) => {
-    // Remove existing event listeners
+    // Remove any existing event listeners
     const newDropbtn = dropbtn.cloneNode(true);
     dropbtn.parentNode.replaceChild(newDropbtn, dropbtn);
     
@@ -264,76 +302,78 @@ function setupDropdowns() {
       const isMobile = window.innerWidth <= 768;
       const isOpen = dropdown.classList.contains('active');
       
-      // Close all other dropdowns first (including buy dropdowns)
-      document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
-        if (d !== dropdown) {
-          d.classList.remove('active');
-          const content = d.querySelector('.dropdown-content, .buy-options');
-          if (content) {
-            content.style.display = 'none';
-            if (isMobile) {
-              content.style.maxHeight = '0';
-            }
-          }
-        }
-      });
-      
-      // Toggle this dropdown
-      if (!isOpen) {
-        dropdown.classList.add('active');
-        
-        if (isMobile) {
-          // For mobile, use max-height animation
-          dropdownContent.style.display = 'block';
-          setTimeout(() => {
-            dropdownContent.style.maxHeight = '600px';
-          }, 10);
-        } else {
-          // For desktop, just show it
-          dropdownContent.style.display = 'block';
-        }
-        console.log('🟢 Dropdown opened');
-      } else {
-        dropdown.classList.remove('active');
-        dropdownContent.style.display = 'none';
-        if (isMobile) {
-          dropdownContent.style.maxHeight = '0';
-        }
-        console.log('🔴 Dropdown closed');
+      // If this dropdown is already open, close it
+      if (isOpen) {
+        closeDropdown(dropdown);
+        return;
       }
+      
+      // Close all other dropdowns first
+      closeOtherDropdowns(dropdown);
+      
+      // Open this dropdown
+      dropdown.classList.add('active');
+      currentOpenDropdown = dropdown;
+      
+      if (isMobile) {
+        // For mobile, use max-height animation
+        dropdownContent.style.display = 'block';
+        setTimeout(() => {
+          dropdownContent.style.maxHeight = '600px';
+        }, 10);
+      } else {
+        // For desktop, just show it with animation
+        dropdownContent.style.display = 'block';
+        dropdownContent.style.animation = 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      }
+      
+      console.log('🟢 Dropdown opened');
     });
   });
   
   // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
-      document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
-        d.classList.remove('active');
-        const content = d.querySelector('.dropdown-content, .buy-options');
-        if (content) {
-          content.style.display = 'none';
-          if (window.innerWidth <= 768) {
-            content.style.maxHeight = '0';
-          }
-        }
-      });
+    // Check if click is inside any dropdown or buy dropdown
+    const clickedInDropdown = e.target.closest('.dropdown');
+    const clickedInBuyDropdown = e.target.closest('.buy-dropdown');
+    const clickedInDropdownContent = e.target.closest('.dropdown-content');
+    const clickedInBuyOptions = e.target.closest('.buy-options');
+    
+    // Don't close if clicking inside dropdown content or buy options
+    if (clickedInDropdownContent || clickedInBuyOptions) {
+      return;
     }
+    
+    // Don't close if clicking on a dropdown button (let the button handler manage it)
+    if (clickedInDropdown && e.target.closest('.dropbtn')) {
+      return;
+    }
+    
+    // Don't close if clicking on a buy toggle button
+    if (clickedInBuyDropdown && e.target.closest('.buy-toggle')) {
+      return;
+    }
+    
+    // Close all dropdowns
+    dropdowns.forEach(closeDropdown);
+    currentOpenDropdown = null;
+    
+    // Close buy dropdowns
+    document.querySelectorAll('.buy-dropdown').forEach(buyDropdown => {
+      buyDropdown.classList.remove('active');
+      const buyOptions = buyDropdown.querySelector('.buy-options');
+      if (buyOptions) {
+        buyOptions.style.display = 'none';
+      }
+    });
   });
   
-  // Close dropdown when clicking a link inside
+  // Close dropdown when clicking a link inside (with delay for mobile nav)
   document.querySelectorAll('.dropdown-content a').forEach(link => {
     link.addEventListener('click', function() {
       setTimeout(() => {
-        document.querySelectorAll('.dropdown').forEach(d => {
-          d.classList.remove('active');
-          const content = d.querySelector('.dropdown-content');
-          if (content) {
-            content.style.display = 'none';
-            if (window.innerWidth <= 768) {
-              content.style.maxHeight = '0';
-            }
-          }
-        });
+        dropdowns.forEach(closeDropdown);
+        currentOpenDropdown = null;
         
         if (window.innerWidth <= 768) {
           closeMobileNav();
@@ -342,43 +382,39 @@ function setupDropdowns() {
     });
   });
   
+  // Handle window resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      // Reset dropdown states on resize
+      if (window.innerWidth > 768) {
+        // On desktop, close all dropdowns
+        dropdowns.forEach(closeDropdown);
+        currentOpenDropdown = null;
+      } else {
+        // On mobile, ensure proper styles
+        dropdowns.forEach(dropdown => {
+          const content = dropdown.querySelector('.dropdown-content');
+          if (content && !dropdown.classList.contains('active')) {
+            content.style.display = 'none';
+            content.style.maxHeight = '0';
+          }
+        });
+      }
+    }, 250);
+  });
+  
   console.log('✅ Dropdowns setup complete');
 }
-function closeAllDropdowns() {
-  document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
-    d.classList.remove('active');
-    const content = d.querySelector('.dropdown-content, .buy-options');
-    if (content) {
-      content.style.display = 'none';
-      if (window.innerWidth <= 768) {
-        content.style.maxHeight = '0';
-      }
-    }
-  });
-}
-function closeAllDropdowns() {
-  // Hide all dropdown contents
-  document.querySelectorAll('.dropdown-content').forEach(content => {
-    content.style.display = 'none';
-    content.style.maxHeight = '0';
-    content.classList.remove('active');
-  });
-  
-  // Remove active class from dropdown containers
-  document.querySelectorAll('.dropdown').forEach(dropdown => {
-    dropdown.classList.remove('active');
-  });
-  
-  // Remove active class from buttons
-  document.querySelectorAll('.dropbtn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  // Close buy dropdowns
-  document.querySelectorAll('.buy-dropdown').forEach(d => {
-    d.classList.remove('active');
-  });
-}
+
+// Close all other buy dropdowns
+buyDropdowns.forEach(d => d.classList.remove('active'));
+
+// Close all other dropdowns
+document.querySelectorAll('.dropdown').forEach(d => {
+  d.classList.remove('active');
+});
 
 // ========== BACK TO TOP ==========
 function setupBackToTop() {
