@@ -1,4 +1,5 @@
 // js/common.js - Main functionality for all pages
+
 // ========== HEADER SCROLL EFFECT ==========
 function setupHeaderScrollEffect() {
   const header = document.querySelector('header');
@@ -38,8 +39,8 @@ function initializeCommon() {
   // 3. Setup back to top (can run immediately)
   setupBackToTop();
 
-    // 4. Setup header scroll effect
-  setupHeaderScrollEffect(); // <-- ADD THIS LINE
+  // 4. Setup header scroll effect
+  setupHeaderScrollEffect();
   
   console.log('✅ Common functionality initialized');
 }
