@@ -289,7 +289,6 @@ function setupDropdowns() {
         } else {
           // For desktop, use display
           dropdownContent.style.display = 'block';
-          dropdownContent.style.animation = 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         }
         console.log('🟢 Dropdown opened');
       } else {
@@ -298,49 +297,14 @@ function setupDropdowns() {
     });
   });
   
-  // Close dropdowns when clicking outside (with better handling for desktop)
+  // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    const isDesktop = window.innerWidth > 768;
-    const clickedDropdown = e.target.closest('.dropdown');
-    const clickedDropdownContent = e.target.closest('.dropdown-content');
-    
-    // Don't close if clicking on dropdown content on desktop
-    if (isDesktop && clickedDropdownContent) {
-      return;
-    }
-    
-    if (!clickedDropdown && !e.target.closest('.buy-dropdown')) {
+    if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
       closeAllDropdowns();
     }
   });
   
-  // On desktop, keep dropdown open when hovering over content
-  document.querySelectorAll('.dropdown-content').forEach(content => {
-    content.addEventListener('mouseenter', function() {
-      if (window.innerWidth > 768) {
-        const dropdown = this.closest('.dropdown');
-        if (dropdown) {
-          dropdown.classList.add('active');
-        }
-      }
-    });
-    
-    content.addEventListener('mouseleave', function() {
-      if (window.innerWidth > 768) {
-        const dropdown = this.closest('.dropdown');
-        if (dropdown && !this.matches(':hover')) {
-          // Small delay before closing
-          setTimeout(() => {
-            if (!dropdown.matches(':hover') && !this.matches(':hover')) {
-              dropdown.classList.remove('active');
-            }
-          }, 300);
-        }
-      }
-    });
-  });
-  
-  // Handle dropdown links
+  // Close dropdown when clicking a link inside
   document.querySelectorAll('.dropdown-content a').forEach(link => {
     link.addEventListener('click', function() {
       setTimeout(() => {
@@ -357,15 +321,15 @@ function setupDropdowns() {
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      // Reset dropdown states on resize
+      // Close dropdowns when switching to desktop
       if (window.innerWidth > 768) {
         closeAllDropdowns();
         document.querySelectorAll('.dropdown-content').forEach(content => {
           content.style.display = 'none';
           content.style.maxHeight = '';
-          content.style.animation = '';
         });
       } else {
+        // Reset mobile dropdown styles
         document.querySelectorAll('.dropdown-content').forEach(content => {
           content.style.display = 'none';
           content.style.maxHeight = '0';
