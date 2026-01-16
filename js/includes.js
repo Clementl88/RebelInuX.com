@@ -21,10 +21,21 @@ async function loadComponent(elementId, url) {
     
     // Initialize common functionality after components are loaded
     setTimeout(() => {
-      if (typeof initializeCommon === 'function') {
-        initializeCommon();
+      // Check if initialization functions exist
+      if (typeof setupMobileNav === 'function') {
+        setupMobileNav();
       }
-    }, 100);
+      if (typeof initUniversalDropdowns === 'function') {
+        initUniversalDropdowns();
+      }
+      if (typeof initBackToTop === 'function') {
+        initBackToTop();
+      }
+      if (typeof setActiveNavItem === 'function') {
+        setActiveNavItem();
+      }
+      console.log('Components loaded and initialized');
+    }, 150);
     
   } catch (error) {
     console.error('Error loading component:', error);
