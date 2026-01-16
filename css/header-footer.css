@@ -1285,88 +1285,265 @@ footer::before {
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2) !important;
   }
   
-  /* ========== MOBILE BUY DROPDOWN ========== */
-  .buy-dropdown {
-    width: 100%;
-    margin-top: 20px;
+/* ========== MOBILE BUY DROPDOWN OPTIMIZATION ========== */
+/* Hide desktop CTA on mobile */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
   }
-  
-  .buy-toggle {
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
-    padding: 18px 24px;
-    font-size: 1.1rem;
+}
+
+/* Mobile-specific buy dropdown */
+.mobile-buy-dropdown {
+  width: 100%;
+  margin: 10px 0 20px;
+  display: none;
+}
+
+#nav-desktop.active .mobile-buy-dropdown {
+  display: block;
+}
+
+/* Compact mobile buy button */
+.mobile-buy-toggle {
+  width: 100%;
+  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-tap-highlight-color: rgba(212, 167, 106, 0.3);
+  transition: all 0.2s ease;
+}
+
+.mobile-buy-toggle:active {
+  transform: scale(0.98);
+}
+
+.mobile-buy-toggle i:first-child {
+  margin-right: 8px;
+}
+
+.mobile-buy-toggle .dropdown-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.mobile-buy-dropdown.active .mobile-buy-toggle .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Mobile buy options - Bottom sheet */
+.mobile-buy-options {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15, 15, 15, 0.98);
+  backdrop-filter: blur(20px);
+  border-top: 2px solid var(--rebel-gold);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 15px 30px;
+  z-index: 1002;
+  max-height: 70vh;
+  overflow-y: auto;
+  animation: slideUpMobile 0.3s ease;
+}
+
+.mobile-buy-dropdown.active .mobile-buy-options {
+  display: block;
+}
+
+/* Overlay when mobile dropdown is open */
+.mobile-buy-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1001;
+  animation: fadeIn 0.3s ease;
+}
+
+.mobile-buy-dropdown.active ~ .mobile-buy-overlay {
+  display: block;
+}
+
+/* Compact mobile options */
+.mobile-buy-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+.mobile-buy-option:active {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.mobile-buy-option.primary {
+  background: rgba(255, 107, 53, 0.1);
+  border-left-color: #FF6B35;
+}
+
+.mobile-option-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.mobile-option-content {
+  flex: 1;
+}
+
+.mobile-option-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.mobile-option-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mobile-option-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FF6B35, #FF9800);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.mobile-option-group {
+  margin: 15px 0 10px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-group-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--rebel-gold);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile contract display */
+.mobile-contract-display {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-contract-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 8px;
+}
+
+.mobile-contract-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  word-break: break-all;
+  -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-contract-value:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mobile-copy-icon {
+  color: var(--rebel-gold);
+  font-size: 0.9rem;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.mobile-copy-message {
+  font-size: 0.75rem;
+  color: #4CAF50;
+  margin-top: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-copy-message.show {
+  opacity: 1;
+}
+
+/* Close button for mobile dropdown */
+.mobile-buy-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Animations */
+@keyframes slideUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
   }
-  
-  .buy-options {
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 100%;
-    border-radius: 20px 20px 0 0;
-    margin-top: 0;
-    border-top: 1px solid rgba(212, 167, 106, 0.3);
-    animation: slideUpMobile 0.3s ease;
-    max-height: 70vh;
-    overflow-y: auto;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  @keyframes slideUpMobile {
-    from {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .buy-dropdown.active .buy-toggle {
-    border-radius: 30px 30px 0 0;
-  }
-  
-  /* Mobile-specific adjustments */
-  .mobile-buy-container .buy-dropdown {
-    margin-top: 0;
-  }
-  
-  /* Footer Mobile */
-  .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: var(--spacing-xl) !important;
-  }
-  
-  .footer-column {
-    align-items: center;
-  }
-  
-  .footer-column-title {
-    text-align: center;
-  }
-  
-  .footer-link {
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .footer-bottom {
-    grid-template-columns: 1fr !important;
-    padding: var(--spacing-lg);
-  }
-  
-  .footer-brand-title {
-    font-size: 1.8rem;
-  }
-  
-  .footer-brand-subtitle {
-    font-size: 0.8rem;
-    padding: 4px 12px;
-  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ========== DESKTOP HOVER BEHAVIOR (769px and above) ========== */
