@@ -230,29 +230,26 @@ function closeMobileNav() {
 }
 
 // ========== DROPDOWNS ==========
+// ========== DROPDOWNS ==========
 function setupDropdowns() {
   console.log('🔽 Setting up dropdowns...');
   
   const dropbtns = document.querySelectorAll('.dropbtn');
-  const dropdowns = document.querySelectorAll('.dropdown');
   
-  console.log(`Found ${dropbtns.length} dropdown buttons and ${dropdowns.length} dropdowns`);
+  console.log(`Found ${dropbtns.length} dropdown buttons`);
   
-  if (dropbtns.length === 0 || dropdowns.length === 0) {
+  if (dropbtns.length === 0) {
     console.warn('⚠️ Dropdown elements not found');
     return;
   }
   
   // Add click event to each dropdown button
   dropbtns.forEach((dropbtn, index) => {
-    // Skip if already has our event listener
-    if (dropbtn.dataset.dropdownInitialized === 'true') {
-      return;
-    }
+    // Remove existing event listeners
+    const newDropbtn = dropbtn.cloneNode(true);
+    dropbtn.parentNode.replaceChild(newDropbtn, dropbtn);
     
-    dropbtn.dataset.dropdownInitialized = 'true';
-    
-    dropbtn.addEventListener('click', function(e) {
+    newDropbtn.addEventListener('click', function(e) {
       console.log(`🎯 Dropdown ${index + 1} clicked`);
       
       e.preventDefault();
@@ -267,18 +264,23 @@ function setupDropdowns() {
       const isMobile = window.innerWidth <= 768;
       const isOpen = dropdown.classList.contains('active');
       
-      // Close all other dropdowns first
-      closeAllDropdowns();
-      
-      // Close buy dropdowns
-      document.querySelectorAll('.buy-dropdown').forEach(d => {
-        d.classList.remove('active');
+      // Close all other dropdowns first (including buy dropdowns)
+      document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
+        if (d !== dropdown) {
+          d.classList.remove('active');
+          const content = d.querySelector('.dropdown-content, .buy-options');
+          if (content) {
+            content.style.display = 'none';
+            if (isMobile) {
+              content.style.maxHeight = '0';
+            }
+          }
+        }
       });
       
       // Toggle this dropdown
       if (!isOpen) {
         dropdown.classList.add('active');
-        this.classList.add('active');
         
         if (isMobile) {
           // For mobile, use max-height animation
@@ -287,12 +289,16 @@ function setupDropdowns() {
             dropdownContent.style.maxHeight = '600px';
           }, 10);
         } else {
-          // For desktop, use display with animation
+          // For desktop, just show it
           dropdownContent.style.display = 'block';
-          dropdownContent.style.animation = 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         }
         console.log('🟢 Dropdown opened');
       } else {
+        dropdown.classList.remove('active');
+        dropdownContent.style.display = 'none';
+        if (isMobile) {
+          dropdownContent.style.maxHeight = '0';
+        }
         console.log('🔴 Dropdown closed');
       }
     });
@@ -300,35 +306,35 @@ function setupDropdowns() {
   
   // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    const isDesktop = window.innerWidth > 768;
-    const clickedDropdown = e.target.closest('.dropdown');
-    const clickedDropdownContent = e.target.closest('.dropdown-content');
-    const clickedBuyDropdown = e.target.closest('.buy-dropdown');
-    
-    // Don't close if clicking on dropdown content
-    if (clickedDropdownContent) {
-      return;
+    if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
+      document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
+        d.classList.remove('active');
+        const content = d.querySelector('.dropdown-content, .buy-options');
+        if (content) {
+          content.style.display = 'none';
+          if (window.innerWidth <= 768) {
+            content.style.maxHeight = '0';
+          }
+        }
+      });
     }
-    
-    // Don't close if clicking on dropdown button (let button handler handle it)
-    if (clickedDropdown && e.target.closest('.dropbtn')) {
-      return;
-    }
-    
-    // Don't close if clicking on buy dropdown
-    if (clickedBuyDropdown) {
-      return;
-    }
-    
-    // Close all dropdowns
-    closeAllDropdowns();
   });
   
   // Close dropdown when clicking a link inside
   document.querySelectorAll('.dropdown-content a').forEach(link => {
     link.addEventListener('click', function() {
       setTimeout(() => {
-        closeAllDropdowns();
+        document.querySelectorAll('.dropdown').forEach(d => {
+          d.classList.remove('active');
+          const content = d.querySelector('.dropdown-content');
+          if (content) {
+            content.style.display = 'none';
+            if (window.innerWidth <= 768) {
+              content.style.maxHeight = '0';
+            }
+          }
+        });
+        
         if (window.innerWidth <= 768) {
           closeMobileNav();
         }
@@ -336,33 +342,20 @@ function setupDropdowns() {
     });
   });
   
-  // Handle window resize
-  let resizeTimer;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      // Close dropdowns when switching to desktop
-      if (window.innerWidth > 768) {
-        closeAllDropdowns();
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-          content.style.display = 'none';
-          content.style.maxHeight = '';
-          content.style.animation = '';
-        });
-      } else {
-        // Reset mobile dropdown styles
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-          content.style.display = 'none';
-          content.style.maxHeight = '0';
-          content.style.animation = '';
-        });
-      }
-    }, 250);
-  });
-  
   console.log('✅ Dropdowns setup complete');
 }
-
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdown, .buy-dropdown').forEach(d => {
+    d.classList.remove('active');
+    const content = d.querySelector('.dropdown-content, .buy-options');
+    if (content) {
+      content.style.display = 'none';
+      if (window.innerWidth <= 768) {
+        content.style.maxHeight = '0';
+      }
+    }
+  });
+}
 function closeAllDropdowns() {
   // Hide all dropdown contents
   document.querySelectorAll('.dropdown-content').forEach(content => {
