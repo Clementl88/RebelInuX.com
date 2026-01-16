@@ -352,31 +352,229 @@ header.scrolled {
   transform: translateY(-2px) rotate(15deg);
 }
 
+/* ========== PROFESSIONAL BUY BUTTON ========== */
+/* Desktop Buy Button */
+.header-cta.desktop-only {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-lg);
+}
+
+.header-cta .cta-button {
+  background: linear-gradient(135deg, 
+    var(--rebel-red), 
+    var(--rebel-gold), 
+    var(--rebel-red));
+  background-size: 200% auto;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+  justify-content: center;
+  text-transform: uppercase;
+  animation: gradientShift 3s ease infinite;
+  box-shadow: 0 4px 20px rgba(215, 77, 77, 0.3);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.header-cta .cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(215, 77, 77, 0.4);
+  animation: none;
+  background: linear-gradient(135deg, 
+    var(--rebel-gold), 
+    var(--rebel-red), 
+    var(--rebel-gold));
+  background-size: 200% auto;
+}
+
+.header-cta .cta-button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3);
+}
+
+/* Add rocket icon animation */
+.header-cta .cta-button i {
+  transition: transform 0.3s ease;
+}
+
+.header-cta .cta-button:hover i {
+  transform: translateY(-2px) rotate(15deg);
+}
+
+/* ========== ENHANCED MOBILE BUY BUTTON ========== */
 /* Mobile Buy Container - HIDDEN by default */
 .mobile-buy-container {
   display: none !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1002;
+  padding: var(--spacing-md);
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.9) 20%,
+    rgba(0, 0, 0, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(212, 167, 106, 0.3);
+  box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Mobile Buy Button Styling */
+/* Professional Mobile Buy Button */
 .mobile-buy-button {
-  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
+  background: linear-gradient(135deg, 
+    var(--rebel-red), 
+    var(--rebel-gold),
+    var(--rebel-red)) !important;
+  background-size: 200% auto !important;
+  color: white !important;
   width: 100%;
-  max-width: 300px;
-  margin: 20px auto 0;
-  font-weight: 700;
-  font-size: 1.1rem;
-  justify-content: center;
-  animation: pulse 2s infinite;
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 18px 24px !important;
+  font-weight: 800 !important;
+  font-size: 1.2rem !important;
+  justify-content: center !important;
   display: flex !important;
-  align-items: center;
-  gap: 10px;
+  align-items: center !important;
+  gap: 12px !important;
+  border: none !important;
+  border-radius: 50px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  text-decoration: none !important;
+  box-shadow: 
+    0 6px 20px rgba(215, 77, 77, 0.4),
+    0 0 0 1px rgba(212, 167, 106, 0.2) inset !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  animation: 
+    pulseMobile 2s infinite,
+    gradientShiftMobile 3s ease infinite !important;
 }
 
-/* Buy Button Animation */
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(212, 167, 106, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0); }
+/* Mobile Button Animation */
+@keyframes pulseMobile {
+  0% { 
+    box-shadow: 
+      0 6px 20px rgba(215, 77, 77, 0.4),
+      0 0 0 0 rgba(212, 167, 106, 0.4); 
+  }
+  50% { 
+    box-shadow: 
+      0 6px 25px rgba(215, 77, 77, 0.5),
+      0 0 0 8px rgba(212, 167, 106, 0.1); 
+  }
+  100% { 
+    box-shadow: 
+      0 6px 20px rgba(215, 77, 77, 0.4),
+      0 0 0 0 rgba(212, 167, 106, 0); 
+  }
+}
+
+@keyframes gradientShiftMobile {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* Hover/Active States */
+.mobile-buy-button:hover,
+.mobile-buy-button:active {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 
+    0 10px 30px rgba(215, 77, 77, 0.5),
+    0 0 0 1px rgba(212, 167, 106, 0.3) inset !important;
+  animation: none !important;
+  background: linear-gradient(135deg, 
+    var(--rebel-gold), 
+    var(--rebel-red),
+    var(--rebel-gold)) !important;
+  background-size: 200% auto !important;
+}
+
+/* Rocket Icon Animation */
+.mobile-buy-button i {
+  font-size: 1.4rem !important;
+  transition: all 0.3s ease !important;
+  animation: rocketFloat 2s ease-in-out infinite !important;
+}
+
+@keyframes rocketFloat {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-3px) rotate(5deg); }
+}
+
+.mobile-buy-button:hover i,
+.mobile-buy-button:active i {
+  animation: rocketLaunch 0.5s ease forwards !important;
+}
+
+@keyframes rocketLaunch {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-5px) rotate(15deg); }
+  100% { transform: translateY(-2px) rotate(10deg); }
+}
+
+/* Add floating particles effect */
+.mobile-buy-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-buy-button:hover::before {
+  opacity: 1;
+}
+
+/* Price Badge (Optional - shows current price) */
+.price-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: badgePulse 1.5s infinite;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .mobile-nav-toggle {
@@ -1044,7 +1242,7 @@ footer::before {
     padding: 3px 10px;
   }
   
-  /* BUY BUTTON FIX - MOBILE */
+  /* ========== ENHANCED MOBILE BUY BUTTON ========== */
   .header-cta.desktop-only {
     display: none !important;
   }
@@ -1054,26 +1252,74 @@ footer::before {
   }
   
   #nav-desktop.active .mobile-buy-container {
-    display: block !important;
-    position: fixed;
-    bottom: 40px;
-    left: 0;
-    right: 0;
-    padding: 0 var(--spacing-lg);
-    text-align: center;
-    z-index: 1002;
-    animation: slideUp 0.3s ease;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
-  @keyframes slideUp {
+  @keyframes slideUpMobile {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(100%);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  /* Add space for buy button in mobile nav */
+  #nav-desktop.active {
+    padding-bottom: 160px !important;
+  }
+  
+  /* Mobile Buy Button Container */
+  .mobile-buy-container {
+    padding: 15px var(--spacing-md) 25px !important;
+  }
+  
+  /* Touch-friendly sizing */
+  .mobile-buy-button {
+    min-height: 60px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(212, 167, 106, 0.3);
+  }
+  
+  /* Prevent text selection on tap */
+  .mobile-buy-button,
+  .mobile-buy-button * {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  /* Active state for touch devices */
+  .mobile-buy-button:active {
+    transform: translateY(-1px) scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  /* Add network indicator */
+  .mobile-network-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .network-dot {
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: networkPulse 2s infinite;
+  }
+  
+  @keyframes networkPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
   
   /* Add space for buy button */
