@@ -382,3 +382,43 @@ function setActiveNavItem() {
 }
 
 // ========== DEBUG
+
+// ========== DEBUG FUNCTIONS ==========
+function debugDropdowns() {
+  console.log('=== DROPDOWN DEBUG ===');
+  console.log('Window width:', window.innerWidth);
+  console.log('Is mobile?', window.innerWidth <= 768);
+  console.log('Dropdown buttons:', document.querySelectorAll('.dropbtn').length);
+  console.log('Dropdown contents:', document.querySelectorAll('.dropdown-content').length);
+  
+  document.querySelectorAll('.dropbtn').forEach((btn, i) => {
+    console.log(`Button ${i}:`, {
+      text: btn.textContent.trim(),
+      hasListener: btn.dataset.dropdownInitialized === 'true',
+      isActive: btn.classList.contains('active')
+    });
+  });
+  
+  // Force re-initialize if needed
+  console.log('🔄 Re-initializing dropdowns...');
+  setupDropdowns();
+}
+
+// ========== INITIALIZE ON DOM READY ==========
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📄 DOM Content Loaded (common.js)');
+  
+  // Start initialization
+  setTimeout(initializeCommon, 100);
+  
+  // Add debug command to window
+  window.debugDropdowns = debugDropdowns;
+});
+
+// Export functions for includes.js
+window.setupMobileNavigation = setupMobileNavigation;
+window.setupDropdowns = setupDropdowns;
+window.setupBackToTop = setupBackToTop;
+window.setActiveNavItem = setActiveNavItem;
+window.closeAllDropdowns = closeAllDropdowns;
+window.closeMobileNav = closeMobileNav;
