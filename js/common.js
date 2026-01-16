@@ -23,10 +23,10 @@ function initializeCommon() {
 }
 
 // ========== SIMPLE MOBILE NAVIGATION ==========
-// ========== SIMPLE MOBILE NAVIGATION ==========
 function setupMobileNav() {
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
+  const mobileBuyContainer = document.getElementById('mobileBuyContainer');
   
   if (!mobileToggle || !navDesktop) return;
   
@@ -37,30 +37,38 @@ function setupMobileNav() {
     const isOpening = !navDesktop.classList.contains('active');
     navDesktop.classList.toggle('active');
     
-    // Close any open dropdowns when opening mobile nav
-    if (isOpening) {
-      closeAllDropdowns(); // This function should be defined above
-    }
-    
-    // Toggle between ☰ and × symbols
+    // Toggle mobile buy button visibility
     if (navDesktop.classList.contains('active')) {
+      if (mobileBuyContainer) {
+        mobileBuyContainer.style.display = 'block';
+      }
       this.innerHTML = '×'; // Close icon
       document.body.style.overflow = 'hidden';
     } else {
+      if (mobileBuyContainer) {
+        mobileBuyContainer.style.display = 'none';
+      }
       this.innerHTML = '☰'; // Hamburger icon
       document.body.style.overflow = '';
-      closeAllDropdowns(); // Also close dropdowns when closing nav
     }
+    
+    // Close any open dropdowns when toggling mobile nav
+    closeAllDropdowns();
   });
   
   // Close menu when clicking outside (mobile only)
   document.addEventListener('click', function(e) {
     if (window.innerWidth > 768) return; // Desktop: don't handle
     
-    if (!navDesktop.contains(e.target) && !mobileToggle.contains(e.target)) {
+    if (!navDesktop.contains(e.target) && 
+        !mobileToggle.contains(e.target) &&
+        !mobileBuyContainer?.contains(e.target)) {
       navDesktop.classList.remove('active');
       mobileToggle.innerHTML = '☰';
       document.body.style.overflow = '';
+      if (mobileBuyContainer) {
+        mobileBuyContainer.style.display = 'none';
+      }
       closeAllDropdowns();
     }
   });
@@ -71,32 +79,29 @@ function setupMobileNav() {
       navDesktop.classList.remove('active');
       mobileToggle.innerHTML = '☰';
       document.body.style.overflow = '';
+      if (mobileBuyContainer) {
+        mobileBuyContainer.style.display = 'none';
+      }
       closeAllDropdowns();
     }
   });
-  
-  // Add the closeAllDropdowns function here if not defined elsewhere
-  function closeAllDropdowns() {
-    document.querySelectorAll('.dropdown-content').forEach(content => {
-      content.style.display = 'none';
-    });
-    document.querySelectorAll('.dropbtn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-  }
 }
 
-// ========== SIMPLE MOBILE DROPDOWN FIX ==========
+// ========== SIMPLE MOBILE DROPDOWN ==========
 function setupMobileDropdown() {
   console.log('📱 Setting up mobile dropdown...');
   
-  // Get all dropdown buttons
   const dropbtns = document.querySelectorAll('.dropbtn');
   console.log(`Found ${dropbtns.length} dropdown buttons`);
   
+  // Only setup on mobile
+  if (window.innerWidth > 768) {
+    console.log('Desktop mode - skipping mobile dropdown setup');
+    return;
+  }
+  
   // Helper function to close all dropdowns
   function closeAllDropdowns() {
-    console.log('🔒 Closing all dropdowns');
     document.querySelectorAll('.dropdown-content').forEach(content => {
       content.style.display = 'none';
     });
@@ -108,68 +113,40 @@ function setupMobileDropdown() {
   // Add click handler to each dropdown button
   dropbtns.forEach(dropbtn => {
     dropbtn.addEventListener('click', function(e) {
-      console.log('🎯 Mobile dropdown button clicked');
-      
-      // Prevent default and stop propagation
       e.preventDefault();
       e.stopPropagation();
       
-      // Get the dropdown and its content
       const dropdown = this.closest('.dropdown');
       const dropdownContent = dropdown.querySelector('.dropdown-content');
-      
-      // Check if already open
       const isOpen = dropdownContent.style.display === 'block';
       
-      // Close ALL other dropdowns first
+      // Close all dropdowns first
       closeAllDropdowns();
       
       // Toggle this dropdown
       if (!isOpen) {
-        console.log('🟢 Opening dropdown');
         dropdownContent.style.display = 'block';
         this.classList.add('active');
-      } else {
-        console.log('🔴 Closing dropdown');
-        dropdownContent.style.display = 'none';
-        this.classList.remove('active');
       }
     });
   });
   
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
-    // Only handle on mobile
     if (window.innerWidth > 768) return;
     
-    // If clicking outside dropdowns AND outside the mobile menu toggle
-    if (!e.target.closest('.dropdown') && !e.target.closest('#mobileNavToggle')) {
-      console.log('🌍 Clicking outside - closing all dropdowns');
+    if (!e.target.closest('.dropdown')) {
       closeAllDropdowns();
     }
   });
   
-  // Close dropdown when clicking a link inside (mobile only)
+  // Close dropdown when clicking a link inside
   document.querySelectorAll('.dropdown-content a').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function() {
       if (window.innerWidth <= 768) {
-        console.log('🔗 Link clicked - closing dropdown');
-        const dropdown = this.closest('.dropdown');
-        if (dropdown) {
-          const dropdownContent = dropdown.querySelector('.dropdown-content');
-          const dropbtn = dropdown.querySelector('.dropbtn');
-          if (dropdownContent) dropdownContent.style.display = 'none';
-          if (dropbtn) dropbtn.classList.remove('active');
-        }
+        closeAllDropdowns();
       }
     });
-  });
-  
-  // Close dropdowns when window resizes (to desktop)
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 768) {
-      closeAllDropdowns();
-    }
   });
   
   console.log('✅ Mobile dropdown setup complete');
