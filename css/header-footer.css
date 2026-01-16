@@ -170,40 +170,6 @@ header {
   margin-left: var(--spacing-md);
 }
 
-/* Mobile Buy Container - FIXED positioning */
-#mobileBuyContainer {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  padding: 0 var(--spacing-md);
-  text-align: center;
-  z-index: 1003; /* Higher than nav */
-}
-
-/* Mobile Buy Button Styling */
-.mobile-buy-button {
-  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold)) !important;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  font-weight: 700;
-  font-size: 1.1rem;
-  justify-content: center;
-  animation: pulse 2s infinite;
-  display: flex !important;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Buy Button Animation */
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(212, 167, 106, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 167, 106, 0); }
-}
-
 .mobile-nav-toggle {
   display: none;
   background: transparent;
@@ -572,15 +538,37 @@ footer {
   color: #777;
 }
 
+/* ========== DROPDOWN DISPLAY FIXES ========== */
+#moreDropdownContent {
+  display: none;
+}
+
+/* Ensure dropdown shows when active */
+#moreDropdownBtn.active + #moreDropdownContent {
+  display: block !important;
+}
+
+/* Desktop hover */
+@media (min-width: 769px) {
+  #moreDropdown:hover #moreDropdownContent {
+    display: block !important;
+  }
+  
+  #moreDropdownBtn:hover {
+    background: rgba(255, 152, 0, 0.15) !important;
+  }
+}
+
 /* ========== MOBILE STYLES ========== */
 @media (max-width: 768px) {
-  /* Mobile Navigation */
+  /* Mobile Navigation Toggle */
   .mobile-nav-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
   }
   
+  /* Hide desktop navigation by default on mobile */
   #nav-desktop {
     display: none;
     flex-direction: column;
@@ -597,10 +585,12 @@ footer {
     -webkit-overflow-scrolling: touch;
   }
   
+  /* Show navigation when active */
   #nav-desktop.active {
     display: flex;
   }
   
+  /* Style navigation links on mobile */
   #nav-desktop a {
     padding: var(--spacing-md);
     border-radius: 8px;
@@ -618,26 +608,17 @@ footer {
     font-size: 1.1rem;
   }
   
+  /* Adjust brand title size on mobile */
   .brand-title {
     font-size: 1.4rem;
   }
   
-
-  
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Hide desktop buy button on mobile */
+  .header-cta.desktop-only {
+    display: none !important;
   }
   
-
-  
-  /* Mobile Dropdown */
+  /* Mobile Dropdown Styling */
   .dropdown {
     width: 100%;
     margin-bottom: 0.5rem;
@@ -654,7 +635,7 @@ footer {
     width: 100% !important;
   }
   
-  /* FIX: Force show when parent menu is active and dropdown is clicked */
+  /* Show dropdown when active */
   #nav-desktop.active .dropdown.active .dropdown-content,
   .dropdown.active .dropdown-content {
     display: block !important;
@@ -700,37 +681,11 @@ footer {
     transform: rotate(180deg) !important;
   }
   
-  /* FIX: Add visual feedback for active dropdown button */
+  /* Visual feedback for active dropdown button */
   .dropbtn.active {
     background: rgba(255, 255, 255, 0.1) !important;
   }
   
-  /* Footer Mobile */
-  .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: var(--spacing-lg) !important;
-  }
-  
-  .footer-column {
-    align-items: center;
-  }
-  
-  .footer-column-title {
-    text-align: center;
-  }
-  
-  .footer-link {
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .footer-bottom {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ========== GUARANTEED MOBILE DROPDOWN FIX ========== */
-@media (max-width: 768px) {
   /* RESET desktop hover behavior on mobile */
   .dropdown:hover .dropdown-content {
     display: none !important;
@@ -779,35 +734,7 @@ footer {
     border-color: var(--rebel-gold) !important;
   }
   
-  /* Rotate arrow when active */
-  .dropbtn.active .dropdown-arrow {
-    transform: rotate(180deg) !important;
-  }
-}
-
-/* ========== DROPDOWN DISPLAY FIXES ========== */
-#moreDropdownContent {
-  display: none;
-}
-
-/* Ensure dropdown shows when active */
-#moreDropdownBtn.active + #moreDropdownContent {
-  display: block !important;
-}
-
-/* Desktop hover */
-@media (min-width: 769px) {
-  #moreDropdown:hover #moreDropdownContent {
-    display: block !important;
-  }
-  
-  #moreDropdownBtn:hover {
-    background: rgba(255, 152, 0, 0.15) !important;
-  }
-}
-
-/* Mobile specific */
-@media (max-width: 768px) {
+  /* Mobile specific dropdown content */
   #moreDropdownContent {
     position: relative !important;
     animation: slideDown 0.3s ease !important;
@@ -815,16 +742,26 @@ footer {
     width: 100% !important;
   }
   
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-      max-height: 0;
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-      max-height: 500px;
-    }
+  /* Footer Mobile */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg) !important;
+  }
+  
+  .footer-column {
+    align-items: center;
+  }
+  
+  .footer-column-title {
+    text-align: center;
+  }
+  
+  .footer-link {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .footer-bottom {
+    grid-template-columns: 1fr !important;
   }
 }
