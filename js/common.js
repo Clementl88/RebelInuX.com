@@ -16,6 +16,95 @@ function setupHeaderScrollEffect() {
   console.log('📜 Header scroll effect initialized');
 }
 
+// ========== BUY DROPDOWN TOGGLE ==========
+function setupBuyDropdown() {
+  console.log('🛒 Setting up Buy dropdown...');
+  
+  const buyToggles = document.querySelectorAll('.buy-toggle');
+  
+  buyToggles.forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const dropdown = this.closest('.buy-dropdown');
+      const isActive = dropdown.classList.contains('active');
+      
+      // Close all other buy dropdowns
+      document.querySelectorAll('.buy-dropdown').forEach(d => {
+        d.classList.remove('active');
+      });
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown').forEach(d => {
+        const content = d.querySelector('.dropdown-content');
+        if (content) content.style.display = 'none';
+      });
+      
+      // Toggle this dropdown
+      if (!isActive) {
+        dropdown.classList.add('active');
+        console.log('🛒 Buy dropdown opened');
+      }
+    });
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.buy-dropdown') && !e.target.closest('.dropdown')) {
+      document.querySelectorAll('.buy-dropdown').forEach(d => {
+        d.classList.remove('active');
+      });
+    }
+  });
+  
+  // Close buy dropdown when clicking a buy option
+  document.querySelectorAll('.buy-option').forEach(option => {
+    option.addEventListener('click', function() {
+      setTimeout(() => {
+        document.querySelectorAll('.buy-dropdown').forEach(d => {
+          d.classList.remove('active');
+        });
+      }, 300);
+    });
+  });
+  
+  // Copy contract address function
+  window.copyContract = function() {
+    const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    navigator.clipboard.writeText(contract).then(() => {
+      // Show message on desktop
+      const message = document.getElementById('copyMessage');
+      if (message) {
+        message.classList.add('show');
+        setTimeout(() => {
+          message.classList.remove('show');
+        }, 2000);
+      }
+      
+      // Show message on mobile
+      const mobileMessage = document.getElementById('copyMessageMobile');
+      if (mobileMessage) {
+        mobileMessage.classList.add('show');
+        setTimeout(() => {
+          mobileMessage.classList.remove('show');
+        }, 2000);
+      }
+    }).catch(err => {
+      console.error('Failed to copy contract:', err);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = contract;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    });
+  };
+  
+  console.log('✅ Buy dropdown setup complete');
+}
+
 // Global initialization function
 function initializeCommon() {
   console.log('🚀 Initializing common functionality...');
@@ -38,9 +127,12 @@ function initializeCommon() {
   
   // 3. Setup back to top (can run immediately)
   setupBackToTop();
-
+  
   // 4. Setup header scroll effect
   setupHeaderScrollEffect();
+  
+  // 5. Setup buy dropdown
+  setupBuyDropdown();
   
   console.log('✅ Common functionality initialized');
 }
@@ -158,6 +250,11 @@ function setupDropdowns() {
       
       // Close all other dropdowns first
       closeAllDropdowns();
+      
+      // Close buy dropdowns
+      document.querySelectorAll('.buy-dropdown').forEach(d => {
+        d.classList.remove('active');
+      });
       
       // Toggle this dropdown
       if (!isOpen) {
@@ -284,42 +381,4 @@ function setActiveNavItem() {
   }
 }
 
-// ========== DEBUG FUNCTIONS ==========
-function debugDropdowns() {
-  console.log('=== DROPDOWN DEBUG ===');
-  console.log('Window width:', window.innerWidth);
-  console.log('Is mobile?', window.innerWidth <= 768);
-  console.log('Dropdown buttons:', document.querySelectorAll('.dropbtn').length);
-  console.log('Dropdown contents:', document.querySelectorAll('.dropdown-content').length);
-  
-  document.querySelectorAll('.dropbtn').forEach((btn, i) => {
-    console.log(`Button ${i}:`, {
-      text: btn.textContent.trim(),
-      hasListener: btn.dataset.dropdownInitialized === 'true',
-      isActive: btn.classList.contains('active')
-    });
-  });
-  
-  // Force re-initialize if needed
-  console.log('🔄 Re-initializing dropdowns...');
-  setupDropdowns();
-}
-
-// ========== INITIALIZE ON DOM READY ==========
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('📄 DOM Content Loaded (common.js)');
-  
-  // Start initialization
-  setTimeout(initializeCommon, 100);
-  
-  // Add debug command to window
-  window.debugDropdowns = debugDropdowns;
-});
-
-// Export functions for includes.js
-window.setupMobileNavigation = setupMobileNavigation;
-window.setupDropdowns = setupDropdowns;
-window.setupBackToTop = setupBackToTop;
-window.setActiveNavItem = setActiveNavItem;
-window.closeAllDropdowns = closeAllDropdowns;
-window.closeMobileNav = closeMobileNav;
+// ========== DEBUG
