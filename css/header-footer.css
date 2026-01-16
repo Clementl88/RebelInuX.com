@@ -488,14 +488,15 @@ header.scrolled {
 /* ========== FIXED DROPDOWN BEHAVIOR ========== */
 
 /* For desktop - show on hover OR when active */
+/* ========== FIXED DROPDOWN BEHAVIOR ========== */
+
+/* For desktop - ONLY show on click (when active) */
 @media (min-width: 769px) {
-  .dropdown:hover .dropdown-content,
   .dropdown.active .dropdown-content {
     display: block;
     animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .dropdown:hover .dropbtn,
   .dropdown.active .dropbtn {
     background: linear-gradient(135deg, 
       rgba(255, 215, 0, 0.2), 
@@ -510,7 +511,7 @@ header.scrolled {
     transform: rotate(180deg);
   }
   
-  /* When dropdown is active via click, keep it visible when cursor leaves */
+  /* Ensure dropdown stays open when hovering over content */
   .dropdown.active:hover .dropdown-content {
     display: block;
   }
@@ -522,6 +523,19 @@ header.scrolled {
   
   .dropdown-content {
     pointer-events: auto;
+  }
+  
+  /* Remove hover functionality for dropdown button */
+  .dropdown:not(.active):hover .dropdown-content {
+    display: none !important;
+  }
+  
+  .dropdown:not(.active):hover .dropbtn {
+    background: linear-gradient(135deg, 
+      rgba(255, 215, 0, 0.1), 
+      rgba(255, 152, 0, 0.05)) !important;
+    transform: none;
+    box-shadow: none;
   }
 }
 
@@ -550,15 +564,10 @@ header.scrolled {
   display: block !important;
 }
 
-/* Fix for dropdown closing too quickly */
-.dropdown-content {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* Add a small delay before closing on mouse leave for desktop */
+/* Remove transition delays for non-active dropdowns */
 @media (min-width: 769px) {
   .dropdown:not(.active) .dropdown-content {
-    transition-delay: 0.1s;
+    transition-delay: 0s;
   }
 }
 
