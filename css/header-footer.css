@@ -469,14 +469,18 @@ header.scrolled {
   margin: 8px 20px;
 }
 
-/* Show dropdown on hover for desktop */
+/* ========== FIXED DROPDOWN BEHAVIOR ========== */
+
+/* For desktop - show on hover OR when active */
 @media (min-width: 769px) {
-  .dropdown:hover .dropdown-content {
+  .dropdown:hover .dropdown-content,
+  .dropdown.active .dropdown-content {
     display: block;
     animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  .dropdown:hover .dropbtn {
+  .dropdown:hover .dropbtn,
+  .dropdown.active .dropbtn {
     background: linear-gradient(135deg, 
       rgba(255, 215, 0, 0.2), 
       rgba(255, 215, 0, 0.1)) !important;
@@ -484,9 +488,24 @@ header.scrolled {
     transform: translateY(-2px);
   }
   
-  /* Hide dropdown arrow on desktop hover */
-  .dropdown:hover .dropbtn .dropdown-arrow {
-    display: none;
+  /* Keep dropdown arrow visible when active */
+  .dropdown.active .dropbtn .dropdown-arrow {
+    display: inline-block !important;
+    transform: rotate(180deg);
+  }
+  
+  /* When dropdown is active via click, keep it visible when cursor leaves */
+  .dropdown.active:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Fix z-index stacking */
+  .dropdown.active {
+    z-index: 1002;
+  }
+  
+  .dropdown-content {
+    pointer-events: auto;
   }
 }
 
@@ -498,6 +517,32 @@ header.scrolled {
   to { 
     opacity: 1; 
     transform: translateY(0) scale(1); 
+  }
+}
+
+/* Add a visual indicator for active dropdown */
+.dropdown.active .dropbtn {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.25), 
+    rgba(255, 215, 0, 0.15)) !important;
+  border-color: var(--rebel-gold) !important;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3) !important;
+}
+
+/* Ensure dropdown stays open when hovering over content */
+.dropdown-content:hover {
+  display: block !important;
+}
+
+/* Fix for dropdown closing too quickly */
+.dropdown-content {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Add a small delay before closing on mouse leave for desktop */
+@media (min-width: 769px) {
+  .dropdown:not(.active) .dropdown-content {
+    transition-delay: 0.1s;
   }
 }
 
