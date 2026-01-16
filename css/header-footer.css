@@ -487,7 +487,7 @@ header.scrolled {
 
 /* ========== FIXED DROPDOWN BEHAVIOR ========== */
 
-/* For desktop - ONLY show when active (click) */
+/* For desktop - show when active */
 @media (min-width: 769px) {
   .dropdown.active .dropdown-content {
     display: block !important;
@@ -503,9 +503,7 @@ header.scrolled {
     border-color: var(--rebel-gold) !important;
   }
   
-  /* Keep dropdown arrow visible and rotated when active */
   .dropdown.active .dropbtn .dropdown-arrow {
-    display: inline-block !important;
     transform: rotate(180deg);
   }
   
@@ -514,9 +512,17 @@ header.scrolled {
     display: block !important;
   }
   
-  /* Remove hover functionality */
+  /* Remove all hover effects for non-active dropdowns */
   .dropdown:not(.active):hover .dropdown-content {
     display: none !important;
+  }
+  
+  .dropdown:not(.active):hover .dropbtn {
+    background: linear-gradient(135deg, 
+      rgba(255, 215, 0, 0.1), 
+      rgba(255, 152, 0, 0.05)) !important;
+    transform: none;
+    box-shadow: none;
   }
 }
 
