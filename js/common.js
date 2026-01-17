@@ -375,7 +375,23 @@ function setupDropdowns() {
             }
         }, 250);
     });
+      if (window.innerWidth <= 768) {
+        document.querySelectorAll('.dropdown-content a').forEach(item => {
+            // Remove existing listeners to avoid duplicates
+            item.removeEventListener('click', handleMobileDropdownItemClick);
+            item.addEventListener('click', handleMobileDropdownItemClick);
+        });
+    }
     
+    // Listen for window resize to update mobile handlers
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+            document.querySelectorAll('.dropdown-content a').forEach(item => {
+                item.removeEventListener('click', handleMobileDropdownItemClick);
+                item.addEventListener('click', handleMobileDropdownItemClick);
+            });
+        }
+    });
     console.log('✅ Dropdowns setup complete');
 }
 
