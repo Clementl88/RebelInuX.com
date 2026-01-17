@@ -143,6 +143,7 @@ function setupBuyDropdown() {
   console.log('✅ Buy dropdown setup complete');
 }
 
+// ========== MOBILE NAVIGATION ==========
 function setupMobileNavigation() {
   console.log('📱 Setting up mobile navigation...');
   
@@ -159,34 +160,32 @@ function setupMobileNavigation() {
   mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
   
   newToggle.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const isOpening = !navDesktop.classList.contains('active');
-    navDesktop.classList.toggle('active');
-    
-    // CRITICAL: Add active class to the button
-    this.classList.toggle('active');
-    
-    // Update aria attributes
-    if (navDesktop.classList.contains('active')) {
-      document.body.style.overflow = 'hidden';
-      this.setAttribute('aria-expanded', 'true');
-      navDesktop.setAttribute('aria-hidden', 'false');
-    } else {
-      document.body.style.overflow = '';
-      this.setAttribute('aria-expanded', 'false');
-      navDesktop.setAttribute('aria-hidden', 'true');
-    }
-    
-    // Close dropdowns when opening nav
-    if (isOpening) {
-      closeAllDropdowns();
-    }
-    
-    console.log('📱 Mobile nav toggled:', navDesktop.classList.contains('active') ? 'open' : 'closed');
-    console.log('🔘 Button has active class:', this.classList.contains('active'));
-  });
+  e.preventDefault();
+  e.stopPropagation();
+  
+  const isOpening = !navDesktop.classList.contains('active');
+  navDesktop.classList.toggle('active');
+      this.classList.toggle('active'); // ← ADD THIS LINE
+
+  
+  // Update aria attributes - CSS handles the icon animation
+  if (navDesktop.classList.contains('active')) {
+    document.body.style.overflow = 'hidden';
+    this.setAttribute('aria-expanded', 'true');
+    navDesktop.setAttribute('aria-hidden', 'false');
+  } else {
+    document.body.style.overflow = '';
+    this.setAttribute('aria-expanded', 'false');
+    navDesktop.setAttribute('aria-hidden', 'true');
+  }
+  
+  // Close dropdowns when opening nav
+  if (isOpening) {
+    closeAllDropdowns();
+  }
+  
+  console.log('📱 Mobile nav toggled:', navDesktop.classList.contains('active') ? 'open' : 'closed');
+});
   
   // Close nav when clicking outside (mobile only)
   document.addEventListener('click', function(e) {
@@ -217,12 +216,10 @@ function closeMobileNav() {
     navDesktop.classList.remove('active');
     navDesktop.setAttribute('aria-hidden', 'true');
   }
-  
   if (mobileToggle) {
-    mobileToggle.classList.remove('active'); // CRITICAL
+        mobileToggle.classList.remove('active'); // ← ADD THIS LINE
     mobileToggle.setAttribute('aria-expanded', 'false');
   }
-  
   document.body.style.overflow = '';
   closeAllDropdowns();
   
