@@ -316,11 +316,9 @@ function setupDropdowns() {
                     isDropdownOpen = true;
                     document.body.classList.add('dropdown-open');
                     
-                    // Calculate max-height based on content
-                    const items = dropdownContent.querySelectorAll('a');
-                    const itemHeight = 60;
-                    const maxHeight = Math.min(items.length * itemHeight, 600);
-                    dropdownContent.style.maxHeight = maxHeight + 'px';
+                    // REMOVED: Don't set max-height on dropdown content
+                    // Let CSS handle the dropdown animation instead
+                    // The mobile menu container (#nav-desktop) handles scrolling
                 }
                 
                 console.log('✅ Dropdown opened');
@@ -332,7 +330,7 @@ function setupDropdowns() {
                 if (isMobile) {
                     isDropdownOpen = false;
                     document.body.classList.remove('dropdown-open');
-                    dropdownContent.style.maxHeight = '0';
+                    // REMOVED: Don't reset max-height here
                 }
                 
                 console.log('✅ Dropdown closed');
@@ -386,8 +384,7 @@ function setupDropdowns() {
                 // Reset to desktop
                 closeAllDropdowns();
                 document.querySelectorAll('.dropdown-content').forEach(content => {
-                    content.style.maxHeight = '';
-                    content.style.display = '';
+                    content.style.maxHeight = ''; // Reset
                 });
                 document.body.classList.remove('dropdown-open');
                 document.body.classList.remove('nav-open');
@@ -405,6 +402,7 @@ function setupDropdowns() {
     console.log('✅ Dropdowns setup complete');
 }
 
+
 function closeAllDropdowns() {
     const isMobile = window.innerWidth <= 768;
     
@@ -414,10 +412,8 @@ function closeAllDropdowns() {
     document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.classList.remove('active');
         
-        const dropdownContent = dropdown.querySelector('.dropdown-content');
-        if (dropdownContent && isMobile) {
-            dropdownContent.style.maxHeight = '0';
-        }
+        // REMOVED: Don't set max-height on dropdown content
+        // The CSS should handle this with transitions
     });
     
     // Remove active class from buttons and reset aria
