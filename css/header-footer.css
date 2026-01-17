@@ -529,6 +529,15 @@ header.scrolled {
   color: #E91E63 !important; /* Magenta - creative */
 }
 
+.dropdown-divider {
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.1), 
+    transparent);
+  margin: 8px 20px;
+}
+
 /* Desktop dropdown visibility */
 @media (min-width: 769px) {
   .dropdown.active .dropdown-content {
@@ -835,80 +844,129 @@ header.scrolled {
   opacity: 1;
 }
 
-/* ========== HAMBURGER MENU FIXES ========== */
-.mobile-nav-toggle {
-  display: none;
-  background: transparent;
-  border: 2px solid rgba(212, 167, 106, 0.3);
-  border-radius: 10px;
-  cursor: pointer;
-  width: 44px;
-  height: 44px;
-  z-index: 1002;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  position: relative;
-  padding: 0;
-}
-
-.mobile-nav-toggle:hover {
-  background: rgba(212, 167, 106, 0.1);
-  transform: scale(1.05);
-}
-
-.hamburger {
+/* ========== SIMPLE GUARANTEED HAMBURGER ========== */
+.mobile-nav-toggle .hamburger {
   width: 24px;
   height: 18px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-.hamburger span {
-  display: block;
+.mobile-nav-toggle .hamburger span {
+  position: absolute;
   height: 2px;
   width: 100%;
   background: #D4A76A;
-  border-radius: 1px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  left: 0;
+  transition: 0.3s;
 }
 
-/* Active/X state - USING ARIA ATTRIBUTES */
-.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-  background: #FFD700;
+.mobile-nav-toggle .hamburger span:first-child {
+  top: 0;
 }
 
-.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(2) {
+.mobile-nav-toggle .hamburger span:nth-child(2) {
+  top: 8px;
+}
+
+.mobile-nav-toggle .hamburger span:last-child {
+  top: 16px;
+}
+
+/* X STATE - SIMPLE */
+.mobile-nav-toggle.active .hamburger span:first-child {
+  transform: rotate(45deg);
+  top: 8px;
+}
+
+.mobile-nav-toggle.active .hamburger span:nth-child(2) {
   opacity: 0;
-  transform: scaleX(0);
 }
 
-.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-  background: #FFD700;
-}
-
-/* Make the button glow when active */
-.mobile-nav-toggle[aria-expanded="true"] {
-  border-color: #FFD700 !important;
-  box-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.5),
-    inset 0 0 10px rgba(255, 215, 0, 0.2) !important;
-  background: rgba(255, 215, 0, 0.1) !important;
+.mobile-nav-toggle.active .hamburger span:last-child {
+  transform: rotate(-45deg);
+  top: 8px;
 }
 
 /* ========== MOBILE STYLES (768px and below) ========== */
 @media (max-width: 768px) {
-  /* Show mobile toggle */
+  /* Mobile Navigation */
   .mobile-nav-toggle {
-    display: flex !important;
+    display: flex;
+    background: transparent;
+    border: 2px solid rgba(212, 167, 106, 0.3);
+    border-radius: 10px;
+    font-size: 1.5rem;
+    color: var(--rebel-gold);
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    z-index: 1002;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    position: relative;
   }
   
-  /* Mobile Navigation */
+  .mobile-nav-toggle:hover {
+    background: rgba(212, 167, 106, 0.1);
+    transform: scale(1.05);
+  }
+  
+  /* ========== CRYPTO-OPTIMIZED PARTICLE EFFECT ========== */
+  .mobile-nav-toggle {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Crypto reveal particle effect */
+  .mobile-nav-toggle[aria-expanded="true"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(
+      circle at center,
+      rgba(212, 167, 106, 0.4) 0%,
+      rgba(215, 77, 77, 0.3) 25%,
+      transparent 70%
+    );
+    border-radius: 12px;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    animation: cryptoReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    z-index: -1;
+  }
+  
+  @keyframes cryptoReveal {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0);
+      filter: hue-rotate(0deg);
+    }
+    60% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(1.5);
+      filter: hue-rotate(20deg) blur(3px);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(2);
+      filter: hue-rotate(0deg) blur(5px);
+    }
+  }
+  
+  /* Rebel-themed active state */
+  .mobile-nav-toggle[aria-expanded="true"] {
+    border-color: var(--rebel-red);
+    background: linear-gradient(45deg, 
+      rgba(215, 77, 77, 0.1), 
+      rgba(212, 167, 106, 0.1)
+    );
+  }
+  
   #nav-desktop {
     display: none;
     flex-direction: column;
@@ -928,7 +986,7 @@ header.scrolled {
     margin: 0;
   }
   
-  #nav-desktop[aria-hidden="false"] {
+  #nav-desktop.active {
     display: flex;
   }
   
@@ -941,24 +999,67 @@ header.scrolled {
     min-height: 60px;
     width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    /* FIX: Allow color classes to work on mobile */
+    color: inherit !important;
   }
   
-  /* Mobile color classes - FIXED with !important */
-  .nav-trade { color: #FF6B35 !important; }
-  .nav-rewards { color: #9C27B0 !important; }
-  .nav-tokenomics { color: #00BCD4 !important; }
-  .nav-community { color: #2196F3 !important; }
-  .nav-security { color: #4CAF50 !important; }
-  .nav-whitepaper { color: #9C27B0 !important; }
-  .nav-calculator { color: #2ECC71 !important; }
-  .nav-governance { color: #FF9800 !important; }
-  .nav-roadmap { color: #FF5722 !important; }
-  .nav-integrity { color: #D4A76A !important; }
-  .nav-artwork { color: #E91E63 !important; }
+  /* ========== MOBILE NAVIGATION COLORS ========== */
+  /* Main navigation colors */
+  #nav-desktop a.nav-trade {
+    color: #FF6B35 !important;
+    border-color: rgba(255, 107, 53, 0.4) !important;
+    background: linear-gradient(135deg, 
+      rgba(255, 107, 53, 0.08), 
+      rgba(255, 107, 53, 0.03)) !important;
+  }
   
-  /* Dropdown button should keep gold */
-  .dropbtn.nav-more {
-    color: #FFD700 !important;
+  #nav-desktop a.nav-rewards {
+    color: #9C27B0 !important;
+    border-color: rgba(156, 39, 176, 0.4) !important;
+    background: linear-gradient(135deg, 
+      rgba(156, 39, 176, 0.08), 
+      rgba(156, 39, 176, 0.03)) !important;
+  }
+  
+  #nav-desktop a.nav-tokenomics {
+    color: #00BCD4 !important;
+    border-color: rgba(0, 188, 212, 0.4) !important;
+    background: linear-gradient(135deg, 
+      rgba(0, 188, 212, 0.08), 
+      rgba(0, 188, 212, 0.03)) !important;
+  }
+  
+  /* Mobile dropdown item colors */
+  .dropdown-content a.nav-community {
+    color: #2196F3 !important;
+  }
+  
+  .dropdown-content a.nav-security {
+    color: #4CAF50 !important;
+  }
+  
+  .dropdown-content a.nav-whitepaper {
+    color: #9C27B0 !important;
+  }
+  
+  .dropdown-content a.nav-calculator {
+    color: #2ECC71 !important;
+  }
+  
+  .dropdown-content a.nav-governance {
+    color: #FF9800 !important;
+  }
+  
+  .dropdown-content a.nav-roadmap {
+    color: #FF5722 !important;
+  }
+  
+  .dropdown-content a.nav-integrity {
+    color: #607D8B !important;
+  }
+  
+  .dropdown-content a.nav-artwork {
+    color: #E91E63 !important;
   }
   
   /* Mobile hover effects */
@@ -983,8 +1084,13 @@ header.scrolled {
     color: #80DEEA !important;
   }
   
+  .dropdown-content a:hover {
+    color: white !important;
+  }
+  
   /* Mobile active state styling */
   #nav-desktop a.active {
+    color: inherit !important;
     border-style: double !important;
     border-width: 3px !important;
   }
@@ -999,6 +1105,20 @@ header.scrolled {
     background: var(--rebel-gold);
     border-radius: 50%;
     animation: activePulse 2s infinite;
+  }
+  
+  /* Ensure More button keeps gold color on mobile */
+  .dropbtn.nav-more {
+    color: #FFD700 !important;
+  }
+  
+  .dropbtn.nav-more.active {
+    color: #FFD700 !important;
+    border-color: #FFD700 !important;
+  }
+  
+  .dropbtn.nav-more.active::before {
+    background: #FFD700 !important;
   }
   
   #nav-desktop a i {
@@ -1025,7 +1145,7 @@ header.scrolled {
   }
   
   .dropdown-content {
-    display: block !important;
+    display: none;
     position: relative !important;
     background: rgba(10, 10, 10, 0.95) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -1038,15 +1158,14 @@ header.scrolled {
     box-shadow: none !important;
     max-height: 0;
     overflow: hidden;
-    opacity: 0;
-    visibility: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s ease,
-                visibility 0.3s ease !important;
+    transition: max-height var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    animation: none !important;
   }
   
   /* Show when active */
-  .dropdown.active .dropdown-content {
+  .dropdown.active .dropdown-content,
+  .dropdown-content.active {
+    display: block !important;
     max-height: 600px !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -1086,15 +1205,17 @@ header.scrolled {
   .dropbtn .dropdown-arrow {
     margin-left: auto;
     font-size: 0.9em;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: transform var(--transition-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
   
-  .dropdown.active .dropbtn .dropdown-arrow {
+  .dropdown.active .dropbtn .dropdown-arrow,
+  .dropbtn.active .dropdown-arrow {
     transform: rotate(180deg) scale(1.1) !important;
   }
   
   /* Visual feedback for active dropdown button */
-  .dropdown.active .dropbtn {
+  .dropdown.active .dropbtn,
+  .dropbtn.active {
     background: linear-gradient(135deg, 
       rgba(255, 215, 0, 0.25), 
       rgba(255, 152, 0, 0.15)) !important;
@@ -1530,13 +1651,6 @@ footer {
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.1);
   word-break: break-all;
-  cursor: pointer;
-  transition: all var(--transition-base) ease;
-}
-
-.contract-address:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--rebel-gold);
 }
 
 .contract-verify {
@@ -1756,6 +1870,12 @@ footer {
 /* ========== COLOR CONTRAST ENHANCEMENTS ========== */
 /* Ensure WCAG AA compliance for text colors */
 @media (max-width: 768px) {
+  #nav-desktop a,
+  .dropbtn,
+  .dropdown-content a {
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+  
   .footer-link,
   .footer-contact-link,
   .disclaimer-text {
@@ -1765,4 +1885,25 @@ footer {
   .option-desc {
     color: rgba(255, 255, 255, 0.8) !important;
   }
+}
+/* ========== DEBUG ========== */
+.mobile-nav-toggle {
+  background: rgba(255, 0, 0, 0.3) !important;
+  border: 3px solid red !important;
+}
+
+.mobile-nav-toggle .hamburger {
+  background: rgba(0, 255, 0, 0.3) !important;
+  border: 2px solid lime !important;
+}
+
+.mobile-nav-toggle .hamburger span {
+  background: blue !important;
+  border: 1px solid yellow !important;
+}
+
+.mobile-nav-toggle.active,
+.mobile-nav-toggle[aria-expanded="true"] {
+  background: rgba(255, 165, 0, 0.5) !important;
+  border: 3px solid orange !important;
 }
