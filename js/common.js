@@ -315,10 +315,7 @@ function setupDropdowns() {
                 if (isMobile) {
                     isDropdownOpen = true;
                     document.body.classList.add('dropdown-open');
-                    
-                    // REMOVED: Don't set max-height on dropdown content
-                    // Let CSS handle the dropdown animation instead
-                    // The mobile menu container (#nav-desktop) handles scrolling
+                    // NO max-height calculation - let CSS handle it
                 }
                 
                 console.log('✅ Dropdown opened');
@@ -330,7 +327,6 @@ function setupDropdowns() {
                 if (isMobile) {
                     isDropdownOpen = false;
                     document.body.classList.remove('dropdown-open');
-                    // REMOVED: Don't reset max-height here
                 }
                 
                 console.log('✅ Dropdown closed');
@@ -384,7 +380,7 @@ function setupDropdowns() {
                 // Reset to desktop
                 closeAllDropdowns();
                 document.querySelectorAll('.dropdown-content').forEach(content => {
-                    content.style.maxHeight = ''; // Reset
+                    content.style.maxHeight = '';
                 });
                 document.body.classList.remove('dropdown-open');
                 document.body.classList.remove('nav-open');
@@ -402,7 +398,6 @@ function setupDropdowns() {
     console.log('✅ Dropdowns setup complete');
 }
 
-
 function closeAllDropdowns() {
     const isMobile = window.innerWidth <= 768;
     
@@ -411,9 +406,7 @@ function closeAllDropdowns() {
     // Remove active class from dropdown containers
     document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.classList.remove('active');
-        
-        // REMOVED: Don't set max-height on dropdown content
-        // The CSS should handle this with transitions
+        // Don't set max-height - let CSS handle transitions
     });
     
     // Remove active class from buttons and reset aria
