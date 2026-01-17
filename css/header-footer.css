@@ -971,7 +971,7 @@ header.scrolled {
         height: 100vh;
         background: rgba(5, 5, 5, 0.98);
         backdrop-filter: blur(20px) saturate(180%);
-        padding: 100px var(--spacing-md) 180px; /* Increased bottom padding for buy button */
+        padding: 100px var(--spacing-md) 180px;
         z-index: 1001;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -983,14 +983,14 @@ header.scrolled {
         transition: opacity var(--transition-base) ease, 
                     transform var(--transition-base) ease;
         justify-content: flex-start;
-              max-height: none !important; /* FIXED: Ensure no max-height limit */
+        max-height: none !important;
     }
     
     #nav-desktop.active {
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        scrollbar-width: thin;
-        scrollbar-color: var(--rebel-gold) transparent;
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+        height: 100vh;
     }
     
     /* Mobile nav items */
@@ -1028,11 +1028,7 @@ header.scrolled {
         border-radius: 50%;
         animation: activePulse 2s infinite;
     }
-        /* Ensure the main mobile menu can scroll */
-    body.nav-open #nav-desktop {
-        height: 100vh;
-        overflow-y: scroll;
-    }
+    
     @keyframes activePulse {
         0%, 100% { 
             opacity: 1;
@@ -1071,9 +1067,7 @@ header.scrolled {
     }
     
     .dropdown.active .dropdown-content {
-    max-height: none !important; /* Let it expand fully */
-          overflow-y: visible !important;
-
+        max-height: none !important; /* CHANGED: Remove height limit */
         opacity: 1 !important;
         visibility: visible !important;
         padding: 10px 0 !important;
@@ -1213,7 +1207,7 @@ header.scrolled {
         transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
         max-height: 75vh;
         overflow-y: auto;
-        z-index: 1003; /* Higher than mobile nav */
+        z-index: 1003;
         background: rgba(10, 10, 10, 0.98);
         backdrop-filter: blur(30px) saturate(200%);
         -webkit-backdrop-filter: blur(30px) saturate(200%);
@@ -1931,4 +1925,62 @@ body.dropdown-open {
     position: fixed;
     width: 100%;
     height: 100%;
+}
+
+/* ========== MOBILE SCROLLING FIXES ========== */
+@media (max-width: 768px) {
+    /* Remove max-height constraints from dropdowns */
+    .dropdown-content {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    .dropdown.active .dropdown-content {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    /* Ensure the mobile nav can scroll when content is tall */
+    #nav-desktop.active {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin;
+        scrollbar-color: var(--rebel-gold) transparent;
+    }
+    
+    /* Custom scrollbar for better UX */
+    #nav-desktop.active::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #nav-desktop.active::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    #nav-desktop.active::-webkit-scrollbar-thumb {
+        background: var(--rebel-gold);
+        border-radius: 3px;
+    }
+    
+    /* Ensure buy options can scroll independently */
+    .buy-options {
+        max-height: 75vh !important;
+        overflow-y: auto !important;
+    }
+    
+    /* Better touch targets for mobile */
+    #nav-desktop a,
+    .dropbtn,
+    .dropdown-content a {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
+    }
+    
+    /* Prevent body scroll when menu is open */
+    body.nav-open {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
 }
