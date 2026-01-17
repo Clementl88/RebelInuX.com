@@ -66,6 +66,15 @@ function setupBuyDropdown() {
             // Close all other dropdowns
             closeAllDropdowns();
             
+            // On mobile, don't close mobile nav when opening buy dropdown
+            if (isMobile && isActive) {
+                // If closing the buy dropdown, also close mobile nav if needed
+                const navDesktop = document.getElementById('nav-desktop');
+                if (navDesktop && navDesktop.classList.contains('active')) {
+                    // Keep mobile nav open
+                }
+            }
+            
             // Toggle this dropdown
             if (!isActive) {
                 dropdown.classList.add('active');
@@ -498,6 +507,59 @@ function setupPerformance() {
     }
 }
 
+// ========== MOBILE BUY BUTTON OPTIMIZATION ==========
+function setupMobileBuyButton() {
+    console.log('📱 Setting up mobile buy button optimization...');
+    
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+    
+    const buyDropdowns = document.querySelectorAll('.buy-dropdown');
+    
+    buyDropdowns.forEach((dropdown) => {
+        const buyToggle = dropdown.querySelector('.buy-toggle');
+        const buyOptions = dropdown.querySelector('.buy-options');
+        
+        if (!buyToggle || !buyOptions) return;
+        
+        // Add touch feedback for mobile
+        buyToggle.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        buyToggle.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+        
+        // Handle buy option clicks on mobile
+        const buyOptionsLinks = buyOptions.querySelectorAll('.buy-option');
+        buyOptionsLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Close the buy options
+                dropdown.classList.remove('active');
+                buyToggle.classList.remove('active');
+                buyToggle.setAttribute('aria-expanded', 'false');
+                
+                // Close mobile nav if it's open
+                const navDesktop = document.getElementById('nav-desktop');
+                if (navDesktop && navDesktop.classList.contains('active')) {
+                    closeMobileNav();
+                }
+            });
+        });
+    });
+    
+    // Update on resize
+    window.addEventListener('resize', function() {
+        const isNowMobile = window.innerWidth <= 768;
+        if (isNowMobile !== isMobile) {
+            setTimeout(setupMobileBuyButton, 100);
+        }
+    });
+    
+    console.log('✅ Mobile buy button optimization complete');
+}
+
 // ========== LOADER ==========
 function hideLoader() {
     const loader = document.getElementById('loader');
@@ -546,7 +608,10 @@ function initializeCommon() {
         // 8. Set active navigation item
         setActiveNavItem();
         
-        // 9. Add body class for JavaScript detection
+        // 9. Setup mobile buy button optimization
+        setupMobileBuyButton();
+        
+        // 10. Add body class for JavaScript detection
         document.body.classList.add('js-enabled');
         
         console.log('✅ Common functionality initialized successfully');
