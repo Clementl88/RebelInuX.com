@@ -43,7 +43,16 @@ function setupBuyDropdown() {
         return;
     }
     
-    buyToggles.forEach((toggle, index) => {
+    buyToggles.forEach((toggle) => {
+        // Remove any existing event listeners by cloning
+        const newToggle = toggle.cloneNode(true);
+        toggle.parentNode.replaceChild(newToggle, toggle);
+    });
+    
+    // Re-select the fresh buttons
+    const freshBuyToggles = document.querySelectorAll('.buy-toggle');
+    
+    freshBuyToggles.forEach((toggle, index) => {
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -52,28 +61,34 @@ function setupBuyDropdown() {
             if (!dropdown) return;
             
             const isActive = dropdown.classList.contains('active');
+            const isMobile = window.innerWidth <= 768;
             
             // Close all other dropdowns
             closeAllDropdowns();
-            closeMobileNav();
             
             // Toggle this dropdown
             if (!isActive) {
                 dropdown.classList.add('active');
+                this.classList.add('active');
                 this.setAttribute('aria-expanded', 'true');
-                console.log(`🛒 Buy dropdown ${index + 1} opened`);
+                console.log(`🛒 Buy dropdown ${index + 1} opened on ${isMobile ? 'mobile' : 'desktop'}`);
             } else {
                 dropdown.classList.remove('active');
+                this.classList.remove('active');
                 this.setAttribute('aria-expanded', 'false');
+                console.log(`🛒 Buy dropdown ${index + 1} closed`);
             }
         });
+        
+        console.log(`✅ Buy toggle ${index + 1} event listener attached`);
     });
     
     // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('.buy-dropdown')) {
+        if (!e.target.closest('.buy-dropdown') && !e.target.closest('.dropdown')) {
             buyDropdowns.forEach(d => {
                 d.classList.remove('active');
+                d.querySelector('.buy-toggle')?.classList.remove('active');
                 d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
             });
         }
@@ -230,14 +245,16 @@ function setupDropdowns() {
     }
     
     // Add click event to each dropdown button
-    dropbtns.forEach((dropbtn, index) => {
-        // Skip if already has our event listener
-        if (dropbtn.dataset.dropdownInitialized === 'true') {
-            return;
-        }
-        
-        dropbtn.dataset.dropdownInitialized = 'true';
-        
+    dropbtns.forEach((dropbtn) => {
+        // Clone and replace to remove existing listeners
+        const newDropbtn = dropbtn.cloneNode(true);
+        dropbtn.parentNode.replaceChild(newDropbtn, dropbtn);
+    });
+    
+    // Re-select fresh buttons
+    const freshDropbtns = document.querySelectorAll('.dropbtn');
+    
+    freshDropbtns.forEach((dropbtn, index) => {
         dropbtn.addEventListener('click', function(e) {
             console.log(`🎯 Dropdown ${index + 1} clicked`);
             
@@ -259,6 +276,7 @@ function setupDropdowns() {
             // Close buy dropdowns
             document.querySelectorAll('.buy-dropdown').forEach(d => {
                 d.classList.remove('active');
+                d.querySelector('.buy-toggle')?.classList.remove('active');
                 d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
             });
             
@@ -268,56 +286,33 @@ function setupDropdowns() {
                 this.classList.add('active');
                 this.setAttribute('aria-expanded', 'true');
                 
-                if (isMobile) {
-                    // For mobile, calculate max-height based on content
-                    const itemCount = dropdownContent.querySelectorAll('a').length;
-                    const itemHeight = 60; // Approximate height per item in mobile
-                    const calculatedHeight = Math.min(itemCount * itemHeight, 600);
-                    dropdownContent.style.maxHeight = calculatedHeight + 'px';
-                } else {
-                    // For desktop, show with opacity transition
-                    dropdownContent.style.display = 'block';
-                    setTimeout(() => {
-                        dropdownContent.style.opacity = '1';
-                        dropdownContent.style.visibility = 'visible';
-                        dropdownContent.style.maxHeight = '800px';
-                    }, 10);
-                }
-                console.log('🟢 Dropdown opened');
+                console.log('🟢 Dropdown opened on', isMobile ? 'mobile' : 'desktop');
             } else {
                 closeDropdown(dropdown);
                 console.log('🔴 Dropdown closed');
             }
         });
+        
+        console.log(`✅ Dropdown button ${index + 1} event listener attached`);
     });
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            const navDesktop = document.getElementById('nav-desktop');
+            if (navDesktop && navDesktop.classList.contains('active')) {
+                // If mobile nav is open and click is inside it, allow dropdowns to work
+                if (e.target.closest('.dropdown') || e.target.closest('.buy-dropdown')) {
+                    return;
+                }
+            }
+        }
+        
         if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
             closeAllDropdowns();
         }
-    });
-    
-    // Handle dropdown item clicks
-    document.querySelectorAll('.dropdown-content a').forEach(link => {
-        link.addEventListener('click', function() {
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // Close dropdown immediately on mobile
-                const dropdown = this.closest('.dropdown');
-                if (dropdown) {
-                    setTimeout(() => {
-                        closeDropdown(dropdown);
-                    }, 100);
-                }
-            } else {
-                // Keep desktop behavior
-                setTimeout(() => {
-                    closeAllDropdowns();
-                }, 300);
-            }
-        });
     });
     
     // Handle window resize
@@ -325,21 +320,14 @@ function setupDropdowns() {
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            // Close dropdowns when switching to desktop
             if (window.innerWidth > 768) {
-                closeAllDropdowns();
+                // Reset to desktop
                 document.querySelectorAll('.dropdown-content').forEach(content => {
-                    content.style.display = 'none';
                     content.style.maxHeight = '';
-                    content.style.opacity = '';
-                    content.style.visibility = '';
+                    content.style.transform = '';
                 });
-            } else {
-                // Reset mobile dropdown styles
-                document.querySelectorAll('.dropdown-content').forEach(content => {
-                    content.style.maxHeight = '0';
-                    content.style.opacity = '0';
-                    content.style.visibility = 'hidden';
+                document.querySelectorAll('.buy-options').forEach(options => {
+                    options.style.transform = '';
                 });
             }
         }, 250);
@@ -349,19 +337,6 @@ function setupDropdowns() {
 }
 
 function closeAllDropdowns() {
-    const isMobile = window.innerWidth <= 768;
-    
-    // Hide all dropdown contents
-    document.querySelectorAll('.dropdown-content').forEach(content => {
-        if (isMobile) {
-            content.style.maxHeight = '0';
-        } else {
-            content.style.display = 'none';
-        }
-        content.style.opacity = '0';
-        content.style.visibility = 'hidden';
-    });
-    
     // Remove active class from dropdown containers
     document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.classList.remove('active');
@@ -376,6 +351,7 @@ function closeAllDropdowns() {
     // Close buy dropdowns
     document.querySelectorAll('.buy-dropdown').forEach(d => {
         d.classList.remove('active');
+        d.querySelector('.buy-toggle')?.classList.remove('active');
         d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
     });
     
@@ -385,19 +361,7 @@ function closeAllDropdowns() {
 function closeDropdown(dropdownElement) {
     if (!dropdownElement) return;
     
-    const dropdownContent = dropdownElement.querySelector('.dropdown-content');
     const dropbtn = dropdownElement.querySelector('.dropbtn');
-    
-    if (dropdownContent) {
-        dropdownContent.style.maxHeight = '0';
-        dropdownContent.style.opacity = '0';
-        dropdownContent.style.visibility = 'hidden';
-        setTimeout(() => {
-            if (dropdownContent.style.opacity === '0') {
-                dropdownContent.style.display = 'none';
-            }
-        }, 300);
-    }
     
     dropdownElement.classList.remove('active');
     
@@ -600,15 +564,6 @@ function debugDropdowns() {
     console.log('Dropdown buttons:', document.querySelectorAll('.dropbtn').length);
     console.log('Dropdown contents:', document.querySelectorAll('.dropdown-content').length);
     console.log('Buy dropdowns:', document.querySelectorAll('.buy-dropdown').length);
-    
-    document.querySelectorAll('.dropbtn').forEach((btn, i) => {
-        console.log(`Button ${i}:`, {
-            text: btn.textContent.trim(),
-            hasListener: btn.dataset.dropdownInitialized === 'true',
-            isActive: btn.classList.contains('active'),
-            parentActive: btn.closest('.dropdown')?.classList.contains('active')
-        });
-    });
 }
 
 // ========== INITIALIZE ON DOM READY ==========
@@ -621,11 +576,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add debug command to window for development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         window.debugDropdowns = debugDropdowns;
-        window.debugComponents = function() {
-            console.log('=== COMPONENTS DEBUG ===');
-            console.log('Mobile menu state:', isMobileMenuOpen);
-            console.log('Body classes:', document.body.className);
-        };
     }
 });
 
