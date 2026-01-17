@@ -143,39 +143,23 @@ function setupBuyDropdown() {
   console.log('✅ Buy dropdown setup complete');
 }
 
-// ========== MOBILE NAVIGATION ==========
+// ========== MOBILE NAVIGATION (SIMPLIFIED) ==========
 function setupMobileNavigation() {
   console.log('📱 Setting up mobile navigation...');
   
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
-  const mobileMenuClose = document.getElementById('mobileMenuClose');
   
   if (!mobileToggle || !navDesktop) {
     console.warn('⚠️ Mobile navigation elements not found');
     return;
   }
   
-  // Setup mobile menu close button
-  if (mobileMenuClose) {
-    const newCloseBtn = mobileMenuClose.cloneNode(true);
-    mobileMenuClose.parentNode.replaceChild(newCloseBtn, mobileMenuClose);
-    
-    newCloseBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeMobileNav();
-    });
-    
-    newCloseBtn.style.display = 'none';
-    console.log('🔘 Mobile menu close button initialized');
-  }
-  
   // Remove any existing event listeners
   const newToggle = mobileToggle.cloneNode(true);
   mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
   
-  // Enhanced toggle with hamburger animation
+  // Simple toggle with hamburger animation
   newToggle.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -191,20 +175,10 @@ function setupMobileNavigation() {
       document.body.style.overflow = 'hidden';
       this.setAttribute('aria-expanded', 'true');
       navDesktop.setAttribute('aria-hidden', 'false');
-      
-      // Show close button
-      if (mobileMenuClose) {
-        mobileMenuClose.style.display = 'flex';
-      }
     } else {
       document.body.style.overflow = '';
       this.setAttribute('aria-expanded', 'false');
       navDesktop.setAttribute('aria-hidden', 'true');
-      
-      // Hide close button
-      if (mobileMenuClose) {
-        mobileMenuClose.style.display = 'none';
-      }
     }
     
     // Close dropdowns when opening nav
@@ -221,8 +195,7 @@ function setupMobileNavigation() {
     
     if (navDesktop.classList.contains('active') && 
         !e.target.closest('#nav-desktop') && 
-        !e.target.closest('#mobileNavToggle') &&
-        !e.target.closest('#mobileMenuClose')) {
+        !e.target.closest('#mobileNavToggle')) {
       closeMobileNav();
     }
   });
@@ -240,7 +213,6 @@ function setupMobileNavigation() {
 function closeMobileNav() {
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
-  const mobileMenuClose = document.getElementById('mobileMenuClose');
   
   if (navDesktop) {
     navDesktop.classList.remove('active');
@@ -249,9 +221,6 @@ function closeMobileNav() {
   if (mobileToggle) {
     mobileToggle.classList.remove('active');
     mobileToggle.setAttribute('aria-expanded', 'false');
-  }
-  if (mobileMenuClose) {
-    mobileMenuClose.style.display = 'none';
   }
   document.body.style.overflow = '';
   closeAllDropdowns();
@@ -665,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// ========== EXPORT FUNCTIONS FOR OTHER FILES ==========
+// ========== EXPORT FUNCTIONS ==========
 window.setupMobileNavigation = setupMobileNavigation;
 window.setupDropdowns = setupDropdowns;
 window.setupBackToTop = setupBackToTop;
