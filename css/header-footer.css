@@ -319,45 +319,38 @@ header.scrolled {
   transform: translateY(-2px);
 }
 
-/* Keep all colors as-is */
-#nav-desktop a,
-.dropbtn.nav-more {
-  color: inherit !important; /* Respect original colors */
+#nav-desktop a.active {
+  /* Remove white text override */
+  color: inherit !important; /* Keep original color */
+  
+  /* Add other indicators */
+  position: relative;
+  border-width: 2px !important;
+  font-weight: 700;
 }
 
-/* Active state indicator - dot badge */
-#nav-desktop a.active::before {
+/* Add a dot indicator */
+#nav-desktop a.active::after {
   content: '';
   position: absolute;
-  top: 8px;
-  right: 8px;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 6px;
   height: 6px;
   background: var(--rebel-gold);
   border-radius: 50%;
-  animation: activePulse 2s infinite;
+  animation: pulse 2s infinite;
 }
 
-/* For More button specifically */
-.dropbtn.nav-more.active::before {
-  background: #FFD700;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-@keyframes activePulse {
-  0%, 100% { 
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.7);
-  }
-  50% { 
-    transform: scale(1.2);
-    box-shadow: 0 0 0 4px rgba(212, 167, 106, 0);
-  }
-}
-
-/* Enhanced border for active items */
-#nav-desktop a.active {
-  border-style: double !important;
-  border-width: 3px !important;
+/* Keep hover effects for active items */
+#nav-desktop a.active:hover {
+  color: white !important; /* Only change to white on hover */
 }
 
 /* ========== DROPDOWN STYLES ========== */
