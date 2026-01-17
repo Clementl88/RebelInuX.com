@@ -870,90 +870,106 @@ header.scrolled {
     transform: scale(1.05);
   }
   
-  /* Hamburger icon animation */
-  .mobile-nav-toggle .icon-container {
-    position: relative;
-    width: 20px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .mobile-nav-toggle .hamburger-icon,
-  .mobile-nav-toggle .close-icon {
-    position: absolute;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-  
-  .mobile-nav-toggle .hamburger-icon {
-    opacity: 1;
-    transform: rotate(0deg);
-  }
-  
-  .mobile-nav-toggle .close-icon {
-    opacity: 0;
-    transform: rotate(-90deg);
-  }
-  
-  /* Active state - animate to X */
-  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon {
-    opacity: 0;
-    transform: rotate(90deg);
-  }
-  
-  .mobile-nav-toggle[aria-expanded="true"] .close-icon {
-    opacity: 1;
-    transform: rotate(0deg);
-  }
-  
-  /* Add hamburger bars animation (optional enhanced effect) */
-  .mobile-nav-toggle .hamburger-icon::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    background: currentColor;
-    top: -6px;
-    left: 0;
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-nav-toggle .hamburger-icon::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    background: currentColor;
-    bottom: -6px;
-    left: 0;
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-nav-toggle .hamburger-icon i {
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    background: currentColor;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::before {
-    transform: rotate(45deg) translate(4px, 4px);
-    width: 20px;
-  }
-  
-  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::after {
-    transform: rotate(-45deg) translate(4px, -4px);
-    width: 20px;
-  }
-  
-  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon i {
-    opacity: 0;
-    transform: scale(0);
-  }
+ /* ========== CUSTOM HAMBURGER ANIMATION ========== */
+.mobile-nav-toggle .icon-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom hamburger bars */
+.mobile-nav-toggle .hamburger-bars {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle .hamburger-bars span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  left: 0;
+}
+
+/* Position the 3 bars */
+.mobile-nav-toggle .hamburger-bars span:nth-child(1) {
+  top: 0;
+  transform-origin: left center;
+}
+
+.mobile-nav-toggle .hamburger-bars span:nth-child(2) {
+  top: 8px;
+  transform-origin: left center;
+}
+
+.mobile-nav-toggle .hamburger-bars span:nth-child(3) {
+  top: 16px;
+  transform-origin: left center;
+}
+
+/* Close icon (X) */
+.mobile-nav-toggle .close-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: scale(0.5) rotate(-90deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.mobile-nav-toggle .close-icon span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  top: 50%;
+  left: 0;
+}
+
+.mobile-nav-toggle .close-icon span:nth-child(1) {
+  transform: rotate(45deg) translateY(-50%);
+}
+
+.mobile-nav-toggle .close-icon span:nth-child(2) {
+  transform: rotate(-45deg) translateY(-50%);
+}
+
+/* Active state animations */
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-bars span:nth-child(1) {
+  transform: rotate(45deg) translate(3px, -1px);
+  width: 26px;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-bars span:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-bars span:nth-child(3) {
+  transform: rotate(-45deg) translate(3px, 1px);
+  width: 26px;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .close-icon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Optional: Add a subtle glow effect when active */
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-bars span,
+.mobile-nav-toggle[aria-expanded="true"] .close-icon span {
+  box-shadow: 0 0 8px rgba(212, 167, 106, 0.5);
+}
   
   #nav-desktop {
     display: none;
