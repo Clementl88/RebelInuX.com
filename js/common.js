@@ -350,7 +350,17 @@ function setupDropdowns() {
             }
         }
     });
-    
+
+  function handleMobileDropdownItemClick(e) {
+    // Close the dropdown this item is in
+    const dropdown = this.closest('.dropdown');
+    if (dropdown) {
+        setTimeout(() => {
+            closeDropdown(dropdown);
+        }, 100); // Small delay for visual feedback
+    }
+}
+  
     // Handle window resize
     let resizeTimer;
     window.addEventListener('resize', function() {
