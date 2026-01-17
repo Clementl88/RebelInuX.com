@@ -844,6 +844,54 @@ header.scrolled {
   opacity: 1;
 }
 
+
+/* ========== HAMBURGER MENU ANIMATION ========== */
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.hamburger-icon .bar {
+  height: 2px;
+  background: var(--rebel-gold);
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-toggle.active .hamburger-icon .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-nav-toggle.active .hamburger-icon .bar:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.mobile-nav-toggle.active .hamburger-icon .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Enhanced mobile toggle button */
+@media (max-width: 768px) {
+  .mobile-nav-toggle {
+    position: relative;
+    z-index: 1002;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mobile-nav-toggle:hover .hamburger-icon {
+    transform: scale(1.1);
+  }
+  
+  .mobile-nav-toggle.active .hamburger-icon {
+    transform: rotate(180deg);
+  }
+}
+
 /* ========== ENHANCED MOBILE NAVIGATION ========== */
 @media (max-width: 768px) {
   /* Enhanced mobile header */
