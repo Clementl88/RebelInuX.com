@@ -847,7 +847,7 @@ header.scrolled {
 /* ========== MOBILE STYLES (768px and below) ========== */
 @media (max-width: 768px) {
   /* Mobile Navigation */
-  .mobile-nav-toggle {
+   .mobile-nav-toggle {
     display: flex;
     background: transparent;
     border: 2px solid rgba(212, 167, 106, 0.3);
@@ -862,11 +862,97 @@ header.scrolled {
     justify-content: center;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    position: relative;
   }
   
   .mobile-nav-toggle:hover {
     background: rgba(212, 167, 106, 0.1);
     transform: scale(1.05);
+  }
+  
+  /* Hamburger icon animation */
+  .mobile-nav-toggle .icon-container {
+    position: relative;
+    width: 20px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mobile-nav-toggle .hamburger-icon,
+  .mobile-nav-toggle .close-icon {
+    position: absolute;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .mobile-nav-toggle .hamburger-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  
+  .mobile-nav-toggle .close-icon {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+  
+  /* Active state - animate to X */
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .close-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  
+  /* Add hamburger bars animation (optional enhanced effect) */
+  .mobile-nav-toggle .hamburger-icon::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    top: -6px;
+    left: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle .hamburger-icon::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    bottom: -6px;
+    left: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle .hamburger-icon i {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::before {
+    transform: rotate(45deg) translate(4px, 4px);
+    width: 20px;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::after {
+    transform: rotate(-45deg) translate(4px, -4px);
+    width: 20px;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon i {
+    opacity: 0;
+    transform: scale(0);
   }
   
   #nav-desktop {
