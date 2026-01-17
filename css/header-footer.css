@@ -485,6 +485,61 @@ header.scrolled {
   margin: 8px 20px;
 }
 
+
+
+/* ========== DROPDOWN ANIMATIONS & FIXES ========== */
+
+/* Dropdown content animations */
+.dropdown-content {
+    transition: opacity 0.3s ease, max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto; /* Add scroll if needed */
+}
+
+/* Ensure dropdown has proper stacking */
+.dropdown {
+    position: relative;
+    z-index: 1001;
+}
+
+/* Mobile dropdown adjustments */
+@media (max-width: 768px) {
+    .dropdown-content {
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .dropdown.active .dropdown-content {
+        max-height: 500px !important; /* Adjust based on content */
+        opacity: 1;
+        visibility: visible;
+        overflow-y: auto;
+    }
+}
+
+/* Desktop dropdown adjustments */
+@media (min-width: 769px) {
+    .dropdown-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 220px;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .dropdown.active .dropdown-content {
+        max-height: 400px !important;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+
+
+
 /* ========== FIXED DROPDOWN BEHAVIOR ========== */
 
 /* For desktop - show when active */
