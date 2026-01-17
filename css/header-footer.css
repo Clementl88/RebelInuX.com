@@ -870,59 +870,59 @@ header.scrolled {
     transform: scale(1.05);
   }
   
-  /* Add this to make it really pop */
+  /* ========== CRYPTO-OPTIMIZED PARTICLE EFFECT ========== */
   .mobile-nav-toggle {
     position: relative;
     z-index: 1;
   }
   
- /* Crypto-optimized version */
-.mobile-nav-toggle[aria-expanded="true"]::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(
-    circle at center,
-    rgba(212, 167, 106, 0.4) 0%,
-    rgba(215, 77, 77, 0.3) 25%,
-    transparent 70%
-  );
-  border-radius: 12px;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  animation: cryptoReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  z-index: -1;
-}
-
-@keyframes cryptoReveal {
-  0% {
-    opacity: 0;
+  /* Crypto reveal particle effect */
+  .mobile-nav-toggle[aria-expanded="true"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(
+      circle at center,
+      rgba(212, 167, 106, 0.4) 0%,
+      rgba(215, 77, 77, 0.3) 25%,
+      transparent 70%
+    );
+    border-radius: 12px;
     transform: translate(-50%, -50%) scale(0);
-    filter: hue-rotate(0deg);
-  }
-  60% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(1.5);
-    filter: hue-rotate(20deg) blur(3px);
-  }
-  100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(2);
-    filter: hue-rotate(0deg) blur(5px);
+    animation: cryptoReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    z-index: -1;
   }
-}
-
-/* Add this for the "rebels" theme */
-.mobile-nav-toggle[aria-expanded="true"] {
-  border-color: var(--rebel-red);
-  background: linear-gradient(45deg, 
-    rgba(215, 77, 77, 0.1), 
-    rgba(212, 167, 106, 0.1)
-  );
-}
+  
+  @keyframes cryptoReveal {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0);
+      filter: hue-rotate(0deg);
+    }
+    60% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(1.5);
+      filter: hue-rotate(20deg) blur(3px);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(2);
+      filter: hue-rotate(0deg) blur(5px);
+    }
+  }
+  
+  /* Rebel-themed active state */
+  .mobile-nav-toggle[aria-expanded="true"] {
+    border-color: var(--rebel-red);
+    background: linear-gradient(45deg, 
+      rgba(215, 77, 77, 0.1), 
+      rgba(212, 167, 106, 0.1)
+    );
+  }
   
   /* Hamburger icon animation */
   .mobile-nav-toggle .icon-container {
@@ -960,6 +960,55 @@ header.scrolled {
     opacity: 1;
     transform: rotate(0deg);
   }
+  
+  /* Add hamburger bars animation (optional enhanced effect) */
+  .mobile-nav-toggle .hamburger-icon::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    top: -6px;
+    left: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle .hamburger-icon::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    bottom: -6px;
+    left: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle .hamburger-icon i {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::before {
+    transform: rotate(45deg) translate(4px, 4px);
+    width: 20px;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon::after {
+    transform: rotate(-45deg) translate(4px, -4px);
+    width: 20px;
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .hamburger-icon i {
+    opacity: 0;
+    transform: scale(0);
+  }
+  
   
   /* Add hamburger bars animation (optional enhanced effect) */
   .mobile-nav-toggle .hamburger-icon::before {
