@@ -956,10 +956,12 @@ header.scrolled {
 
 /* ========== MOBILE STYLES (768px and below) ========== */
 @media (max-width: 768px) {
+    /* Mobile Navigation Toggle */
     .mobile-nav-toggle {
         display: flex;
     }
     
+    /* Mobile Navigation Menu */
     #nav-desktop {
         display: none;
         position: fixed;
@@ -969,7 +971,7 @@ header.scrolled {
         height: 100vh;
         background: rgba(5, 5, 5, 0.98);
         backdrop-filter: blur(20px) saturate(180%);
-        padding: 100px var(--spacing-md) var(--spacing-2xl);
+        padding: 100px var(--spacing-md) 150px; /* Increased bottom padding for buy button */
         z-index: 1001;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -980,6 +982,7 @@ header.scrolled {
         transform: translateY(-20px);
         transition: opacity var(--transition-base) ease, 
                     transform var(--transition-base) ease;
+        justify-content: flex-start;
     }
     
     #nav-desktop.active {
@@ -1001,6 +1004,7 @@ header.scrolled {
         position: relative;
         overflow: hidden;
         color: inherit !important;
+        transition: all var(--transition-base) ease;
     }
     
     /* Mobile active state indicator */
@@ -1034,7 +1038,100 @@ header.scrolled {
         }
     }
     
-    /* FIX: Mobile Dropdown Content */
+    /* FIXED: Mobile Buy Button Container */
+    .buy-dropdown {
+        width: 100%;
+        margin: auto 0 0 0; /* Push to bottom */
+        padding: 20px 0;
+        position: sticky;
+        bottom: 0;
+        background: linear-gradient(to top, 
+            rgba(5, 5, 5, 0.95) 0%,
+            rgba(5, 5, 5, 0.85) 50%,
+            transparent 100%);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 100;
+        border-top: 1px solid rgba(212, 167, 106, 0.2);
+    }
+    
+    /* FIXED: Mobile Buy Button */
+    .buy-toggle {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 18px 24px;
+        font-size: 1.1rem;
+        min-width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: var(--radius-full);
+        background: linear-gradient(135deg, 
+            var(--rebel-red), 
+            var(--rebel-gold), 
+            var(--rebel-red));
+        background-size: 200% auto;
+        animation: gradientShift 3s ease infinite;
+        box-shadow: 
+            0 6px 25px rgba(215, 77, 77, 0.4),
+            0 0 30px rgba(215, 77, 77, 0.3);
+        border: 2px solid rgba(212, 167, 106, 0.3);
+        color: white;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all var(--transition-base) ease;
+    }
+    
+    .buy-toggle:hover:not(.loading) {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 8px 35px rgba(215, 77, 77, 0.6),
+            0 0 40px rgba(215, 77, 77, 0.4);
+        animation: none;
+    }
+    
+    .buy-toggle.active {
+        border-bottom-left-radius: var(--radius-full);
+        border-bottom-right-radius: var(--radius-full);
+    }
+    
+    /* FIXED: Mobile Buy Options */
+    .buy-options {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0 !important;
+        padding: 25px 20px !important;
+        display: block !important;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(100%);
+        transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 75vh;
+        overflow-y: auto;
+        z-index: var(--z-modal);
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(30px) saturate(200%);
+        -webkit-backdrop-filter: blur(30px) saturate(200%);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+        border-bottom: none;
+        box-shadow: 
+            0 -20px 60px rgba(0, 0, 0, 0.8),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    .buy-dropdown.active .buy-options {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+    }
+    
+    /* Mobile Dropdowns */
     .dropdown {
         width: 100%;
         margin-bottom: 0.75rem;
@@ -1058,11 +1155,12 @@ header.scrolled {
     }
     
     .dropdown.active .dropdown-content {
-        max-height: 600px !important;
+        max-height: 500px !important;
         opacity: 1 !important;
         visibility: visible !important;
         padding: 10px 0 !important;
         transform: translateY(0);
+        margin-bottom: 20px;
     }
     
     /* Mobile dropdown links */
@@ -1082,38 +1180,6 @@ header.scrolled {
         background: rgba(255, 255, 255, 0.1) !important;
         border-left-color: currentColor !important;
         padding-left: 28px !important;
-    }
-    
-    /* FIX: Mobile Buy Options */
-    .buy-dropdown {
-        width: 100%;
-        margin-top: 20px;
-        order: 100;
-    }
-    
-    .buy-options {
-        position: fixed !important;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: 100%;
-        border-radius: var(--radius-xl) var(--radius-xl) 0 0 !important;
-        padding: 20px !important;
-        display: block !important;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(100%);
-        transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
-        max-height: 70vh;
-        overflow-y: auto;
-        z-index: var(--z-modal);
-    }
-    
-    .buy-dropdown.active .buy-options {
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: translateY(0) !important;
     }
     
     /* Brand adjustments for mobile */
@@ -1172,6 +1238,48 @@ header.scrolled {
     .dropbtn.nav-more.active {
         color: #FFD700 !important;
         border-color: #FFD700 !important;
+    }
+}
+
+/* ========== SMALL MOBILE OPTIMIZATION (480px and below) ========== */
+@media (max-width: 480px) {
+    #nav-desktop {
+        padding: 80px var(--spacing-sm) 130px;
+    }
+    
+    .buy-dropdown {
+        padding: 15px 0;
+    }
+    
+    .buy-toggle {
+        padding: 16px 20px;
+        font-size: 1rem;
+    }
+    
+    #nav-desktop a {
+        padding: var(--spacing-md) var(--spacing-lg);
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .dropdown-content a {
+        padding: 16px 20px !important;
+        font-size: 1rem !important;
+    }
+    
+    .buy-options {
+        padding: 20px 15px !important;
+        max-height: 70vh;
+    }
+    
+    .brand-title {
+        font-size: 1.3rem;
+        max-width: 160px;
+    }
+    
+    .brand-subtitle {
+        font-size: 0.7rem;
+        max-width: 140px;
     }
 }
 
