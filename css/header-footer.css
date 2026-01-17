@@ -925,7 +925,7 @@ header.scrolled {
   opacity: 1;
 }
 
-/* ========== IMPROVED HAMBURGER & TOGGLE STYLES ========== */
+/* ========== HAMBURGER TOGGLE STYLES ========== */
 .mobile-nav-toggle {
     display: none;
     background: transparent;
@@ -954,7 +954,6 @@ header.scrolled {
     outline: 3px solid var(--rebel-gold);
     outline-offset: 2px;
 }
-
 
 /* Enhanced Active State Styling */
 .mobile-nav-toggle.active,
@@ -1035,55 +1034,7 @@ header.scrolled {
         height: 0 !important;
         overflow: hidden !important;
     }
-        /* Enhanced Hamburger Animation for Mobile Only */
-    .mobile-nav-toggle .hamburger {
-        width: 24px;
-        height: 18px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
     
-    .mobile-nav-toggle:hover .hamburger {
-        transform: scale(1.1);
-    }
-    
-    .mobile-nav-toggle .hamburger span {
-        display: block;
-        height: 2px;
-        width: 100%;
-        background: linear-gradient(90deg, 
-            var(--rebel-gold), 
-            var(--rebel-red));
-        border-radius: 2px;
-        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        transform-origin: center;
-    }
-    
-    .mobile-nav-toggle .hamburger span:nth-child(1) {
-        transform-origin: top left;
-    }
-    
-    .mobile-nav-toggle .hamburger span:nth-child(3) {
-        transform-origin: bottom left;
-    }
-    
-    .mobile-nav-toggle.active .hamburger span:nth-child(1) {
-        transform: translateY(7.5px) rotate(45deg) scaleX(1.1);
-        background: var(--rebel-red);
-    }
-    
-    .mobile-nav-toggle.active .hamburger span:nth-child(2) {
-        opacity: 0;
-        transform: scaleX(0);
-    }
-    
-    .mobile-nav-toggle.active .hamburger span:nth-child(3) {
-        transform: translateY(-7.5px) rotate(-45deg) scaleX(1.1);
-        background: var(--rebel-red);
-    }
     /* Premium Mobile Navigation Toggle */
     .mobile-nav-toggle {
         display: flex;
@@ -1105,6 +1056,53 @@ header.scrolled {
         overflow: hidden;
     }
     
+    /* MOBILE HAMBURGER ICON - WORKING VERSION */
+    .mobile-nav-toggle .hamburger {
+        width: 24px;
+        height: 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .mobile-nav-toggle:hover .hamburger {
+        transform: scale(1.1);
+    }
+    
+    .mobile-nav-toggle .hamburger span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background: var(--rebel-gold); /* SOLID GOLD COLOR */
+        border-radius: 2px;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform-origin: center;
+    }
+    
+    .mobile-nav-toggle .hamburger span:nth-child(1) {
+        transform-origin: top left;
+    }
+    
+    .mobile-nav-toggle .hamburger span:nth-child(3) {
+        transform-origin: bottom left;
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg) scaleX(1.1);
+        background: var(--rebel-red); /* TURNS RED WHEN ACTIVE */
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg) scaleX(1.1);
+        background: var(--rebel-red); /* TURNS RED WHEN ACTIVE */
+    }
     
     /* Premium Mobile Navigation Menu */
     #nav-desktop {
@@ -2227,8 +2225,6 @@ footer {
     }
 }
 
-
-
 /* ========== EMERGENCY FIX: HIDE DESKTOP ELEMENTS ON MOBILE ========== */
 @media (max-width: 768px) {
     /* Hide ALL navigation elements in header except brand and toggle */
@@ -2284,5 +2280,29 @@ footer {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+    }
+}
+
+/* ========== EMERGENCY HAMBURGER FIX ========== */
+@media (max-width: 768px) {
+    /* Force hamburger to be visible */
+    .mobile-nav-toggle .hamburger span {
+        background: #D4A76A !important; /* Rebel gold */
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: 2px !important;
+        width: 100% !important;
+        border-radius: 2px !important;
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(1),
+    .mobile-nav-toggle.active .hamburger span:nth-child(3) {
+        background: #D74D4D !important; /* Rebel red */
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(2) {
+        opacity: 0 !important;
+        transform: scaleX(0) !important;
     }
 }
