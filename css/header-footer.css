@@ -971,7 +971,7 @@ header.scrolled {
         height: 100vh;
         background: rgba(5, 5, 5, 0.98);
         backdrop-filter: blur(20px) saturate(180%);
-        padding: 100px var(--spacing-md) 150px; /* Increased bottom padding for buy button */
+        padding: 100px var(--spacing-md) 180px; /* Increased bottom padding for buy button */
         z-index: 1001;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -1038,10 +1038,101 @@ header.scrolled {
         }
     }
     
+    /* MOBILE DROPDOWN FIXES */
+    .dropdown {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* FIX: Dropdown content - visible when active */
+    .dropdown-content {
+        display: block !important;
+        position: relative !important;
+        background: rgba(10, 10, 10, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: var(--radius-xl) !important;
+        margin: 15px 0 20px 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition: all var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(-10px);
+        box-shadow: none !important;
+        backdrop-filter: blur(10px) !important;
+    }
+    
+    .dropdown.active .dropdown-content {
+        max-height: 600px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        padding: 10px 0 !important;
+        transform: translateY(0) !important;
+        display: block !important;
+    }
+    
+    /* Mobile dropdown links */
+    .dropdown-content a {
+        padding: 18px 24px !important;
+        margin: 4px 12px !important;
+        border-radius: var(--radius-lg) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-left: 4px solid transparent !important;
+        font-size: 1.05rem !important;
+        min-height: 60px !important;
+        -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
+        color: inherit !important;
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    .dropdown-content a:hover,
+    .dropdown-content a:active {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-left-color: currentColor !important;
+        padding-left: 28px !important;
+    }
+    
+    /* Show dropdown item colors on mobile */
+    .dropdown-content a.nav-community { 
+        color: #2196F3 !important;
+    }
+    
+    .dropdown-content a.nav-security { 
+        color: #4CAF50 !important;
+    }
+    
+    .dropdown-content a.nav-whitepaper { 
+        color: #9C27B0 !important;
+    }
+    
+    .dropdown-content a.nav-calculator { 
+        color: #2ECC71 !important;
+    }
+    
+    .dropdown-content a.nav-governance { 
+        color: #FF9800 !important;
+    }
+    
+    .dropdown-content a.nav-roadmap { 
+        color: #FF5722 !important;
+    }
+    
+    .dropdown-content a.nav-integrity { 
+        color: #D4A76A !important;
+    }
+    
+    .dropdown-content a.nav-artwork { 
+        color: #E91E63 !important;
+    }
+    
     /* FIXED: Mobile Buy Button Container */
     .buy-dropdown {
         width: 100%;
-        margin: auto 0 0 0; /* Push to bottom */
+        margin: auto 0 0 0;
         padding: 20px 0;
         position: sticky;
         bottom: 0;
@@ -1097,9 +1188,9 @@ header.scrolled {
         border-bottom-right-radius: var(--radius-full);
     }
     
-    /* FIXED: Mobile Buy Options */
+    /* FIX: Buy options visibility on mobile */
     .buy-options {
-        position: fixed;
+        position: fixed !important;
         bottom: 0;
         left: 0;
         right: 0;
@@ -1114,7 +1205,7 @@ header.scrolled {
         transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
         max-height: 75vh;
         overflow-y: auto;
-        z-index: var(--z-modal);
+        z-index: 1003; /* Higher than mobile nav */
         background: rgba(10, 10, 10, 0.98);
         backdrop-filter: blur(30px) saturate(200%);
         -webkit-backdrop-filter: blur(30px) saturate(200%);
@@ -1129,94 +1220,57 @@ header.scrolled {
         opacity: 1 !important;
         visibility: visible !important;
         transform: translateY(0) !important;
-    }
-    
-    /* Mobile Dropdowns */
-    .dropdown {
-        width: 100%;
-        margin-bottom: 0.75rem;
-    }
-    
-    .dropdown-content {
-        display: block !important; /* Force display */
-        position: relative !important;
-        background: rgba(10, 10, 10, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        border-radius: var(--radius-xl) !important;
-        margin: 15px 0 20px 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
         display: block !important;
-        max-height: 0;
-        opacity: 0;
-        visibility: hidden;
-        overflow: hidden;
-        transition: all var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
-        transform: translateY(-10px);
     }
     
-    .dropdown.active .dropdown-content {
-        max-height: 500px !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        padding: 10px 0 !important;
-        transform: translateY(0);
-        margin-bottom: 20px;
-    }
-    
-    /* Mobile dropdown links */
-    .dropdown-content a {
-        padding: 18px 24px !important;
-        margin: 4px 12px !important;
-        border-radius: var(--radius-lg) !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-left: 4px solid transparent !important;
-        font-size: 1.05rem !important;
-        min-height: 60px !important;
-        -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
-        color: inherit !important; /* Ensure colors show */
-              display: flex !important;
+    /* Ensure all buy option content is visible */
+    .buy-option {
+        display: flex !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
-     /* FIX: Show dropdown item colors on mobile */
-    .dropdown-content a.nav-community { 
-        color: #2196F3 !important;
+    
+    .option-icon,
+    .option-content,
+    .option-badge {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    .dropdown-content a.nav-security { 
-        color: #4CAF50 !important;
+    .option-title,
+    .option-desc {
+        color: white !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    .dropdown-content a.nav-whitepaper { 
-        color: #9C27B0 !important;
+    .contract-display,
+    .contract-label,
+    .contract-value,
+    .copy-message {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
     
-    .dropdown-content a.nav-calculator { 
-        color: #2ECC71 !important;
+    /* FIX: Ensure dropdown arrows rotate properly */
+    .dropbtn .dropdown-arrow {
+        transition: transform var(--transition-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
     
-    .dropdown-content a.nav-governance { 
-        color: #FF9800 !important;
+    .dropdown.active .dropbtn .dropdown-arrow,
+    .dropbtn.active .dropdown-arrow {
+        transform: rotate(180deg) !important;
     }
     
-    .dropdown-content a.nav-roadmap { 
-        color: #FF5722 !important;
+    .buy-toggle .dropdown-arrow {
+        transition: transform var(--transition-base) ease;
     }
     
-    .dropdown-content a.nav-integrity { 
-        color: #D4A76A !important;
-    }
-    
-    .dropdown-content a.nav-artwork { 
-        color: #E91E63 !important;
-    }
-    
-    .dropdown-content a:hover,
-    .dropdown-content a:active {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-left-color: currentColor !important;
-        padding-left: 28px !important;
+    .buy-dropdown.active .buy-toggle .dropdown-arrow,
+    .buy-toggle.active .dropdown-arrow {
+        transform: rotate(180deg) !important;
     }
     
     /* Brand adjustments for mobile */
@@ -1281,7 +1335,7 @@ header.scrolled {
 /* ========== SMALL MOBILE OPTIMIZATION (480px and below) ========== */
 @media (max-width: 480px) {
     #nav-desktop {
-        padding: 80px var(--spacing-sm) 130px;
+        padding: 80px var(--spacing-sm) 150px;
     }
     
     .buy-dropdown {
@@ -1863,7 +1917,8 @@ footer {
 }
 
 /* ========== BODY OVERFLOW FIX ========== */
-body.nav-open {
+body.nav-open,
+body.dropdown-open {
     overflow: hidden;
     position: fixed;
     width: 100%;
