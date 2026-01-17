@@ -844,47 +844,51 @@ header.scrolled {
   opacity: 1;
 }
 
-/* ========== SIMPLE GUARANTEED HAMBURGER ========== */
+/* ========== HAMBURGER STYLES (MUST BE OUTSIDE MEDIA QUERY) ========== */
 .mobile-nav-toggle .hamburger {
   width: 24px;
   height: 18px;
   position: relative;
+  display: block;
 }
 
 .mobile-nav-toggle .hamburger span {
   position: absolute;
-  height: 2px;
+  height: 3px;
   width: 100%;
   background: #D4A76A;
   left: 0;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
-.mobile-nav-toggle .hamburger span:first-child {
-  top: 0;
+.mobile-nav-toggle .hamburger span:nth-child(1) { 
+  top: 0; 
 }
 
-.mobile-nav-toggle .hamburger span:nth-child(2) {
-  top: 8px;
+.mobile-nav-toggle .hamburger span:nth-child(2) { 
+  top: 7.5px; 
 }
 
-.mobile-nav-toggle .hamburger span:last-child {
-  top: 16px;
+.mobile-nav-toggle .hamburger span:nth-child(3) { 
+  top: 15px; 
 }
 
-/* X STATE - SIMPLE */
-.mobile-nav-toggle.active .hamburger span:first-child {
+/* X State - works with both class and attribute */
+.mobile-nav-toggle.active .hamburger span:nth-child(1),
+.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(1) {
   transform: rotate(45deg);
-  top: 8px;
+  top: 7.5px;
 }
 
-.mobile-nav-toggle.active .hamburger span:nth-child(2) {
+.mobile-nav-toggle.active .hamburger span:nth-child(2),
+.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(2) {
   opacity: 0;
 }
 
-.mobile-nav-toggle.active .hamburger span:last-child {
+.mobile-nav-toggle.active .hamburger span:nth-child(3),
+.mobile-nav-toggle[aria-expanded="true"] .hamburger span:nth-child(3) {
   transform: rotate(-45deg);
-  top: 8px;
+  top: 7.5px;
 }
 
 /* ========== MOBILE STYLES (768px and below) ========== */
