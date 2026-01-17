@@ -160,35 +160,30 @@ function setupMobileNavigation() {
   mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
   
   newToggle.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const isOpening = !navDesktop.classList.contains('active');
-    navDesktop.classList.toggle('active');
-    
-    // Update icon
-    this.innerHTML = navDesktop.classList.contains('active') ? 
-      '<i class="fas fa-times"></i>' : 
-      '<i class="fas fa-bars"></i>';
-    
-    // Toggle body scroll and aria attributes
-    if (navDesktop.classList.contains('active')) {
-      document.body.style.overflow = 'hidden';
-      this.setAttribute('aria-expanded', 'true');
-      navDesktop.setAttribute('aria-hidden', 'false');
-    } else {
-      document.body.style.overflow = '';
-      this.setAttribute('aria-expanded', 'false');
-      navDesktop.setAttribute('aria-hidden', 'true');
-    }
-    
-    // Close dropdowns when opening nav
-    if (isOpening) {
-      closeAllDropdowns();
-    }
-    
-    console.log('📱 Mobile nav toggled:', navDesktop.classList.contains('active') ? 'open' : 'closed');
-  });
+  e.preventDefault();
+  e.stopPropagation();
+  
+  const isOpening = !navDesktop.classList.contains('active');
+  navDesktop.classList.toggle('active');
+  
+  // Update aria attributes - CSS handles the icon animation
+  if (navDesktop.classList.contains('active')) {
+    document.body.style.overflow = 'hidden';
+    this.setAttribute('aria-expanded', 'true');
+    navDesktop.setAttribute('aria-hidden', 'false');
+  } else {
+    document.body.style.overflow = '';
+    this.setAttribute('aria-expanded', 'false');
+    navDesktop.setAttribute('aria-hidden', 'true');
+  }
+  
+  // Close dropdowns when opening nav
+  if (isOpening) {
+    closeAllDropdowns();
+  }
+  
+  console.log('📱 Mobile nav toggled:', navDesktop.classList.contains('active') ? 'open' : 'closed');
+});
   
   // Close nav when clicking outside (mobile only)
   document.addEventListener('click', function(e) {
@@ -220,7 +215,6 @@ function closeMobileNav() {
     navDesktop.setAttribute('aria-hidden', 'true');
   }
   if (mobileToggle) {
-    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
     mobileToggle.setAttribute('aria-expanded', 'false');
   }
   document.body.style.overflow = '';
