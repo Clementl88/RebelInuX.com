@@ -1,14 +1,26 @@
 <header>
   <div class="header-container">
-    <!-- Brand Logo -->
-    <a href="index.html" class="brand-link" aria-label="RebelInuX Home">
+    <!-- Brand Logo with enhanced accessibility -->
+    <a href="index.html" class="brand-link" aria-label="RebelInuX Home - $REBL Epoch Rewards">
       <div class="brand-content">
-        <img src="images/logo256.png" 
-             alt="RebelInuX Logo" 
-             width="50" 
-             height="50"
-             loading="eager"
-             class="brand-logo">
+        <picture>
+          <source srcset="images/logo256.webp 256w, 
+                          images/logo512.webp 512w,
+                          images/logo1024.webp 1024w" 
+                  type="image/webp">
+          <source srcset="images/logo256.png 256w, 
+                          images/logo512.png 512w,
+                          images/logo1024.png 1024w" 
+                  type="image/png">
+          <img src="images/logo256.png" 
+               alt="RebelInuX Logo - Community-driven meme token on Solana"
+               width="50" 
+               height="50"
+               loading="eager"
+               decoding="async"
+               class="brand-logo"
+               onerror="this.onerror=null; this.src='images/logo-fallback.png';">
+        </picture>
         <div class="brand-text">
           <div class="brand-title">RebelInuX</div>
           <div class="brand-subtitle">$REBL Epoch Rewards</div>
@@ -16,163 +28,803 @@
       </div>
     </a>
     
-    <!-- Mobile Menu Toggle -->
+    <!-- Mobile Menu Toggle with enhanced accessibility -->
     <button class="mobile-nav-toggle" 
             id="mobileNavToggle" 
-            aria-label="Toggle navigation"
+            aria-label="Toggle main menu navigation"
             aria-expanded="false"
-            aria-controls="nav-desktop">
-      <i class="fas fa-bars"></i>
+            aria-controls="nav-desktop"
+            aria-haspopup="true">
+      <span class="hamburger-icon" aria-hidden="true">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+      <span class="sr-only">Menu</span>
     </button>
     
-    <!-- Navigation -->
-    <nav id="nav-desktop" aria-label="Main navigation" aria-hidden="true">
+    <!-- Main Navigation with ARIA improvements -->
+    <nav id="nav-desktop" 
+         aria-label="Main Navigation" 
+         aria-hidden="false"
+         role="navigation"
+         class="js-nav">
+      
       <!-- Trade -->
-      <a href="trade.html" class="nav-trade">
-        <i class="fas fa-chart-line"></i> Trade
+      <a href="trade.html" 
+         class="nav-trade"
+         data-nav="trade"
+         aria-current="page">
+        <i class="fas fa-chart-line" aria-hidden="true"></i>
+        <span class="nav-text">Trade</span>
+        <span class="sr-only"> - View trading charts and statistics</span>
       </a>
       
       <!-- Rewards -->
-      <a href="epoch-rewards.html" class="nav-rewards">
-        <i class="fas fa-gift"></i> Rewards
+      <a href="epoch-rewards.html" 
+         class="nav-rewards"
+         data-nav="rewards">
+        <i class="fas fa-gift" aria-hidden="true"></i>
+        <span class="nav-text">Rewards</span>
+        <span class="sr-only"> - Check epoch rewards distribution</span>
       </a>
       
       <!-- Tokenomics -->
-      <a href="tokenomics.html" class="nav-tokenomics">
-        <i class="fas fa-coins"></i> Tokenomics
+      <a href="tokenomics.html" 
+         class="nav-tokenomics"
+         data-nav="tokenomics">
+        <i class="fas fa-coins" aria-hidden="true"></i>
+        <span class="nav-text">Tokenomics</span>
+        <span class="sr-only"> - View token distribution and economics</span>
       </a>
       
-      <!-- More Dropdown -->
-      <div class="dropdown">
-        <button class="dropbtn nav-more" aria-expanded="false">
-          <i class="fas fa-ellipsis-h"></i> More
+      <!-- More Dropdown with enhanced accessibility -->
+      <div class="dropdown" 
+           role="group" 
+           aria-label="More menu options">
+        <button class="dropbtn nav-more" 
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="more-dropdown"
+                data-dropdown="more">
+          <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+          <span class="nav-text">More</span>
           <span class="dropdown-arrow" aria-hidden="true">▼</span>
+          <span class="sr-only">Expand more options menu</span>
         </button>
-        <div class="dropdown-content" aria-label="More options">
-          <a href="community.html" class="nav-community">
-            <i class="fas fa-users"></i> Community
+        <div class="dropdown-content" 
+             id="more-dropdown"
+             role="menu"
+             aria-label="Additional pages">
+          <a href="community.html" 
+             class="nav-community"
+             role="menuitem"
+             data-nav="community">
+            <i class="fas fa-users" aria-hidden="true"></i>
+            <span>Community</span>
+            <span class="sr-only"> - Join our community channels</span>
           </a>
-          <a href="security.html" class="nav-security">
-            <i class="fas fa-shield-alt"></i> Security
+          <a href="security.html" 
+             class="nav-security"
+             role="menuitem"
+             data-nav="security">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            <span>Security</span>
+            <span class="sr-only"> - View security measures and audits</span>
           </a>
-          <a href="whitepaper.html" class="nav-whitepaper">
-            <i class="fas fa-file-contract"></i> Whitepaper
+          <a href="whitepaper.html" 
+             class="nav-whitepaper"
+             role="menuitem"
+             data-nav="whitepaper">
+            <i class="fas fa-file-contract" aria-hidden="true"></i>
+            <span>Whitepaper</span>
+            <span class="sr-only"> - Read the project whitepaper</span>
           </a>
-          <a href="REBL-calculator.html" class="nav-calculator">
-  <i class="fas fa-calculator"></i>
-  <span>Token Calculator</span>
-</a>
-          <a href="governance.html" class="nav-governance">
-            <i class="fas fa-vote-yea"></i> Governance
+          <a href="REBL-calculator.html" 
+             class="nav-calculator"
+             role="menuitem"
+             data-nav="calculator">
+            <i class="fas fa-calculator" aria-hidden="true"></i>
+            <span>Token Calculator</span>
+            <span class="sr-only"> - Calculate your potential returns</span>
           </a>
-          <a href="roadmap.html" class="nav-roadmap">
-            <i class="fas fa-map-signs"></i> Roadmap
+          <a href="governance.html" 
+             class="nav-governance"
+             role="menuitem"
+             data-nav="governance">
+            <i class="fas fa-vote-yea" aria-hidden="true"></i>
+            <span>Governance</span>
+            <span class="sr-only"> - Participate in governance voting</span>
           </a>
-          <a href="integrity.html" class="nav-integrity">
-            <i class="fas fa-handshake"></i> Integrity
+          <a href="roadmap.html" 
+             class="nav-roadmap"
+             role="menuitem"
+             data-nav="roadmap">
+            <i class="fas fa-map-signs" aria-hidden="true"></i>
+            <span>Roadmap</span>
+            <span class="sr-only"> - View project development roadmap</span>
           </a>
-          <a href="artwork.html" class="nav-artwork">
-            <i class="fas fa-palette"></i> Artwork
+          <a href="integrity.html" 
+             class="nav-integrity"
+             role="menuitem"
+             data-nav="integrity">
+            <i class="fas fa-handshake" aria-hidden="true"></i>
+            <span>Integrity</span>
+            <span class="sr-only"> - Learn about our integrity pledge</span>
+          </a>
+          <a href="artwork.html" 
+             class="nav-artwork"
+             role="menuitem"
+             data-nav="artwork">
+            <i class="fas fa-palette" aria-hidden="true"></i>
+            <span>Artwork</span>
+            <span class="sr-only"> - View official artwork and assets</span>
           </a>
         </div>
       </div>
       
-      <!-- Buy Dropdown -->
-      <div class="buy-dropdown">
-        <button class="cta-button buy-toggle" aria-expanded="false">
-          <i class="fas fa-shopping-cart"></i> BUY $REBL
+      <!-- Buy Dropdown with enhanced features -->
+      <div class="buy-dropdown" 
+           role="group"
+           aria-label="Buy $REBL options">
+        <button class="cta-button buy-toggle" 
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="buy-options"
+                data-dropdown="buy">
+          <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+          <span class="button-text">BUY $REBL</span>
           <i class="fas fa-chevron-down dropdown-arrow" aria-hidden="true"></i>
+          <span class="sr-only">Open buy options menu</span>
         </button>
         
-        <div class="buy-options" aria-label="Buy options">
-          <!-- Primary Option - Most Used -->
+        <div class="buy-options" 
+             id="buy-options"
+             role="menu"
+             aria-label="Platforms to buy $REBL token">
+          
+          <!-- Primary Option with price display -->
           <a href="https://pump.fun/coin/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
              class="buy-option primary" 
              target="_blank" 
-             rel="noopener noreferrer">
+             rel="noopener noreferrer"
+             role="menuitem"
+             data-buy-option="pump-fun"
+             data-analytics="buy_click:primary">
             <div class="option-icon">
-              <i class="fas fa-bolt"></i>
+              <i class="fas fa-bolt" aria-hidden="true"></i>
             </div>
             <div class="option-content">
               <div class="option-title">Buy on Pump.fun</div>
               <div class="option-desc">Bonding Curve • Instant</div>
+              <div class="option-price" data-price-target="pump-fun">
+                <span class="price-loading">Loading price...</span>
+              </div>
             </div>
-            <div class="option-badge recommended">RECOMMENDED</div>
+            <div class="option-badge recommended" aria-hidden="true">RECOMMENDED</div>
+            <span class="sr-only">Recommended option</span>
           </a>
           
-          <!-- DEX Options -->
+          <!-- DEX Options Group -->
           <div class="option-group">
             <div class="group-title">DEX Trading</div>
             
             <a href="https://raydium.io/swap/?inputCurrency=sol&outputCurrency=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
                class="buy-option" 
                target="_blank" 
-               rel="noopener noreferrer">
+               rel="noopener noreferrer"
+               role="menuitem"
+               data-buy-option="raydium"
+               data-analytics="buy_click:raydium">
               <div class="option-icon">
-                <i class="fas fa-water"></i>
+                <img src="images/raydium-icon.svg" 
+                     alt="Raydium Logo" 
+                     width="24" 
+                     height="24"
+                     loading="lazy"
+                     class="platform-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-water" aria-hidden="true" style="display:none;"></i>
               </div>
               <div class="option-content">
                 <div class="option-title">Raydium</div>
                 <div class="option-desc">AMM • High Liquidity</div>
+                <div class="option-price" data-price-target="raydium">
+                  <span class="price-loading">Loading price...</span>
+                </div>
+              </div>
+              <div class="option-status" aria-hidden="true">
+                <span class="liquidity-indicator high-liquidity" title="High liquidity"></span>
               </div>
             </a>
             
             <a href="https://jup.ag/swap/SOL-F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
                class="buy-option" 
                target="_blank" 
-               rel="noopener noreferrer">
+               rel="noopener noreferrer"
+               role="menuitem"
+               data-buy-option="jupiter"
+               data-analytics="buy_click:jupiter">
               <div class="option-icon">
-                <i class="fas fa-exchange-alt"></i>
+                <img src="images/jupiter-icon.svg" 
+                     alt="Jupiter Logo" 
+                     width="24" 
+                     height="24"
+                     loading="lazy"
+                     class="platform-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-exchange-alt" aria-hidden="true" style="display:none;"></i>
               </div>
               <div class="option-content">
                 <div class="option-title">Jupiter</div>
                 <div class="option-desc">Aggregator • Best Price</div>
+                <div class="option-price" data-price-target="jupiter">
+                  <span class="price-loading">Loading price...</span>
+                </div>
+              </div>
+              <div class="option-status" aria-hidden="true">
+                <span class="price-indicator best-price" title="Best price"></span>
               </div>
             </a>
           </div>
           
-          <!-- Analytics/Charts -->
+          <!-- Analytics/Charts Group -->
           <div class="option-group">
             <div class="group-title">Charts & Analytics</div>
             
             <a href="https://birdeye.so/token/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump?chain=solana" 
                class="buy-option" 
                target="_blank" 
-               rel="noopener noreferrer">
+               rel="noopener noreferrer"
+               role="menuitem"
+               data-buy-option="birdeye"
+               data-analytics="buy_click:birdeye">
               <div class="option-icon">
-                <i class="fas fa-chart-line"></i>
+                <img src="images/birdeye-icon.svg" 
+                     alt="Birdeye Logo" 
+                     width="24" 
+                     height="24"
+                     loading="lazy"
+                     class="platform-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-chart-line" aria-hidden="true" style="display:none;"></i>
               </div>
               <div class="option-content">
                 <div class="option-title">Birdeye</div>
                 <div class="option-desc">Live Charts + Trade</div>
+                <div class="option-price" data-price-target="birdeye">
+                  <span class="price-loading">Loading price...</span>
+                </div>
+              </div>
+              <div class="option-status" aria-hidden="true">
+                <span class="chart-indicator live-charts" title="Live charts"></span>
               </div>
             </a>
             
             <a href="https://dexscreener.com/solana/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
                class="buy-option" 
                target="_blank" 
-               rel="noopener noreferrer">
+               rel="noopener noreferrer"
+               role="menuitem"
+               data-buy-option="dexscreener"
+               data-analytics="buy_click:dexscreener">
               <div class="option-icon">
-                <i class="fas fa-chart-bar"></i>
+                <img src="images/dexscreener-icon.svg" 
+                     alt="DexScreener Logo" 
+                     width="24" 
+                     height="24"
+                     loading="lazy"
+                     class="platform-logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-chart-bar" aria-hidden="true" style="display:none;"></i>
               </div>
               <div class="option-content">
                 <div class="option-title">DexScreener</div>
                 <div class="option-desc">Advanced Analytics</div>
+                <div class="option-price" data-price-target="dexscreener">
+                  <span class="price-loading">Loading price...</span>
+                </div>
+              </div>
+              <div class="option-status" aria-hidden="true">
+                <span class="analytics-indicator advanced" title="Advanced analytics"></span>
               </div>
             </a>
           </div>
           
-          <!-- Contract Info -->
-          <div class="contract-display">
-            <div class="contract-label">Contract Address:</div>
-            <div class="contract-value" onclick="copyContract()" role="button" tabindex="0">
-              F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
-              <i class="fas fa-copy copy-icon" aria-hidden="true"></i>
+          <!-- Additional Features Section -->
+          <div class="option-group">
+            <div class="group-title">Quick Actions</div>
+            
+            <div class="quick-actions">
+              <button class="quick-action" 
+                      onclick="common.copyContract('quick')"
+                      aria-label="Copy contract address"
+                      data-analytics="contract_copy:quick">
+                <i class="fas fa-copy" aria-hidden="true"></i>
+                <span>Copy Contract</span>
+              </button>
+              
+              <button class="quick-action" 
+                      onclick="common.showQRCode()"
+                      aria-label="Show QR code for contract"
+                      data-analytics="qr_code:show">
+                <i class="fas fa-qrcode" aria-hidden="true"></i>
+                <span>QR Code</span>
+              </button>
+              
+              <button class="quick-action" 
+                      onclick="common.addToWallet()"
+                      aria-label="Add token to wallet"
+                      data-analytics="wallet_add:click">
+                <i class="fas fa-wallet" aria-hidden="true"></i>
+                <span>Add to Wallet</span>
+              </button>
             </div>
-            <div class="copy-message" id="copyMessage" aria-live="polite">Copied!</div>
+          </div>
+          
+          <!-- Contract Info with enhanced features -->
+          <div class="contract-display">
+            <div class="contract-header">
+              <div class="contract-label">Solana Contract Address</div>
+              <div class="contract-actions">
+                <button class="contract-action" 
+                        onclick="common.copyContract('desktop')"
+                        aria-label="Copy contract address to clipboard"
+                        data-tooltip="Copy">
+                  <i class="fas fa-copy" aria-hidden="true"></i>
+                </button>
+                <button class="contract-action" 
+                        onclick="common.showQRCode()"
+                        aria-label="Show QR code"
+                        data-tooltip="QR Code">
+                  <i class="fas fa-qrcode" aria-hidden="true"></i>
+                </button>
+                <button class="contract-action" 
+                        onclick="common.verifyContract()"
+                        aria-label="Verify contract on explorer"
+                        data-tooltip="Verify">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="contract-value-wrapper">
+              <div class="contract-value" 
+                   onclick="common.copyContract('click')" 
+                   role="button" 
+                   tabindex="0"
+                   aria-label="Contract address: F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump. Click to copy.">
+                <code class="contract-address">
+                  F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+                </code>
+                <i class="fas fa-copy copy-icon" aria-hidden="true"></i>
+              </div>
+              
+              <!-- Network Info -->
+              <div class="network-info">
+                <span class="network-badge solana">
+                  <i class="fab fa-solana" aria-hidden="true"></i>
+                  Solana
+                </span>
+                <span class="network-status active" aria-label="Network is active">
+                  <i class="fas fa-circle" aria-hidden="true"></i>
+                  Active
+                </span>
+              </div>
+            </div>
+            
+            <!-- Contract Details -->
+            <div class="contract-details">
+              <div class="contract-detail">
+                <span class="detail-label">Network:</span>
+                <span class="detail-value">Solana Mainnet</span>
+              </div>
+              <div class="contract-detail">
+                <span class="detail-label">Symbol:</span>
+                <span class="detail-value">$REBL</span>
+              </div>
+              <div class="contract-detail">
+                <span class="detail-label">Decimals:</span>
+                <span class="detail-value">6</span>
+              </div>
+              <div class="contract-detail">
+                <span class="detail-label">Verified:</span>
+                <span class="detail-value verified">
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                  Yes
+                </span>
+              </div>
+            </div>
+            
+            <!-- Copy Feedback -->
+            <div class="copy-feedback">
+              <div class="copy-message" 
+                   id="copyMessage" 
+                   aria-live="polite"
+                   role="status"
+                   aria-atomic="true">
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                <span>Copied to clipboard!</span>
+              </div>
+              
+              <!-- QR Code Container (hidden by default) -->
+              <div class="qr-container" id="qrContainer" aria-hidden="true">
+                <div class="qr-code" id="qrCode"></div>
+                <p class="qr-instruction">Scan to add to wallet</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Safety Disclaimer -->
+          <div class="safety-disclaimer">
+            <div class="disclaimer-icon">
+              <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            </div>
+            <div class="disclaimer-content">
+              <p><strong>Safety First:</strong> Always verify the contract address matches above before buying.</p>
+              <p class="small-text">This token has no affiliation with Solana Foundation.</p>
+            </div>
           </div>
         </div>
       </div>
     </nav>
   </div>
+  
+  <!-- Mobile-only Contract Display -->
+  <div class="mobile-contract-display" aria-hidden="true">
+    <button class="mobile-contract-toggle" 
+            aria-label="Show contract address"
+            onclick="common.toggleMobileContract()">
+      <i class="fas fa-info-circle" aria-hidden="true"></i>
+      <span>Contract Info</span>
+    </button>
+    <div class="mobile-contract-content">
+      <div class="mobile-contract-value" onclick="common.copyContract('mobile')">
+        F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+        <i class="fas fa-copy" aria-hidden="true"></i>
+      </div>
+      <div class="copy-message" id="copyMessageMobile" aria-live="polite">Copied!</div>
+    </div>
+  </div>
 </header>
+
+<!-- Hidden screen reader content -->
+<div class="sr-only" aria-live="polite" aria-atomic="true">
+  Navigation menu loaded. Use Tab to navigate, Enter to select, Escape to close menus.
+</div>
+
+<!-- Add this CSS for new features -->
+<style>
+  /* Platform logos */
+  .platform-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
+  /* Price display */
+  .option-price {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 2px;
+  }
+  
+  .price-loading {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Status indicators */
+  .option-status {
+    margin-left: 8px;
+  }
+  
+  .liquidity-indicator,
+  .price-indicator,
+  .chart-indicator,
+  .analytics-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  
+  .high-liquidity {
+    background-color: #4CAF50;
+  }
+  
+  .best-price {
+    background-color: #FFD700;
+  }
+  
+  .live-charts {
+    background-color: #00BCD4;
+  }
+  
+  .advanced {
+    background-color: #9C27B0;
+  }
+  
+  /* Quick actions */
+  .quick-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .quick-action {
+    flex: 1;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+  }
+  
+  .quick-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
+  
+  /* Enhanced contract display */
+  .contract-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .contract-actions {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .contract-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  
+  .contract-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .contract-value-wrapper {
+    margin-bottom: 12px;
+  }
+  
+  .contract-address {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+  }
+  
+  .network-info {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  
+  .network-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .network-badge.solana {
+    background: rgba(0, 222, 163, 0.1);
+    color: #00DEA3;
+    border: 1px solid rgba(0, 222, 163, 0.3);
+  }
+  
+  .network-status {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .network-status.active i {
+    color: #4CAF50;
+  }
+  
+  .contract-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .contract-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+  }
+  
+  .detail-label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .detail-value {
+    color: white;
+    font-weight: 500;
+  }
+  
+  .detail-value.verified {
+    color: #4CAF50;
+  }
+  
+  /* QR Code */
+  .qr-container {
+    margin-top: 12px;
+    text-align: center;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    display: none;
+  }
+  
+  .qr-container.show {
+    display: block;
+  }
+  
+  .qr-code {
+    display: inline-block;
+    padding: 8px;
+    background: white;
+    border-radius: 4px;
+  }
+  
+  .qr-instruction {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: #666;
+  }
+  
+  /* Safety disclaimer */
+  .safety-disclaimer {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+  }
+  
+  .disclaimer-icon {
+    color: #FF6B35;
+    font-size: 1.2rem;
+  }
+  
+  .disclaimer-content {
+    flex: 1;
+  }
+  
+  .disclaimer-content p {
+    margin: 0 0 4px 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .disclaimer-content .small-text {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  /* Mobile contract display */
+  .mobile-contract-display {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .mobile-contract-display {
+      display: block;
+      padding: 8px var(--spacing-md);
+      background: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .mobile-contract-toggle {
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      color: var(--rebel-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .mobile-contract-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .mobile-contract-content.show {
+      max-height: 100px;
+    }
+    
+    .mobile-contract-value {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+  }
+  
+  /* Accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Hamburger animation */
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+  }
+  
+  .hamburger-icon .bar {
+    height: 2px;
+    background: var(--rebel-gold);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-nav-toggle.active .hamburger-icon .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .mobile-nav-toggle.active .hambibar:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-nav-toggle.active .hamburger-icon .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+</style>
