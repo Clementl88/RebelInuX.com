@@ -165,6 +165,8 @@ function setupMobileNavigation() {
   
   const isOpening = !navDesktop.classList.contains('active');
   navDesktop.classList.toggle('active');
+      this.classList.toggle('active'); // ← ADD THIS LINE
+
   
   // Update aria attributes - CSS handles the icon animation
   if (navDesktop.classList.contains('active')) {
