@@ -33,6 +33,118 @@
   --transition-slow: 500ms;
 }
 
+/* ========== PREMIUM ANIMATIONS ========== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(212, 167, 106, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 167, 106, 0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes activePulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: translateY(-50%) scale(1.3);
+        box-shadow: 0 0 15px var(--rebel-gold);
+    }
+}
+
+@keyframes menuAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.98);
+    }
+    50% {
+        transform: translateY(-10px) scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+@keyframes logoPulse {
+    0%, 100% { 
+        transform: scale(1);
+    }
+    70% { 
+        transform: scale(1.05);
+    }
+}
+
+@keyframes cryptoReveal {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+        filter: hue-rotate(0deg);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.5);
+        filter: hue-rotate(20deg) blur(3px);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2);
+        filter: hue-rotate(0deg) blur(5px);
+    }
+}
+
+/* ========== SMOOTH TRANSITIONS ========== */
+#nav-desktop a,
+.dropbtn,
+.dropdown-content a,
+.buy-toggle,
+.mobile-nav-toggle {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
 /* ========== REDUCED MOTION PREFERENCES ========== */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -146,16 +258,6 @@ header.scrolled {
   will-change: transform;
 }
 
-/* Add pulse animation to logo */
-@keyframes logoPulse {
-  0%, 100% { 
-    transform: scale(1);
-  }
-  70% { 
-    transform: scale(1.05);
-  }
-}
-
 .brand-logo:hover {
   animation: logoPulse 2s infinite;
   border-color: var(--rebel-gold);
@@ -183,12 +285,6 @@ header.scrolled {
   animation: shimmer 4s ease-in-out infinite;
   line-height: 1.1;
   white-space: nowrap;
-}
-
-@keyframes shimmer {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
 }
 
 .brand-subtitle {
@@ -636,12 +732,6 @@ header.scrolled {
   transform: rotate(180deg);
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
-}
-
 /* Buy Options Dropdown */
 .buy-options {
   display: none;
@@ -936,32 +1026,115 @@ header.scrolled {
     z-index: -1;
 }
 
-@keyframes cryptoReveal {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0);
-        filter: hue-rotate(0deg);
-    }
-    60% {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1.5);
-        filter: hue-rotate(20deg) blur(3px);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(2);
-        filter: hue-rotate(0deg) blur(5px);
-    }
-}
-
-/* ========== MOBILE STYLES (768px and below) ========== */
+/* ========== PROFESSIONAL MOBILE STYLES (768px and below) ========== */
 @media (max-width: 768px) {
-    /* Mobile Navigation Toggle */
+    /* Premium Mobile Navigation Toggle */
     .mobile-nav-toggle {
         display: flex;
+        background: linear-gradient(135deg, 
+            rgba(212, 167, 106, 0.1), 
+            rgba(215, 77, 77, 0.05));
+        border: 2px solid rgba(212, 167, 106, 0.4);
+        border-radius: 12px;
+        width: 52px;
+        height: 52px;
+        padding: 14px;
+        cursor: pointer;
+        z-index: 1002;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
     }
     
-    /* Mobile Navigation Menu */
+    .mobile-nav-toggle::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, 
+            rgba(212, 167, 106, 0.2), 
+            rgba(215, 77, 77, 0.1));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .mobile-nav-toggle:hover {
+        background: linear-gradient(135deg, 
+            rgba(212, 167, 106, 0.15), 
+            rgba(215, 77, 77, 0.08));
+        transform: scale(1.08);
+        border-color: var(--rebel-gold);
+        box-shadow: 0 8px 25px rgba(212, 167, 106, 0.25);
+    }
+    
+    .mobile-nav-toggle:hover::before {
+        opacity: 1;
+    }
+    
+    .mobile-nav-toggle.active {
+        background: linear-gradient(135deg, 
+            rgba(215, 77, 77, 0.2), 
+            rgba(212, 167, 106, 0.15));
+        border-color: var(--rebel-red);
+        box-shadow: 0 8px 30px rgba(215, 77, 77, 0.3);
+    }
+    
+    /* Enhanced Hamburger Animation */
+    .mobile-nav-toggle .hamburger {
+        width: 24px;
+        height: 18px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .mobile-nav-toggle:hover .hamburger {
+        transform: scale(1.1);
+    }
+    
+    .mobile-nav-toggle .hamburger span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background: linear-gradient(90deg, 
+            var(--rebel-gold), 
+            var(--rebel-red));
+        border-radius: 2px;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform-origin: center;
+    }
+    
+    .mobile-nav-toggle .hamburger span:nth-child(1) {
+        transform-origin: top left;
+    }
+    
+    .mobile-nav-toggle .hamburger span:nth-child(3) {
+        transform-origin: bottom left;
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg) scaleX(1.1);
+        background: var(--rebel-red);
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .mobile-nav-toggle.active .hamburger span:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg) scaleX(1.1);
+        background: var(--rebel-red);
+    }
+    
+    /* Premium Mobile Navigation Menu */
     #nav-desktop {
         display: none;
         position: fixed;
@@ -969,9 +1142,10 @@ header.scrolled {
         left: 0;
         width: 100%;
         height: 100vh;
-        background: rgba(5, 5, 5, 0.98);
-        backdrop-filter: blur(20px) saturate(180%);
-        padding: 100px var(--spacing-md) 180px;
+        background: rgba(8, 8, 8, 0.98);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
+        padding: 120px var(--spacing-md) 200px;
         z-index: 1001;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -979,187 +1153,266 @@ header.scrolled {
         align-items: stretch;
         margin: 0;
         opacity: 0;
-        transform: translateY(-20px);
-        transition: opacity var(--transition-base) ease, 
-                    transform var(--transition-base) ease;
+        transform: translateY(-30px) scale(0.98);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         justify-content: flex-start;
-        max-height: none !important;
+        box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+    }
+    
+    #nav-desktop::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent, 
+            var(--rebel-gold), 
+            transparent);
+        opacity: 0.3;
     }
     
     #nav-desktop.active {
         display: flex;
         opacity: 1;
-        transform: translateY(0);
-        height: 100vh;
+        transform: translateY(0) scale(1);
+        animation: menuAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     
-    /* Mobile nav items */
-    #nav-desktop a {
+    /* Premium Mobile Nav Items */
+    #nav-desktop > *:not(.buy-dropdown) {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition-delay: calc(var(--i, 0) * 0.05s);
+    }
+    
+    #nav-desktop.active > *:not(.buy-dropdown) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    #nav-desktop a:not(.buy-toggle) {
         padding: var(--spacing-lg) var(--spacing-xl);
-        border-radius: 16px;
-        margin-bottom: 0.75rem;
+        border-radius: 18px;
+        margin-bottom: 12px;
         font-size: 1.15rem;
         justify-content: flex-start;
-        min-height: 60px;
+        min-height: 64px;
         width: 100%;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         position: relative;
         overflow: hidden;
         color: inherit !important;
-        transition: all var(--transition-base) ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
     
-    /* Mobile active state indicator */
-    #nav-desktop a.active {
-        border-style: double;
-        border-width: 3px;
-        border-color: var(--rebel-gold) !important;
-        box-shadow: 0 0 15px rgba(212, 167, 106, 0.2);
-    }
-    
-    #nav-desktop a.active::before {
+    #nav-desktop a:not(.buy-toggle)::before {
         content: '';
         position: absolute;
-        top: 15px;
-        right: 15px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.05), 
+            rgba(255, 255, 255, 0.02));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    #nav-desktop a:not(.buy-toggle):hover {
+        background: rgba(255, 255, 255, 0.06);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    #nav-desktop a:not(.buy-toggle):hover::before {
+        opacity: 1;
+    }
+    
+    #nav-desktop a:not(.buy-toggle) i {
+        width: 24px;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-right: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    #nav-desktop a:not(.buy-toggle):hover i {
+        transform: scale(1.2);
+    }
+    
+    /* Premium Active State */
+    #nav-desktop a.active:not(.buy-toggle) {
+        background: linear-gradient(135deg, 
+            rgba(212, 167, 106, 0.15), 
+            rgba(215, 77, 77, 0.1));
+        border: 1px solid rgba(212, 167, 106, 0.3);
+        box-shadow: 
+            0 8px 30px rgba(212, 167, 106, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+    
+    #nav-desktop a.active:not(.buy-toggle)::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 20px;
         width: 8px;
         height: 8px;
         background: var(--rebel-gold);
         border-radius: 50%;
+        transform: translateY(-50%);
         animation: activePulse 2s infinite;
+        box-shadow: 0 0 10px var(--rebel-gold);
     }
     
-    @keyframes activePulse {
-        0%, 100% { 
-            opacity: 1;
-            box-shadow: 0 0 0 0 rgba(212, 167, 106, 0.7);
-        }
-        50% { 
-            opacity: 0.8;
-            box-shadow: 0 0 0 8px rgba(212, 167, 106, 0);
-        }
-    }
-    
-    /* MOBILE DROPDOWN FIXES */
+    /* Premium Dropdowns */
     .dropdown {
         width: 100%;
-        margin-bottom: 0.75rem;
+        margin-bottom: 12px;
     }
     
-    /* FIX: Dropdown content - visible when active */
+    .dropbtn {
+        width: 100%;
+        text-align: left;
+        padding: var(--spacing-lg) var(--spacing-xl);
+        border-radius: 18px;
+        font-size: 1.15rem;
+        min-height: 64px;
+        background: linear-gradient(135deg, 
+            rgba(255, 215, 0, 0.08), 
+            rgba(255, 152, 0, 0.04));
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .dropbtn:hover {
+        background: linear-gradient(135deg, 
+            rgba(255, 215, 0, 0.12), 
+            rgba(255, 215, 0, 0.06));
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+    
+    .dropdown.active .dropbtn {
+        background: linear-gradient(135deg, 
+            rgba(255, 215, 0, 0.15), 
+            rgba(255, 215, 0, 0.08));
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border-bottom: none;
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+    }
+    
+    /* Premium Dropdown Content */
     .dropdown-content {
         display: block !important;
         position: relative !important;
-        background: rgba(10, 10, 10, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        border-radius: var(--radius-xl) !important;
-        margin: 15px 0 20px 0 !important;
+        background: rgba(12, 12, 12, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        margin: 0 0 20px 0 !important;
         padding: 0 !important;
         width: 100% !important;
         max-height: 0;
         opacity: 0;
         visibility: hidden;
         overflow: hidden;
-        transition: all var(--transition-slow) cubic-bezier(0.4, 0, 0.2, 1);
-        transform: translateY(-10px);
-        box-shadow: none !important;
-        backdrop-filter: blur(10px) !important;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 20px 40px rgba(0, 0, 0, 0.3);
     }
     
     .dropdown.active .dropdown-content {
-        max-height: none !important; /* CHANGED: Remove height limit */
+        max-height: none !important;
         opacity: 1 !important;
         visibility: visible !important;
-        padding: 10px 0 !important;
+        padding: 15px 0 !important;
         transform: translateY(0) !important;
-        display: block !important;
     }
     
-    /* Mobile dropdown links */
+    /* Premium Dropdown Items */
     .dropdown-content a {
         padding: 18px 24px !important;
-        margin: 4px 12px !important;
-        border-radius: var(--radius-lg) !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-left: 4px solid transparent !important;
+        margin: 6px 15px !important;
+        border-radius: 12px !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border-left: 3px solid transparent !important;
         font-size: 1.05rem !important;
         min-height: 60px !important;
-        -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
-        color: inherit !important;
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .dropdown-content a::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
     .dropdown-content a:hover,
     .dropdown-content a:active {
-        background: rgba(255, 255, 255, 0.1) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        transform: translateX(8px);
         border-left-color: currentColor !important;
-        padding-left: 28px !important;
     }
     
-    /* Show dropdown item colors on mobile */
-    .dropdown-content a.nav-community { 
-        color: #2196F3 !important;
+    .dropdown-content a:hover::before {
+        opacity: 1;
     }
     
-    .dropdown-content a.nav-security { 
-        color: #4CAF50 !important;
-    }
-    
-    .dropdown-content a.nav-whitepaper { 
-        color: #9C27B0 !important;
-    }
-    
-    .dropdown-content a.nav-calculator { 
-        color: #2ECC71 !important;
-    }
-    
-    .dropdown-content a.nav-governance { 
-        color: #FF9800 !important;
-    }
-    
-    .dropdown-content a.nav-roadmap { 
-        color: #FF5722 !important;
-    }
-    
-    .dropdown-content a.nav-integrity { 
-        color: #D4A76A !important;
-    }
-    
-    .dropdown-content a.nav-artwork { 
-        color: #E91E63 !important;
-    }
-    
-    /* FIXED: Mobile Buy Button Container */
+    /* Premium Buy Button Container */
     .buy-dropdown {
         width: 100%;
         margin: auto 0 0 0;
-        padding: 20px 0;
+        padding: 25px 0;
         position: sticky;
         bottom: 0;
         background: linear-gradient(to top, 
-            rgba(5, 5, 5, 0.95) 0%,
-            rgba(5, 5, 5, 0.85) 50%,
+            rgba(8, 8, 8, 0.98) 0%,
+            rgba(8, 8, 8, 0.9) 50%,
             transparent 100%);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         z-index: 100;
         border-top: 1px solid rgba(212, 167, 106, 0.2);
     }
     
-    /* FIXED: Mobile Buy Button */
+    /* Premium Buy Button */
     .buy-toggle {
         width: 100%;
         max-width: 100%;
         margin: 0;
-        padding: 18px 24px;
-        font-size: 1.1rem;
-        min-width: auto;
+        padding: 20px 28px;
+        font-size: 1.15rem;
+        min-height: 68px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: var(--radius-full);
+        border-radius: 20px;
         background: linear-gradient(135deg, 
             var(--rebel-red), 
             var(--rebel-gold), 
@@ -1167,30 +1420,55 @@ header.scrolled {
         background-size: 200% auto;
         animation: gradientShift 3s ease infinite;
         box-shadow: 
-            0 6px 25px rgba(215, 77, 77, 0.4),
-            0 0 30px rgba(215, 77, 77, 0.3);
-        border: 2px solid rgba(212, 167, 106, 0.3);
+            0 8px 35px rgba(215, 77, 77, 0.5),
+            0 0 40px rgba(215, 77, 77, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(212, 167, 106, 0.4);
         color: white;
-        font-weight: 700;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all var(--transition-base) ease;
+        letter-spacing: 0.8px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .buy-toggle::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.2), 
+            transparent);
+        transition: left 0.6s ease;
     }
     
     .buy-toggle:hover:not(.loading) {
         transform: translateY(-3px);
         box-shadow: 
-            0 8px 35px rgba(215, 77, 77, 0.6),
-            0 0 40px rgba(215, 77, 77, 0.4);
+            0 12px 40px rgba(215, 77, 77, 0.7),
+            0 0 50px rgba(215, 77, 77, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
         animation: none;
     }
     
-    .buy-toggle.active {
-        border-bottom-left-radius: var(--radius-full);
-        border-bottom-right-radius: var(--radius-full);
+    .buy-toggle:hover:not(.loading)::before {
+        left: 100%;
     }
     
-    /* FIX: Buy options visibility on mobile */
+    .buy-toggle.active {
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        box-shadow: 
+            0 8px 35px rgba(215, 77, 77, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Premium Buy Options */
     .buy-options {
         position: fixed !important;
         bottom: 0;
@@ -1198,23 +1476,23 @@ header.scrolled {
         right: 0;
         width: 100%;
         max-width: 100%;
-        border-radius: var(--radius-xl) var(--radius-xl) 0 0 !important;
-        padding: 25px 20px !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 30px 25px !important;
         display: block !important;
         opacity: 0;
         visibility: hidden;
         transform: translateY(100%);
-        transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
-        max-height: 75vh;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 80vh;
         overflow-y: auto;
         z-index: 1003;
         background: rgba(10, 10, 10, 0.98);
-        backdrop-filter: blur(30px) saturate(200%);
-        -webkit-backdrop-filter: blur(30px) saturate(200%);
+        backdrop-filter: blur(35px) saturate(200%);
+        -webkit-backdrop-filter: blur(35px) saturate(200%);
         border: 1px solid rgba(212, 167, 106, 0.3);
         border-bottom: none;
         box-shadow: 
-            0 -20px 60px rgba(0, 0, 0, 0.8),
+            0 -25px 80px rgba(0, 0, 0, 0.9),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
@@ -1225,57 +1503,7 @@ header.scrolled {
         display: block !important;
     }
     
-    /* Ensure all buy option content is visible */
-    .buy-option {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    .option-icon,
-    .option-content,
-    .option-badge {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    .option-title,
-    .option-desc {
-        color: white !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    .contract-display,
-    .contract-label,
-    .contract-value,
-    .copy-message {
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-    
-    /* FIX: Ensure dropdown arrows rotate properly */
-    .dropbtn .dropdown-arrow {
-        transition: transform var(--transition-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-    
-    .dropdown.active .dropbtn .dropdown-arrow,
-    .dropbtn.active .dropdown-arrow {
-        transform: rotate(180deg) !important;
-    }
-    
-    .buy-toggle .dropdown-arrow {
-        transition: transform var(--transition-base) ease;
-    }
-    
-    .buy-dropdown.active .buy-toggle .dropdown-arrow,
-    .buy-toggle.active .dropdown-arrow {
-        transform: rotate(180deg) !important;
-    }
-    
-    /* Brand adjustments for mobile */
+    /* Premium Brand Adjustments */
     .brand-link {
         flex: 1;
         min-width: 0;
@@ -1283,19 +1511,47 @@ header.scrolled {
     }
     
     .brand-title {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 200px;
+        background-size: 300% auto;
     }
     
     .brand-subtitle {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 180px;
+        padding: 4px 12px;
+        background: rgba(212, 167, 106, 0.15);
+        border: 1px solid rgba(212, 167, 106, 0.25);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+    
+    /* Premium Scrollbar */
+    #nav-desktop::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #nav-desktop::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    #nav-desktop::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, 
+            var(--rebel-red), 
+            var(--rebel-gold));
+        border-radius: 3px;
+    }
+    
+    #nav-desktop::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, 
+            var(--rebel-gold), 
+            var(--rebel-red));
     }
     
     /* Ensure color classes work on mobile */
@@ -1332,46 +1588,127 @@ header.scrolled {
         color: #FFD700 !important;
         border-color: #FFD700 !important;
     }
+    
+    /* Loading state for mobile */
+    .buy-toggle.loading::after {
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+    }
+}
+
+/* ========== TOUCH OPTIMIZATIONS ========== */
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+    #nav-desktop a,
+    .dropbtn,
+    .dropdown-content a,
+    .buy-toggle {
+        min-height: 68px;
+        padding-top: 22px;
+        padding-bottom: 22px;
+    }
+    
+    /* Active state feedback */
+    #nav-desktop a:active,
+    .dropbtn:active,
+    .dropdown-content a:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.1s ease !important;
+    }
+    
+    /* Better tap targets */
+    #nav-desktop a,
+    .dropbtn {
+        margin-bottom: 10px;
+    }
+    
+    /* Prevent text selection */
+    #nav-desktop,
+    #nav-desktop * {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+    
+    /* Improved scrolling */
+    #nav-desktop {
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
+    }
+}
+
+/* ========== DARK MODE OPTIMIZATION ========== */
+@media (max-width: 768px) and (prefers-color-scheme: dark) {
+    #nav-desktop {
+        background: rgba(5, 5, 5, 0.99);
+    }
+    
+    #nav-desktop a:not(.buy-toggle) {
+        background: rgba(255, 255, 255, 0.04);
+    }
+    
+    #nav-desktop a:not(.buy-toggle):hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ========== HIGH CONTRAST MODE ========== */
+@media (max-width: 768px) and (prefers-contrast: high) {
+    #nav-desktop {
+        background: rgba(0, 0, 0, 0.95);
+        border: 2px solid var(--rebel-gold);
+    }
+    
+    #nav-desktop a:not(.buy-toggle) {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .dropbtn {
+        border: 2px solid rgba(255, 215, 0, 0.5);
+    }
 }
 
 /* ========== SMALL MOBILE OPTIMIZATION (480px and below) ========== */
 @media (max-width: 480px) {
     #nav-desktop {
-        padding: 80px var(--spacing-sm) 150px;
+        padding: 100px var(--spacing-sm) 180px;
     }
     
     .buy-dropdown {
-        padding: 15px 0;
+        padding: 20px 0;
     }
     
     .buy-toggle {
-        padding: 16px 20px;
-        font-size: 1rem;
+        padding: 18px 24px;
+        font-size: 1.1rem;
+        min-height: 64px;
     }
     
-    #nav-desktop a {
+    #nav-desktop a:not(.buy-toggle) {
         padding: var(--spacing-md) var(--spacing-lg);
         font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 10px;
+        min-height: 60px;
     }
     
     .dropdown-content a {
         padding: 16px 20px !important;
         font-size: 1rem !important;
+        min-height: 56px !important;
     }
     
     .buy-options {
-        padding: 20px 15px !important;
-        max-height: 70vh;
+        padding: 25px 20px !important;
+        max-height: 75vh;
     }
     
     .brand-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         max-width: 160px;
     }
     
     .brand-subtitle {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         max-width: 140px;
     }
 }
@@ -1388,25 +1725,6 @@ header.scrolled {
     
     .buy-dropdown {
         margin-left: auto;
-    }
-}
-
-/* ========== TOUCH DEVICE OPTIMIZATIONS ========== */
-@media (hover: none) and (pointer: coarse) {
-    .dropbtn:active,
-    .dropdown-content a:active,
-    #nav-desktop a:active,
-    .buy-toggle:active {
-        transform: scale(0.98);
-        transition: transform var(--transition-fast) ease;
-    }
-    
-    /* Increase touch targets */
-    #nav-desktop a,
-    .dropbtn,
-    .dropdown-content a,
-    .mobile-nav-toggle {
-        min-height: 60px;
     }
 }
 
@@ -1925,119 +2243,4 @@ body.dropdown-open {
     position: fixed;
     width: 100%;
     height: 100%;
-}
-
-/* ========== MOBILE SCROLLING FIXES ========== */
-@media (max-width: 768px) {
-    /* Remove max-height constraints from dropdowns */
-    .dropdown-content {
-        max-height: none !important;
-        overflow: visible !important;
-    }
-    
-    .dropdown.active .dropdown-content {
-        max-height: none !important;
-        overflow: visible !important;
-    }
-    
-    /* Ensure the mobile nav can scroll when content is tall */
-    #nav-desktop.active {
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        scrollbar-width: thin;
-        scrollbar-color: var(--rebel-gold) transparent;
-    }
-    
-    /* Custom scrollbar for better UX */
-    #nav-desktop.active::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    #nav-desktop.active::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    
-    #nav-desktop.active::-webkit-scrollbar-thumb {
-        background: var(--rebel-gold);
-        border-radius: 3px;
-    }
-    
-    /* Ensure buy options can scroll independently */
-    .buy-options {
-        max-height: 75vh !important;
-        overflow-y: auto !important;
-    }
-    
-    /* Better touch targets for mobile */
-    #nav-desktop a,
-    .dropbtn,
-    .dropdown-content a {
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: rgba(212, 167, 106, 0.2);
-    }
-    
-    /* Prevent body scroll when menu is open */
-    body.nav-open {
-        overflow: hidden !important;
-        position: fixed !important;
-        width: 100% !important;
-        height: 100% !important;
-    }
-}
-
-/* ========== EMERGENCY MOBILE FIX ========== */
-@media (max-width: 768px) {
-    /* Force mobile menu to show properly */
-    #nav-desktop {
-        display: none !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100vh !important;
-        background: rgba(5, 5, 5, 0.98) !important;
-        z-index: 1001 !important;
-        padding: 100px 20px 180px !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        flex-direction: column !important;
-    }
-    
-    #nav-desktop.active {
-        display: flex !important;
-        opacity: 1 !important;
-        transform: translateY(0) !important;
-    }
-    
-    /* Remove ALL max-height restrictions */
-    #nav-desktop,
-    #nav-desktop *,
-    .dropdown-content,
-    .dropdown.active .dropdown-content {
-        max-height: none !important;
-        height: auto !important;
-    }
-    
-    /* Make sure everything is visible */
-    .dropdown-content,
-    .dropdown.active .dropdown-content,
-    .buy-options,
-    .buy-dropdown.active .buy-options {
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        position: relative !important;
-        width: 100% !important;
-        max-height: none !important;
-    }
-    
-    /* Force scrolling */
-    body.nav-open {
-        overflow: hidden !important;
-    }
-    
-    body.nav-open #nav-desktop {
-        overflow-y: scroll !important;
-        height: 100vh !important;
-    }
 }
