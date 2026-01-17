@@ -521,7 +521,6 @@ function setActiveNavItem() {
     'index.html': 'a[href="index.html"]',
     'trade.html': 'a.nav-trade',
     'epoch-rewards.html': 'a.nav-rewards',
-    'rebl-calculator.html': 'a.nav-rewards',
     'tokenomics.html': 'a.nav-tokenomics',
     'security.html': 'a.nav-security',
     'community.html': 'a.nav-community',
