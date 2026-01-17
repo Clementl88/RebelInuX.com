@@ -235,17 +235,25 @@ function setupDropdowns() {
     const dropbtns = document.querySelectorAll('.dropbtn');
     const dropdowns = document.querySelectorAll('.dropdown');
     
+    console.log(`Found ${dropbtns.length} dropdown buttons and ${dropdowns.length} dropdowns`);
+    
     if (dropbtns.length === 0 || dropdowns.length === 0) {
         console.warn('⚠️ Dropdown elements not found');
         return;
     }
     
+    // Add click event to each dropdown button
     dropbtns.forEach((dropbtn, index) => {
-        // Remove any existing clone detection
-        const newToggle = dropbtn.cloneNode(true);
-        dropbtn.parentNode.replaceChild(newToggle, dropbtn);
+        // Skip if already has our event listener
+        if (dropbtn.dataset.dropdownInitialized === 'true') {
+            return;
+        }
         
-        newToggle.addEventListener('click', function(e) {
+        dropbtn.dataset.dropdownInitialized = 'true';
+        
+        dropbtn.addEventListener('click', function(e) {
+            console.log(`🎯 Dropdown ${index + 1} clicked`);
+            
             e.preventDefault();
             e.stopPropagation();
             
@@ -257,8 +265,6 @@ function setupDropdowns() {
             
             const isMobile = window.innerWidth <= 768;
             const isOpen = dropdown.classList.contains('active');
-            
-            console.log(`Dropdown ${index + 1} clicked, isOpen: ${isOpen}`);
             
             // Close all other dropdowns first
             closeAllDropdowns();
@@ -274,56 +280,115 @@ function setupDropdowns() {
                 this.classList.add('active');
                 this.setAttribute('aria-expanded', 'true');
                 
-                // Use setTimeout to ensure DOM update
-                setTimeout(() => {
-                    if (isMobile) {
-                        // For mobile, set appropriate max-height for all items
-                        const itemCount = dropdownContent.querySelectorAll('a').length;
-                        const itemHeight = 50; // Approximate height per item
-                        const calculatedHeight = Math.min(itemCount * itemHeight, 800);
-                        dropdownContent.style.maxHeight = calculatedHeight + 'px';
-                    } else {
-                        // For desktop, show with opacity transition
-                        dropdownContent.style.display = 'block';
-                        dropdownContent.style.opacity = '1';
-                        dropdownContent.style.visibility = 'visible';
-                    }
-                }, 10);
-                
-                console.log('🟢 Dropdown opened with items:', dropdownContent.querySelectorAll('a').length);
+                if (isMobile) {
+                    // For mobile, set appropriate max-height for all items
+                    const itemCount = dropdownContent.querySelectorAll('a').length;
+                    const itemHeight = 50; // Approximate height per item
+                    const calculatedHeight = Math.min(itemCount * itemHeight, 800);
+                    dropdownContent.style.maxHeight = calculatedHeight + 'px';
+                } else {
+                    // For desktop, show with opacity transition
+                    dropdownContent.style.display = 'block';
+                    dropdownContent.style.opacity = '1';
+                    dropdownContent.style.visibility = 'visible';
+                }
+                console.log('🟢 Dropdown opened');
             } else {
                 console.log('🔴 Dropdown closed');
             }
         });
     });
     
-    // Close dropdown when clicking outside
+    // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
+        const isMobile = window.innerWidth <= 768;
+        
+        // Don't close on mobile if clicking inside the nav menu
+        if (isMobile) {
+            const navDesktop = document.getElementById('nav-desktop');
+            if (navDesktop && navDesktop.classList.contains('active')) {
+                // If mobile nav is open and click is inside it, don't close dropdowns
+                if (e.target.closest('#nav-desktop')) {
+                    return;
+                }
+            }
+        }
+        
         if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
             closeAllDropdowns();
         }
     });
     
-    // Close dropdown when clicking a link inside
+    // Close dropdown when clicking a link inside (MOBILE FIX)
     document.querySelectorAll('.dropdown-content a').forEach(link => {
         link.addEventListener('click', function() {
-            setTimeout(() => {
-                closeAllDropdowns();
-                if (window.innerWidth <= 768) {
-                    closeMobileNav();
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Close dropdown immediately on mobile
+                const dropdown = this.closest('.dropdown');
+                if (dropdown) {
+                    closeDropdown(dropdown);
                 }
-            }, 300);
+            } else {
+                // Keep desktop behavior
+                setTimeout(() => {
+                    closeAllDropdowns();
+                }, 300);
+            }
         });
+    });
+    
+    // Add touch event for mobile
+    document.addEventListener('touchstart', function(e) {
+        if (window.innerWidth <= 768) {
+            // Close dropdowns if touching outside on mobile
+            if (!e.target.closest('.dropdown') && 
+                !e.target.closest('.buy-dropdown') &&
+                !e.target.closest('#mobileNavToggle')) {
+                closeAllDropdowns();
+            }
+        }
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            // Close dropdowns when switching to desktop
+            if (window.innerWidth > 768) {
+                closeAllDropdowns();
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.style.display = 'none';
+                    content.style.maxHeight = '';
+                    content.style.opacity = '';
+                    content.style.visibility = '';
+                });
+            } else {
+                // Reset mobile dropdown styles
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.style.maxHeight = '0';
+                    content.style.opacity = '0';
+                    content.style.visibility = 'hidden';
+                });
+            }
+        }, 250);
     });
     
     console.log('✅ Dropdowns setup complete');
 }
 
 function closeAllDropdowns() {
+    const isMobile = window.innerWidth <= 768;
+    
     // Hide all dropdown contents
     document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.style.display = 'none';
-        content.style.maxHeight = '0';
+        if (isMobile) {
+            content.style.maxHeight = '0';
+        } else {
+            content.style.display = 'none';
+        }
         content.style.opacity = '0';
         content.style.visibility = 'hidden';
         content.classList.remove('active');
@@ -345,6 +410,32 @@ function closeAllDropdowns() {
         d.classList.remove('active');
         d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
     });
+    
+    console.log('🔽 All dropdowns closed');
+}
+
+function closeDropdown(dropdownElement) {
+    if (!dropdownElement) return;
+    
+    const dropdownContent = dropdownElement.querySelector('.dropdown-content');
+    const dropbtn = dropdownElement.querySelector('.dropbtn');
+    
+    if (dropdownContent) {
+        dropdownContent.style.display = 'none';
+        dropdownContent.style.maxHeight = '0';
+        dropdownContent.style.opacity = '0';
+        dropdownContent.style.visibility = 'hidden';
+        dropdownContent.classList.remove('active');
+    }
+    
+    dropdownElement.classList.remove('active');
+    
+    if (dropbtn) {
+        dropbtn.classList.remove('active');
+        dropbtn.setAttribute('aria-expanded', 'false');
+    }
+    
+    console.log('🔽 Dropdown closed');
 }
 
 // ========== BACK TO TOP ==========
