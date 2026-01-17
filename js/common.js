@@ -529,7 +529,6 @@ function setActiveNavItem() {
     'integrity.html': 'a.nav-integrity',
     'artwork.html': 'a.nav-artwork',
     'whitepaper.html': 'a.nav-whitepaper'
-    'REBL-calculator.html': 'a.nav-calculator'
   };
   
   const selector = pageMap[currentPage];
