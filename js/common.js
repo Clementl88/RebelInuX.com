@@ -149,16 +149,35 @@ function setupMobileNavigation() {
   
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
+  const mobileMenuClose = document.getElementById('mobileMenuClose'); // ADD THIS LINE
   
   if (!mobileToggle || !navDesktop) {
     console.warn('⚠️ Mobile navigation elements not found');
     return;
   }
   
+  // ADD THIS: Setup mobile menu close button
+  if (mobileMenuClose) {
+    // Remove any existing event listeners
+    const newCloseBtn = mobileMenuClose.cloneNode(true);
+    mobileMenuClose.parentNode.replaceChild(newCloseBtn, mobileMenuClose);
+    
+    newCloseBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeMobileNav();
+    });
+    
+    // Hide initially
+    newCloseBtn.style.display = 'none';
+    console.log('🔘 Mobile menu close button initialized');
+  }
+  
   // Remove any existing event listeners
   const newToggle = mobileToggle.cloneNode(true);
   mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
   
+  // UPDATE THIS FUNCTION: Enhanced toggle with close button
   newToggle.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -166,20 +185,28 @@ function setupMobileNavigation() {
     const isOpening = !navDesktop.classList.contains('active');
     navDesktop.classList.toggle('active');
     
-    // Update icon
-    this.innerHTML = navDesktop.classList.contains('active') ? 
-      '<i class="fas fa-times"></i>' : 
-      '<i class="fas fa-bars"></i>';
+    // Update hamburger animation
+    this.classList.toggle('active');
     
     // Toggle body scroll and aria attributes
     if (navDesktop.classList.contains('active')) {
       document.body.style.overflow = 'hidden';
       this.setAttribute('aria-expanded', 'true');
       navDesktop.setAttribute('aria-hidden', 'false');
+      
+      // Show close button
+      if (mobileMenuClose) {
+        mobileMenuClose.style.display = 'flex';
+      }
     } else {
       document.body.style.overflow = '';
       this.setAttribute('aria-expanded', 'false');
       navDesktop.setAttribute('aria-hidden', 'true');
+      
+      // Hide close button
+      if (mobileMenuClose) {
+        mobileMenuClose.style.display = 'none';
+      }
     }
     
     // Close dropdowns when opening nav
@@ -196,7 +223,8 @@ function setupMobileNavigation() {
     
     if (navDesktop.classList.contains('active') && 
         !e.target.closest('#nav-desktop') && 
-        !e.target.closest('#mobileNavToggle')) {
+        !e.target.closest('#mobileNavToggle') &&
+        !e.target.closest('#mobileMenuClose')) { // ADD THIS
       closeMobileNav();
     }
   });
@@ -214,14 +242,18 @@ function setupMobileNavigation() {
 function closeMobileNav() {
   const mobileToggle = document.getElementById('mobileNavToggle');
   const navDesktop = document.getElementById('nav-desktop');
+  const mobileMenuClose = document.getElementById('mobileMenuClose'); // ADD THIS
   
   if (navDesktop) {
     navDesktop.classList.remove('active');
     navDesktop.setAttribute('aria-hidden', 'true');
   }
   if (mobileToggle) {
-    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    mobileToggle.classList.remove('active'); // Remove active class
     mobileToggle.setAttribute('aria-expanded', 'false');
+  }
+  if (mobileMenuClose) {
+    mobileMenuClose.style.display = 'none'; // Hide close button
   }
   document.body.style.overflow = '';
   closeAllDropdowns();
