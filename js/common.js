@@ -528,8 +528,8 @@ function setActiveNavItem() {
     'roadmap.html': 'a.nav-roadmap',
     'integrity.html': 'a.nav-integrity',
     'artwork.html': 'a.nav-artwork',
-    'whitepaper.html': 'a.nav-whitepaper',
-    'REBL-calculator.html': 'a.nav-calculator'
+    'REBL-calculator.html': 'a.nav-calculator',
+    'whitepaper.html': 'a.nav-whitepaper'
   };
   
   const selector = pageMap[currentPage];
