@@ -217,6 +217,7 @@ function closeMobileNav() {
     navDesktop.setAttribute('aria-hidden', 'true');
   }
   if (mobileToggle) {
+        mobileToggle.classList.remove('active'); // ← ADD THIS LINE
     mobileToggle.setAttribute('aria-expanded', 'false');
   }
   document.body.style.overflow = '';
