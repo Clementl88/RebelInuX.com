@@ -2230,3 +2230,114 @@ footer {
       font-size: 0.9rem;
   }
 }
+/* ========== HAMBURGER MENU CLICK FIXES ========== */
+@media (max-width: 768px) {
+  /* Fix clickability */
+  #nav-desktop a:not(.buy-toggle),
+  #nav-desktop .dropbtn,
+  #nav-desktop .buy-toggle,
+  .dropdown-content a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+  
+  /* Ensure proper stacking */
+  #nav-desktop {
+    z-index: 1001 !important;
+  }
+  
+  /* Fix for menu items */
+  #nav-desktop a:not(.buy-toggle) {
+    -webkit-tap-highlight-color: rgba(212, 167, 106, 0.3);
+    tap-highlight-color: rgba(212, 167, 106, 0.3);
+  }
+  
+  /* Hide desktop buy button on mobile */
+  .buy-dropdown.desktop-buy {
+    display: none !important;
+  }
+  
+  /* Show mobile buy button in menu */
+  #nav-desktop .buy-dropdown.mobile-buy {
+    display: block !important;
+    width: 100%;
+    margin: auto 0 0 0;
+    padding: 25px 0;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, 
+        rgba(8, 8, 8, 0.98) 0%,
+        rgba(8, 8, 8, 0.9) 50%,
+        transparent 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 100;
+    border-top: 1px solid rgba(212, 167, 106, 0.2);
+  }
+  
+  /* Mobile buy button styling */
+  #nav-desktop .buy-toggle {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 28px;
+    font-size: 1.15rem;
+    min-height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: linear-gradient(135deg, 
+        var(--rebel-red), 
+        var(--rebel-gold), 
+        var(--rebel-red));
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 
+        0 8px 35px rgba(215, 77, 77, 0.5),
+        0 0 40px rgba(215, 77, 77, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(212, 167, 106, 0.4);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Mobile menu buy options */
+  #nav-desktop .buy-options {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 30px 25px !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1003;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    border-bottom: none;
+    box-shadow: 
+        0 -25px 80px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  #nav-desktop .buy-dropdown.active .buy-options {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
+  }
+}
