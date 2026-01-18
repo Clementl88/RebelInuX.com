@@ -1,5 +1,5 @@
 // common.js - Professional mobile navigation with premium animations
-// COMPLETE FIXED VERSION - More button works every time
+// COMPLETE FIXED VERSION - More button works every timeù
 
 // ========== GLOBAL STATE ==========
 let isMobileMenuOpen = false;
