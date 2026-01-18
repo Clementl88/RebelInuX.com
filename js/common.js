@@ -11,7 +11,7 @@ const PAGE_SUBTITLES = {
     'index.html': '$REBL Epoch Rewards',
     'trade.html': 'Trade & Exchange Guide',
     'epoch-rewards.html': 'Reward System Dashboard',
-    'tokenomics.html': 'Token Economics & Distribution',
+    'tokenomics.html': 'Tokenomics & Distribution',
     'community.html': 'Community Hub & Links',
     'security.html': 'Security & Safety Protocols',
     'whitepaper.html': 'Project Documentation',
