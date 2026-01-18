@@ -155,6 +155,11 @@
     to { transform: rotate(360deg); }
 }
 
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
 /* ========== SMOOTH TRANSITIONS ========== */
 #nav-desktop a,
 .dropbtn,
@@ -679,7 +684,7 @@ header.scrolled {
   }
 }
 
-/* ========== BUY BUTTON & DROPDOWN ========== */
+/* ========== ENHANCED BUY BUTTON & DROPDOWN ========== */
 .buy-dropdown {
   position: relative;
   display: inline-block;
@@ -712,7 +717,7 @@ header.scrolled {
   transform: translate(-50%, -50%);
 }
 
-/* Buy Toggle Button */
+/* Enhanced Buy Toggle Button */
 .buy-toggle {
   background: linear-gradient(135deg, 
     var(--rebel-red), 
@@ -720,31 +725,56 @@ header.scrolled {
     var(--rebel-red));
   background-size: 200% auto;
   color: white !important;
-  padding: 12px 24px;
+  padding: 14px 28px;
   border-radius: var(--radius-full);
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.8px;
   border: none;
   cursor: pointer;
-  transition: all var(--transition-base) ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 160px;
+  gap: 12px;
+  min-width: 180px;
   justify-content: center;
   text-transform: uppercase;
   animation: gradientShift 3s ease infinite;
-  box-shadow: 0 4px 20px rgba(215, 77, 77, 0.3);
+  box-shadow: 
+    0 6px 25px rgba(215, 77, 77, 0.4),
+    0 0 40px rgba(215, 77, 77, 0.2);
   position: relative;
   z-index: 100;
   text-decoration: none !important;
+  overflow: hidden;
+  border: 2px solid rgba(212, 167, 106, 0.3);
+}
+
+.buy-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent);
+  transition: left 0.6s ease;
+}
+
+.buy-toggle:hover::before {
+  left: 100%;
 }
 
 .buy-toggle:hover:not(.loading) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(215, 77, 77, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 10px 35px rgba(215, 77, 77, 0.6),
+    0 0 60px rgba(215, 77, 77, 0.3);
   animation: none;
+  border-color: rgba(212, 167, 106, 0.5);
 }
 
 .buy-toggle.active {
@@ -752,9 +782,15 @@ header.scrolled {
     var(--rebel-gold), 
     var(--rebel-red), 
     var(--rebel-gold));
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  box-shadow: 0 4px 20px rgba(215, 77, 77, 0.3);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 
+    0 6px 25px rgba(215, 77, 77, 0.5),
+    0 0 40px rgba(215, 77, 77, 0.3);
+}
+
+.buy-toggle i.fa-rocket {
+  animation: bounce 2s infinite;
 }
 
 .buy-toggle .dropdown-arrow {
@@ -767,223 +803,432 @@ header.scrolled {
   transform: rotate(180deg);
 }
 
-/* Buy Options Dropdown */
+/* Enhanced Buy Options Dropdown */
 .buy-options {
   display: none;
   position: absolute;
   top: 100%;
   right: 0;
-  background: rgba(15, 15, 15, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 167, 106, 0.3);
+  background: rgba(10, 10, 10, 0.98);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(212, 167, 106, 0.4);
+  border-top: none;
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-  padding: 20px;
-  width: 320px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  padding: 25px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 0 100px rgba(215, 77, 77, 0.1);
   z-index: 99;
-  transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  margin-top: -1px;
-  border-top: none;
+  transform: translateY(-15px) scale(0.98);
+  margin-top: 0;
 }
 
 .buy-dropdown.active .buy-options {
   display: block;
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
-/* Primary Option */
-.buy-option.primary {
-  background: linear-gradient(135deg, 
-    rgba(255, 107, 53, 0.1), 
-    rgba(255, 107, 53, 0.05));
-  border: 1px solid rgba(255, 107, 53, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 15px;
+/* Action Groups Enhancement */
+.action-group {
+  margin-bottom: 25px;
+  animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.action-group:nth-child(1) { animation-delay: 0.1s; }
+.action-group:nth-child(2) { animation-delay: 0.2s; }
+.action-group:nth-child(3) { animation-delay: 0.3s; }
+.action-group:nth-child(4) { animation-delay: 0.4s; }
+.action-group:nth-child(5) { animation-delay: 0.5s; }
+
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--rebel-gold);
   margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(212, 167, 106, 0.3);
 }
 
-.buy-option.primary:hover {
+.group-title i {
+  font-size: 0.9rem;
+  color: var(--rebel-gold);
+  background: rgba(212, 167, 106, 0.1);
+  padding: 6px;
+  border-radius: 8px;
+}
+
+/* Enhanced Buy Option Cards */
+.buy-option {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.buy-option::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.buy-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(8px) translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.buy-option:hover::before {
+  opacity: 0.8;
+}
+
+.buy-option.primary-action {
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.12), 
+    rgba(255, 107, 53, 0.06));
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  box-shadow: 
+    0 8px 30px rgba(255, 107, 53, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.buy-option.primary-action:hover {
   background: linear-gradient(135deg, 
     rgba(255, 107, 53, 0.2), 
     rgba(255, 107, 53, 0.1));
   border-color: #FF6B35;
-  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 35px rgba(255, 107, 53, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Regular Options */
-.buy-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
-  border-radius: var(--radius-md);
-  text-decoration: none !important;
-  transition: all var(--transition-fast) ease;
-  margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid transparent;
-  color: white !important;
-}
-
-.buy-option:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateX(5px);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Option Icon */
+/* Enhanced Option Icons */
 .option-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   flex-shrink: 0;
   color: inherit;
+  transition: all 0.3s ease;
 }
 
-.buy-option.primary .option-icon {
-  background: rgba(255, 107, 53, 0.1);
-  color: #FF6B35;
+.buy-option:hover .option-icon {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.12);
 }
 
-/* Option Content */
+.pump-icon {
+  background: linear-gradient(135deg, #FF6B35, #FF9800);
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+/* Enhanced Option Content */
 .option-content {
   flex: 1;
   text-align: left;
 }
 
 .option-title {
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
   color: white;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
 }
 
 .option-desc {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
 }
 
-/* Badges */
+/* Enhanced Badges */
 .option-badge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
   color: white !important;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.option-badge.recommended {
-  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+.option-badge.main-pool {
+  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
 }
 
-/* Option Groups */
-.option-group {
-  margin: 20px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 15px;
+.option-badge.smart {
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
 }
 
-.group-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--rebel-gold);
-  margin-bottom: 12px;
+.option-badge.essential {
+  background: linear-gradient(135deg, #3498DB, #2980B9);
+}
+
+.option-badge.yield {
+  background: linear-gradient(135deg, #27AE60, #229954);
+}
+
+.option-badge.popular {
+  background: linear-gradient(135deg, #F39C12, #D68910);
+}
+
+/* Platform Tags */
+.platform-tag {
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-right: 8px;
+  display: inline-block;
 }
 
-/* Contract Display */
-.contract-display {
-  margin-top: 20px;
-  padding-top: 15px;
+.platform-tag.pancake {
+  background: linear-gradient(135deg, #00B4DB, #0093E9);
+  color: white;
+}
+
+.platform-tag.mexc {
+  background: linear-gradient(135deg, #FF416C, #FF4B2B);
+  color: white;
+}
+
+/* Contract Quick Access Enhancement */
+.contract-quick {
+  margin-top: 25px;
+  padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeInUp 0.5s ease-out 0.6s backwards;
 }
 
 .contract-label {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
-.contract-value {
+.contract-value-quick {
   font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: white;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
   background: rgba(255, 255, 255, 0.05);
-  padding: 10px;
+  padding: 12px 15px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.1);
   word-break: break-all;
   cursor: pointer;
-  transition: all var(--transition-fast) ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-weight: 500;
 }
 
-.contract-value:hover {
+.contract-value-quick:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: var(--rebel-gold);
+  border-color: rgba(212, 167, 106, 0.4);
+  transform: translateY(-1px);
 }
 
-.copy-icon {
+.contract-value-quick i {
   color: var(--rebel-gold);
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin-left: 10px;
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
-.copy-message {
-  font-size: 0.75rem;
-  color: #4CAF50;
-  margin-top: 5px;
-  opacity: 0;
-  transition: opacity var(--transition-base) ease;
+.contract-value-quick:hover i {
+  transform: scale(1.1);
 }
 
-.copy-message.show {
-  opacity: 1;
+.contract-verify {
+  margin-top: 12px;
+  text-align: center;
 }
 
-/* ========== ADD YOUR NEW PUMP.SWAP STYLES HERE ========== */
+.contract-link {
+  color: var(--rebel-gold);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border-radius: var(--radius-md);
+  background: rgba(212, 167, 106, 0.08);
+  border: 1px solid rgba(212, 167, 106, 0.2);
+}
+
+.contract-link:hover {
+  color: white;
+  background: rgba(212, 167, 106, 0.15);
+  border-color: var(--rebel-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 167, 106, 0.2);
+}
+
+.contract-link i {
+  font-size: 0.9rem;
+}
+
+/* ========== ENHANCED MOBILE DIRECT BUY BUTTON ========== */
+.mobile-direct-buy {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px 0 0 0;
+  padding: 22px 32px;
+  font-size: 1.2rem;
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background: linear-gradient(135deg, 
+    var(--rebel-red), 
+    var(--rebel-gold), 
+    var(--rebel-red));
+  background-size: 200% auto;
+  animation: gradientShift 3s ease infinite;
+  box-shadow: 
+    0 10px 40px rgba(215, 77, 77, 0.6),
+    0 0 50px rgba(215, 77, 77, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(212, 167, 106, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.mobile-direct-buy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent);
+  transition: left 0.7s ease;
+}
+
+.mobile-direct-buy:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 15px 50px rgba(215, 77, 77, 0.8),
+    0 0 70px rgba(215, 77, 77, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  animation: none;
+}
+
+.mobile-direct-buy:hover::before {
+  left: 100%;
+}
+
+.mobile-direct-buy i {
+  font-size: 1.3rem;
+  margin-right: 12px;
+  animation: bounce 2s infinite;
+}
+
+/* ========== JUPITER HIGHLIGHT STYLES ========== */
+.buy-option .jupiter-highlight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 40px solid rgba(156, 136, 255, 0.3);
+  border-left: 40px solid transparent;
+}
+
+.buy-option:hover .jupiter-highlight {
+  border-top-color: rgba(156, 136, 255, 0.5);
+}
+
+/* Make Jupiter option stand out */
+.buy-option[href*="jup.ag"] .option-icon {
+  background: linear-gradient(135deg, rgba(156, 136, 255, 0.2), rgba(156, 136, 255, 0.1));
+  color: #9C88FF;
+}
+
+.buy-option[href*="jup.ag"]:hover {
+  border-color: rgba(156, 136, 255, 0.4);
+}
+
 /* ========== PUMP.SWAP STYLING ========== */
 .pump-icon {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, #FF6B35, #FF9800);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  color: white;
+  font-size: 1.3rem;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
 }
 
 .pump-badge {
   background: linear-gradient(135deg, #FF6B35, #FF9800);
   color: white !important;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* ========== LIQUIDITY OPTION ========== */
@@ -1001,125 +1246,6 @@ header.scrolled {
     rgba(39, 174, 96, 0.1));
   border-color: #2ECC71;
   transform: translateY(-2px);
-}
-
-/* ========== ENHANCED BADGES ========== */
-.option-badge.main-pool {
-  background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-  font-weight: 700;
-}
-
-.option-badge.yield {
-  background: linear-gradient(135deg, #27AE60, #229954);
-}
-
-.option-badge.smart {
-  background: linear-gradient(135deg, #9B59B6, #8E44AD);
-}
-
-.option-badge.volume {
-  background: linear-gradient(135deg, #3498DB, #2980B9);
-}
-
-.option-badge.verified {
-  background: linear-gradient(135deg, #F39C12, #D68910);
-}
-
-/* ========== GROUP TITLE ENHANCEMENTS ========== */
-.group-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--rebel-gold);
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(212, 167, 106, 0.2);
-}
-
-.group-title i {
-  font-size: 0.8rem;
-  opacity: 0.9;
-}
-
-/* ========== OPTION ICON COLORS ========== */
-.option-icon .fa-hand-holding-usd {
-  color: #27AE60;
-}
-
-.option-icon .fa-robot {
-  color: #9B59B6;
-}
-
-.option-icon .fa-pancake {
-  color: #00B4DB;
-}
-
-.option-icon .fa-exchange {
-  color: #F39C12;
-}
-
-.option-icon .fa-water {
-  color: #3498DB;
-}
-
-/* ========== CONTRACT VERIFICATION ========== */
-.contract-verify {
-  margin-top: 10px;
-  text-align: center;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.contract-link {
-  color: var(--rebel-gold);
-  font-size: 0.8rem;
-  text-decoration: none;
-  transition: all var(--transition-fast) ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  background: rgba(212, 167, 106, 0.05);
-}
-
-.contract-link:hover {
-  color: var(--rebel-red);
-  background: rgba(212, 167, 106, 0.1);
-  transform: translateY(-1px);
-}
-
-/* ========== MOBILE SINGLE BUY LINK ========== */
-.mobile-buy-single {
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  position: relative;
-  overflow: hidden;
-  color: white !important;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-}
-
-.mobile-buy-single i {
-  font-size: 1.1rem;
-}
-
-.buy-badge {
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
 /* ========== PREMIUM MOBILE HAMBURGER MENU ========== */
@@ -1255,35 +1381,38 @@ header.scrolled {
     display: none !important;
   }
   
-  /* Show mobile buy button in menu */
-  .mobile-buy-single {
+  /* Enhanced Mobile Buy Button in Menu */
+  .mobile-direct-buy {
     width: 100%;
     max-width: 100%;
-    margin: auto 0 0 0;
-    padding: 20px 28px;
-    font-size: 1.15rem;
-    min-height: 68px;
+    margin: 20px 0 0 0;
+    padding: 22px 32px;
+    font-size: 1.2rem;
+    min-height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
     background: linear-gradient(135deg, 
-        var(--rebel-red), 
-        var(--rebel-gold), 
-        var(--rebel-red));
+      var(--rebel-red), 
+      var(--rebel-gold), 
+      var(--rebel-red));
     background-size: 200% auto;
     animation: gradientShift 3s ease infinite;
     box-shadow: 
-        0 8px 35px rgba(215, 77, 77, 0.5),
-        0 0 40px rgba(215, 77, 77, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      0 10px 40px rgba(215, 77, 77, 0.6),
+      0 0 50px rgba(215, 77, 77, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(212, 167, 106, 0.4);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
   
-  .mobile-buy-single::before {
+  .mobile-direct-buy::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1291,23 +1420,29 @@ header.scrolled {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.2), 
-        transparent);
-    transition: left 0.6s ease;
+      transparent, 
+      rgba(255, 255, 255, 0.3), 
+      transparent);
+    transition: left 0.7s ease;
   }
   
-  .mobile-buy-single:hover {
-    transform: translateY(-3px);
+  .mobile-direct-buy:hover {
+    transform: translateY(-3px) scale(1.02);
     box-shadow: 
-        0 12px 40px rgba(215, 77, 77, 0.7),
-        0 0 50px rgba(215, 77, 77, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      0 15px 50px rgba(215, 77, 77, 0.8),
+      0 0 70px rgba(215, 77, 77, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
     animation: none;
   }
   
-  .mobile-buy-single:hover::before {
+  .mobile-direct-buy:hover::before {
     left: 100%;
+  }
+  
+  .mobile-direct-buy i {
+    font-size: 1.3rem;
+    margin-right: 12px;
+    animation: bounce 2s infinite;
   }
   
   /* Hide all navigation items in header except brand and hamburger */
@@ -1367,7 +1502,7 @@ header.scrolled {
   }
   
   /* Premium Menu Items */
-  #nav-desktop a:not(.mobile-buy-single) {
+  #nav-desktop a:not(.mobile-direct-buy) {
     padding: 20px 24px;
     border-radius: 16px;
     margin-bottom: 12px;
@@ -1390,7 +1525,7 @@ header.scrolled {
   }
   
   /* Icon styling */
-  #nav-desktop a:not(.mobile-buy-single) i {
+  #nav-desktop a:not(.mobile-direct-buy) i {
     width: 24px;
     text-align: center;
     font-size: 1.1rem;
@@ -1400,19 +1535,19 @@ header.scrolled {
   }
   
   /* Hover effects */
-  #nav-desktop a:not(.mobile-buy-single):hover {
+  #nav-desktop a:not(.mobile-direct-buy):hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.15);
   }
   
-  #nav-desktop a:not(.mobile-buy-single):hover i {
+  #nav-desktop a:not(.mobile-direct-buy):hover i {
     transform: scale(1.2);
   }
   
   /* Active state */
-  #nav-desktop a.active:not(.mobile-buy-single) {
+  #nav-desktop a.active:not(.mobile-direct-buy) {
     background: linear-gradient(135deg, 
         rgba(212, 167, 106, 0.15), 
         rgba(215, 77, 77, 0.1));
@@ -1423,7 +1558,7 @@ header.scrolled {
     position: relative;
   }
   
-  #nav-desktop a.active:not(.mobile-buy-single)::after {
+  #nav-desktop a.active:not(.mobile-direct-buy)::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -1678,16 +1813,44 @@ header.scrolled {
     padding: 100px 15px 130px;
   }
   
-  #nav-desktop a:not(.mobile-buy-single) {
+  #nav-desktop a:not(.mobile-direct-buy) {
     padding: 18px 20px;
     font-size: 1rem;
     min-height: 60px;
   }
   
-  .mobile-buy-single {
+  .mobile-direct-buy {
     padding: 18px 24px;
     font-size: 1.1rem;
     min-height: 64px;
+  }
+  
+  /* Responsive Buy Toggle */
+  .buy-toggle {
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-width: 160px;
+  }
+  
+  .buy-options {
+    width: 95vw;
+    max-width: 95vw;
+    right: 50%;
+    transform: translateX(50%) translateY(-15px) scale(0.98);
+  }
+  
+  .buy-dropdown.active .buy-options {
+    transform: translateX(50%) translateY(0) scale(1);
+  }
+  
+  .buy-option {
+    padding: 16px 18px;
+  }
+  
+  .option-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
   }
 }
 
@@ -1735,12 +1898,12 @@ header.scrolled {
 .buy-toggle:focus-visible,
 .mobile-nav-toggle:focus-visible,
 .brand-link:focus-visible,
-.mobile-buy-single:focus-visible {
+.mobile-direct-buy:focus-visible {
   outline: 3px solid var(--rebel-gold);
   outline-offset: 2px;
 }
 
-/* ========== FOOTER STYLES ========== */
+/* ========== ENHANCED FOOTER STYLES ========== */
 footer {
   background: rgba(5, 5, 5, 0.98);
   padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
@@ -1837,7 +2000,7 @@ footer {
   text-align: center;
 }
 
-/* Footer CTA Button */
+/* Enhanced Footer CTA Button */
 .footer-cta {
   display: flex;
   justify-content: center;
@@ -1846,37 +2009,73 @@ footer {
 
 .footer-buy-button {
   background: linear-gradient(135deg, 
-      var(--rebel-red), 
-      var(--rebel-gold), 
-      var(--rebel-red));
+    var(--rebel-red), 
+    var(--rebel-gold), 
+    var(--rebel-red));
   background-size: 200% auto;
   color: white !important;
-  padding: 16px 32px;
+  padding: 18px 36px;
   border-radius: var(--radius-full);
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-  border: none;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  border: 2px solid rgba(212, 167, 106, 0.4);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  min-width: 200px;
+  gap: 15px;
+  min-width: 250px;
   justify-content: center;
   text-transform: uppercase;
   animation: gradientShift 3s ease infinite;
-  box-shadow: 0 6px 25px rgba(215, 77, 77, 0.4);
-  transition: all var(--transition-base) ease;
+  box-shadow: 
+    0 8px 30px rgba(215, 77, 77, 0.5),
+    0 0 50px rgba(215, 77, 77, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-buy-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent);
+  transition: left 0.7s ease;
 }
 
 .footer-buy-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(215, 77, 77, 0.6);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 
+    0 15px 40px rgba(215, 77, 77, 0.7),
+    0 0 70px rgba(215, 77, 77, 0.4);
   animation: none;
 }
 
+.footer-buy-button:hover::before {
+  left: 100%;
+}
+
 .footer-buy-button i {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  animation: bounce 2s infinite;
+}
+
+/* Responsive Footer Button */
+@media (max-width: 768px) {
+  .footer-buy-button {
+    padding: 16px 28px;
+    font-size: 1.1rem;
+    min-width: 200px;
+    width: 90%;
+    max-width: 90%;
+  }
 }
 
 /* Footer Grid - 4 Columns */
@@ -2012,24 +2211,6 @@ footer {
 
 .contract-verify {
   margin-top: 4px;
-}
-
-.contract-link {
-  color: var(--rebel-gold);
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: all var(--transition-base) ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.contract-link:hover {
-  color: var(--rebel-red);
-}
-
-.contract-link i {
-  font-size: 0.8rem;
 }
 
 /* Footer Disclaimer */
@@ -2229,7 +2410,7 @@ footer {
     display: block !important;
   }
   
-  .mobile-buy-single {
+  .mobile-direct-buy {
     display: none !important;
   }
 }
@@ -2242,7 +2423,7 @@ footer {
   }
   
   /* Show mobile buy button inside menu */
-  .mobile-buy-single {
+  .mobile-direct-buy {
     display: flex !important;
   }
   
