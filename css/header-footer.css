@@ -160,6 +160,11 @@
   50% { transform: translateY(-3px); }
 }
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* ========== SMOOTH TRANSITIONS ========== */
 #nav-desktop a,
 .dropbtn,
@@ -636,33 +641,33 @@ header.scrolled {
 
 /* Dropdown item colors */
 .dropdown-content a.nav-community { 
-  color: #2196F3 !important; /* Bright blue - social */
+  color: #2196F3 !important;
 }
 
 .dropdown-content a.nav-security { 
-  color: #4CAF50 !important; /* Green */
+  color: #4CAF50 !important;
 }
 
 .dropdown-content a.nav-whitepaper { 
-  color: #9C27B0 !important; /* Purple - official docs */
+  color: #9C27B0 !important;
 }
 .dropdown-content a.nav-calculator { 
-  color: #2ECC71 !important; /* Emerald green - financial */
+  color: #2ECC71 !important;
 }
 .dropdown-content a.nav-governance { 
-  color: #FF9800 !important; /* Orange - action/decision */
+  color: #FF9800 !important;
 }
 
 .dropdown-content a.nav-roadmap { 
-  color: #FF5722 !important; /* Deep orange - progress */
+  color: #FF5722 !important;
 }
 
 .dropdown-content a.nav-integrity { 
-  color: #D4A76A !important; /* Your rebel gold - integrity */
+  color: #D4A76A !important;
 }
 
 .dropdown-content a.nav-artwork { 
-  color: #E91E63 !important; /* Magenta - creative */
+  color: #E91E63 !important;
 }
 
 .dropdown-divider {
@@ -692,11 +697,6 @@ header.scrolled {
 }
 
 /* Loading state for buttons */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .buy-toggle.loading {
   position: relative;
   color: transparent !important;
@@ -933,30 +933,148 @@ header.scrolled {
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Enhanced Option Icons */
+/* ========== PLATFORM IMAGE ICONS WITH LOCAL FILES ========== */
+.platform-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  filter: brightness(0.95);
+}
+
+/* SVG specific styling - BETTER FOR VECTOR FILES */
+.platform-img[src*=".svg"] {
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  filter: brightness(1.1) saturate(1.1);
+  background: transparent !important;
+}
+
+/* ICO specific styling */
+.platform-img[src*=".ico"] {
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  filter: brightness(1.05);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+/* PNG specific styling */
+.platform-img[src*=".png"] {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  filter: brightness(1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+/* Special styling for SVG icons that need color preservation */
+.platform-img[src*="Pump.Fun-favicon.svg"] {
+  filter: brightness(1.2) saturate(1.3);
+}
+
+.platform-img[src*="dextools-favicon.svg"] {
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.platform-img[src*="Gmgn.ai-favicon.svg"] {
+  filter: brightness(1.15) saturate(1.25);
+}
+
+/* Icon container optimization */
 .option-icon {
   width: 48px;
   height: 48px;
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
   flex-shrink: 0;
-  color: inherit;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
 }
 
-.buy-option:hover .option-icon {
-  transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.12);
-}
-
+/* Special pump icon treatment */
 .pump-icon {
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
-  color: white !important;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.1), 
+    rgba(255, 107, 53, 0.05));
+  border-color: rgba(255, 107, 53, 0.2);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.1);
+}
+
+/* Hover effects */
+.buy-option:hover .option-icon {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.buy-option:hover .platform-img {
+  transform: scale(1.2);
+  filter: brightness(1.3) saturate(1.4) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Specific SVG hover effects */
+.buy-option:hover .platform-img[src*=".svg"] {
+  transform: scale(1.25);
+  filter: brightness(1.4) saturate(1.5) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Specific icon hover backgrounds */
+.buy-option.primary-action:hover .option-icon {
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.15), 
+    rgba(255, 107, 53, 0.08));
+  border-color: rgba(255, 107, 53, 0.3);
+}
+
+.buy-option[href*="jup.ag"]:hover .option-icon {
+  background: rgba(156, 136, 255, 0.1);
+  border-color: rgba(156, 136, 255, 0.2);
+}
+
+.buy-option[href*="dextools"]:hover .option-icon {
+  background: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.2);
+}
+
+.buy-option[href*="geckoterminal"]:hover .option-icon {
+  background: rgba(39, 174, 96, 0.1);
+  border-color: rgba(39, 174, 96, 0.2);
+}
+
+.buy-option[href*="birdeye"]:hover .option-icon {
+  background: rgba(231, 76, 60, 0.1);
+  border-color: rgba(231, 76, 60, 0.2);
+}
+
+.buy-option[href*="pancakeswap"]:hover .option-icon {
+  background: rgba(0, 180, 219, 0.1);
+  border-color: rgba(0, 180, 219, 0.2);
+}
+
+.buy-option[href*="mexc"]:hover .option-icon {
+  background: rgba(255, 65, 108, 0.1);
+  border-color: rgba(255, 65, 108, 0.2);
+}
+
+.buy-option[href*="bubblemaps"]:hover .option-icon {
+  background: rgba(155, 89, 182, 0.1);
+  border-color: rgba(155, 89, 182, 0.2);
+}
+
+.buy-option[href*="gmgn.ai"]:hover .option-icon {
+  background: rgba(243, 156, 18, 0.1);
+  border-color: rgba(243, 156, 18, 0.2);
 }
 
 /* Enhanced Option Content */
@@ -1034,54 +1152,150 @@ header.scrolled {
   color: white;
 }
 
-/* Contract Quick Access Enhancement */
+/* ========== FIXED CONTRACT ADDRESS WRAPPING ========== */
 .contract-quick {
   margin-top: 25px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   animation: fadeInUp 0.5s ease-out 0.6s backwards;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.contract-label {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 10px;
-  font-weight: 600;
+.contract-value-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 .contract-value-quick {
-  font-family: 'Courier New', monospace;
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 12px 15px;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  word-break: break-all;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 58px;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contract-value-quick::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(212, 167, 106, 0.3), 
+    transparent);
+}
+
+.contract-text {
+  flex: 1;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: normal;
+  min-width: 0;
+  display: block;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 .contract-value-quick:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(212, 167, 106, 0.4);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(212, 167, 106, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(212, 167, 106, 0.1) inset;
 }
 
-.contract-value-quick i {
+.contract-value-quick i.copy-icon {
   color: var(--rebel-gold);
-  font-size: 1rem;
-  margin-left: 10px;
+  font-size: 1.1rem;
   flex-shrink: 0;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  min-width: 24px;
+  text-align: center;
 }
 
-.contract-value-quick:hover i {
-  transform: scale(1.1);
+.contract-value-quick:hover i.copy-icon {
+  transform: scale(1.15) rotate(5deg);
+  color: var(--rebel-red);
+  text-shadow: 0 0 8px rgba(212, 167, 106, 0.3);
+}
+
+/* Copy success message with animation */
+.contract-copied-message {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: linear-gradient(135deg, 
+    rgba(39, 174, 96, 0.95), 
+    rgba(46, 204, 113, 0.95));
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 6px 20px rgba(39, 174, 96, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  white-space: nowrap;
+  max-width: 90%;
+}
+
+.contract-copied-message::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, 
+    rgba(39, 174, 96, 0.95), 
+    rgba(46, 204, 113, 0.95));
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contract-copied-message.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.contract-copied-message i {
+  margin-right: 6px;
+  animation: bounce 0.5s ease 2;
 }
 
 .contract-verify {
@@ -1202,50 +1416,6 @@ header.scrolled {
 
 .buy-option[href*="jup.ag"]:hover {
   border-color: rgba(156, 136, 255, 0.4);
-}
-
-/* ========== PUMP.SWAP STYLING ========== */
-.pump-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  color: white !important;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-}
-
-.pump-badge {
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
-  color: white !important;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* ========== LIQUIDITY OPTION ========== */
-.liquidity-option {
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.1), 
-    rgba(39, 174, 96, 0.05));
-  border: 1px solid rgba(46, 204, 113, 0.3);
-  border-radius: var(--radius-lg);
-}
-
-.liquidity-option:hover {
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.2), 
-    rgba(39, 174, 96, 0.1));
-  border-color: #2ECC71;
-  transform: translateY(-2px);
 }
 
 /* ========== PREMIUM MOBILE HAMBURGER MENU ========== */
@@ -1851,6 +2021,33 @@ header.scrolled {
     width: 44px;
     height: 44px;
     font-size: 1.2rem;
+  }
+  
+  .contract-value-quick {
+    font-size: 0.75rem;
+    padding: 12px 14px;
+    min-height: 52px;
+  }
+  
+  .contract-text {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+  
+  .contract-copied-message {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+    top: -40px;
+  }
+  
+  .platform-img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .option-icon {
+    width: 44px;
+    height: 44px;
   }
 }
 
