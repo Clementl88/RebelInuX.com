@@ -1,8 +1,9 @@
-// common.js - Professional mobile navigation with premium animations
+// common.js - Fixed dropdown issue with single source of truth
 
 // ========== GLOBAL STATE ==========
 let isMobileMenuOpen = false;
 let isDropdownOpen = false;
+let lastClickedDropdown = null;
 
 // ========== HEADER SCROLL EFFECT ==========
 function setupHeaderScrollEffect() {
@@ -45,10 +46,9 @@ function setupBuyDropdown() {
     
     console.log(`Found ${buyToggles.length} buy toggles and ${buyDropdowns.length} dropdowns`);
     
-    // Clean event listeners
+    // Remove all existing event listeners
     buyToggles.forEach(toggle => {
-        const newToggle = toggle.cloneNode(true);
-        toggle.parentNode.replaceChild(newToggle, toggle);
+        toggle.replaceWith(toggle.cloneNode(true));
     });
     
     // Re-select fresh toggles
@@ -116,8 +116,6 @@ function setupBuyDropdown() {
     
     // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
-        console.log('Document click detected');
-        
         const isMobile = window.innerWidth <= 768;
         const clickedBuyDropdown = e.target.closest('.buy-dropdown');
         const clickedBuyToggle = e.target.closest('.buy-toggle');
@@ -164,9 +162,9 @@ function setupBuyDropdown() {
     console.log('✅ Buy dropdown setup complete');
 }
 
-// ========== PREMIUM MOBILE NAVIGATION ==========
+// ========== SIMPLIFIED MOBILE NAVIGATION ==========
 function setupMobileNavigation() {
-    console.log('📱 Setting up premium mobile navigation...');
+    console.log('📱 Setting up simplified mobile navigation...');
     
     const mobileToggle = document.getElementById('mobileNavToggle');
     const navDesktop = document.getElementById('nav-desktop');
@@ -229,157 +227,6 @@ function setupMobileNavigation() {
         }, 250);
     });
     
-    // ========== MENU LINKS CLICK HANDLERS ==========
-    function setupMenuClickHandlers() {
-        console.log('🔗 Setting up menu click handlers');
-        
-        // Regular navigation links
-        const menuLinks = navDesktop.querySelectorAll('a:not(.buy-toggle):not(.dropdown-content a)');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    console.log('📱 Menu link clicked:', this.href);
-                    closeMobileNav();
-                }
-            });
-        });
-        
-        // Dropdown buttons
-        const dropBtns = navDesktop.querySelectorAll('.dropbtn');
-        dropBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('🔽 Dropdown button clicked');
-                
-                const dropdown = this.closest('.dropdown');
-                if (!dropdown) return;
-                
-                const isOpen = dropdown.classList.contains('active');
-                
-                // Close other dropdowns
-                document.querySelectorAll('.dropdown').forEach(d => {
-                    if (d !== dropdown) {
-                        d.classList.remove('active');
-                        d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                
-                // Close buy dropdowns
-                document.querySelectorAll('.buy-dropdown').forEach(d => {
-                    d.classList.remove('active');
-                    d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
-                });
-                
-                // Toggle this dropdown
-                if (!isOpen) {
-                    dropdown.classList.add('active');
-                    this.setAttribute('aria-expanded', 'true');
-                    console.log('✅ Dropdown opened');
-                } else {
-                    dropdown.classList.remove('active');
-                    this.setAttribute('aria-expanded', 'false');
-                    console.log('✅ Dropdown closed');
-                }
-            });
-        });
-        
-        // Dropdown links
-        const dropdownLinks = navDesktop.querySelectorAll('.dropdown-content a');
-        dropdownLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                console.log('📱 Dropdown link clicked:', this.href);
-                
-                // Close parent dropdown
-                const dropdown = this.closest('.dropdown');
-                if (dropdown) {
-                    dropdown.classList.remove('active');
-                    dropdown.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
-                }
-                
-                // Close mobile menu on mobile
-                if (window.innerWidth <= 768) {
-                    setTimeout(closeMobileNav, 300);
-                }
-            });
-        });
-        
-        // Buy buttons in mobile menu
-        const mobileBuyButtons = navDesktop.querySelectorAll('.buy-toggle');
-        mobileBuyButtons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('🛒 Mobile menu buy button clicked');
-                
-                const dropdown = this.closest('.buy-dropdown');
-                if (!dropdown) return;
-                
-                const isOpen = dropdown.classList.contains('active');
-                
-                // Close all other dropdowns
-                document.querySelectorAll('.dropdown').forEach(d => {
-                    d.classList.remove('active');
-                    d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
-                });
-                
-                document.querySelectorAll('.buy-dropdown').forEach(d => {
-                    if (d !== dropdown) {
-                        d.classList.remove('active');
-                        d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                
-                // Toggle this dropdown
-                if (!isOpen) {
-                    dropdown.classList.add('active');
-                    this.setAttribute('aria-expanded', 'true');
-                    console.log('✅ Mobile buy dropdown opened');
-                    
-                    // Close mobile menu
-                    if (window.innerWidth <= 768 && isMobileMenuOpen) {
-                        closeMobileNav();
-                    }
-                } else {
-                    dropdown.classList.remove('active');
-                    this.setAttribute('aria-expanded', 'false');
-                    console.log('✅ Mobile buy dropdown closed');
-                }
-            });
-        });
-        
-        // Buy options links
-        const buyOptionLinks = document.querySelectorAll('.buy-option');
-        buyOptionLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                console.log('🛒 Buy option clicked:', this.href);
-                
-                // Close all dropdowns
-                closeAllDropdowns();
-                
-                // Close mobile menu on mobile
-                if (window.innerWidth <= 768) {
-                    closeMobileNav();
-                }
-            });
-        });
-    }
-    
-    // ========== CLOSE ALL DROPDOWNS ==========
-    function closeAllDropdowns() {
-        console.log('🔽 Closing all dropdowns');
-        
-        document.querySelectorAll('.dropdown').forEach(d => {
-            d.classList.remove('active');
-            d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
-        });
-        
-        document.querySelectorAll('.buy-dropdown').forEach(d => {
-            d.classList.remove('active');
-            d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
-        });
-    }
-    
     // Open mobile navigation function
     function openMobileNav() {
         navDesktop.classList.add('active');
@@ -393,9 +240,6 @@ function setupMobileNavigation() {
         // Lock body scroll
         document.body.classList.add('nav-open');
         document.body.style.overflow = 'hidden';
-        
-        // Setup click handlers
-        setupMenuClickHandlers();
         
         // Focus management for accessibility
         setTimeout(() => {
@@ -431,12 +275,12 @@ function setupMobileNavigation() {
         console.log('📱 Mobile navigation closed');
     }
     
-    console.log('✅ Premium mobile navigation setup complete');
+    console.log('✅ Mobile navigation setup complete');
 }
 
-// ========== DROPDOWN MANAGEMENT ==========
+// ========== SIMPLIFIED DROPDOWN MANAGEMENT (SINGLE SOURCE) ==========
 function setupDropdowns() {
-    console.log('🔽 Setting up dropdowns...');
+    console.log('🔽 Setting up simplified dropdowns...');
     
     const dropbtns = document.querySelectorAll('.dropbtn');
     const dropdowns = document.querySelectorAll('.dropdown');
@@ -467,24 +311,26 @@ function setupDropdowns() {
             const dropdown = this.closest('.dropdown');
             if (!dropdown) return;
             
-            const dropdownContent = dropdown.querySelector('.dropdown-content');
-            if (!dropdownContent) return;
-            
             const isMobile = window.innerWidth <= 768;
             const isOpen = dropdown.classList.contains('active');
             
             console.log(`📱 Dropdown state - Open: ${isOpen}, Mobile: ${isMobile}`);
             
-            // Close all other dropdowns first
+            // Track which dropdown was clicked
+            lastClickedDropdown = dropdown;
+            
+            // Close all other dropdowns except this one
             closeAllDropdownsExcept(dropdown);
             
             // Close buy dropdowns
             document.querySelectorAll('.buy-dropdown').forEach(d => {
-                d.classList.remove('active');
-                const toggle = d.querySelector('.buy-toggle');
-                if (toggle) {
-                    toggle.classList.remove('active');
-                    toggle.setAttribute('aria-expanded', 'false');
+                if (d !== dropdown.closest('.buy-dropdown')) {
+                    d.classList.remove('active');
+                    const toggle = d.querySelector('.buy-toggle');
+                    if (toggle) {
+                        toggle.classList.remove('active');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
                 }
             });
             
@@ -497,6 +343,15 @@ function setupDropdowns() {
                 if (isMobile) {
                     isDropdownOpen = true;
                     document.body.classList.add('dropdown-open');
+                    
+                    // On mobile, ensure dropdown content is visible
+                    const dropdownContent = dropdown.querySelector('.dropdown-content');
+                    if (dropdownContent) {
+                        dropdownContent.style.display = 'block';
+                        dropdownContent.style.opacity = '1';
+                        dropdownContent.style.visibility = 'visible';
+                        dropdownContent.style.transform = 'translateY(0)';
+                    }
                 }
                 
                 console.log('✅ Dropdown opened');
@@ -508,6 +363,15 @@ function setupDropdowns() {
                 if (isMobile) {
                     isDropdownOpen = false;
                     document.body.classList.remove('dropdown-open');
+                    
+                    // Reset mobile dropdown styles
+                    const dropdownContent = dropdown.querySelector('.dropdown-content');
+                    if (dropdownContent) {
+                        dropdownContent.style.display = '';
+                        dropdownContent.style.opacity = '';
+                        dropdownContent.style.visibility = '';
+                        dropdownContent.style.transform = '';
+                    }
                 }
                 
                 console.log('✅ Dropdown closed');
@@ -515,39 +379,55 @@ function setupDropdowns() {
         });
     });
     
+    // Handle dropdown item clicks
+    document.querySelectorAll('.dropdown-content a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            console.log('📱 Dropdown link clicked:', this.href);
+            
+            // Close parent dropdown
+            const dropdown = this.closest('.dropdown');
+            if (dropdown) {
+                dropdown.classList.remove('active');
+                dropdown.querySelector('.dropbtn')?.classList.remove('active');
+                dropdown.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+            }
+            
+            // Close mobile menu on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(closeMobileNav, 300);
+            }
+        });
+    });
+    
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
         const isMobile = window.innerWidth <= 768;
+        const clickedDropdown = e.target.closest('.dropdown');
+        const clickedDropbtn = e.target.closest('.dropbtn');
+        const clickedBuyDropdown = e.target.closest('.buy-dropdown');
+        const clickedBuyToggle = e.target.closest('.buy-toggle');
         
-        if (isMobile) {
-            // Don't close if clicking inside an open dropdown
-            if (e.target.closest('.dropdown.active') || 
-                e.target.closest('.buy-dropdown.active') ||
-                e.target.closest('#mobileNavToggle')) {
-                return;
-            }
-        }
-        
-        if (!e.target.closest('.dropdown') && !e.target.closest('.buy-dropdown')) {
+        // If clicking outside any dropdown
+        if (!clickedDropdown && !clickedDropbtn && !clickedBuyDropdown && !clickedBuyToggle) {
             closeAllDropdowns();
+            
+            if (isMobile) {
+                isDropdownOpen = false;
+                document.body.classList.remove('dropdown-open');
+            }
         }
     });
     
-    // Handle dropdown item clicks (for mobile)
-    document.querySelectorAll('.dropdown-content a').forEach(link => {
-        link.addEventListener('click', function() {
-            const isMobile = window.innerWidth <= 768;
+    // Close dropdown with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllDropdowns();
             
-            if (isMobile) {
-                // Close the dropdown after a short delay
-                const dropdown = this.closest('.dropdown');
-                if (dropdown) {
-                    setTimeout(() => {
-                        closeDropdown(dropdown);
-                    }, 300);
-                }
+            if (window.innerWidth <= 768) {
+                isDropdownOpen = false;
+                document.body.classList.remove('dropdown-open');
             }
-        });
+        }
     });
     
     // Handle window resize
@@ -558,26 +438,16 @@ function setupDropdowns() {
             const isMobile = window.innerWidth <= 768;
             
             if (!isMobile) {
-                // Reset to desktop
+                // Reset to desktop - close all dropdowns
                 closeAllDropdowns();
-                document.querySelectorAll('.dropdown-content').forEach(content => {
-                    content.style.maxHeight = '';
-                });
                 document.body.classList.remove('dropdown-open');
                 document.body.classList.remove('nav-open');
                 document.body.style.overflow = '';
-            } else {
-                // Reset mobile styles
-                document.querySelectorAll('.dropdown-content').forEach(content => {
-                    if (!content.closest('.dropdown')?.classList.contains('active')) {
-                        content.style.maxHeight = '0';
-                    }
-                });
             }
         }, 250);
     });
     
-    console.log('✅ Dropdowns setup complete');
+    console.log('✅ Simplified dropdowns setup complete');
 }
 
 function closeAllDropdowns() {
@@ -611,6 +481,8 @@ function closeAllDropdowns() {
         isDropdownOpen = false;
         document.body.classList.remove('dropdown-open');
     }
+    
+    lastClickedDropdown = null;
 }
 
 function closeAllDropdownsExcept(exceptDropdown) {
@@ -624,30 +496,16 @@ function closeAllDropdownsExcept(exceptDropdown) {
             }
         }
     });
-}
-
-function closeDropdown(dropdownElement) {
-    if (!dropdownElement) return;
     
-    const isMobile = window.innerWidth <= 768;
-    const dropbtn = dropdownElement.querySelector('.dropbtn');
-    const dropdownContent = dropdownElement.querySelector('.dropdown-content');
-    
-    dropdownElement.classList.remove('active');
-    
-    if (dropbtn) {
-        dropbtn.classList.remove('active');
-        dropbtn.setAttribute('aria-expanded', 'false');
-    }
-    
-    if (dropdownContent && isMobile) {
-        dropdownContent.style.maxHeight = '0';
-    }
-    
-    if (isMobile) {
-        isDropdownOpen = false;
-        document.body.classList.remove('dropdown-open');
-    }
+    // Also close buy dropdowns
+    document.querySelectorAll('.buy-dropdown').forEach(d => {
+        d.classList.remove('active');
+        const toggle = d.querySelector('.buy-toggle');
+        if (toggle) {
+            toggle.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+    });
 }
 
 // ========== BACK TO TOP ==========
@@ -826,39 +684,38 @@ function debugMobileDropdowns() {
     console.log('Is mobile?', window.innerWidth <= 768);
     console.log('Is mobile menu open?', isMobileMenuOpen);
     console.log('Is dropdown open?', isDropdownOpen);
+    console.log('Last clicked dropdown:', lastClickedDropdown);
     
     // Check dropdown elements
     const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach((dropdown, i) => {
         const isActive = dropdown.classList.contains('active');
-        const content = dropdown.querySelector('.dropdown-content');
-        const computedStyle = window.getComputedStyle(content);
+        const btn = dropdown.querySelector('.dropbtn');
+        const btnActive = btn?.classList.contains('active');
+        const ariaExpanded = btn?.getAttribute('aria-expanded');
         
         console.log(`Dropdown ${i + 1}:`, {
             isActive: isActive,
-            display: computedStyle.display,
-            opacity: computedStyle.opacity,
-            visibility: computedStyle.visibility,
-            maxHeight: computedStyle.maxHeight,
-            transform: computedStyle.transform
+            btnActive: btnActive,
+            ariaExpanded: ariaExpanded,
+            hasEventListeners: btn ? btn._hasListeners || false : false
         });
     });
     
-    // Check buy dropdown
-    const buyDropdown = document.querySelector('.buy-dropdown');
-    if (buyDropdown) {
-        const isActive = buyDropdown.classList.contains('active');
-        const content = buyDropdown.querySelector('.buy-options');
-        const computedStyle = window.getComputedStyle(content);
-        
-        console.log('Buy dropdown:', {
-            isActive: isActive,
-            display: computedStyle.display,
-            opacity: computedStyle.opacity,
-            visibility: computedStyle.visibility,
-            transform: computedStyle.transform
-        });
+    // Check for duplicate event listeners
+    const dropbtns = document.querySelectorAll('.dropbtn');
+    dropbtns.forEach((btn, i) => {
+        const listeners = getEventListeners(btn);
+        console.log(`Dropbtn ${i + 1} listeners:`, Object.keys(listeners || {}));
+    });
+}
+
+// Helper to check event listeners (requires DevTools)
+function getEventListeners(element) {
+    if (window.getEventListeners) {
+        return window.getEventListeners(element);
     }
+    return null;
 }
 
 // ========== LOADER ==========
@@ -891,10 +748,10 @@ function initializeCommon() {
         // 3. Setup header scroll effect
         setupHeaderScrollEffect();
         
-        // 4. Setup mobile navigation
+        // 4. Setup mobile navigation (SIMPLIFIED - no dropdown handlers here)
         setupMobileNavigation();
         
-        // 5. Setup dropdowns
+        // 5. Setup dropdowns (SINGLE SOURCE for dropdown logic)
         setupDropdowns();
         
         // 6. Setup buy dropdown
@@ -935,5 +792,4 @@ window.setupDropdowns = setupDropdowns;
 window.setupBackToTop = setupBackToTop;
 window.setActiveNavItem = setActiveNavItem;
 window.closeAllDropdowns = closeAllDropdowns;
-window.closeMobileNav = closeMobileNav;
 window.initializeCommon = initializeCommon;
