@@ -628,7 +628,68 @@ function setupPerformance() {
     }
 }
 
-// ========== COPY CONTRACT FUNCTION ==========
+// ========== ENHANCED CONTRACT COPY FUNCTIONALITY ==========
+function copyContract() {
+    const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    const message = document.getElementById('contractCopiedMessage');
+    const copyButton = document.querySelector('.contract-value-quick');
+    const copyIcon = copyButton.querySelector('.copy-icon');
+    
+    // Show loading state
+    copyIcon.classList.remove('fa-copy');
+    copyIcon.classList.add('fa-spinner', 'fa-spin');
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(contractAddress).then(() => {
+        // Success state
+        setTimeout(() => {
+            copyIcon.classList.remove('fa-spinner', 'fa-spin');
+            copyIcon.classList.add('fa-check');
+            
+            // Show success message
+            message.classList.add('show');
+            
+            // Visual feedback on button
+            copyButton.style.background = 'rgba(39, 174, 96, 0.1)';
+            copyButton.style.borderColor = 'rgba(39, 174, 96, 0.3)';
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                copyIcon.classList.remove('fa-check');
+                copyIcon.classList.add('fa-copy');
+                message.classList.remove('show');
+                copyButton.style.background = '';
+                copyButton.style.borderColor = '';
+            }, 3000);
+        }, 300);
+        
+    }).catch(err => {
+        // Fallback for older browsers
+        console.error('Failed to copy: ', err);
+        
+        const textArea = document.createElement('textarea');
+        textArea.value = contractAddress;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Show success anyway
+        copyIcon.classList.remove('fa-spinner', 'fa-spin');
+        copyIcon.classList.add('fa-check');
+        message.classList.add('show');
+        
+        setTimeout(() => {
+            copyIcon.classList.remove('fa-check');
+            copyIcon.classList.add('fa-copy');
+            message.classList.remove('show');
+        }, 3000);
+    });
+}
+
+// ========== COPY CONTRACT FUNCTION (Legacy - for backward compatibility) ==========
 window.copyContract = function() {
     const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
     const copyMessage = document.getElementById('copyMessage');
@@ -763,13 +824,46 @@ function initializeCommon() {
         // 8. Set active navigation item
         setActiveNavItem();
         
-        // 9. Add body class for JavaScript detection
+        // 9. Setup enhanced contract copy functionality
+        setupContractCopy();
+        
+        // 10. Add body class for JavaScript detection
         document.body.classList.add('js-enabled');
         
         console.log('✅ Common functionality initialized successfully');
     } catch (error) {
         console.error('❌ Error initializing common functionality:', error);
     }
+}
+
+// ========== SETUP CONTRACT COPY FUNCTIONALITY ==========
+function setupContractCopy() {
+    console.log('📋 Setting up enhanced contract copy functionality...');
+    
+    const contractElement = document.querySelector('.contract-value-quick');
+    
+    if (!contractElement) {
+        console.warn('⚠️ Contract copy element not found');
+        return;
+    }
+    
+    // Remove existing event listeners by cloning
+    const newContractElement = contractElement.cloneNode(true);
+    contractElement.parentNode.replaceChild(newContractElement, contractElement);
+    
+    // Re-select fresh element
+    const freshContractElement = document.querySelector('.contract-value-quick');
+    
+    // Add click event listener
+    freshContractElement.addEventListener('click', copyContract);
+    
+    // Add touch support for mobile
+    freshContractElement.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        copyContract();
+    }, { passive: false });
+    
+    console.log('✅ Enhanced contract copy functionality setup complete');
 }
 
 // ========== INITIALIZE ON DOM READY ==========
@@ -793,3 +887,4 @@ window.setupBackToTop = setupBackToTop;
 window.setActiveNavItem = setActiveNavItem;
 window.closeAllDropdowns = closeAllDropdowns;
 window.initializeCommon = initializeCommon;
+window.copyContract = copyContract; // Export both functions for compatibility
