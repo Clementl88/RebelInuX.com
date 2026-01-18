@@ -31,7 +31,7 @@ function setupHeaderScrollEffect() {
     console.log('📜 Header scroll effect initialized');
 }
 
-// ========== BUY DROPDOWN TOGGLE ==========
+// ========== FIXED BUY DROPDOWN TOGGLE ==========
 function setupBuyDropdown() {
     console.log('🛒 Setting up Buy dropdown...');
     
@@ -43,29 +43,38 @@ function setupBuyDropdown() {
         return;
     }
     
-    // Remove any existing event listeners by cloning
-    buyToggles.forEach((toggle) => {
+    console.log(`Found ${buyToggles.length} buy toggles and ${buyDropdowns.length} dropdowns`);
+    
+    // Clean event listeners
+    buyToggles.forEach(toggle => {
         const newToggle = toggle.cloneNode(true);
         toggle.parentNode.replaceChild(newToggle, toggle);
     });
     
-    // Re-select the fresh buttons
+    // Re-select fresh toggles
     const freshBuyToggles = document.querySelectorAll('.buy-toggle');
     
     freshBuyToggles.forEach((toggle, index) => {
+        console.log(`Setting up buy toggle ${index + 1}`);
+        
         toggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
+            console.log(`Buy button ${index + 1} clicked`);
+            
             const dropdown = this.closest('.buy-dropdown');
-            if (!dropdown) return;
+            if (!dropdown) {
+                console.error('❌ No dropdown found for this toggle');
+                return;
+            }
             
             const isActive = dropdown.classList.contains('active');
             const isMobile = window.innerWidth <= 768;
             
-            console.log(`🛒 Buy dropdown clicked - Active: ${isActive}, Mobile: ${isMobile}`);
+            console.log(`State: Active=${isActive}, Mobile=${isMobile}`);
             
-            // Close all other dropdowns
+            // Close all other dropdowns first
             closeAllDropdowns();
             
             // Toggle this dropdown
@@ -74,9 +83,19 @@ function setupBuyDropdown() {
                 this.classList.add('active');
                 this.setAttribute('aria-expanded', 'true');
                 
+                // If on mobile, also close the mobile menu
                 if (isMobile) {
                     isDropdownOpen = true;
                     document.body.classList.add('dropdown-open');
+                    
+                    // Close mobile menu if it's open
+                    const mobileMenu = document.getElementById('nav-desktop');
+                    if (mobileMenu && mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        document.getElementById('mobileNavToggle')?.classList.remove('active');
+                        document.body.classList.remove('nav-open');
+                        isMobileMenuOpen = false;
+                    }
                 }
                 
                 console.log(`✅ Buy dropdown ${index + 1} opened`);
@@ -97,9 +116,16 @@ function setupBuyDropdown() {
     
     // Close dropdown when clicking outside
     document.addEventListener('click', function(e) {
-        const isMobile = window.innerWidth <= 768;
+        console.log('Document click detected');
         
-        if (!e.target.closest('.buy-dropdown') && !e.target.closest('.dropdown')) {
+        const isMobile = window.innerWidth <= 768;
+        const clickedBuyDropdown = e.target.closest('.buy-dropdown');
+        const clickedBuyToggle = e.target.closest('.buy-toggle');
+        
+        // If clicking outside buy dropdowns
+        if (!clickedBuyDropdown && !clickedBuyToggle) {
+            console.log('Clicking outside buy dropdown - closing all');
+            
             buyDropdowns.forEach(d => {
                 d.classList.remove('active');
                 const toggle = d.querySelector('.buy-toggle');
@@ -116,23 +142,45 @@ function setupBuyDropdown() {
         }
     });
     
+    // Close dropdown when clicking escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            buyDropdowns.forEach(d => {
+                d.classList.remove('active');
+                const toggle = d.querySelector('.buy-toggle');
+                if (toggle) {
+                    toggle.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+            
+            if (window.innerWidth <= 768) {
+                isDropdownOpen = false;
+                document.body.classList.remove('dropdown-open');
+            }
+        }
+    });
+    
     // Copy contract address function
     window.copyContract = function() {
         const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
         const copyMessage = document.getElementById('copyMessage');
         
-        // Try modern clipboard API first
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(contract)
                 .then(() => {
-                    showCopySuccess(copyMessage);
+                    if (copyMessage) {
+                        copyMessage.classList.add('show');
+                        setTimeout(() => {
+                            copyMessage.classList.remove('show');
+                        }, 2000);
+                    }
                 })
                 .catch(err => {
                     console.error('Failed to copy contract:', err);
                     fallbackCopy(contract);
                 });
         } else {
-            // Fallback for older browsers
             fallbackCopy(contract);
         }
     };
@@ -148,22 +196,18 @@ function setupBuyDropdown() {
         try {
             document.execCommand('copy');
             const copyMessage = document.getElementById('copyMessage');
-            showCopySuccess(copyMessage);
+            if (copyMessage) {
+                copyMessage.classList.add('show');
+                setTimeout(() => {
+                    copyMessage.classList.remove('show');
+                }, 2000);
+            }
         } catch (err) {
             console.error('Fallback copy failed:', err);
             alert('Failed to copy contract address. Please copy manually: ' + text);
         }
         
         document.body.removeChild(textArea);
-    }
-    
-    function showCopySuccess(element) {
-        if (element) {
-            element.classList.add('show');
-            setTimeout(() => {
-                element.classList.remove('show');
-            }, 2000);
-        }
     }
     
     console.log('✅ Buy dropdown setup complete');
