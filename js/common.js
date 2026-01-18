@@ -1,4 +1,4 @@
-// js/common.js - Professional mobile navigation with premium animations
+// common.js - Professional mobile navigation with premium animations
 
 // ========== GLOBAL STATE ==========
 let isMobileMenuOpen = false;
@@ -161,55 +161,6 @@ function setupBuyDropdown() {
         }
     });
     
-    // Copy contract address function
-    window.copyContract = function() {
-        const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-        const copyMessage = document.getElementById('copyMessage');
-        
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(contract)
-                .then(() => {
-                    if (copyMessage) {
-                        copyMessage.classList.add('show');
-                        setTimeout(() => {
-                            copyMessage.classList.remove('show');
-                        }, 2000);
-                    }
-                })
-                .catch(err => {
-                    console.error('Failed to copy contract:', err);
-                    fallbackCopy(contract);
-                });
-        } else {
-            fallbackCopy(contract);
-        }
-    };
-    
-    function fallbackCopy(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        
-        try {
-            document.execCommand('copy');
-            const copyMessage = document.getElementById('copyMessage');
-            if (copyMessage) {
-                copyMessage.classList.add('show');
-                setTimeout(() => {
-                    copyMessage.classList.remove('show');
-                }, 2000);
-            }
-        } catch (err) {
-            console.error('Fallback copy failed:', err);
-            alert('Failed to copy contract address. Please copy manually: ' + text);
-        }
-        
-        document.body.removeChild(textArea);
-    }
-    
     console.log('✅ Buy dropdown setup complete');
 }
 
@@ -227,59 +178,11 @@ function setupMobileNavigation() {
     
     // Set up staggered animation delays
     function setupStaggeredAnimation() {
-        const menuItems = navDesktop.querySelectorAll('a:not(.buy-toggle), .dropdown, .buy-dropdown.mobile-only');
+        const menuItems = navDesktop.querySelectorAll('a:not(.buy-toggle), .dropdown, .buy-dropdown.mobile-buy');
         menuItems.forEach((item, index) => {
             item.style.setProperty('--item-index', index);
             item.style.transitionDelay = `${index * 0.05}s`;
         });
-    }
-    
-    // Close mobile navigation function
-    function closeMobileNav() {
-        navDesktop.classList.remove('active');
-        mobileToggle.classList.remove('active');
-        mobileToggle.setAttribute('aria-expanded', 'false');
-        navDesktop.setAttribute('aria-hidden', 'true');
-        
-        // Reset body
-        document.body.classList.remove('nav-open');
-        document.body.style.overflow = '';
-        
-        // Close all dropdowns
-        closeAllDropdowns();
-        
-        // Reset animation delays
-        const menuItems = navDesktop.querySelectorAll('a:not(.buy-toggle), .dropdown');
-        menuItems.forEach(item => {
-            item.style.transitionDelay = '';
-        });
-        
-        isMobileMenuOpen = false;
-        console.log('📱 Mobile navigation closed');
-    }
-    
-    // Open mobile navigation function
-    function openMobileNav() {
-        navDesktop.classList.add('active');
-        mobileToggle.classList.add('active');
-        mobileToggle.setAttribute('aria-expanded', 'true');
-        navDesktop.setAttribute('aria-hidden', 'false');
-        
-        // Set up animations
-        setupStaggeredAnimation();
-        
-        // Lock body scroll
-        document.body.classList.add('nav-open');
-        document.body.style.overflow = 'hidden';
-        
-        // Focus management for accessibility
-        setTimeout(() => {
-            const firstFocusable = navDesktop.querySelector('a:not(.buy-toggle), .dropbtn');
-            if (firstFocusable) firstFocusable.focus();
-        }, 100);
-        
-        isMobileMenuOpen = true;
-        console.log('📱 Mobile navigation opened');
     }
     
     // Main toggle click handler
@@ -326,27 +229,207 @@ function setupMobileNavigation() {
         }, 250);
     });
     
-    // Add swipe to close on mobile
-    let touchStartY = 0;
-    let touchStartX = 0;
-    
-    navDesktop.addEventListener('touchstart', function(e) {
-        touchStartY = e.touches[0].clientY;
-        touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    
-    navDesktop.addEventListener('touchend', function(e) {
-        const touchEndY = e.changedTouches[0].clientY;
-        const touchEndX = e.changedTouches[0].clientX;
+    // ========== MENU LINKS CLICK HANDLERS ==========
+    function setupMenuClickHandlers() {
+        console.log('🔗 Setting up menu click handlers');
         
-        const swipeDistanceY = touchEndY - touchStartY;
-        const swipeDistanceX = Math.abs(touchEndX - touchStartX);
+        // Regular navigation links
+        const menuLinks = navDesktop.querySelectorAll('a:not(.buy-toggle):not(.dropdown-content a)');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    console.log('📱 Menu link clicked:', this.href);
+                    closeMobileNav();
+                }
+            });
+        });
         
-        // Only close if it's a significant downward swipe (not a horizontal swipe)
-        if (swipeDistanceY > 100 && swipeDistanceX < 50) {
-            closeMobileNav();
-        }
-    }, { passive: true });
+        // Dropdown buttons
+        const dropBtns = navDesktop.querySelectorAll('.dropbtn');
+        dropBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🔽 Dropdown button clicked');
+                
+                const dropdown = this.closest('.dropdown');
+                if (!dropdown) return;
+                
+                const isOpen = dropdown.classList.contains('active');
+                
+                // Close other dropdowns
+                document.querySelectorAll('.dropdown').forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove('active');
+                        d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Close buy dropdowns
+                document.querySelectorAll('.buy-dropdown').forEach(d => {
+                    d.classList.remove('active');
+                    d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
+                });
+                
+                // Toggle this dropdown
+                if (!isOpen) {
+                    dropdown.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    console.log('✅ Dropdown opened');
+                } else {
+                    dropdown.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                    console.log('✅ Dropdown closed');
+                }
+            });
+        });
+        
+        // Dropdown links
+        const dropdownLinks = navDesktop.querySelectorAll('.dropdown-content a');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                console.log('📱 Dropdown link clicked:', this.href);
+                
+                // Close parent dropdown
+                const dropdown = this.closest('.dropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('active');
+                    dropdown.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+                }
+                
+                // Close mobile menu on mobile
+                if (window.innerWidth <= 768) {
+                    setTimeout(closeMobileNav, 300);
+                }
+            });
+        });
+        
+        // Buy buttons in mobile menu
+        const mobileBuyButtons = navDesktop.querySelectorAll('.buy-toggle');
+        mobileBuyButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🛒 Mobile menu buy button clicked');
+                
+                const dropdown = this.closest('.buy-dropdown');
+                if (!dropdown) return;
+                
+                const isOpen = dropdown.classList.contains('active');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.dropdown').forEach(d => {
+                    d.classList.remove('active');
+                    d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+                });
+                
+                document.querySelectorAll('.buy-dropdown').forEach(d => {
+                    if (d !== dropdown) {
+                        d.classList.remove('active');
+                        d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Toggle this dropdown
+                if (!isOpen) {
+                    dropdown.classList.add('active');
+                    this.setAttribute('aria-expanded', 'true');
+                    console.log('✅ Mobile buy dropdown opened');
+                    
+                    // Close mobile menu
+                    if (window.innerWidth <= 768 && isMobileMenuOpen) {
+                        closeMobileNav();
+                    }
+                } else {
+                    dropdown.classList.remove('active');
+                    this.setAttribute('aria-expanded', 'false');
+                    console.log('✅ Mobile buy dropdown closed');
+                }
+            });
+        });
+        
+        // Buy options links
+        const buyOptionLinks = document.querySelectorAll('.buy-option');
+        buyOptionLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                console.log('🛒 Buy option clicked:', this.href);
+                
+                // Close all dropdowns
+                closeAllDropdowns();
+                
+                // Close mobile menu on mobile
+                if (window.innerWidth <= 768) {
+                    closeMobileNav();
+                }
+            });
+        });
+    }
+    
+    // ========== CLOSE ALL DROPDOWNS ==========
+    function closeAllDropdowns() {
+        console.log('🔽 Closing all dropdowns');
+        
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
+            d.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+        });
+        
+        document.querySelectorAll('.buy-dropdown').forEach(d => {
+            d.classList.remove('active');
+            d.querySelector('.buy-toggle')?.setAttribute('aria-expanded', 'false');
+        });
+    }
+    
+    // Open mobile navigation function
+    function openMobileNav() {
+        navDesktop.classList.add('active');
+        mobileToggle.classList.add('active');
+        mobileToggle.setAttribute('aria-expanded', 'true');
+        navDesktop.setAttribute('aria-hidden', 'false');
+        
+        // Set up animations
+        setupStaggeredAnimation();
+        
+        // Lock body scroll
+        document.body.classList.add('nav-open');
+        document.body.style.overflow = 'hidden';
+        
+        // Setup click handlers
+        setupMenuClickHandlers();
+        
+        // Focus management for accessibility
+        setTimeout(() => {
+            const firstFocusable = navDesktop.querySelector('a:not(.buy-toggle), .dropbtn');
+            if (firstFocusable) firstFocusable.focus();
+        }, 100);
+        
+        isMobileMenuOpen = true;
+        console.log('📱 Mobile navigation opened');
+    }
+    
+    // Close mobile navigation function
+    function closeMobileNav() {
+        navDesktop.classList.remove('active');
+        mobileToggle.classList.remove('active');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        navDesktop.setAttribute('aria-hidden', 'true');
+        
+        // Reset body
+        document.body.classList.remove('nav-open');
+        document.body.style.overflow = '';
+        
+        // Close all dropdowns
+        closeAllDropdowns();
+        
+        // Reset animation delays
+        const menuItems = navDesktop.querySelectorAll('a:not(.buy-toggle), .dropdown');
+        menuItems.forEach(item => {
+            item.style.transitionDelay = '';
+        });
+        
+        isMobileMenuOpen = false;
+        console.log('📱 Mobile navigation closed');
+    }
     
     console.log('✅ Premium mobile navigation setup complete');
 }
@@ -393,7 +476,7 @@ function setupDropdowns() {
             console.log(`📱 Dropdown state - Open: ${isOpen}, Mobile: ${isMobile}`);
             
             // Close all other dropdowns first
-            closeAllDropdowns();
+            closeAllDropdownsExcept(dropdown);
             
             // Close buy dropdowns
             document.querySelectorAll('.buy-dropdown').forEach(d => {
@@ -530,6 +613,19 @@ function closeAllDropdowns() {
     }
 }
 
+function closeAllDropdownsExcept(exceptDropdown) {
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+        if (dropdown !== exceptDropdown) {
+            dropdown.classList.remove('active');
+            const btn = dropdown.querySelector('.dropbtn');
+            if (btn) {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+}
+
 function closeDropdown(dropdownElement) {
     if (!dropdownElement) return;
     
@@ -649,43 +745,12 @@ function setupPerformance() {
         }, 250);
     });
     
-    // Lazy load images
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.add('loaded');
-                    observer.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: '50px 0px',
-            threshold: 0.1
-        });
-        
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
-    
     // Use passive event listeners for touch events
     const options = { passive: true };
     
     document.addEventListener('touchstart', function() {}, options);
     document.addEventListener('touchmove', function() {}, options);
     document.addEventListener('touchend', function() {}, options);
-    
-    // Debounce resize events for mobile
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        document.body.classList.add('resizing');
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            document.body.classList.remove('resizing');
-        }, 250);
-    });
     
     // Optimize animations
     if ('IntersectionObserver' in window) {
@@ -703,6 +768,55 @@ function setupPerformance() {
             observer.observe(el);
         });
     }
+}
+
+// ========== COPY CONTRACT FUNCTION ==========
+window.copyContract = function() {
+    const contract = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    const copyMessage = document.getElementById('copyMessage');
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(contract)
+            .then(() => {
+                if (copyMessage) {
+                    copyMessage.classList.add('show');
+                    setTimeout(() => {
+                        copyMessage.classList.remove('show');
+                    }, 2000);
+                }
+            })
+            .catch(err => {
+                console.error('Failed to copy contract:', err);
+                fallbackCopy(contract);
+            });
+    } else {
+        fallbackCopy(contract);
+    }
+};
+
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        const copyMessage = document.getElementById('copyMessage');
+        if (copyMessage) {
+            copyMessage.classList.add('show');
+            setTimeout(() => {
+                copyMessage.classList.remove('show');
+            }, 2000);
+        }
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('Failed to copy contract address. Please copy manually: ' + text);
+    }
+    
+    document.body.removeChild(textArea);
 }
 
 // ========== DEBUG FUNCTION ==========
