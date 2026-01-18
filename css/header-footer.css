@@ -2374,3 +2374,192 @@ footer {
     cursor: pointer !important;
   }
 }
+/* ========== DYNAMIC SUBTITLE STYLES ========== */
+.brand-subtitle {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background shimmer effect */
+.brand-subtitle::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    transform: rotate(30deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.brand-subtitle:hover::after {
+    opacity: 0.3;
+    animation: shimmer 2s ease infinite;
+}
+
+/* Page-specific color variations */
+.brand-subtitle[data-page="index"] {
+    color: var(--rebel-gold);
+    border-color: rgba(212, 167, 106, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(212, 167, 106, 0.15), 
+        rgba(212, 167, 106, 0.08));
+}
+
+.brand-subtitle[data-page="trade"] {
+    color: #FF6B35;
+    border-color: rgba(255, 107, 53, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(255, 107, 53, 0.15), 
+        rgba(255, 107, 53, 0.08));
+}
+
+.brand-subtitle[data-page="epoch-rewards"] {
+    color: #9C27B0;
+    border-color: rgba(156, 39, 176, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(156, 39, 176, 0.15), 
+        rgba(156, 39, 176, 0.08));
+}
+
+.brand-subtitle[data-page="tokenomics"] {
+    color: #00BCD4;
+    border-color: rgba(0, 188, 212, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(0, 188, 212, 0.15), 
+        rgba(0, 188, 212, 0.08));
+}
+
+.brand-subtitle[data-page="community"] {
+    color: #2196F3;
+    border-color: rgba(33, 150, 243, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(33, 150, 243, 0.15), 
+        rgba(33, 150, 243, 0.08));
+}
+
+.brand-subtitle[data-page="security"] {
+    color: #4CAF50;
+    border-color: rgba(76, 175, 80, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(76, 175, 80, 0.15), 
+        rgba(76, 175, 80, 0.08));
+}
+
+.brand-subtitle[data-page="whitepaper"] {
+    color: #9C27B0;
+    border-color: rgba(156, 39, 176, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(156, 39, 176, 0.15), 
+        rgba(156, 39, 176, 0.08));
+}
+
+.brand-subtitle[data-page="calculator"] {
+    color: #2ECC71;
+    border-color: rgba(46, 204, 113, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(46, 204, 113, 0.15), 
+        rgba(46, 204, 113, 0.08));
+}
+
+.brand-subtitle[data-page="governance"] {
+    color: #FF9800;
+    border-color: rgba(255, 152, 0, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(255, 152, 0, 0.15), 
+        rgba(255, 152, 0, 0.08));
+}
+
+.brand-subtitle[data-page="roadmap"] {
+    color: #FF5722;
+    border-color: rgba(255, 87, 34, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(255, 87, 34, 0.15), 
+        rgba(255, 87, 34, 0.08));
+}
+
+.brand-subtitle[data-page="integrity"] {
+    color: #D4A76A;
+    border-color: rgba(212, 167, 106, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(212, 167, 106, 0.15), 
+        rgba(212, 167, 106, 0.08));
+}
+
+.brand-subtitle[data-page="artwork"] {
+    color: #E91E63;
+    border-color: rgba(233, 30, 99, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(233, 30, 99, 0.15), 
+        rgba(233, 30, 99, 0.08));
+}
+
+/* Hover effects for each page type */
+.brand-subtitle[data-page="index"]:hover {
+    color: #FFD700;
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 4px 15px rgba(212, 167, 106, 0.25);
+    transform: translateY(-1px);
+}
+
+.brand-subtitle[data-page="trade"]:hover {
+    color: #FF4500;
+    border-color: rgba(255, 69, 0, 0.6);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.25);
+    transform: translateY(-1px);
+}
+
+.brand-subtitle[data-page="epoch-rewards"]:hover {
+    color: #8A2BE2;
+    border-color: rgba(138, 43, 226, 0.6);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.25);
+    transform: translateY(-1px);
+}
+
+.brand-subtitle[data-page="tokenomics"]:hover {
+    color: #00CED1;
+    border-color: rgba(0, 206, 209, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Animation for subtitle changes */
+@keyframes subtitleChange {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.brand-subtitle.changing {
+    animation: subtitleChange 0.3s ease forwards;
+}
+
+/* Enhanced subtitle for mobile */
+@media (max-width: 768px) {
+    .brand-subtitle {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        margin-top: 1px;
+    }
+}
+
+/* Large desktop enhancement */
+@media (min-width: 1400px) {
+    .brand-subtitle {
+        font-size: 0.85rem;
+        padding: 4px 12px;
+    }
+}
