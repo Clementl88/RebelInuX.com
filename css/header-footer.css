@@ -357,41 +357,38 @@ header.scrolled {
 }
 
 /* ========== FIX: ALWAYS SHOW NAV ON DESKTOP WHEN SCROLLED ========== */
-/* ========== FIX: FORCE NAV TO STAY VISIBLE ON DESKTOP ========== */
 @media (min-width: 769px) {
-  /* Use !important to override any conflicting rules */
-  header #nav-desktop,
-  header.scrolled #nav-desktop,
-  .header-container #nav-desktop {
+  /* Ensure navigation is always visible on desktop, even when scrolled */
+  header.scrolled #nav-desktop {
     display: flex !important;
-    visibility: visible !important;
     opacity: 1 !important;
-    position: static !important;
+    visibility: visible !important;
     transform: none !important;
-    height: auto !important;
-    width: auto !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 var(--spacing-md) !important;
   }
   
-  /* Reset any mobile styles that might be applied */
-  header #nav-desktop a,
-  header.scrolled #nav-desktop a {
+  /* Ensure individual nav links are visible */
+  header.scrolled #nav-desktop a,
+  header.scrolled .dropbtn,
+  header.scrolled .dropdown {
     display: inline-flex !important;
-    padding: 10px 20px !important;
-    margin: 0 !important;
-    border-radius: var(--radius-full) !important;
-    min-height: 44px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
   }
   
-  /* Ensure buy button stays visible */
-  .buy-dropdown.desktop-primary-action,
+  /* Ensure dropdown content shows when active */
+  header.scrolled .dropdown.active .dropdown-content {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+  
+  /* Ensure buy dropdown is visible */
   header.scrolled .buy-dropdown.desktop-primary-action {
     display: block !important;
-    visibility: visible !important;
     opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 
