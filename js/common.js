@@ -5,6 +5,86 @@ let isMobileMenuOpen = false;
 let isDropdownOpen = false;
 let lastClickedDropdown = null;
 
+// ========== DYNAMIC PAGE SUBTITLES ==========
+const PAGE_SUBTITLES = {
+    // Main pages
+    'index.html': '$REBL Epoch Rewards',
+    'trade.html': 'Trade & Exchange Guide',
+    'epoch-rewards.html': 'Reward System Dashboard',
+    'tokenomics.html': 'Token Economics & Distribution',
+    'community.html': 'Community Hub & Links',
+    'security.html': 'Security & Safety Protocols',
+    'whitepaper.html': 'Project Documentation',
+    'REBL-calculator.html': 'Reward Calculator Tool',
+    'governance.html': 'Governance & Voting',
+    'roadmap.html': 'Development Roadmap',
+    'integrity.html': 'Project Integrity & Values',
+    'artwork.html': 'Art & Media Gallery',
+    
+    // Handle root/index pages
+    'index': '$REBL Epoch Rewards',
+    '/': '$REBL Epoch Rewards',
+    '': '$REBL Epoch Rewards',
+    
+    // Default fallback
+    'default': '$REBL Epoch Rewards'
+};
+
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const hash = window.location.hash;
+    
+    // Handle hash-based routing (SPA)
+    if (hash && hash.startsWith('#/')) {
+        const hashPath = hash.substring(2);
+        return hashPath || 'index.html';
+    }
+    
+    // Handle root/index
+    if (path === '/' || path === '/index.html' || path === '' || path.endsWith('/')) {
+        return 'index.html';
+    }
+    
+    // Extract filename
+    const filename = path.split('/').pop();
+    
+    // If no extension, assume .html
+    if (!filename.includes('.')) {
+        return filename + '.html';
+    }
+    
+    return filename;
+}
+
+function updateBrandSubtitle() {
+    try {
+        const subtitleElement = document.querySelector('.brand-subtitle');
+        if (!subtitleElement) {
+            console.warn('⚠️ Brand subtitle element not found');
+            return;
+        }
+        
+        const currentPage = getCurrentPage();
+        const subtitle = PAGE_SUBTITLES[currentPage] || PAGE_SUBTITLES['default'];
+        
+        console.log(`📄 Updating subtitle for "${currentPage}": ${subtitle}`);
+        subtitleElement.textContent = subtitle;
+        
+        // Add data attribute for CSS targeting
+        subtitleElement.setAttribute('data-page', currentPage.replace('.html', ''));
+        
+        // Add animation effect
+        subtitleElement.style.opacity = '0';
+        setTimeout(() => {
+            subtitleElement.style.transition = 'opacity 0.3s ease';
+            subtitleElement.style.opacity = '1';
+        }, 10);
+        
+    } catch (error) {
+        console.error('❌ Error updating brand subtitle:', error);
+    }
+}
+
 // ========== HEADER SCROLL EFFECT ==========
 function setupHeaderScrollEffect() {
     const header = document.querySelector('header');
@@ -550,13 +630,15 @@ function setupBackToTop() {
 function setActiveNavItem() {
     console.log('📍 Setting active navigation item...');
     
-    const currentPath = window.location.pathname;
-    const currentPage = currentPath.split('/').pop() || 'index.html';
+    const currentPage = getCurrentPage();
     
     // Remove active from all nav items
     document.querySelectorAll('#nav-desktop a, .dropbtn').forEach(el => {
         el.classList.remove('active');
     });
+    
+    // Update subtitle FIRST
+    updateBrandSubtitle();
     
     // Define active page mapping
     const pageMap = {
@@ -809,10 +891,10 @@ function initializeCommon() {
         // 3. Setup header scroll effect
         setupHeaderScrollEffect();
         
-        // 4. Setup mobile navigation (SIMPLIFIED - no dropdown handlers here)
+        // 4. Setup mobile navigation
         setupMobileNavigation();
         
-        // 5. Setup dropdowns (SINGLE SOURCE for dropdown logic)
+        // 5. Setup dropdowns
         setupDropdowns();
         
         // 6. Setup buy dropdown
@@ -821,13 +903,16 @@ function initializeCommon() {
         // 7. Setup back to top
         setupBackToTop();
         
-        // 8. Set active navigation item
+        // 8. Set active navigation item (this now also updates subtitle)
         setActiveNavItem();
         
-        // 9. Setup enhanced contract copy functionality
+        // 9. Additional subtitle update for safety
+        updateBrandSubtitle();
+        
+        // 10. Setup enhanced contract copy functionality
         setupContractCopy();
         
-        // 10. Add body class for JavaScript detection
+        // 11. Add body class for JavaScript detection
         document.body.classList.add('js-enabled');
         
         console.log('✅ Common functionality initialized successfully');
@@ -879,7 +964,16 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('🔧 Debug commands available: debugMobileDropdowns()');
     }
 });
+// Update subtitle on navigation events
+window.addEventListener('popstate', updateBrandSubtitle);
+window.addEventListener('hashchange', updateBrandSubtitle);
 
+// Also listen for component loading if using includes.js
+if (window.componentsLoaded) {
+    setTimeout(updateBrandSubtitle, 100);
+} else {
+    document.addEventListener('components:initialized', updateBrandSubtitle);
+}
 // ========== EXPORT FUNCTIONS FOR OTHER FILES ==========
 window.setupMobileNavigation = setupMobileNavigation;
 window.setupDropdowns = setupDropdowns;
