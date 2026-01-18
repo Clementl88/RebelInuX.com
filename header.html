@@ -1,137 +1,184 @@
-<header>
-  <div class="header-container">
-    <!-- Brand Logo -->
-    <a href="index.html" class="brand-link" aria-label="RebelInuX Home">
-      <div class="brand-content">
-        <img src="images/logo256.png" 
-             alt="RebelInuX Logo" 
-             width="50" 
-             height="50"
-             loading="eager"
-             class="brand-logo">
-        <div class="brand-text">
-          <div class="brand-title">RebelInuX</div>
-          <div class="brand-subtitle">$REBL Epoch Rewards</div>
-        </div>
-      </div>
-    </a>
-    
-    <!-- Premium Mobile Menu Toggle -->
-    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </button>
-    
-    <!-- Desktop Navigation Only -->
-    <nav id="nav-desktop" aria-label="Main navigation">
-      <!-- Trade PAGE (Primary Navigation) -->
-      <a href="trade.html" class="nav-trade">
-        <i class="fas fa-chart-line"></i> Trade
-      </a>
-      
-      <!-- Rewards -->
-      <a href="epoch-rewards.html" class="nav-rewards">
-        <i class="fas fa-gift"></i> Rewards
-      </a>
-      
-      <!-- Tokenomics -->
-      <a href="tokenomics.html" class="nav-tokenomics">
-        <i class="fas fa-coins"></i> Tokenomics
-      </a>
-      
-      <!-- More Dropdown -->
-      <div class="dropdown">
-        <button class="dropbtn nav-more" aria-expanded="false" aria-haspopup="true">
-          <i class="fas fa-ellipsis-h"></i> More
-          <span class="dropdown-arrow" aria-hidden="true">▼</span>
-        </button>
-        <div class="dropdown-content" aria-label="More options">
-          <a href="community.html" class="nav-community">
-            <i class="fas fa-users"></i> Community
-          </a>
-          <a href="security.html" class="nav-security">
-            <i class="fas fa-shield-alt"></i> Security
-          </a>
-          <a href="whitepaper.html" class="nav-whitepaper">
-            <i class="fas fa-file-contract"></i> Whitepaper
-          </a>
-          <a href="REBL-calculator.html" class="nav-calculator">
-             <i class="fas fa-calculator"></i> Epoch Calculator
-          </a>
-          <a href="governance.html" class="nav-governance">
-            <i class="fas fa-vote-yea"></i> Governance
-          </a>
-          <a href="roadmap.html" class="nav-roadmap">
-            <i class="fas fa-map-signs"></i> Roadmap
-          </a>
-          <a href="integrity.html" class="nav-integrity">
-            <i class="fas fa-handshake"></i> Integrity
-          </a>
-          <a href="artwork.html" class="nav-artwork">
-            <i class="fas fa-palette"></i> Artwork
-          </a>
-        </div>
-      </div>
-      
-      <!-- MOBILE-ONLY: Quick Action -->
-      <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-         class="cta-button mobile-buy-single" 
-         target="_blank" 
-         rel="noopener noreferrer">
-        <i class="fas fa-bolt"></i> Quick Buy
-        <span class="buy-badge pump-badge">PUMP.SWAP</span>
-      </a>
-    </nav>
-    
-    <!-- DESKTOP-ONLY: Smart Buy Button (Simplified) -->
-    <div class="buy-dropdown desktop-only">
-      <button class="cta-button buy-toggle desktop-buy-btn" aria-expanded="false" aria-haspopup="true">
-        <i class="fas fa-bolt"></i> Quick Buy
-        <i class="fas fa-chevron-down dropdown-arrow" aria-hidden="true"></i>
-      </button>
-      
-      <div class="buy-options desktop-buy-options" aria-label="Quick buy options">
-        <!-- Smart Default: Direct to PumpSwap -->
-        <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-           class="buy-option primary" 
-           target="_blank" 
-           rel="noopener noreferrer">
-          <div class="option-icon pump-icon">
-            <i class="fas fa-exchange-alt"></i>
-          </div>
-          <div class="option-content">
-            <div class="option-title">Buy on PumpSwap</div>
-            <div class="option-desc">Main Pool • Best Liquidity</div>
-          </div>
-          <div class="option-badge recommended">BEST</div>
-        </a>
-        
-        <!-- Alternative: Jupiter -->
-        <a href="https://jup.ag/swap/SOL-F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
-           class="buy-option" 
-           target="_blank" 
-           rel="noopener noreferrer">
-          <div class="option-icon">
-            <i class="fas fa-robot"></i>
-          </div>
-          <div class="option-content">
-            <div class="option-title">Compare Prices (Jupiter)</div>
-            <div class="option-desc">Smart Price Aggregator</div>
-          </div>
-        </a>
-        
-        <!-- Contract for Quick Copy -->
-        <div class="contract-mini">
-          <div class="contract-label">Contract:</div>
-          <div class="contract-value-mini" onclick="copyContract()" role="button" tabindex="0">
-            F4gh7VNjtp...BJpump
-            <i class="fas fa-copy"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+/* ========== NAV ACTION GROUP ========== */
+.nav-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+}
+
+/* Desktop Quick Buy in Nav */
+.mobile-buy-dropdown {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .mobile-buy-dropdown {
+    display: block;
+  }
+  
+  .nav-quick-buy {
+    background: linear-gradient(135deg, #3498DB, #2980B9);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-width: 120px;
+  }
+  
+  .mobile-buy-options {
+    width: 220px;
+    right: 0;
+  }
+}
+
+/* ========== PRIMARY ACTION BUTTON ========== */
+.primary-action-btn {
+  background: linear-gradient(135deg, 
+    var(--rebel-red), 
+    #FF6B35, 
+    var(--rebel-gold));
+  background-size: 200% auto;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  animation: gradientShift 3s infinite;
+  min-width: 180px;
+}
+
+.primary-action-btn:hover {
+  animation: none;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(215, 77, 77, 0.5);
+}
+
+/* ========== ACTION GROUPS ========== */
+.action-group {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-group:last-child {
+  border-bottom: none;
+  margin-bottom: 10px;
+}
+
+/* ========== PLATFORM TAGS ========== */
+.platform-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.platform-tag.pump {
+  background: linear-gradient(135deg, #FF6B35, #FF9800);
+  color: white;
+}
+
+.platform-tag.jupiter {
+  background: linear-gradient(135deg, #9B59B6, #8E44AD);
+  color: white;
+}
+
+.platform-tag.pancake {
+  background: linear-gradient(135deg, #00B4DB, #0083B0);
+  color: white;
+}
+
+.platform-tag.mexc {
+  background: linear-gradient(135deg, #F39C12, #D68910);
+  color: white;
+}
+
+/* ========== ACTION OPTIONS ========== */
+.primary-action {
+  background: linear-gradient(135deg, 
+    rgba(215, 77, 77, 0.15), 
+    rgba(255, 107, 53, 0.1));
+  border: 1px solid rgba(215, 77, 77, 0.3);
+}
+
+.learn-action {
+  background: linear-gradient(135deg, 
+    rgba(155, 89, 182, 0.15), 
+    rgba(142, 68, 173, 0.1));
+  border: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.yield-action {
+  background: linear-gradient(135deg, 
+    rgba(46, 204, 113, 0.15), 
+    rgba(39, 174, 96, 0.1));
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.platform-option {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ========== NEW BADGES ========== */
+.option-badge.hot {
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
+  animation: pulse 2s infinite;
+}
+
+.option-badge.new {
+  background: linear-gradient(135deg, #3498DB, #2980B9);
+}
+
+/* ========== QUICK CONTRACT ========== */
+.contract-quick {
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contract-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.contract-value-quick {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: white;
+  word-break: break-all;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast) ease;
+}
+
+.contract-value-quick:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ========== MOBILE OPTIMIZATIONS ========== */
+@media (max-width: 768px) {
+  .nav-action-group {
+    display: none;
+  }
+  
+  .mobile-direct-buy {
+    display: flex !important;
+    background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+    padding: 14px 20px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  
+  .desktop-primary-action {
+    display: none !important;
+  }
+}
