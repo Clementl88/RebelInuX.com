@@ -327,13 +327,12 @@ header.scrolled {
     display: none !important;
   }
   
-  .buy-dropdown.desktop-only {
-    display: block !important;
+  .buy-dropdown.mobile-only {
+    display: none !important;
   }
   
-  /* Hide mobile buy single link on desktop */
-  .mobile-buy-single {
-    display: none !important;
+  .buy-dropdown.desktop-only {
+    display: block !important;
   }
   
   #nav-desktop {
@@ -960,35 +959,6 @@ header.scrolled {
   opacity: 1;
 }
 
-/* ========== MOBILE SINGLE BUY LINK ========== */
-.mobile-buy-single {
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  position: relative;
-  overflow: hidden;
-  color: white !important;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-}
-
-.mobile-buy-single i {
-  font-size: 1.1rem;
-}
-
-.buy-badge {
-  background: linear-gradient(135deg, #FF6B35, #FF9800);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-}
-
 /* ========== PREMIUM MOBILE HAMBURGER MENU ========== */
 @media (max-width: 768px) {
   /* Premium Mobile Toggle Button */
@@ -1117,16 +1087,33 @@ header.scrolled {
         0 0 20px rgba(212, 167, 106, 0.5);
   }
   
-  /* Hide header buy button on mobile */
-  .header-container > .buy-dropdown {
+  /* ========== SINGLE BUY BUTTON SOLUTION ========== */
+  /* Move buy button to mobile menu */
+  .header-container .buy-dropdown {
     display: none !important;
   }
   
-  /* Show mobile buy button in menu */
-  .mobile-buy-single {
+  #nav-desktop .buy-dropdown {
+    display: block !important;
+    width: 100%;
+    margin: auto 0 0 0;
+    padding: 25px 0;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, 
+        rgba(8, 8, 8, 0.98) 0%,
+        rgba(8, 8, 8, 0.9) 50%,
+        transparent 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 100;
+    border-top: 1px solid rgba(212, 167, 106, 0.2);
+  }
+  
+  #nav-desktop .buy-toggle {
     width: 100%;
     max-width: 100%;
-    margin: auto 0 0 0;
+    margin: 0;
     padding: 20px 28px;
     font-size: 1.15rem;
     min-height: 68px;
@@ -1145,12 +1132,16 @@ header.scrolled {
         0 0 40px rgba(215, 77, 77, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(212, 167, 106, 0.4);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
   }
   
-  .mobile-buy-single::before {
+  #nav-desktop .buy-toggle::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1164,7 +1155,7 @@ header.scrolled {
     transition: left 0.6s ease;
   }
   
-  .mobile-buy-single:hover {
+  #nav-desktop .buy-toggle:hover:not(.loading) {
     transform: translateY(-3px);
     box-shadow: 
         0 12px 40px rgba(215, 77, 77, 0.7),
@@ -1173,8 +1164,43 @@ header.scrolled {
     animation: none;
   }
   
-  .mobile-buy-single:hover::before {
+  #nav-desktop .buy-toggle:hover:not(.loading)::before {
     left: 100%;
+  }
+  
+  /* Mobile Buy Options */
+  #nav-desktop .buy-options {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 30px 25px !important;
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1003;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    border-bottom: none;
+    box-shadow: 
+        0 -25px 80px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  #nav-desktop .buy-dropdown.active .buy-options {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
   }
   
   /* Hide all navigation items in header except brand and hamburger */
@@ -1196,7 +1222,7 @@ header.scrolled {
     background: rgba(8, 8, 8, 0.98);
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
-    padding: 120px 20px 150px;
+    padding: 120px 20px 200px;
     z-index: 1001;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -1234,7 +1260,7 @@ header.scrolled {
   }
   
   /* Premium Menu Items */
-  #nav-desktop a:not(.mobile-buy-single) {
+  #nav-desktop a:not(.buy-toggle) {
     padding: 20px 24px;
     border-radius: 16px;
     margin-bottom: 12px;
@@ -1257,7 +1283,7 @@ header.scrolled {
   }
   
   /* Icon styling */
-  #nav-desktop a:not(.mobile-buy-single) i {
+  #nav-desktop a:not(.buy-toggle) i {
     width: 24px;
     text-align: center;
     font-size: 1.1rem;
@@ -1267,19 +1293,19 @@ header.scrolled {
   }
   
   /* Hover effects */
-  #nav-desktop a:not(.mobile-buy-single):hover {
+  #nav-desktop a:not(.buy-toggle):hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.15);
   }
   
-  #nav-desktop a:not(.mobile-buy-single):hover i {
+  #nav-desktop a:not(.buy-toggle):hover i {
     transform: scale(1.2);
   }
   
   /* Active state */
-  #nav-desktop a.active:not(.mobile-buy-single) {
+  #nav-desktop a.active:not(.buy-toggle) {
     background: linear-gradient(135deg, 
         rgba(212, 167, 106, 0.15), 
         rgba(215, 77, 77, 0.1));
@@ -1290,7 +1316,7 @@ header.scrolled {
     position: relative;
   }
   
-  #nav-desktop a.active:not(.mobile-buy-single)::after {
+  #nav-desktop a.active:not(.buy-toggle)::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -1469,6 +1495,116 @@ header.scrolled {
     color: #E91E63 !important;
   }
   
+  /* Mobile Buy Button */
+  .buy-dropdown.mobile-only {
+    width: 100%;
+    margin: auto 0 0 0;
+    padding: 25px 0;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, 
+        rgba(8, 8, 8, 0.98) 0%,
+        rgba(8, 8, 8, 0.9) 50%,
+        transparent 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 100;
+    border-top: 1px solid rgba(212, 167, 106, 0.2);
+  }
+  
+  .buy-toggle {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 28px;
+    font-size: 1.15rem;
+    min-height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: linear-gradient(135deg, 
+        var(--rebel-red), 
+        var(--rebel-gold), 
+        var(--rebel-red));
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 
+        0 8px 35px rgba(215, 77, 77, 0.5),
+        0 0 40px rgba(215, 77, 77, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(212, 167, 106, 0.4);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .buy-toggle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .buy-toggle:hover:not(.loading) {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 40px rgba(215, 77, 77, 0.7),
+        0 0 50px rgba(215, 77, 77, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    animation: none;
+  }
+  
+  .buy-toggle:hover:not(.loading)::before {
+    left: 100%;
+  }
+  
+  /* Mobile Buy Options */
+  .buy-options {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 30px 25px !important;
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1003;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    border-bottom: none;
+    box-shadow: 
+        0 -25px 80px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .buy-dropdown.active .buy-options {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
+  }
+  
   /* Scrollbar styling */
   #nav-desktop::-webkit-scrollbar {
     width: 6px;
@@ -1505,7 +1641,7 @@ header.scrolled {
     background: rgba(8, 8, 8, 0.98);
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
-    padding: 120px 20px 150px;
+    padding: 120px 20px 200px;
     z-index: 1001;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -1531,6 +1667,11 @@ header.scrolled {
   .header-container > .buy-dropdown {
     display: none !important;
   }
+  
+  /* Show buy button inside mobile menu */
+  #nav-desktop .buy-dropdown {
+    display: block !important;
+  }
 }
 
 /* Small Mobile Optimization */
@@ -1542,16 +1683,16 @@ header.scrolled {
   }
   
   #nav-desktop {
-    padding: 100px 15px 130px;
+    padding: 100px 15px 180px;
   }
   
-  #nav-desktop a:not(.mobile-buy-single) {
+  #nav-desktop a:not(.buy-toggle) {
     padding: 18px 20px;
     font-size: 1rem;
     min-height: 60px;
   }
   
-  .mobile-buy-single {
+  .buy-toggle {
     padding: 18px 24px;
     font-size: 1.1rem;
     min-height: 64px;
@@ -1561,7 +1702,9 @@ header.scrolled {
 /* ========== TOUCH OPTIMIZATIONS ========== */
 @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
   #nav-desktop a,
-  .dropbtn {
+  .dropbtn,
+  .dropdown-content a,
+  .buy-toggle {
     min-height: 68px;
     padding-top: 22px;
     padding-bottom: 22px;
@@ -1601,8 +1744,7 @@ header.scrolled {
 #nav-desktop a:focus-visible,
 .buy-toggle:focus-visible,
 .mobile-nav-toggle:focus-visible,
-.brand-link:focus-visible,
-.mobile-buy-single:focus-visible {
+.brand-link:focus-visible {
   outline: 3px solid var(--rebel-gold);
   outline-offset: 2px;
 }
@@ -2072,52 +2214,130 @@ footer {
 
 @media (max-width: 480px) {
   .footer-brand-title {
-    font-size: 1.6rem;
+      font-size: 1.6rem;
   }
   
   .footer-brand-logo {
-    height: 50px;
-    width: 50px;
+      height: 50px;
+      width: 50px;
   }
   
   .footer-column-title {
-    font-size: 1rem;
+      font-size: 1rem;
   }
   
   .footer-link {
-    font-size: 0.9rem;
+      font-size: 0.9rem;
   }
 }
-
-/* ========== SEPARATE DESKTOP/MOBILE BUY BUTTONS ========== */
-/* Desktop: Show desktop button, hide mobile button */
-@media (min-width: 769px) {
-  .buy-dropdown.desktop-only {
-    display: block !important;
-  }
-  
-  .mobile-buy-single {
-    display: none !important;
-  }
-}
-
-/* Mobile: Show mobile button (in menu), hide desktop button */
+/* ========== HAMBURGER MENU CLICK FIXES ========== */
 @media (max-width: 768px) {
-  /* Hide desktop buy button in header */
-  .header-container > .buy-dropdown.desktop-only {
-    display: none !important;
-  }
-  
-  /* Show mobile buy button inside menu */
-  .mobile-buy-single {
-    display: flex !important;
-  }
-  
   /* Fix clickability */
-  #nav-desktop a,
+  #nav-desktop a:not(.buy-toggle),
   #nav-desktop .dropbtn,
+  #nav-desktop .buy-toggle,
   .dropdown-content a {
     pointer-events: auto !important;
     cursor: pointer !important;
+  }
+  
+  /* Ensure proper stacking */
+  #nav-desktop {
+    z-index: 1001 !important;
+  }
+  
+  /* Fix for menu items */
+  #nav-desktop a:not(.buy-toggle) {
+    -webkit-tap-highlight-color: rgba(212, 167, 106, 0.3);
+    tap-highlight-color: rgba(212, 167, 106, 0.3);
+  }
+  
+  /* Hide desktop buy button on mobile */
+  .buy-dropdown.desktop-buy {
+    display: none !important;
+  }
+  
+  /* Show mobile buy button in menu */
+  #nav-desktop .buy-dropdown.mobile-buy {
+    display: block !important;
+    width: 100%;
+    margin: auto 0 0 0;
+    padding: 25px 0;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, 
+        rgba(8, 8, 8, 0.98) 0%,
+        rgba(8, 8, 8, 0.9) 50%,
+        transparent 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 100;
+    border-top: 1px solid rgba(212, 167, 106, 0.2);
+  }
+  
+  /* Mobile buy button styling */
+  #nav-desktop .buy-toggle {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 28px;
+    font-size: 1.15rem;
+    min-height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: linear-gradient(135deg, 
+        var(--rebel-red), 
+        var(--rebel-gold), 
+        var(--rebel-red));
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 
+        0 8px 35px rgba(215, 77, 77, 0.5),
+        0 0 40px rgba(215, 77, 77, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(212, 167, 106, 0.4);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Mobile menu buy options */
+  #nav-desktop .buy-options {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0 !important;
+    padding: 30px 25px !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1003;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    border-bottom: none;
+    box-shadow: 
+        0 -25px 80px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  #nav-desktop .buy-dropdown.active .buy-options {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    display: block !important;
   }
 }
