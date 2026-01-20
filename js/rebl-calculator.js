@@ -1,3 +1,4 @@
+// rebl-calculator.js - Enhanced Calculator JavaScript
 
 // Global variables
 let rewardChart = null;
@@ -12,21 +13,21 @@ let calculatorState = {
     totalUserTokens: 0,
     totalUserWS: 0,
     currentParticipatingTokens: 100000000,
-    currentTotalWS: 100000000
+    currentTotalWS: 100000000,
+    isCalculating: false
 };
 
 // Initialize calculator on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing REBL Calculator...');
+    console.log('Initializing Enhanced REBL Calculator...');
     
     // Initialize with one empty row
     setTimeout(function() {
         addTokenBatch();
     }, 100);
     
-    // Initialize participation settings
-    updateParticipation();
-    updateWhatIfGamma();
+    // Initialize participation settings with input fields
+    initParticipationInputs();
     
     // Initialize chart placeholder
     setupChartPlaceholder();
@@ -36,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add auto-update toggle
     setupAutoUpdateToggle();
+    
+    // Add input listeners for direct number input
+    setupDirectInputListeners();
 });
 
 // ========== STATE MANAGEMENT ==========
@@ -57,6 +61,9 @@ function setupAutoUpdateToggle() {
             <span class="toggle-slider"></span>
             <span class="toggle-text">Auto-update participation based on your tokens</span>
         </label>
+        <div class="toggle-help">
+            <i class="fas fa-info-circle"></i> When enabled, participation estimates adjust automatically based on your token batches
+        </div>
     `;
     
     // Insert after header
@@ -68,47 +75,287 @@ function setupAutoUpdateToggle() {
         toggle.addEventListener('change', function() {
             calculatorState.autoUpdateParticipation = this.checked;
             updateParticipationUI();
+            showToast('Auto-update ' + (this.checked ? 'enabled' : 'disabled'), 'info');
         });
     }
 }
 
-function updateParticipationUI() {
-    const toggle = document.getElementById('autoUpdateToggle');
+function initParticipationInputs() {
     const participatingSlider = document.getElementById('participatingTokens');
     const totalWSSlider = document.getElementById('totalWS');
     
-    if (!toggle || !participatingSlider || !totalWSSlider) return;
+    if (!participatingSlider || !totalWSSlider) return;
+    
+    // Replace slider labels with enhanced version
+    const participatingLabel = participatingSlider.previousElementSibling;
+    const totalWSLabel = totalWSSlider.previousElementSibling;
+    
+    if (participatingLabel && totalWSLabel) {
+        participatingLabel.outerHTML = `
+            <div class="slider-info">
+                <div class="slider-info-label">
+                    <span>Total Participating Tokens (P):</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Total tokens participating in this epoch. Includes your tokens plus estimated other participants."></i>
+                </div>
+                <div class="slider-info-value">
+                    <input type="number" id="participatingTokensInput" class="value-input" 
+                           value="100000000" min="1000000" max="500000000" step="1000000">
+                    <span id="participatingTokensValue" class="slider-value">100M</span>
+                </div>
+            </div>
+        `;
+        
+        totalWSLabel.outerHTML = `
+            <div class="slider-info">
+                <div class="slider-info-label">
+                    <span>∑WS (Total Active Weighted Shares):</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Total weighted shares including age bonuses. This is always ≥ total participating tokens."></i>
+                </div>
+                <div class="slider-info-value">
+                    <input type="number" id="totalWSInput" class="value-input" 
+                           value="100000000" min="1000000" max="500000000" step="1000000">
+                    <span id="totalWSValue" class="slider-value">100M</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Setup input listeners
+    setupDirectInputListeners();
+    
+    // Initialize values
+    updateParticipationUI();
+}
+
+function setupDirectInputListeners() {
+    // Participating tokens input
+    const participatingInput = document.getElementById('participatingTokensInput');
+    const participatingSlider = document.getElementById('participatingTokens');
+    
+    if (participatingInput && participatingSlider) {
+        participatingInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            value = Math.max(1000000, Math.min(500000000, value));
+            this.value = value;
+            participatingSlider.value = value;
+            calculatorState.currentParticipatingTokens = value;
+            updateParticipationDisplay();
+            calculateRewards();
+        });
+        
+        participatingSlider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            participatingInput.value = value;
+            calculatorState.currentParticipatingTokens = value;
+            updateParticipationDisplay();
+            calculateRewards();
+        });
+    }
+    
+    // Total WS input
+    const totalWSInput = document.getElementById('totalWSInput');
+    const totalWSSlider = document.getElementById('totalWS');
+    
+    if (totalWSInput && totalWSSlider) {
+        totalWSInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            value = Math.max(1000000, Math.min(500000000, value));
+            this.value = value;
+            totalWSSlider.value = value;
+            calculatorState.currentTotalWS = value;
+            updateParticipationDisplay();
+            calculateRewards();
+        });
+        
+        totalWSSlider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            totalWSInput.value = value;
+            calculatorState.currentTotalWS = value;
+            updateParticipationDisplay();
+            calculateRewards();
+        });
+    }
+    
+    // What-if simulator inputs
+    const whatIfParticipatingInput = document.createElement('input');
+    whatIfParticipatingInput.type = 'number';
+    whatIfParticipatingInput.className = 'value-input';
+    whatIfParticipatingInput.id = 'whatIfParticipatingInput';
+    whatIfParticipatingInput.value = '100000000';
+    whatIfParticipatingInput.min = '1000000';
+    whatIfParticipatingInput.max = '500000000';
+    whatIfParticipatingInput.step = '1000000';
+    
+    const whatIfTotalWSInput = document.createElement('input');
+    whatIfTotalWSInput.type = 'number';
+    whatIfTotalWSInput.className = 'value-input';
+    whatIfTotalWSInput.id = 'whatIfTotalWSInput';
+    whatIfTotalWSInput.value = '100000000';
+    whatIfTotalWSInput.min = '1000000';
+    whatIfTotalWSInput.max = '500000000';
+    whatIfTotalWSInput.step = '1000000';
+    
+    // Add event listeners for simulator
+    whatIfParticipatingInput.addEventListener('input', function() {
+        let value = parseInt(this.value) || 0;
+        value = Math.max(1000000, Math.min(500000000, value));
+        this.value = value;
+        document.getElementById('whatIfParticipating').value = value;
+        updateWhatIfGamma();
+    });
+    
+    whatIfTotalWSInput.addEventListener('input', function() {
+        let value = parseInt(this.value) || 0;
+        value = Math.max(1000000, Math.min(500000000, value));
+        this.value = value;
+        document.getElementById('whatIfTotalWS').value = value;
+        updateWhatIfGamma();
+    });
+    
+    // Also update simulator sliders
+    document.getElementById('whatIfParticipating').addEventListener('input', function() {
+        const value = parseInt(this.value);
+        whatIfParticipatingInput.value = value;
+        updateWhatIfGamma();
+    });
+    
+    document.getElementById('whatIfTotalWS').addEventListener('input', function() {
+        const value = parseInt(this.value);
+        whatIfTotalWSInput.value = value;
+        updateWhatIfGamma();
+    });
+    
+    // Insert inputs into simulator
+    const whatIfParticipatingValue = document.getElementById('whatIfParticipatingValue');
+    const whatIfTotalWSValue = document.getElementById('whatIfTotalWSValue');
+    
+    if (whatIfParticipatingValue) {
+        whatIfParticipatingValue.parentNode.insertBefore(whatIfParticipatingInput, whatIfParticipatingValue);
+    }
+    
+    if (whatIfTotalWSValue) {
+        whatIfTotalWSValue.parentNode.insertBefore(whatIfTotalWSInput, whatIfTotalWSValue);
+    }
+}
+
+function updateParticipationDisplay() {
+    const participatingValue = document.getElementById('participatingTokensValue');
+    const totalWSValue = document.getElementById('totalWSValue');
+    
+    if (participatingValue) {
+        participatingValue.textContent = formatNumber(calculatorState.currentParticipatingTokens);
+    }
+    
+    if (totalWSValue) {
+        totalWSValue.textContent = formatNumber(calculatorState.currentTotalWS);
+    }
+    
+    // Calculate gamma scale
+    const gammaData = calculateGammaScale(calculatorState.currentParticipatingTokens, calculatorState.currentTotalWS);
+    const gamma = gammaData.gamma;
+    
+    // Update gamma display
+    const gammaValue = document.getElementById('gammaValue');
+    const gammaDisplay = document.getElementById('gammaValueDisplay');
+    
+    if (gammaValue) gammaValue.textContent = gamma.toFixed(2);
+    if (gammaDisplay) gammaDisplay.textContent = gamma.toFixed(2);
+    
+    // Color code gamma value
+    const gammaColor = getGammaColor(gamma);
+    if (gammaValue) gammaValue.style.color = gammaColor;
+    if (gammaDisplay) gammaDisplay.style.color = gammaColor;
+    
+    // Update marker position (40% to 100% scale)
+    const markerPosition = 40 + (gamma - 0.4) * (100 / 0.6);
+    const marker = document.getElementById('gammaMarker');
+    if (marker) {
+        marker.style.left = `${Math.min(100, Math.max(40, markerPosition))}%`;
+    }
+    
+    // Update component values
+    document.getElementById('participationTerm').textContent = gammaData.participationTerm.toFixed(2);
+    document.getElementById('inflationCap').textContent = gammaData.inflationCap.toFixed(2);
+    document.getElementById('minTerm').textContent = gammaData.minTerm.toFixed(2);
+    document.getElementById('maxTerm').textContent = gammaData.gamma.toFixed(2);
+    
+    // Update user's contribution percentage
+    updateContributionPercentage();
+}
+
+function updateParticipationUI() {
+    const participatingSlider = document.getElementById('participatingTokens');
+    const totalWSSlider = document.getElementById('totalWS');
+    const participatingInput = document.getElementById('participatingTokensInput');
+    const totalWSInput = document.getElementById('totalWSInput');
+    
+    if (!participatingSlider || !totalWSSlider || !participatingInput || !totalWSInput) return;
     
     const isAuto = calculatorState.autoUpdateParticipation;
     
-    // Update slider states
+    // Update input states
     participatingSlider.disabled = isAuto;
     totalWSSlider.disabled = isAuto;
+    participatingInput.disabled = isAuto;
+    totalWSInput.disabled = isAuto;
     
     // Update slider values based on user's tokens
     if (isAuto) {
-        // Estimate other participants: assume 50% of remaining tokens participate
+        // Get user's data
         const userTokens = calculatorState.totalUserTokens;
-        const remainingTokens = CS - userTokens;
-        const estimatedOtherTokens = Math.max(remainingTokens * 0.5, 1000000); // At least 1M other tokens
-        
-        // Update participating tokens (user + estimated others)
-        const participatingTokens = Math.max(userTokens * 2, estimatedOtherTokens, 10000000); // At least 10M total
-        calculatorState.currentParticipatingTokens = Math.min(participatingTokens, CS);
-        
-        // Calculate total WS (user WS + estimated others with avg age bonus)
         const userWS = calculatorState.totalUserWS;
-        const avgAgeBonus = userTokens > 0 ? (userWS / userTokens) : 1.5;
-        const estimatedOtherWS = estimatedOtherTokens * avgAgeBonus;
-        const totalWS = Math.max(userWS * 1.5, estimatedOtherWS, 15000000); // At least 15M total WS
-        calculatorState.currentTotalWS = Math.min(totalWS, CS * 2.4); // Max possible WS
         
-        // Update sliders
+        // Estimate other participants
+        const remainingTokens = Math.max(CS - userTokens, 0);
+        
+        // Scenario 1: User only (minimum case)
+        if (userTokens === 0) {
+            // Default minimum values
+            calculatorState.currentParticipatingTokens = 10000000;
+            calculatorState.currentTotalWS = 15000000;
+        } 
+        // Scenario 2: User has tokens
+        else {
+            // Calculate user's age bonus factor
+            const userAgeBonus = userTokens > 0 ? (userWS / userTokens) : 1;
+            
+            // Estimate other participants based on user's holdings
+            // If user has significant holdings, assume more participation
+            const userShare = userTokens / CS;
+            let otherMultiplier;
+            
+            if (userShare >= 0.01) { // User owns 1%+ of supply
+                otherMultiplier = 2; // Assume 2x other participants
+            } else if (userShare >= 0.001) { // User owns 0.1%+ of supply
+                otherMultiplier = 5;
+            } else {
+                otherMultiplier = 10; // Small holder, assume more other participants
+            }
+            
+            const estimatedOtherTokens = Math.min(remainingTokens, userTokens * otherMultiplier);
+            const estimatedOtherWS = estimatedOtherTokens * (userAgeBonus * 0.8); // Others have slightly lower age bonus
+            
+            // Calculate totals
+            calculatorState.currentParticipatingTokens = Math.min(
+                CS,
+                Math.max(userTokens * 2, userTokens + estimatedOtherTokens, 10000000)
+            );
+            
+            calculatorState.currentTotalWS = Math.min(
+                CS * 2.4, // Maximum possible WS (all tokens with max age bonus)
+                Math.max(userWS * 1.5, userWS + estimatedOtherWS, 15000000)
+            );
+        }
+        
+        // Update sliders and inputs
         participatingSlider.value = calculatorState.currentParticipatingTokens;
         totalWSSlider.value = calculatorState.currentTotalWS;
+        participatingInput.value = calculatorState.currentParticipatingTokens;
+        totalWSInput.value = calculatorState.currentTotalWS;
         
         // Update displays
-        updateParticipation();
+        updateParticipationDisplay();
+        calculateRewards();
     }
 }
 
@@ -127,12 +374,12 @@ function addTokenBatch(amount = '', age = '') {
             <input type="number" class="batch-age" value="${age}" placeholder="Age" 
                    oninput="updateRowCalculations(this)" min="0" max="20" step="1">
         </td>
-        <td class="batch-factor" style="color: var(--rebel-gold);">1.00</td>
+        <td class="batch-factor" style="color: var(--rebel-gold); font-weight: bold;">1.00</td>
         <td class="batch-ws" style="color: var(--rebel-red); font-weight: bold;">0</td>
         <td>
             <button onclick="removeTokenBatch(this)" class="batch-btn" 
-                    style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer;">
-                ×
+                    style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;">
+                <i class="fas fa-times"></i>
             </button>
         </td>
     `;
@@ -150,6 +397,9 @@ function addTokenBatch(amount = '', age = '') {
         row.style.opacity = '1';
         row.style.transform = 'translateY(0)';
     }, 10);
+    
+    // Update user totals
+    updateUserTotals();
 }
 
 function removeTokenBatch(button) {
@@ -176,6 +426,12 @@ function clearTokenBatches() {
     const table = document.querySelector('#token-batches-table tbody');
     const rows = table.querySelectorAll('tr');
     
+    if (rows.length === 0) return;
+    
+    if (!confirm('Are you sure you want to clear all token batches?')) {
+        return;
+    }
+    
     // Animate removal
     rows.forEach((row, index) => {
         setTimeout(() => {
@@ -191,8 +447,14 @@ function clearTokenBatches() {
         calculatorState.totalUserTokens = 0;
         calculatorState.totalUserWS = 0;
         updateParticipationUI();
-        document.getElementById('reward-result').innerHTML = 'Enter your token batches to calculate your sustainable $REBL rewards!';
+        
+        const resultElement = document.getElementById('reward-result');
+        if (resultElement) {
+            resultElement.innerHTML = 'Enter your token batches to calculate your sustainable $REBL rewards!';
+            resultElement.className = 'reward-result';
+        }
         hideChart();
+        showToast('All token batches cleared', 'info');
     }, rows.length * 50 + 300);
 }
 
@@ -202,6 +464,19 @@ function updateRowCalculations(input) {
     
     const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
     const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+    
+    // Validate inputs
+    if (amount < 0) {
+        row.querySelector('.batch-amount').value = 0;
+        return;
+    }
+    if (age < 0) {
+        row.querySelector('.batch-age').value = 0;
+        return;
+    }
+    if (age > 20) {
+        row.querySelector('.batch-age').value = 20;
+    }
     
     // Calculate weight factor: 1 + 0.07 × min(Age, 20)
     const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
@@ -216,16 +491,26 @@ function updateRowCalculations(input) {
     if (factorCell) {
         factorCell.textContent = weightFactor.toFixed(2);
         factorCell.style.color = weightFactor > 1 ? 'var(--rebel-gold)' : '#ffffff';
+        factorCell.style.fontWeight = weightFactor > 1 ? 'bold' : 'normal';
     }
     
     if (wsCell) {
         wsCell.textContent = formatNumber(weightedShare, true);
         wsCell.style.color = 'var(--rebel-red)';
+        wsCell.style.fontWeight = 'bold';
     }
     
     // Update user totals
     updateUserTotals();
-    calculateRewards();
+    
+    // Calculate rewards with slight delay to avoid rapid calculations
+    if (!calculatorState.isCalculating) {
+        calculatorState.isCalculating = true;
+        setTimeout(() => {
+            calculateRewards();
+            calculatorState.isCalculating = false;
+        }, 300);
+    }
 }
 
 function updateUserTotals() {
@@ -257,7 +542,7 @@ function updateUserStatsDisplay(totalTokens, totalWS) {
     // Find or create user stats display
     let statsContainer = document.querySelector('.user-stats-container');
     
-    if (!statsContainer) {
+    if (!statsContainer && totalTokens > 0) {
         const tokenSection = document.querySelector('.token-batches-section');
         if (!tokenSection) return;
         
@@ -290,30 +575,55 @@ function updateUserStatsDisplay(totalTokens, totalWS) {
         }
     }
     
-    // Update values
-    const userTotalTokens = document.getElementById('userTotalTokens');
-    const userTokenPercentage = document.getElementById('userTokenPercentage');
-    const userTotalWS = document.getElementById('userTotalWS');
-    const userAvgBonus = document.getElementById('userAvgBonus');
-    
-    if (userTotalTokens) {
-        userTotalTokens.textContent = formatNumber(totalTokens);
-    }
-    
-    if (userTokenPercentage) {
-        const percentage = totalTokens > 0 ? ((totalTokens / CS) * 100).toFixed(2) : 0;
-        userTokenPercentage.textContent = `${percentage}% of CS`;
-        userTokenPercentage.style.color = percentage >= 1 ? '#4CAF50' : percentage >= 0.5 ? '#FFC107' : 'rgba(255, 255, 255, 0.6)';
-    }
-    
-    if (userTotalWS) {
-        userTotalWS.textContent = formatNumber(totalWS, true);
-    }
-    
-    if (userAvgBonus) {
-        const avgBonus = totalTokens > 0 ? (totalWS / totalTokens).toFixed(2) : '1.00';
-        userAvgBonus.textContent = `${avgBonus}x`;
-        userAvgBonus.style.color = avgBonus >= 1.5 ? '#4CAF50' : avgBonus >= 1.2 ? '#FFC107' : '#ffffff';
+    if (statsContainer) {
+        // Update values
+        const userTotalTokens = document.getElementById('userTotalTokens');
+        const userTokenPercentage = document.getElementById('userTokenPercentage');
+        const userTotalWS = document.getElementById('userTotalWS');
+        const userAvgBonus = document.getElementById('userAvgBonus');
+        
+        if (userTotalTokens) {
+            userTotalTokens.textContent = formatNumber(totalTokens);
+            userTotalTokens.style.color = totalTokens > 1000000 ? 'var(--rebel-gold)' : '#ffffff';
+        }
+        
+        if (userTokenPercentage) {
+            const percentage = totalTokens > 0 ? ((totalTokens / CS) * 100).toFixed(4) : 0;
+            userTokenPercentage.textContent = `${percentage}% of CS`;
+            
+            // Color code based on percentage
+            if (percentage >= 1) {
+                userTokenPercentage.style.color = '#4CAF50';
+            } else if (percentage >= 0.1) {
+                userTokenPercentage.style.color = '#FFC107';
+            } else {
+                userTokenPercentage.style.color = 'rgba(255, 255, 255, 0.6)';
+            }
+        }
+        
+        if (userTotalWS) {
+            userTotalWS.textContent = formatNumber(totalWS, true);
+            userTotalWS.style.color = totalWS > totalTokens * 1.5 ? 'var(--rebel-gold)' : '#ffffff';
+        }
+        
+        if (userAvgBonus) {
+            const avgBonus = totalTokens > 0 ? (totalWS / totalTokens).toFixed(2) : '1.00';
+            userAvgBonus.textContent = `${avgBonus}x`;
+            
+            // Color code based on bonus
+            if (avgBonus >= 2.0) {
+                userAvgBonus.style.color = '#4CAF50';
+            } else if (avgBonus >= 1.5) {
+                userAvgBonus.style.color = '#FFC107';
+            } else if (avgBonus > 1.0) {
+                userAvgBonus.style.color = '#FF9800';
+            } else {
+                userAvgBonus.style.color = '#ffffff';
+            }
+        }
+        
+        // Show/hide based on whether user has tokens
+        statsContainer.style.display = totalTokens > 0 ? 'block' : 'none';
     }
 }
 
@@ -338,54 +648,6 @@ function calculateGammaScale(P, totalWS) {
         inflationCap: inflationCap,
         minTerm: minTerm
     };
-}
-
-// Update participation settings
-function updateParticipation() {
-    const participatingTokens = parseInt(document.getElementById('participatingTokens').value) || 100000000;
-    const totalWS = parseInt(document.getElementById('totalWS').value) || 100000000;
-    
-    // Store current values
-    calculatorState.currentParticipatingTokens = participatingTokens;
-    calculatorState.currentTotalWS = totalWS;
-    
-    // Update display values
-    document.getElementById('participatingTokensValue').textContent = formatNumber(participatingTokens);
-    document.getElementById('totalWSValue').textContent = formatNumber(totalWS);
-    
-    // Calculate gamma scale
-    const gammaData = calculateGammaScale(participatingTokens, totalWS);
-    const gamma = gammaData.gamma;
-    
-    // Update gamma display
-    const gammaValue = document.getElementById('gammaValue');
-    const gammaDisplay = document.getElementById('gammaValueDisplay');
-    
-    if (gammaValue) gammaValue.textContent = gamma.toFixed(2);
-    if (gammaDisplay) gammaDisplay.textContent = gamma.toFixed(2);
-    
-    // Color code gamma value
-    const gammaColor = getGammaColor(gamma);
-    if (gammaValue) gammaValue.style.color = gammaColor;
-    if (gammaDisplay) gammaDisplay.style.color = gammaColor;
-    
-    // Update marker position (40% to 100% scale)
-    const markerPosition = 40 + (gamma - 0.4) * (100 / 0.6);
-    const marker = document.getElementById('gammaMarker');
-    if (marker) {
-        marker.style.left = `${Math.min(100, Math.max(40, markerPosition))}%`;
-    }
-    
-    // Update component values
-    document.getElementById('participationTerm').textContent = gammaData.participationTerm.toFixed(2);
-    document.getElementById('inflationCap').textContent = gammaData.inflationCap.toFixed(2);
-    document.getElementById('minTerm').textContent = gammaData.minTerm.toFixed(2);
-    document.getElementById('maxTerm').textContent = gammaData.gamma.toFixed(2);
-    
-    // Update user's contribution percentage
-    updateContributionPercentage();
-    
-    calculateRewards();
 }
 
 function updateContributionPercentage() {
@@ -440,26 +702,44 @@ function updateContributionPercentage() {
         const wsBar = document.getElementById('wsBar');
         
         if (tokenContribution) {
-            tokenContribution.textContent = `${Math.min(100, tokenPercentage).toFixed(1)}%`;
+            const displayPercentage = Math.min(100, tokenPercentage.toFixed(1));
+            tokenContribution.textContent = `${displayPercentage}%`;
             tokenContribution.style.color = tokenPercentage >= 50 ? '#4CAF50' : tokenPercentage >= 20 ? '#FFC107' : '#ffffff';
         }
         
         if (wsContribution) {
-            wsContribution.textContent = `${Math.min(100, wsPercentage).toFixed(1)}%`;
+            const displayPercentage = Math.min(100, wsPercentage.toFixed(1));
+            wsContribution.textContent = `${displayPercentage}%`;
             wsContribution.style.color = wsPercentage >= 50 ? '#4CAF50' : wsPercentage >= 20 ? '#FFC107' : '#ffffff';
         }
         
         if (tokenBar) {
             tokenBar.style.width = `${Math.min(100, tokenPercentage)}%`;
+            tokenBar.style.background = tokenPercentage >= 50 ? 'linear-gradient(90deg, #4CAF50, #8BC34A)' :
+                                       tokenPercentage >= 20 ? 'linear-gradient(90deg, #FFC107, #FF9800)' :
+                                       'linear-gradient(90deg, var(--rebel-red), var(--rebel-gold))';
         }
         
         if (wsBar) {
             wsBar.style.width = `${Math.min(100, wsPercentage)}%`;
+            wsBar.style.background = wsPercentage >= 50 ? 'linear-gradient(90deg, #4CAF50, #8BC34A)' :
+                                     wsPercentage >= 20 ? 'linear-gradient(90deg, #FFC107, #FF9800)' :
+                                     'linear-gradient(90deg, var(--rebel-red), var(--rebel-gold))';
         }
+        
+        // Show the container
+        contributionContainer.style.display = 'block';
+    } else if (contributionContainer) {
+        // Hide the container if user has no tokens
+        contributionContainer.style.display = 'none';
     }
 }
 
 function calculateRewards() {
+    // Prevent rapid calculations
+    if (calculatorState.isCalculating) return;
+    calculatorState.isCalculating = true;
+    
     const rows = document.querySelectorAll('#token-batches-table tbody tr');
     let userWS = 0; // User's total weighted shares
     let totalAmount = 0;
@@ -491,6 +771,17 @@ function calculateRewards() {
     const participatingTokens = calculatorState.currentParticipatingTokens;
     const totalWS = calculatorState.currentTotalWS;
     
+    // Validate that totalWS >= userWS
+    if (totalWS < userWS) {
+        calculatorState.currentTotalWS = Math.max(userWS * 1.1, userWS + 1000000);
+        const totalWSInput = document.getElementById('totalWSInput');
+        const totalWSSlider = document.getElementById('totalWS');
+        if (totalWSInput) totalWSInput.value = calculatorState.currentTotalWS;
+        if (totalWSSlider) totalWSSlider.value = calculatorState.currentTotalWS;
+        updateParticipationDisplay();
+        showToast('Adjusted Total WS to be at least your weighted shares', 'warning');
+    }
+    
     // Calculate gamma scale
     const gammaData = calculateGammaScale(participatingTokens, totalWS);
     const gamma = gammaData.gamma;
@@ -501,58 +792,77 @@ function calculateRewards() {
     const effectivePool = WERP * gamma;
     
     const resultElement = document.getElementById('reward-result');
-    if (!resultElement) return;
+    if (!resultElement) {
+        calculatorState.isCalculating = false;
+        return;
+    }
     
-    if (userWS <= 0 || batchData.length === 0) {
-        resultElement.innerHTML = 'Please enter valid token batches!';
-        resultElement.style.color = 'var(--rebel-red)';
+    if (userWS <= 0 || batchData.length === 0 || totalAmount <= 0) {
+        resultElement.innerHTML = `
+            <div style="text-align: center;">
+                <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <p>Please enter valid token batches to calculate your sustainable $REBL rewards!</p>
+                <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+                    Try loading an example or adding your own token batches.
+                </p>
+            </div>
+        `;
+        resultElement.className = 'reward-result';
         hideChart();
+        calculatorState.isCalculating = false;
         return;
     }
     
     // Calculate percentage of active pool
     const poolPercentage = (userShare * 100).toFixed(4);
-    const returnPercentage = totalAmount > 0 ? ((userReward / totalAmount) * 100).toFixed(4) : '0.0000';
+    const returnPercentage = ((userReward / totalAmount) * 100).toFixed(4);
     
-    resultElement.innerHTML = `
+    // Format the results
+    const resultHTML = `
         <div style="text-align: left;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                 <span><strong>Your Weighted Share (WSᵢ):</strong></span>
-                <span style="color: var(--rebel-gold);">${formatNumber(userWS, true)}</span>
+                <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(userWS, true)}</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                 <span><strong>Total Active Weighted Shares (∑WS):</strong></span>
-                <span style="color: var(--rebel-gold);">${formatNumber(totalWS)}</span>
+                <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                 <span><strong>Your Share of Active Pool:</strong></span>
-                <span style="color: var(--rebel-gold);">${poolPercentage}%</span>
+                <span style="color: var(--rebel-gold); font-weight: bold;">${poolPercentage}%</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                 <span><strong>Gamma Scale Factor (γ):</strong></span>
                 <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                 <span><strong>Effective Weekly Pool:</strong></span>
                 <span style="color: var(--rebel-red); font-weight: bold;">${formatNumber(effectivePool, false)} $REBL</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
-                <span><strong>Return on $rebelinux:</strong></span>
-                <span style="color: var(--rebel-gold);">${returnPercentage}% weekly</span>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+                <span><strong>Weekly Return:</strong></span>
+                <span style="color: var(--rebel-gold); font-weight: bold;">${returnPercentage}%</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-top: 0.5em; padding-top: 0.5em; border-top: 1px solid rgba(255, 204, 0, 0.3);">
+            <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 0.5em; padding-top: 0.5em; border-top: 2px solid rgba(255, 204, 0, 0.5);">
                 <span><strong>Your Sustainable Reward:</strong></span>
-                <span style="color: var(--rebel-red); font-weight: bold;">${formatNumber(userReward, true)} $REBL</span>
+                <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);">
+                    ${formatNumber(userReward, true)} $REBL
+                </span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
                 <span><em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
             </div>
         </div>
     `;
-    resultElement.style.color = 'var(--rebel-gold)';
+    
+    resultElement.innerHTML = resultHTML;
+    resultElement.className = 'reward-result';
     
     // Update chart with weighted shares
     updateChart(batchData, userWS);
+    
+    calculatorState.isCalculating = false;
 }
 
 // ========== WHAT-IF GAMMA SIMULATOR ==========
@@ -561,8 +871,11 @@ function updateWhatIfGamma() {
     const totalWS = parseInt(document.getElementById('whatIfTotalWS').value) || 100000000;
     
     // Update display values
-    document.getElementById('whatIfParticipatingValue').textContent = formatNumber(participating);
-    document.getElementById('whatIfTotalWSValue').textContent = formatNumber(totalWS);
+    const whatIfParticipatingValue = document.getElementById('whatIfParticipatingValue');
+    const whatIfTotalWSValue = document.getElementById('whatIfTotalWSValue');
+    
+    if (whatIfParticipatingValue) whatIfParticipatingValue.textContent = formatNumber(participating);
+    if (whatIfTotalWSValue) whatIfTotalWSValue.textContent = formatNumber(totalWS);
     
     // Calculate gamma scale
     const gammaData = calculateGammaScale(participating, totalWS);
@@ -580,6 +893,7 @@ function updateWhatIfGamma() {
     const effectiveElement = document.getElementById('effectiveDistribution');
     if (effectiveElement) {
         effectiveElement.textContent = formatNumber(effectiveDistribution, false) + ' $REBL';
+        effectiveElement.style.color = getGammaColor(gamma);
     }
     
     // Update marker position
@@ -600,10 +914,10 @@ function updateWhatIfGamma() {
     const breakdownElement = document.getElementById('gammaBreakdown');
     if (breakdownElement) {
         breakdownElement.innerHTML = `
-            MAX(0.4, MIN(1, 
+            γ = MAX(0.4, MIN(1, 
             <span style="color: #ff3366;">${gammaData.participationTerm.toFixed(2)}</span>, 
             <span style="color: #ffcc00;">${gammaData.inflationCap.toFixed(2)}</span>)) = 
-            <span style="color: ${getGammaColor(gamma)};">${gamma.toFixed(2)}</span>
+            <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
         `;
     }
 }
@@ -650,6 +964,29 @@ function updateChart(batchData, totalUserWS) {
     // Calculate percentages for labels
     const percentages = weightedShares.map(ws => ((ws / totalUserWS) * 100).toFixed(1));
     
+    // Colors for the chart
+    const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(0, 170, 255, 0.8)',
+        'rgba(156, 39, 176, 0.8)',
+        'rgba(76, 175, 80, 0.8)',
+        'rgba(255, 152, 0, 0.8)',
+        'rgba(33, 150, 243, 0.8)',
+        'rgba(233, 30, 99, 0.8)'
+    ];
+    
+    const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(0, 170, 255, 1)',
+        'rgba(156, 39, 176, 1)',
+        'rgba(76, 175, 80, 1)',
+        'rgba(255, 152, 0, 1)',
+        'rgba(33, 150, 243, 1)',
+        'rgba(233, 30, 99, 1)'
+    ];
+    
     // Create new chart
     rewardChart = new Chart(ctx, {
         type: 'doughnut',
@@ -657,24 +994,10 @@ function updateChart(batchData, totalUserWS) {
             labels: labels.map((label, i) => `${label} (${percentages[i]}%)`),
             datasets: [{
                 data: weightedShares,
-                backgroundColor: [
-                    'rgba(255, 51, 102, 0.8)',
-                    'rgba(255, 204, 0, 0.8)',
-                    'rgba(0, 170, 255, 0.8)',
-                    'rgba(156, 39, 176, 0.8)',
-                    'rgba(76, 175, 80, 0.8)',
-                    'rgba(255, 152, 0, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(255, 51, 102, 1)',
-                    'rgba(255, 204, 0, 1)',
-                    'rgba(0, 170, 255, 1)',
-                    'rgba(156, 39, 176, 1)',
-                    'rgba(76, 175, 80, 1)',
-                    'rgba(255, 152, 0, 1)'
-                ],
+                backgroundColor: backgroundColors.slice(0, weightedShares.length),
+                borderColor: borderColors.slice(0, weightedShares.length),
                 borderWidth: 2,
-                hoverOffset: 15
+                hoverOffset: 20
             }]
         },
         options: {
@@ -688,24 +1011,45 @@ function updateChart(batchData, totalUserWS) {
                         padding: 15,
                         font: {
                             family: 'Montserrat, sans-serif',
-                            size: 11
+                            size: 12
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const value = data.datasets[0].data[i];
+                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                                    return {
+                                        text: `${label.split(' ')[0]} ${label.split(' ')[1]} - ${percentage}%`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor[i],
+                                        lineWidth: 2,
+                                        hidden: false,
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
                         }
                     }
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
                     titleColor: 'var(--rebel-gold)',
                     bodyColor: 'white',
                     borderColor: 'var(--rebel-gold)',
                     borderWidth: 1,
+                    cornerRadius: 6,
+                    padding: 12,
                     callbacks: {
                         label: function(context) {
                             const batch = batchData[context.dataIndex];
                             return [
                                 `Amount: ${formatNumber(batch.amount)} $rebelinux`,
                                 `Age: ${batch.age} epochs`,
-                                `Factor: ${(1 + (K * Math.min(batch.age, MAX_AGE))).toFixed(2)}`,
-                                `Weighted Share: ${formatNumber(batch.ws, true)}`
+                                `Factor: ${(1 + (K * Math.min(batch.age, MAX_AGE))).toFixed(2)}x`,
+                                `Weighted Share: ${formatNumber(batch.ws, true)}`,
+                                `Share: ${((batch.ws / totalUserWS) * 100).toFixed(1)}%`
                             ];
                         }
                     }
@@ -713,8 +1057,11 @@ function updateChart(batchData, totalUserWS) {
             },
             animation: {
                 animateScale: true,
-                animateRotate: true
-            }
+                animateRotate: true,
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            cutout: '60%'
         }
     });
 }
@@ -728,28 +1075,31 @@ function loadExampleCase(type) {
         switch(type) {
             case 'starter':
                 // Small holder example
-                addTokenBatch('100000', '5'); // 100K tokens, 5 epochs
-                addTokenBatch('50000', '3');  // 50K tokens, 3 epochs
+                addTokenBatch('50000', '3');   // 50K tokens, 3 epochs
+                addTokenBatch('100000', '8');  // 100K tokens, 8 epochs
+                addTokenBatch('25000', '1');   // 25K tokens, 1 epoch
                 break;
                 
             case 'investor':
                 // Medium-sized investor
-                addTokenBatch('1000000', '8'); // 1M tokens, 8 epochs
-                addTokenBatch('2000000', '4'); // 2M tokens, 4 epochs
-                addTokenBatch('500000', '12'); // 500K tokens, 12 epochs
+                addTokenBatch('500000', '5');   // 500K tokens, 5 epochs
+                addTokenBatch('1000000', '10'); // 1M tokens, 10 epochs
+                addTokenBatch('750000', '15');  // 750K tokens, 15 epochs
+                addTokenBatch('250000', '2');   // 250K tokens, 2 epochs
                 break;
                 
             case 'whale':
                 // Large holder
-                addTokenBatch('5000000', '10'); // 5M tokens, 10 epochs
-                addTokenBatch('3000000', '15'); // 3M tokens, 15 epochs
-                addTokenBatch('2000000', '20'); // 2M tokens, 20 epochs (max age bonus)
-                addTokenBatch('1000000', '2');  // 1M tokens, 2 epochs
+                addTokenBatch('2000000', '8');   // 2M tokens, 8 epochs
+                addTokenBatch('3000000', '12');  // 3M tokens, 12 epochs
+                addTokenBatch('5000000', '18');  // 5M tokens, 18 epochs
+                addTokenBatch('1000000', '20');  // 1M tokens, 20 epochs (max age bonus)
+                addTokenBatch('500000', '6');    // 500K tokens, 6 epochs
                 break;
                 
             default:
                 // Fallback to starter
-                addTokenBatch('500000', '1');
+                addTokenBatch('100000', '1');
         }
         
         // Add example description
@@ -757,14 +1107,23 @@ function loadExampleCase(type) {
         if (resultElement) {
             resultElement.innerHTML = `
                 <div style="text-align: center; margin-bottom: var(--spacing-sm);">
-                    <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.1rem;">
+                    <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.2rem;">
                         <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
                     </span>
                 </div>
                 <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
                     Adjust participation settings and click "Calculate Sustainable Rewards" to see results!
                 </p>
+                <div style="display: flex; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+                    <button onclick="updateParticipationUI()" style="background: var(--rebel-red); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+                        <i class="fas fa-sync-alt"></i> Auto-update Participation
+                    </button>
+                    <button onclick="calculateRewards()" style="background: var(--rebel-gold); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
+                        <i class="fas fa-calculator"></i> Calculate Now
+                    </button>
+                </div>
             `;
+            resultElement.className = 'reward-result';
         }
         
         // Enable auto-update for examples
@@ -774,13 +1133,21 @@ function loadExampleCase(type) {
         updateParticipationUI();
         
         // Recalculate after a short delay
-        setTimeout(() => calculateRewards(), 500);
+        setTimeout(() => calculateRewards(), 800);
+        
+        // Show toast notification
+        showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} example loaded`, 'success');
     }, 500);
 }
 
 // ========== HELPER FUNCTIONS ==========
 function formatNumber(num, showDecimals = false) {
-    if (typeof num !== 'number' || isNaN(num)) return '0';
+    if (typeof num !== 'number' || isNaN(num) || !isFinite(num)) return '0';
+    
+    // For very small numbers
+    if (num < 0.001 && num > 0) {
+        return '<0.001';
+    }
     
     // Format large numbers with K, M, B suffixes
     if (num >= 1000000000) {
@@ -807,6 +1174,70 @@ function getGammaColor(gamma) {
     return '#ff3366';
 }
 
+function showToast(message, type = 'info') {
+    // Remove existing toasts
+    const existingToasts = document.querySelectorAll('.calculator-toast');
+    existingToasts.forEach(toast => toast.remove());
+    
+    // Create toast
+    const toast = document.createElement('div');
+    toast.className = `calculator-toast calculator-toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'error' ? 'times-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add styles
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
+                     type === 'warning' ? 'rgba(255, 193, 7, 0.9)' : 
+                     type === 'error' ? 'rgba(255, 51, 102, 0.9)' : 
+                     'rgba(33, 150, 243, 0.9)'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        animation: toastIn 0.3s ease;
+        backdrop-filter: blur(10px);
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Remove toast after 3 seconds
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add toast animation styles
+if (!document.querySelector('#toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'toast-styles';
+    style.textContent = `
+        @keyframes toastIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes toastOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // ========== ANIMATION FUNCTIONS ==========
 function initCalculatorAnimations() {
     const elements = document.querySelectorAll('.parameter-item, .calculator-section, .calculate-btn');
@@ -829,7 +1260,24 @@ window.addTokenBatch = addTokenBatch;
 window.removeTokenBatch = removeTokenBatch;
 window.clearTokenBatches = clearTokenBatches;
 window.updateRowCalculations = updateRowCalculations;
-window.updateParticipation = updateParticipation;
+window.updateParticipation = function() {
+    const participatingSlider = document.getElementById('participatingTokens');
+    const totalWSSlider = document.getElementById('totalWS');
+    
+    if (participatingSlider && totalWSSlider) {
+        calculatorState.currentParticipatingTokens = parseInt(participatingSlider.value) || 100000000;
+        calculatorState.currentTotalWS = parseInt(totalWSSlider.value) || 100000000;
+        
+        const participatingInput = document.getElementById('participatingTokensInput');
+        const totalWSInput = document.getElementById('totalWSInput');
+        
+        if (participatingInput) participatingInput.value = calculatorState.currentParticipatingTokens;
+        if (totalWSInput) totalWSInput.value = calculatorState.currentTotalWS;
+        
+        updateParticipationDisplay();
+        calculateRewards();
+    }
+};
 window.calculateRewards = calculateRewards;
 window.updateWhatIfGamma = updateWhatIfGamma;
 window.loadExampleCase = loadExampleCase;
