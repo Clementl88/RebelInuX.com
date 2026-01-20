@@ -1,4 +1,3 @@
-// rebl-calculator.js - Calculator-specific JavaScript
 
 // Global variables
 let rewardChart = null;
