@@ -35,239 +35,6 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/header-footer.css">
   <link rel="stylesheet" href="css/rebl-calculator.css">
-
-  <!-- Enhanced Calculator Styles -->
-  <style>
-    /* Toast notifications */
-    .calculator-toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      animation: toastIn 0.3s ease;
-      backdrop-filter: blur(10px);
-      max-width: 350px;
-    }
-    
-    .calculator-toast-success {
-      background: rgba(76, 175, 80, 0.9);
-      color: white;
-      border: 1px solid rgba(76, 175, 80, 0.5);
-    }
-    
-    .calculator-toast-info {
-      background: rgba(33, 150, 243, 0.9);
-      color: white;
-      border: 1px solid rgba(33, 150, 243, 0.5);
-    }
-    
-    .calculator-toast-warning {
-      background: rgba(255, 193, 7, 0.9);
-      color: black;
-      border: 1px solid rgba(255, 193, 7, 0.5);
-    }
-    
-    .calculator-toast-error {
-      background: rgba(255, 51, 102, 0.9);
-      color: white;
-      border: 1px solid rgba(255, 51, 102, 0.5);
-    }
-    
-    .toast-content {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    @keyframes toastIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes toastOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
-    }
-    
-    /* Help tooltips */
-    .help-tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: help;
-    }
-    
-    .help-tooltip .tooltip-text {
-      visibility: hidden;
-      width: 300px;
-      background-color: rgba(0, 0, 0, 0.9);
-      color: white;
-      text-align: left;
-      border-radius: 6px;
-      padding: 12px;
-      position: absolute;
-      z-index: 1000;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      font-size: 12px;
-      line-height: 1.4;
-      border: 1px solid var(--rebel-gold);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-    }
-    
-    .help-tooltip:hover .tooltip-text {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    /* Table actions */
-    .table-actions {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-    
-    .table-action-btn {
-      background: rgba(212, 167, 106, 0.1);
-      color: var(--rebel-gold);
-      border: 1px solid var(--rebel-gold);
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.3s ease;
-    }
-    
-    .table-action-btn:hover {
-      background: rgba(212, 167, 106, 0.2);
-      transform: translateY(-2px);
-    }
-    
-    /* Input validation */
-    input:invalid {
-      border-color: var(--rebel-red) !important;
-      box-shadow: 0 0 5px rgba(255, 51, 102, 0.5) !important;
-    }
-    
-    .input-hint {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 4px;
-      display: block;
-    }
-    
-    /* Loading state */
-    .calculate-btn.loading {
-      position: relative;
-      pointer-events: none;
-      opacity: 0.8;
-    }
-    
-    .calculate-btn.loading::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-top: 3px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Quick actions */
-    .quick-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-    
-    .quick-action-btn {
-      background: rgba(0, 170, 255, 0.1);
-      color: var(--rebel-blue);
-      border: 1px solid var(--rebel-blue);
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.3s ease;
-    }
-    
-    .quick-action-btn:hover {
-      background: rgba(0, 170, 255, 0.2);
-      transform: translateY(-1px);
-    }
-    
-    /* Gamma info panels */
-    .gamma-info-panel {
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px;
-      border-radius: 8px;
-      margin: 15px 0;
-      border-left: 4px solid;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    
-    .gamma-info-panel.low {
-      border-left-color: #ff3366;
-      background: rgba(255, 51, 102, 0.1);
-    }
-    
-    .gamma-info-panel.medium {
-      border-left-color: #ffcc00;
-      background: rgba(255, 204, 0, 0.1);
-    }
-    
-    .gamma-info-panel.high {
-      border-left-color: #00ff00;
-      background: rgba(0, 255, 0, 0.1);
-    }
-    
-    /* Mobile optimizations */
-    @media (max-width: 768px) {
-      .table-actions {
-        flex-direction: column;
-      }
-      
-      .table-action-btn {
-        justify-content: center;
-      }
-      
-      .quick-actions {
-        flex-direction: column;
-      }
-      
-      .quick-action-btn {
-        justify-content: center;
-      }
-    }
-  </style>
 </head>
 <body>
   <!-- Loading Animation -->
@@ -439,7 +206,7 @@
               <span class="toggle-slider"></span>
               <span class="toggle-text">Auto-update participation based on your tokens</span>
             </label>
-            <div class="toggle-help" style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">
+            <div class="toggle-help">
               <i class="fas fa-info-circle"></i> When enabled, participation estimates adjust automatically based on your token batches
             </div>
           </div>
@@ -506,11 +273,11 @@
             
             <!-- Gamma Info Panel -->
             <div id="gammaInfoPanel" class="gamma-info-panel low">
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+              <div class="gamma-info-header">
                 <i class="fas fa-info-circle"></i>
                 <strong>Low Participation (γ = 0.40)</strong>
               </div>
-              <p style="margin: 0; font-size: 12px;">The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.</p>
+              <p class="gamma-info-text">The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.</p>
             </div>
           </div>
           
@@ -519,41 +286,39 @@
             <div class="gamma-component">
               <div class="component-label">P/(0.5×CS)</div>
               <div id="participationTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
+              <div class="input-hint">Participation Scaling</div>
             </div>
             <div class="gamma-component">
               <div class="component-label">CS/∑WS</div>
               <div id="inflationCap" class="component-value">1.00</div>
-              <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
+              <div class="input-hint">Age Inflation Cap</div>
             </div>
             <div class="gamma-component">
               <div class="component-label">MIN(1, ...)</div>
               <div id="minTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Minimum of terms</div>
+              <div class="input-hint">Minimum of terms</div>
             </div>
             <div class="gamma-component">
               <div class="component-label">MAX(0.4, ...)</div>
               <div id="maxTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Final Gamma Scale</div>
+              <div class="input-hint">Final Gamma Scale</div>
             </div>
           </div>
           
           <!-- Quick Presets -->
-          <div style="margin-top: 20px;">
-            <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
-              <button onclick="setParticipationPreset('low')" class="quick-action-btn">
-                <i class="fas fa-arrow-down"></i> Low Participation
-              </button>
-              <button onclick="setParticipationPreset('medium')" class="quick-action-btn">
-                <i class="fas fa-arrows-alt-h"></i> Medium Participation
-              </button>
-              <button onclick="setParticipationPreset('high')" class="quick-action-btn">
-                <i class="fas fa-arrow-up"></i> High Participation
-              </button>
-              <button onclick="setParticipationPreset('optimal')" class="quick-action-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
-                <i class="fas fa-star"></i> Optimal (50% CS)
-              </button>
-            </div>
+          <div class="preset-buttons">
+            <button onclick="setParticipationPreset('low')" class="quick-action-btn">
+              <i class="fas fa-arrow-down"></i> Low Participation
+            </button>
+            <button onclick="setParticipationPreset('medium')" class="quick-action-btn">
+              <i class="fas fa-arrows-alt-h"></i> Medium Participation
+            </button>
+            <button onclick="setParticipationPreset('high')" class="quick-action-btn">
+              <i class="fas fa-arrow-up"></i> High Participation
+            </button>
+            <button onclick="setParticipationPreset('optimal')" class="quick-action-btn optimal-preset">
+              <i class="fas fa-star"></i> Optimal (50% CS)
+            </button>
           </div>
         </div>
 
@@ -562,17 +327,17 @@
           <button onclick="calculateRewards()" class="calculate-btn" id="calculateButton">
             <i class="fas fa-calculator"></i> CALCULATE SUSTAINABLE REWARDS
           </button>
-          <div class="input-hint" style="text-align: center; margin-top: 10px;">
+          <div class="input-hint text-center">
             <i class="fas fa-bolt"></i> Click to calculate your weekly $REBL rewards based on current settings
           </div>
         </div>
 
         <!-- Results Display -->
         <div id="reward-result" class="reward-result">
-          <div style="text-align: center;">
-            <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+          <div class="reward-placeholder">
+            <i class="fas fa-calculator"></i>
             <p>Enter your token batches to calculate your sustainable $REBL rewards!</p>
-            <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+            <p class="reward-placeholder-subtext">
               Try loading an example or adding your own token batches.
             </p>
           </div>
@@ -642,16 +407,12 @@
             <div class="gamma-result">
               <div class="gamma-label">Gamma Scale Factor</div>
               <div id="gammaScaleResult" class="gamma-result-value">γ = 0.40</div>
-              <div class="input-hint" style="margin-top: 5px;">
-                Scale: 0.40 (Floor) → 1.00 (Max)
-              </div>
+              <div class="input-hint">Scale: 0.40 (Floor) → 1.00 (Max)</div>
             </div>
             <div class="effective-distribution">
               <div class="distribution-label">Effective Distribution</div>
               <div id="effectiveDistribution" class="distribution-value">1,280,000 $REBL</div>
-              <div class="input-hint" style="margin-top: 5px;">
-                Actual weekly rewards pool
-              </div>
+              <div class="input-hint">Actual weekly rewards pool</div>
             </div>
           </div>
           
@@ -678,15 +439,15 @@
           </div>
           
           <!-- Simulator Presets -->
-          <div style="margin-top: 25px; text-align: center;">
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
+          <div class="simulator-presets">
+            <div class="preset-buttons">
               <button onclick="setSimulatorPreset('current')" class="table-action-btn">
                 <i class="fas fa-sync"></i> Use Current Settings
               </button>
-              <button onclick="setSimulatorPreset('optimal')" class="table-action-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+              <button onclick="setSimulatorPreset('optimal')" class="table-action-btn optimal-preset">
                 <i class="fas fa-bullseye"></i> 50% Participation
               </button>
-              <button onclick="setSimulatorPreset('full')" class="table-action-btn" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00;">
+              <button onclick="setSimulatorPreset('full')" class="table-action-btn full-gamma-preset">
                 <i class="fas fa-rocket"></i> Full Gamma (100%)
               </button>
             </div>
@@ -775,7 +536,7 @@
             <div class="faq-item">
               <h4><i class="fas fa-question-circle"></i> How do I actually claim rewards?</h4>
               <p>You need both $rebelinux tokens and the active Rebel Key NFT. 
-                <a href="epoch-rewards.html#how-to-claim">See step-by-step claiming instructions →</a>
+                <a href="epoch-rewards.html#how-to-claim" class="claim-link">See step-by-step claiming instructions →</a>
               </p>
               <div class="input-hint">Weekly claiming through the official interface</div>
             </div>
@@ -1481,11 +1242,11 @@
         
         gammaInfoPanel.className = `gamma-info-panel ${panelClass}`;
         gammaInfoPanel.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+            <div class="gamma-info-header">
                 <i class="fas fa-info-circle"></i>
                 <strong>${panelTitle}</strong>
             </div>
-            <p style="margin: 0; font-size: 12px;">${panelText}</p>
+            <p class="gamma-info-text">${panelText}</p>
         `;
     }
 
@@ -1649,10 +1410,10 @@
             
             if (userWS <= 0 || batchData.length === 0 || totalAmount <= 0) {
                 resultElement.innerHTML = `
-                    <div style="text-align: center;">
-                        <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <p>Please enter valid token batches to calculate your sustainable $REBL rewards!</p>
-                        <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+                    <div class="reward-placeholder">
+                        <i class="fas fa-calculator"></i>
+                        <p>Enter your token batches to calculate your sustainable $REBL rewards!</p>
+                        <p class="reward-placeholder-subtext">
                             Try loading an example or adding your own token batches.
                         </p>
                     </div>
@@ -1680,52 +1441,50 @@
             
             // Format the results
             const resultHTML = `
-                <div style="text-align: left;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Weighted Share (WSᵢ):</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(userWS, true)}</span>
+                <div class="reward-results-content">
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Your Weighted Share (WSᵢ):</span>
+                        <span class="reward-result-value gold">${formatNumber(userWS, true)}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Total Active Weighted Shares (∑WS):</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Total Active Weighted Shares (∑WS):</span>
+                        <span class="reward-result-value gold">${formatNumber(totalWS)}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Share of Active Pool:</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${poolPercentage}%</span>
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Your Share of Active Pool:</span>
+                        <span class="reward-result-value gold">${poolPercentage}%</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Gamma Scale Factor (γ):</strong></span>
-                        <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Gamma Scale Factor (γ):</span>
+                        <span class="reward-result-value" style="color: ${getGammaColor(gamma)};">${gamma.toFixed(2)}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Effective Weekly Pool:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: bold;">${formatNumber(effectivePool, false)} $REBL</span>
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Effective Weekly Pool:</span>
+                        <span class="reward-result-value red">${formatNumber(effectivePool, false)} $REBL</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Weekly Return:</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${returnPercentage}%</span>
+                    <div class="reward-result-row">
+                        <span class="reward-result-label">Weekly Return:</span>
+                        <span class="reward-result-value gold">${returnPercentage}%</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 0.5em; padding-top: 0.5em; border-top: 2px solid rgba(255, 204, 0, 0.5);">
-                        <span><strong>Your Sustainable Reward:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);">
-                            ${formatNumber(userReward, true)} $REBL
-                        </span>
+                    <div class="reward-result-main">
+                        <span class="reward-result-main-label">Your Sustainable Reward:</span>
+                        <span class="reward-result-main-value">${formatNumber(userReward, true)} $REBL</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                        <span><em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
+                    <div class="reward-result-note">
+                        <em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em>
                     </div>
-                    <div style="margin-top: 1em; padding-top: 1em; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9em;">
-                            <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 6px;">
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Monthly Estimate*</div>
-                                <div style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(monthlyReward, true)} $REBL</div>
+                    <div class="reward-projections">
+                        <div class="projection-grid">
+                            <div class="projection-item">
+                                <div class="projection-label">Monthly Estimate*</div>
+                                <div class="projection-value gold">${formatNumber(monthlyReward, true)} $REBL</div>
                             </div>
-                            <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 6px;">
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Annual Estimate*</div>
-                                <div style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(annualReward, true)} $REBL</div>
+                            <div class="projection-item">
+                                <div class="projection-label">Annual Estimate*</div>
+                                <div class="projection-value gold">${formatNumber(annualReward, true)} $REBL</div>
                             </div>
                         </div>
-                        <div style="font-size: 0.7em; color: rgba(255, 255, 255, 0.5); margin-top: 5px; text-align: center;">
+                        <div class="projection-disclaimer">
                             *Estimates assume same participation levels continue
                         </div>
                     </div>
@@ -1924,21 +1683,21 @@
             const resultElement = document.getElementById('reward-result');
             if (resultElement) {
                 resultElement.innerHTML = `
-                    <div style="text-align: center; margin-bottom: var(--spacing-sm);">
-                        <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.2rem;">
+                    <div class="example-loaded-message">
+                        <div class="example-loaded-header">
                             <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
-                        </span>
-                    </div>
-                    <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
-                        Adjust participation settings and click "Calculate Sustainable Rewards" to see results!
-                    </p>
-                    <div style="display: flex; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
-                        <button onclick="updateParticipationUI()" style="background: var(--rebel-red); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                            <i class="fas fa-sync-alt"></i> Auto-update Participation
-                        </button>
-                        <button onclick="calculateRewards()" style="background: var(--rebel-gold); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
-                            <i class="fas fa-calculator"></i> Calculate Now
-                        </button>
+                        </div>
+                        <p class="example-loaded-text">
+                            Adjust participation settings and click "Calculate Sustainable Rewards" to see results!
+                        </p>
+                        <div class="example-loaded-actions">
+                            <button onclick="updateParticipationUI()" class="example-action-btn">
+                                <i class="fas fa-sync-alt"></i> Auto-update Participation
+                            </button>
+                            <button onclick="calculateRewards()" class="example-action-btn gold">
+                                <i class="fas fa-calculator"></i> Calculate Now
+                            </button>
+                        </div>
                     </div>
                 `;
                 resultElement.className = 'reward-result';
