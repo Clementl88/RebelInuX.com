@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Sustainable Reward Calculator - Calculate $REBL rewards using the new sustainable formula with Gamma Scale Factor" />
+  <meta name="keywords" content="RebelInuX calculator, $REBL rewards, epoch calculator, sustainable formula, gamma scale factor" />
+  <meta property="og:title" content="RebelInuX Sustainable Reward Calculator" />
+  <meta property="og:image" content="images/Logo_REBL.svg" />
+  <meta property="og:description" content="Calculate your $REBL rewards using the sustainable formula with Gamma Scale Factor (γ) simulation" />
+  <meta property="og:url" content="https://rebelinux.fun/rebl-calculator.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Sustainable Reward Calculator">
+  <meta name="twitter:description" content="Calculate your $REBL rewards using the sustainable formula with Gamma Scale Factor (γ) simulation">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicons -->
+  <link rel="icon" href="images/Logo_REBL.svg">
+  <link rel="apple-touch-icon" href="images/Logo_REBL.svg">
+  <title>RebelInuX Sustainable Reward Calculator</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header-footer.css">
+  <link rel="stylesheet" href="css/rebl-calculator.css">
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header will be inserted here by JavaScript -->
+  <div id="header-container"></div>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero page-hero--calculator">
+      <div class="container">
+        <h1>SUSTAINABLE REWARD CALCULATOR</h1>
+        <p class="text-lead">Calculate your $REBL rewards using the new sustainable formula with Gamma Scale Factor (γ) simulation. Plan your strategy based on participation levels!</p>
+        <div class="hero-buttons">
+          <a href="#rebl-calculator" class="cta-button">
+            <i class="fas fa-calculator"></i> Start Calculating
+          </a>
+          <a href="#calculator-faq" class="cta-button gold">
+            <i class="fas fa-question-circle"></i> FAQ & Help
+          </a>
+          <a href="epoch-rewards.html" class="cta-button">
+            <i class="fas fa-gift"></i> View Epoch Rewards
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Formula Announcement -->
+    <section id="formula-announcement">
+      <div class="container">
+        <div class="announcement-banner calculator-announcement">
+          <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
+          <div class="formula-display">
+            <div class="formula-equation">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            </div>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS/∑WS))
+            </div>
+          </div>
+          <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Calculator -->
+    <section id="rebl-calculator">
+      <div class="container">
+        <h2><i class="fas fa-calculator"></i> Sustainable Reward Calculator</h2>
+        
+        <!-- Core Parameters -->
+        <div class="calculator-parameters">
+          <div class="parameter-grid">
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-coins"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">CS (Circulating Supply)</div>
+                <div class="parameter-value">499,242,047</div>
+                <div class="parameter-description">Total $rebelinux tokens</div>
+              </div>
+            </div>
+            
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-piggy-bank"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">WERP (Weekly Pool)</div>
+                <div class="parameter-value">3,200,000 $REBL</div>
+                <div class="parameter-description">Fixed weekly distribution</div>
+              </div>
+            </div>
+            
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-sliders-h"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">γ (Gamma Scale)</div>
+                <div id="gammaValueDisplay" class="parameter-value">0.40</div>
+                <div class="parameter-description">Sustainability factor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Your Token Batches -->
+        <div class="calculator-section token-batches-section">
+          <div class="section-header">
+            <h3><i class="fas fa-layer-group"></i> Your Token Batches</h3>
+            <div class="example-buttons">
+              <button onclick="loadExampleCase('starter')" class="example-btn">
+                <i class="fas fa-user-graduate"></i> Starter
+              </button>
+              <button onclick="loadExampleCase('investor')" class="example-btn">
+                <i class="fas fa-chart-line"></i> Investor
+              </button>
+              <button onclick="loadExampleCase('whale')" class="example-btn">
+                <i class="fas fa-whale"></i> Whale
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table id="token-batches-table">
+              <thead>
+                <tr>
+                  <th>$rebelinux Amount</th>
+                  <th>Age (Epochs)</th>
+                  <th>Weight Factor</th>
+                  <th>WSᵢ (Weighted Share)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows will be added dynamically -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="batch-controls">
+            <button onclick="addTokenBatch()" class="batch-btn add-btn">
+              <i class="fas fa-plus"></i> Add Batch
+            </button>
+            <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
+              <i class="fas fa-trash"></i> Clear All
+            </button>
+          </div>
+        </div>
+
+        <!-- Participation Settings -->
+        <div class="calculator-section participation-settings">
+          <h3><i class="fas fa-users"></i> Participation Settings</h3>
+          
+          <div class="slider-group">
+            <div class="slider-container">
+              <label>
+                Total Participating Tokens (P):
+                <span id="participatingTokensValue" class="slider-value">100M</span>
+              </label>
+              <input type="range" id="participatingTokens" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
+            </div>
+            
+            <div class="slider-container">
+              <label>
+                ∑WS (Total Active Weighted Shares):
+                <span id="totalWSValue" class="slider-value">100M</span>
+              </label>
+              <input type="range" id="totalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Visualization -->
+          <div class="gamma-visualization">
+            <label>
+              Gamma Scale (γ):
+              <span id="gammaValue" class="gamma-value">0.40</span>
+            </label>
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="gammaMarker" class="gamma-marker" style="left: 40%;"></div>
+              </div>
+            </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span>50% Participation</span>
+              <span>100%</span>
+            </div>
+          </div>
+          
+          <!-- Gamma Components -->
+          <div class="gamma-components">
+            <div class="gamma-component">
+              <div class="component-label">P/(0.5×CS)</div>
+              <div id="participationTerm" class="component-value">0.40</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">CS/∑WS</div>
+              <div id="inflationCap" class="component-value">1.00</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MIN(1, ...)</div>
+              <div id="minTerm" class="component-value">0.40</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MAX(0.4, ...)</div>
+              <div id="maxTerm" class="component-value">0.40</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <div class="calculate-action">
+          <button onclick="calculateRewards()" class="calculate-btn">
+            <i class="fas fa-calculator"></i> CALCULATE SUSTAINABLE REWARDS
+          </button>
+        </div>
+
+        <!-- Results Display -->
+        <div id="reward-result" class="reward-result">
+          Enter your token batches to calculate your sustainable $REBL rewards!
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+          <canvas id="rewardChart"></canvas>
+          <div id="chartPlaceholder" class="chart-placeholder">
+            <i class="fas fa-chart-pie"></i>
+            <p>Your sustainable reward distribution will appear here</p>
+          </div>
+        </div>
+
+        <!-- Gamma Scale Simulator -->
+        <div class="calculator-section gamma-simulator">
+          <h3><i class="fas fa-chart-line"></i> Gamma Scale Simulator</h3>
+          
+          <div class="simulator-info">
+            <p>
+              See how the Gamma Scale Factor (γ) adjusts rewards based on community participation. 
+              Move the slider to see how reaching 50% participation unlocks higher rewards for everyone!
+            </p>
+          </div>
+          
+          <!-- Simulator Sliders -->
+          <div class="slider-group">
+            <div class="slider-container">
+              <label>
+                Participating Tokens (P):
+                <span id="whatIfParticipatingValue" class="slider-value">100M</span>
+              </label>
+              <input type="range" id="whatIfParticipating" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+            </div>
+            
+            <div class="slider-container">
+              <label>
+                Total Weighted Shares (∑WS):
+                <span id="whatIfTotalWSValue" class="slider-value">100M</span>
+              </label>
+              <input type="range" id="whatIfTotalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Results -->
+          <div class="simulator-results">
+            <div class="gamma-result">
+              <div class="gamma-label">Gamma Scale Factor</div>
+              <div id="gammaScaleResult" class="gamma-result-value">γ = 0.40</div>
+            </div>
+            <div class="effective-distribution">
+              <div class="distribution-label">Effective Distribution</div>
+              <div id="effectiveDistribution" class="distribution-value">1,280,000 $REBL</div>
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Visualization -->
+          <div class="gamma-visualization">
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="whatIfGammaMarker" class="gamma-marker" style="left: 40%;"></div>
+              </div>
+            </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span id="targetParticipation">249.6M (50% CS)</span>
+              <span>100%</span>
+            </div>
+          </div>
+          
+          <!-- Gamma Breakdown -->
+          <div class="gamma-breakdown">
+            <h4>γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</h4>
+            <div id="gammaBreakdown" class="breakdown-text">
+              Currently: MAX(0.4, MIN(1, 0.40, 1.00)) = 0.40
+            </div>
+          </div>
+        </div>
+
+        <!-- Formula Display -->
+        <div class="calculator-section formula-display-section">
+          <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
+          <div class="formula-container">
+            <div class="formula-main">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            </div>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS/∑WS))
+            </div>
+          </div>
+          <div class="formula-explanation">
+            <div class="explanation-item">
+              <strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]
+            </div>
+            <div class="explanation-item">
+              <strong>∑WS:</strong> Total Active Weighted Shares from all participants
+            </div>
+            <div class="explanation-item">
+              <strong>P:</strong> Total participating tokens in the epoch
+            </div>
+            <div class="explanation-item">
+              <strong>CS:</strong> Circulating Supply (499,242,047)
+            </div>
+            <div class="explanation-item">
+              <strong>γ:</strong> Gamma Scale Factor - adjusts rewards based on participation and fairness
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator FAQ -->
+    <section id="calculator-faq">
+      <div class="container">
+        <h2><i class="fas fa-question-circle"></i> Calculator FAQ</h2>
+        <div class="content-card">
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What is the Gamma Scale Factor (γ)?</h4>
+              <p>γ adjusts rewards based on participation: 40% minimum, scaling to 100% when 50%+ of supply participates. γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How is WSᵢ calculated?</h4>
+              <p>WSᵢ = Token Amount × (1 + 0.07 × min(Epoch Age, 20)). Each batch gets a 7% weight boost per epoch, maxing at 2.4x after 20 epochs.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> Why do my estimates change with participation?</h4>
+              <p>The formula is proportional: Your share = Your WSᵢ ÷ Total WS. More participants = your share changes even if your tokens stay the same.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What's the difference between P and ∑WS?</h4>
+              <p>P = Total participating tokens (raw amount). ∑WS = Total weighted shares (includes age bonuses). ∑WS is always ≥ P.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> Is this calculator accurate?</h4>
+              <p>This uses the exact formula from smart contracts. Results are estimates based on current participation levels; actual rewards depend on final epoch data.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How often should I recalculate?</h4>
+              <p>Recalculate when: 1) You buy/sell tokens, 2) An epoch completes (age increases), 3) Participation changes significantly.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How do I actually claim rewards?</h4>
+              <p>You need both $rebelinux tokens and the active Rebel Key NFT. 
+                <a href="epoch-rewards.html#how-to-claim">See step-by-step claiming instructions →</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Pages -->
+    <section id="related-pages">
+      <div class="container">
+        <h2>Related Pages</h2>
+        <div class="related-grid">
+          <!-- Epoch Rewards -->
+          <a href="epoch-rewards.html" class="related-card rewards-card">
+            <div class="related-icon"><i class="fas fa-gift"></i></div>
+            <h3>Epoch Rewards</h3>
+            <p>Weekly $REBL distribution system</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
+            </div>
+          </a>
+          
+          <!-- Tokenomics -->
+          <a href="tokenomics.html" class="related-card tokenomics-card">
+            <div class="related-icon"><i class="fas fa-chart-pie"></i></div>
+            <h3>Tokenomics</h3>
+            <p>$REBL distribution & vesting details</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
+            </div>
+          </a>
+          
+          <!-- Governance -->
+          <a href="governance.html" class="related-card governance-card">
+            <div class="related-icon"><i class="fas fa-vote-yea"></i></div>
+            <h3>Governance</h3>
+            <p>DAO structure & community voting</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> Start Voting
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- Footer will be inserted here by JavaScript -->
+  <div id="footer-container"></div>
+  
+  <!-- JavaScript Includes -->
+  <script src="js/includes.js"></script>
+  <script src="js/common.js"></script>
+  
+  <!-- Calculator JavaScript -->
+  <script src="js/rebl-calculator.js"></script>
+</body>
+</html>
