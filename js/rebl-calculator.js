@@ -1,7 +1,7 @@
 // rebl-calculator.js -- Complete Enhanced Calculator JavaScript
 // Version: 1.2.0 | Enhanced with advanced features and better UX
 
-// ========== GLOBAL VARIABLES & CONSTANTS ==========
+// ========== GLOBAL VARIABLES & CONSTANTS =============
 let rewardChart = null;
 const CS = 499242047.00; // Circulating Supply
 const WERP = 3200000.00; // Weekly Epoch Reward Pool
