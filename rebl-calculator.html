@@ -249,6 +249,128 @@
       background: rgba(0, 255, 0, 0.1);
     }
     
+    /* Enhanced WS Info Styles */
+    .ws-info-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .ws-info-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-gold);
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .ws-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .ws-info-item {
+      text-align: center;
+      padding: 10px;
+    }
+    
+    .ws-info-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+    }
+    
+    .ws-info-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    .ws-info-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    /* Age Bonus Calculator */
+    .age-bonus-calculator {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    
+    .age-bonus-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .age-bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .age-bonus-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .age-bonus-age {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .age-bonus-multiplier {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    /* WS Multiplier Display */
+    .ws-multiplier-display {
+      display: inline-block;
+      padding: 4px 8px;
+      background: rgba(212, 167, 106, 0.2);
+      border-radius: 4px;
+      font-size: 14px;
+      margin-left: 8px;
+      color: var(--rebel-gold);
+    }
+    
+    /* Enhanced Input Hints */
+    .input-hint.ws-hint {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      border-left: 3px solid var(--rebel-gold);
+    }
+    
+    /* Auto WS Calculation Indicator */
+    .ws-auto-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #4CAF50;
+      margin-left: 8px;
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .table-actions {
@@ -265,6 +387,24 @@
       
       .quick-action-btn {
         justify-content: center;
+      }
+      
+      .ws-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .age-bonus-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .ws-info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .age-bonus-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
     }
   </style>
@@ -423,8 +563,9 @@
             </table>
           </div>
           
-          <div class="input-hint">
-            <i class="fas fa-info-circle"></i> Enter your token batches (amount and age in epochs). Age bonus: +7% per epoch up to 20 epochs (max 2.4x multiplier).
+          <div class="input-hint ws-hint">
+            <i class="fas fa-info-circle"></i> <strong>∑WS Calculation:</strong> Each batch gets 7% weight boost per epoch (max 20 epochs). 
+            Total WS = Σ[Token Amount × (1 + 0.07 × min(Age, 20))]. Your tokens: <span id="userTokenSum">0</span> | Your WS: <span id="userWSSum">0</span>
           </div>
         </div>
 
@@ -441,6 +582,35 @@
             </label>
             <div class="toggle-help" style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">
               <i class="fas fa-info-circle"></i> When enabled, participation estimates adjust automatically based on your token batches
+            </div>
+          </div>
+          
+          <!-- WS Info Container -->
+          <div class="ws-info-container">
+            <div class="ws-info-header">
+              <i class="fas fa-calculator"></i> Weighted Share Calculation
+            </div>
+            <div class="ws-info-grid">
+              <div class="ws-info-item">
+                <div class="ws-info-label">Your Tokens</div>
+                <div id="yourTokensDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">Raw amount</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Your WS</div>
+                <div id="yourWSDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">With age bonus</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Avg. Bonus</div>
+                <div id="avgBonusDisplay" class="ws-info-value">1.00x</div>
+                <div class="ws-info-hint">Per token</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">WS Multiplier</div>
+                <div id="wsMultiplierDisplay" class="ws-info-value">1.00x</div>
+                <div class="ws-info-hint">∑WS / P</div>
+              </div>
             </div>
           </div>
           
@@ -473,11 +643,14 @@
                   <input type="number" id="totalWSInput" class="value-input" 
                          value="100000000" min="1000000" max="500000000" step="1000000">
                   <span id="totalWSValue" class="slider-value">100M</span>
+                  <span class="ws-auto-indicator" id="wsAutoIndicator">
+                    <i class="fas fa-robot"></i> Auto-calculated
+                  </span>
                 </div>
               </div>
               <input type="range" id="totalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
               <div class="input-hint">
-                Current: <span id="currentWSDisplay">100M</span> | Your WS share: <span id="yourWSShare">0%</span>
+                Current: <span id="currentWSDisplay">100M</span> | Your WS share: <span id="yourWSShare">0%</span> | Multiplier: <span id="wsMultiplierCurrent">1.00x</span>
               </div>
             </div>
           </div>
@@ -485,6 +658,35 @@
           <!-- Contribution Display -->
           <div id="contributionContainer" style="display: none;">
             <!-- Will be populated by JavaScript -->
+          </div>
+          
+          <!-- Age Bonus Calculator -->
+          <div class="age-bonus-calculator">
+            <div class="age-bonus-header">
+              <i class="fas fa-chart-line"></i> Age Bonus Reference (7% per epoch)
+            </div>
+            <div class="age-bonus-grid">
+              <div class="age-bonus-item">
+                <div class="age-bonus-age">0 epochs</div>
+                <div class="age-bonus-multiplier">1.00x</div>
+              </div>
+              <div class="age-bonus-item">
+                <div class="age-bonus-age">5 epochs</div>
+                <div class="age-bonus-multiplier">1.35x</div>
+              </div>
+              <div class="age-bonus-item">
+                <div class="age-bonus-age">10 epochs</div>
+                <div class="age-bonus-multiplier">1.70x</div>
+              </div>
+              <div class="age-bonus-item">
+                <div class="age-bonus-age">15 epochs</div>
+                <div class="age-bonus-multiplier">2.05x</div>
+              </div>
+              <div class="age-bonus-item">
+                <div class="age-bonus-age">20+ epochs</div>
+                <div class="age-bonus-multiplier">2.40x</div>
+              </div>
+            </div>
           </div>
           
           <!-- Gamma Scale Visualization -->
@@ -711,7 +913,7 @@
             </div>
             <div class="explanation-item">
               <strong>∑WS:</strong> Total Active Weighted Shares from all participants
-              <div class="input-hint">Sum of all participants' weighted shares</div>
+              <div class="input-hint">Sum of all participants' weighted shares = Σ[Token Amount × (1 + 0.07 × min(Age, 20))]</div>
             </div>
             <div class="explanation-item">
               <strong>P:</strong> Total participating tokens in the epoch
@@ -749,20 +951,20 @@
             </div>
             
             <div class="faq-item">
-              <h4><i class="fas fa-question-circle"></i> Why do my estimates change with participation?</h4>
-              <p>The formula is proportional: Your share = Your WSᵢ ÷ Total WS. More participants = your share changes even if your tokens stay the same.</p>
-              <div class="input-hint">Rewards are distributed proportionally among all participants</div>
+              <h4><i class="fas fa-question-circle"></i> How is ∑WS automatically calculated?</h4>
+              <p>∑WS is estimated based on your token batches: Total WS = Your WS + (Other Tokens × Estimated Age Bonus). Age bonuses for other participants are estimated at 85% of your average bonus.</p>
+              <div class="input-hint">Auto-calculated to reflect realistic participation</div>
             </div>
             
             <div class="faq-item">
               <h4><i class="fas fa-question-circle"></i> What's the difference between P and ∑WS?</h4>
-              <p>P = Total participating tokens (raw amount). ∑WS = Total weighted shares (includes age bonuses). ∑WS is always ≥ P.</p>
+              <p>P = Total participating tokens (raw amount). ∑WS = Total weighted shares (includes age bonuses). ∑WS is always ≥ P, typically 1.1x to 2.4x P.</p>
               <div class="input-hint">∑WS includes age bonuses, making it larger than P</div>
             </div>
             
             <div class="faq-item">
               <h4><i class="fas fa-question-circle"></i> Is this calculator accurate?</h4>
-              <p>This uses the exact formula from smart contracts. Results are estimates based on current participation levels; actual rewards depend on final epoch data.</p>
+              <p>This uses the exact formula from smart contracts. ∑WS is intelligently estimated based on your holdings. Results are estimates based on current participation levels.</p>
               <div class="input-hint">Accuracy depends on participation estimates</div>
             </div>
             
@@ -837,7 +1039,7 @@
   <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
   
- <!-- Enhanced Calculator JavaScript -->
+  <!-- Enhanced Calculator JavaScript -->
   <script>
     // rebl-calculator.js - Complete Enhanced Calculator JavaScript
 
@@ -851,7 +1053,7 @@
     // State management
     let calculatorState = {
         autoUpdateParticipation: true,
-        autoUpdateWS: true, // NEW: Auto-update WS based on token batches
+        autoUpdateWS: true,
         totalUserTokens: 0,
         totalUserWS: 0,
         currentParticipatingTokens: 100000000,
@@ -1031,7 +1233,7 @@
         // Estimate other participants' tokens
         const otherTokens = participatingTokens - userTokens;
         
-        // Assume other participants have slightly lower average age bonus (80% of user's bonus)
+        // Assume other participants have slightly lower average age bonus (85% of user's bonus)
         const estimatedOtherWS = otherTokens * (userAvgBonus * 0.85);
         
         // Total WS = User WS + Estimated Other WS
@@ -1071,8 +1273,50 @@
             currentWSDisplay.textContent = formatNumber(totalWS);
         }
         
+        // Update WS multiplier
+        updateWSMultiplierDisplay();
+        
         // Update WS share display
         updateWSShareDisplay();
+    }
+
+    function updateWSMultiplierDisplay() {
+        const wsMultiplierCurrent = document.getElementById('wsMultiplierCurrent');
+        const wsMultiplierDisplay = document.getElementById('wsMultiplierDisplay');
+        
+        if (calculatorState.currentParticipatingTokens > 0) {
+            const multiplier = (calculatorState.currentTotalWS / calculatorState.currentParticipatingTokens).toFixed(2);
+            
+            if (wsMultiplierCurrent) {
+                wsMultiplierCurrent.textContent = `${multiplier}x`;
+                
+                // Color code
+                if (multiplier >= 2.0) {
+                    wsMultiplierCurrent.style.color = '#4CAF50';
+                } else if (multiplier >= 1.5) {
+                    wsMultiplierCurrent.style.color = '#FFC107';
+                } else if (multiplier > 1.0) {
+                    wsMultiplierCurrent.style.color = '#ffffff';
+                } else {
+                    wsMultiplierCurrent.style.color = '#ff3366';
+                }
+            }
+            
+            if (wsMultiplierDisplay) {
+                wsMultiplierDisplay.textContent = `${multiplier}x`;
+                
+                // Color code
+                if (multiplier >= 2.0) {
+                    wsMultiplierDisplay.style.color = '#4CAF50';
+                } else if (multiplier >= 1.5) {
+                    wsMultiplierDisplay.style.color = '#FFC107';
+                } else if (multiplier > 1.0) {
+                    wsMultiplierDisplay.style.color = '#ffffff';
+                } else {
+                    wsMultiplierDisplay.style.color = '#ff3366';
+                }
+            }
+        }
     }
 
     function updateWSShareDisplay() {
@@ -1266,6 +1510,13 @@
         calculatorState.totalUserTokens = totalTokens;
         calculatorState.totalUserWS = totalWS;
         
+        // Update token sum display
+        const userTokenSum = document.getElementById('userTokenSum');
+        const userWSSum = document.getElementById('userWSSum');
+        
+        if (userTokenSum) userTokenSum.textContent = formatNumber(totalTokens);
+        if (userWSSum) userWSSum.textContent = formatNumber(totalWS, true);
+        
         // Update UI if auto-update is enabled
         if (calculatorState.autoUpdateParticipation) {
             updateParticipationUI();
@@ -1273,6 +1524,9 @@
         
         // Update user stats display
         updateUserStatsDisplay(totalTokens, totalWS);
+        
+        // Update WS info display
+        updateWSInfoDisplay();
         
         // Update quick info displays
         updateQuickInfoDisplays();
@@ -1379,19 +1633,45 @@
         }
     }
 
+    function updateWSInfoDisplay() {
+        const yourTokensDisplay = document.getElementById('yourTokensDisplay');
+        const yourWSDisplay = document.getElementById('yourWSDisplay');
+        const avgBonusDisplay = document.getElementById('avgBonusDisplay');
+        
+        if (yourTokensDisplay) {
+            yourTokensDisplay.textContent = formatNumber(calculatorState.totalUserTokens);
+        }
+        
+        if (yourWSDisplay) {
+            yourWSDisplay.textContent = formatNumber(calculatorState.totalUserWS, true);
+        }
+        
+        if (avgBonusDisplay) {
+            const avgBonus = calculatorState.totalUserTokens > 0 ? 
+                (calculatorState.totalUserWS / calculatorState.totalUserTokens).toFixed(2) : '1.00';
+            avgBonusDisplay.textContent = `${avgBonus}x`;
+            
+            // Color code
+            if (avgBonus >= 2.0) {
+                avgBonusDisplay.style.color = '#4CAF50';
+            } else if (avgBonus >= 1.5) {
+                avgBonusDisplay.style.color = '#FFC107';
+            } else {
+                avgBonusDisplay.style.color = '#ffffff';
+            }
+        }
+        
+        // Update WS multiplier
+        updateWSMultiplierDisplay();
+    }
+
     function updateQuickInfoDisplays() {
         // Update "Your share" displays
         const yourTokenShare = document.getElementById('yourTokenShare');
-        const yourWSShare = document.getElementById('yourWSShare');
         
         if (yourTokenShare && calculatorState.currentParticipatingTokens > 0) {
             const share = (calculatorState.totalUserTokens / calculatorState.currentParticipatingTokens * 100).toFixed(2);
             yourTokenShare.textContent = `${share}%`;
-        }
-        
-        if (yourWSShare && calculatorState.currentTotalWS > 0) {
-            const share = (calculatorState.totalUserWS / calculatorState.currentTotalWS * 100).toFixed(2);
-            yourWSShare.textContent = `${share}%`;
         }
     }
 
@@ -1434,6 +1714,12 @@
         totalWSSlider.disabled = isAuto;
         participatingInput.disabled = isAuto;
         totalWSInput.disabled = isAuto;
+        
+        // Show/hide auto indicator
+        const wsAutoIndicator = document.getElementById('wsAutoIndicator');
+        if (wsAutoIndicator) {
+            wsAutoIndicator.style.display = isAuto ? 'inline-flex' : 'none';
+        }
         
         // Update slider values based on user's tokens
         if (isAuto) {
@@ -1546,6 +1832,9 @@
         
         // Update quick info
         updateQuickInfoDisplays();
+        
+        // Update WS info
+        updateWSInfoDisplay();
     }
 
     function updateGammaInfoPanel(gamma) {
@@ -1591,7 +1880,7 @@
         // Find or create contribution display
         let contributionContainer = document.getElementById('contributionContainer');
         
-        if (!contributionContainer) {
+        if (!contributionContainer && userTokens > 0) {
             const participationSection = document.querySelector('.participation-settings .slider-group');
             if (!participationSection) return;
             
@@ -1624,7 +1913,7 @@
             participationSection.parentNode.insertBefore(contributionContainer, participationSection.nextSibling);
         }
         
-        if (userTokens > 0) {
+        if (contributionContainer && userTokens > 0) {
             // Calculate percentages
             const tokenPercentage = participatingTokens > 0 ? (userTokens / participatingTokens * 100) : 0;
             const wsPercentage = totalWS > 0 ? (userWS / totalWS * 100) : 0;
