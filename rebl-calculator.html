@@ -837,7 +837,7 @@
   <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
   
-  <!-- Enhanced Calculator JavaScript -->
+ <!-- Enhanced Calculator JavaScript -->
   <script>
     // rebl-calculator.js - Complete Enhanced Calculator JavaScript
 
@@ -851,6 +851,7 @@
     // State management
     let calculatorState = {
         autoUpdateParticipation: true,
+        autoUpdateWS: true, // NEW: Auto-update WS based on token batches
         totalUserTokens: 0,
         totalUserWS: 0,
         currentParticipatingTokens: 100000000,
@@ -992,6 +993,93 @@
         if (targetParticipatingDisplay) {
             const target = (0.5 * CS);
             targetParticipatingDisplay.textContent = formatNumber(target);
+        }
+    }
+
+    // ========== ENHANCED WS CALCULATION FUNCTIONS ==========
+    function calculateTotalWSFromTokens() {
+        // First, get user's weighted shares
+        const rows = document.querySelectorAll('#token-batches-table tbody tr');
+        let userWS = 0;
+        let userTokens = 0;
+        
+        rows.forEach(row => {
+            const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+            const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
+            const ws = amount * weightFactor;
+            
+            userWS += ws;
+            userTokens += amount;
+        });
+        
+        // Store user totals
+        calculatorState.totalUserTokens = userTokens;
+        calculatorState.totalUserWS = userWS;
+        
+        // Calculate estimated total WS based on participation
+        const participatingTokens = calculatorState.currentParticipatingTokens;
+        
+        if (userTokens <= 0 || participatingTokens <= userTokens) {
+            // If user has no tokens or no other participants
+            return Math.max(userWS, participatingTokens * 1.1);
+        }
+        
+        // Calculate user's average age bonus
+        const userAvgBonus = userTokens > 0 ? (userWS / userTokens) : 1;
+        
+        // Estimate other participants' tokens
+        const otherTokens = participatingTokens - userTokens;
+        
+        // Assume other participants have slightly lower average age bonus (80% of user's bonus)
+        const estimatedOtherWS = otherTokens * (userAvgBonus * 0.85);
+        
+        // Total WS = User WS + Estimated Other WS
+        const totalWS = userWS + estimatedOtherWS;
+        
+        // Ensure totalWS is at least participatingTokens (minimum 1x multiplier)
+        return Math.max(totalWS, participatingTokens * 1.05, userWS * 1.1);
+    }
+
+    function updateTotalWSDisplay() {
+        if (!calculatorState.autoUpdateWS) return;
+        
+        const totalWS = calculateTotalWSFromTokens();
+        calculatorState.currentTotalWS = totalWS;
+        
+        // Update slider and input
+        const totalWSSlider = document.getElementById('totalWS');
+        const totalWSInput = document.getElementById('totalWSInput');
+        
+        if (totalWSSlider) {
+            totalWSSlider.value = totalWS;
+        }
+        
+        if (totalWSInput) {
+            totalWSInput.value = totalWS;
+        }
+        
+        // Update display
+        const totalWSValue = document.getElementById('totalWSValue');
+        const currentWSDisplay = document.getElementById('currentWSDisplay');
+        
+        if (totalWSValue) {
+            totalWSValue.textContent = formatNumber(totalWS);
+        }
+        
+        if (currentWSDisplay) {
+            currentWSDisplay.textContent = formatNumber(totalWS);
+        }
+        
+        // Update WS share display
+        updateWSShareDisplay();
+    }
+
+    function updateWSShareDisplay() {
+        const yourWSShare = document.getElementById('yourWSShare');
+        if (yourWSShare && calculatorState.currentTotalWS > 0) {
+            const share = (calculatorState.totalUserWS / calculatorState.currentTotalWS * 100).toFixed(2);
+            yourWSShare.textContent = `${share}%`;
         }
     }
 
@@ -1149,6 +1237,9 @@
         // Update user totals
         updateUserTotals();
         
+        // Update total WS calculation
+        updateTotalWSDisplay();
+        
         // Calculate rewards with slight delay to avoid rapid calculations
         if (!calculatorState.isCalculating) {
             calculatorState.isCalculating = true;
@@ -1214,6 +1305,11 @@
                         <div id="userAvgBonus" class="user-stat-value">1.00x</div>
                         <div class="user-stat-percentage">Average multiplier</div>
                     </div>
+                    <div class="user-stat-item">
+                        <div class="user-stat-label">Max Possible WS</div>
+                        <div id="userMaxWS" class="user-stat-value">0</div>
+                        <div class="user-stat-percentage">With max age bonus</div>
+                    </div>
                 </div>
             `;
             
@@ -1230,6 +1326,7 @@
             const userTokenPercentage = document.getElementById('userTokenPercentage');
             const userTotalWS = document.getElementById('userTotalWS');
             const userAvgBonus = document.getElementById('userAvgBonus');
+            const userMaxWS = document.getElementById('userMaxWS');
             
             if (userTotalTokens) {
                 userTotalTokens.textContent = formatNumber(totalTokens);
@@ -1269,6 +1366,12 @@
                 } else {
                     userAvgBonus.style.color = '#ffffff';
                 }
+            }
+            
+            if (userMaxWS) {
+                const maxWS = totalTokens * 2.4; // Maximum with 20 epochs (1 + 0.07*20 = 2.4)
+                userMaxWS.textContent = formatNumber(maxWS, true);
+                userMaxWS.style.color = '#4CAF50';
             }
             
             // Show/hide based on whether user has tokens
@@ -1345,14 +1448,9 @@
             if (userTokens === 0) {
                 // Default minimum values
                 calculatorState.currentParticipatingTokens = 10000000;
-                calculatorState.currentTotalWS = 15000000;
             } 
             // Scenario 2: User has tokens
             else {
-                // Calculate user's age bonus factor
-                const userAgeBonus = userTokens > 0 ? (userWS / userTokens) : 1;
-                
-                // Estimate other participants based on user's holdings
                 // If user has significant holdings, assume more participation
                 const userShare = userTokens / CS;
                 let otherMultiplier;
@@ -1366,25 +1464,20 @@
                 }
                 
                 const estimatedOtherTokens = Math.min(remainingTokens, userTokens * otherMultiplier);
-                const estimatedOtherWS = estimatedOtherTokens * (userAgeBonus * 0.8); // Others have slightly lower age bonus
                 
                 // Calculate totals
                 calculatorState.currentParticipatingTokens = Math.min(
                     CS,
                     Math.max(userTokens * 2, userTokens + estimatedOtherTokens, 10000000)
                 );
-                
-                calculatorState.currentTotalWS = Math.min(
-                    CS * 2.4, // Maximum possible WS (all tokens with max age bonus)
-                    Math.max(userWS * 1.5, userWS + estimatedOtherWS, 15000000)
-                );
             }
             
             // Update sliders and inputs
             participatingSlider.value = calculatorState.currentParticipatingTokens;
-            totalWSSlider.value = calculatorState.currentTotalWS;
             participatingInput.value = calculatorState.currentParticipatingTokens;
-            totalWSInput.value = calculatorState.currentTotalWS;
+            
+            // Auto-calculate total WS based on tokens
+            updateTotalWSDisplay();
         }
         
         // Update displays
@@ -1678,6 +1771,9 @@
             const monthlyReward = userReward * 4.33; // Approximate weeks in a month
             const annualReward = userReward * 52; // Weeks in a year
             
+            // Calculate WS multiplier (how much age bonus increases WS)
+            const wsMultiplier = totalWS / participatingTokens;
+            
             // Format the results
             const resultHTML = `
                 <div style="text-align: left;">
@@ -1688,6 +1784,10 @@
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                         <span><strong>Total Active Weighted Shares (∑WS):</strong></span>
                         <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+                        <span><strong>WS Multiplier (∑WS/P):</strong></span>
+                        <span style="color: ${wsMultiplier >= 2.0 ? '#4CAF50' : wsMultiplier >= 1.5 ? '#FFC107' : '#ffffff'}; font-weight: bold;">${wsMultiplier.toFixed(2)}x</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                         <span><strong>Your Share of Active Pool:</strong></span>
@@ -1815,19 +1915,19 @@
         switch(type) {
             case 'low':
                 participating = 50000000; // 50M
-                totalWS = 75000000; // 75M
+                totalWS = participating * 1.2; // 20% age bonus
                 break;
             case 'medium':
                 participating = 150000000; // 150M
-                totalWS = 200000000; // 200M
+                totalWS = participating * 1.5; // 50% age bonus
                 break;
             case 'high':
                 participating = 300000000; // 300M
-                totalWS = 400000000; // 400M
+                totalWS = participating * 1.8; // 80% age bonus
                 break;
             case 'optimal':
                 participating = 249621024; // 50% of CS
-                totalWS = 350000000; // Slightly higher due to age bonuses
+                totalWS = participating * 1.6; // 60% age bonus
                 break;
             default:
                 return;
@@ -1861,11 +1961,11 @@
                 break;
             case 'optimal':
                 participating = 249621024; // 50% of CS
-                totalWS = 350000000;
+                totalWS = participating * 1.6;
                 break;
             case 'full':
                 participating = 400000000; // High participation
-                totalWS = 450000000;
+                totalWS = participating * 2.0; // Maximum age bonus
                 break;
             default:
                 return;
