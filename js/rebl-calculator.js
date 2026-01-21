@@ -1,4 +1,4 @@
-/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.0
+/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.1 - FIXED
 
 // Global variables
 let rewardChart = null;
@@ -23,7 +23,7 @@ let calculatorState = {
 
 // Initialize calculator on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing Enhanced REBL Calculator v3.0...');
+    console.log('Initializing Enhanced REBL Calculator v3.1 - FIXED');
     
     // Initialize with one empty row for user and other participants
     setTimeout(function() {
@@ -38,9 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize chart placeholder
     setupChartPlaceholder();
-    
-    // Add page initialization animations
-    initCalculatorAnimations();
     
     // Setup event listeners
     setupEventListeners();
@@ -377,6 +374,7 @@ function updateUserTotals() {
     updateWSInfoDisplay();
 }
 
+// ========== FIXED AVERAGE AGE BONUS CALCULATION ==========
 function updateUserStatsDisplay(totalTokens, totalWS, avgAge) {
     // Find or create user stats display
     let statsContainer = document.querySelector('.user-stats-container');
@@ -947,7 +945,7 @@ function updateContributionPercentage() {
     }
 }
 
-// ========== REWARD CALCULATION ==========
+// ========== REWARD CALCULATION - FIXED ==========
 function calculateRewards() {
     // Prevent rapid calculations
     if (calculatorState.isCalculating) return;
@@ -966,7 +964,7 @@ function calculateRewards() {
         let totalAmount = 0;
         let batchCount = 0;
         
-        // Store batch data for chart
+        // Store batch data for chart and individual calculations
         const batchData = [];
         
         // Calculate user's WSᵢ
@@ -1034,15 +1032,79 @@ function calculateRewards() {
         const poolPercentage = (userShare * 100).toFixed(4);
         const returnPercentage = ((userReward / totalAmount) * 100).toFixed(4);
         
-        // Calculate monthly and annual projections (assuming same rewards each week)
-        const monthlyReward = userReward * 4.33; // Approximate weeks in a month
-        const annualReward = userReward * 52; // Weeks in a year
+        // Calculate monthly and annual projections
+        const monthlyReward = userReward * 4.33;
+        const annualReward = userReward * 52;
         
-        // Calculate user's average age and bonus
+        // ========== FIXED AVERAGE AGE & BONUS CALCULATION ==========
+        // Calculate user's average age
+        let totalWeightedAge = 0;
+        rows.forEach(row => {
+            const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
+            const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+            totalWeightedAge += amount * age;
+        });
+        
         const userAvgAge = calculatorState.totalUserTokens > 0 ? 
-            (batchData.reduce((sum, batch) => sum + (batch.amount * batch.age), 0) / calculatorState.totalUserTokens) : 0;
+            (totalWeightedAge / calculatorState.totalUserTokens) : 0;
+        
+        // Calculate user's average bonus (FIXED)
         const userAvgBonus = calculatorState.totalUserTokens > 0 ? 
             (calculatorState.totalUserWS / calculatorState.totalUserTokens) : 1.0;
+        
+        // Calculate individual batch rewards
+        let individualRewardsHTML = '';
+        if (batchData.length > 0) {
+            individualRewardsHTML = `
+                <div style="margin-top: 1em; padding-top: 1em; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
+                    <div style="font-weight: 600; color: var(--rebel-gold); margin-bottom: 0.5em; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-list-ol"></i> Individual Batch Rewards
+                    </div>
+                    <div style="font-size: 0.85em; max-height: 300px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: rgba(0, 0, 0, 0.3);">
+                                    <th style="padding: 8px; text-align: left; border-bottom: 2px solid var(--rebel-gold);">Batch</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Tokens</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Age</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Bonus</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">WS</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Share</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Reward</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            
+            batchData.forEach((batch, index) => {
+                const batchShare = totalWS > 0 ? (batch.ws / totalWS) : 0;
+                const batchReward = batchShare * WERP * gamma;
+                const batchPercentage = totalWS > 0 ? ((batch.ws / totalWS) * 100) : 0;
+                const batchWeightFactor = 1 + (K * Math.min(batch.age, MAX_AGE));
+                
+                individualRewardsHTML += `
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 8px; color: var(--rebel-gold); font-weight: 600;">Batch ${index + 1}</td>
+                        <td style="padding: 8px; text-align: right;">${formatNumber(batch.amount)}</td>
+                        <td style="padding: 8px; text-align: right; color: ${batch.age >= 10 ? '#4CAF50' : batch.age >= 5 ? '#FFC107' : '#ffffff'};">${batch.age} epochs</td>
+                        <td style="padding: 8px; text-align: right; color: ${batchWeightFactor >= 2.0 ? '#4CAF50' : batchWeightFactor >= 1.5 ? '#FFC107' : '#FF9800'};">${batchWeightFactor.toFixed(2)}x</td>
+                        <td style="padding: 8px; text-align: right; color: var(--rebel-gold); font-weight: 600;">${formatNumber(batch.ws, true)}</td>
+                        <td style="padding: 8px; text-align: right; color: ${batchPercentage >= 50 ? '#4CAF50' : batchPercentage >= 20 ? '#FFC107' : '#ffffff'};">${batchPercentage.toFixed(2)}%</td>
+                        <td style="padding: 8px; text-align: right; color: var(--rebel-red); font-weight: 700;">${formatNumber(batchReward, true)} $REBL</td>
+                    </tr>`;
+            });
+            
+            individualRewardsHTML += `
+                            </tbody>
+                            <tfoot style="background: rgba(0, 0, 0, 0.4);">
+                                <tr>
+                                    <td style="padding: 8px; font-weight: 700;" colspan="6">Total Individual Rewards:</td>
+                                    <td style="padding: 8px; text-align: right; font-weight: 800; color: var(--rebel-red);">${formatNumber(userReward, true)} $REBL</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>`;
+        }
         
         // Calculate other participants info
         const otherTokens = participatingTokens - calculatorState.totalUserTokens;
@@ -1050,10 +1112,10 @@ function calculateRewards() {
         const otherAvgBonus = otherTokens > 0 ? (otherWS / otherTokens) : 0;
         const otherAvgAge = otherAvgBonus > 0 ? ((otherAvgBonus - 1) / K) : 0;
         
-        // Calculate WS multiplier (how much age bonus increases WS)
+        // Calculate WS multiplier
         const wsMultiplier = totalWS / participatingTokens;
         
-        // Format the results
+        // Format the results with individual breakdown
         const resultHTML = `
             <div style="text-align: left;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
@@ -1101,7 +1163,7 @@ function calculateRewards() {
                     <span style="color: var(--rebel-gold); font-weight: bold;">${returnPercentage}%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 0.5em; padding-top: 0.5em; border-top: 2px solid rgba(255, 204, 0, 0.5);">
-                    <span><strong>Your Sustainable Reward:</strong></span>
+                    <span><strong>Your Total Reward:</strong></span>
                     <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);">
                         ${formatNumber(userReward, true)} $REBL
                     </span>
@@ -1109,6 +1171,9 @@ function calculateRewards() {
                 <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
                     <span><em>Based on ${formatNumber(participatingTokens)} participating tokens (Your: ${formatNumber(calculatorState.totalUserTokens)} + Other: ${formatNumber(otherTokens)}) with γ=${gamma.toFixed(2)}</em></span>
                 </div>
+                
+                <!-- Individual Batch Rewards -->
+                ${individualRewardsHTML}
                 
                 <!-- Other Participants Summary -->
                 <div style="margin-top: 1em; padding: 1em; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border-left: 4px solid var(--rebel-blue);">
@@ -1170,7 +1235,7 @@ function calculateRewards() {
         
         // Show success toast
         showToast('Rewards calculated successfully!', 'success');
-    }, 800); // Simulate calculation delay
+    }, 800);
 }
 
 // ========== WHAT-IF GAMMA SIMULATOR ==========
@@ -1234,7 +1299,6 @@ function updateWhatIfGamma() {
 function loadExampleCase(type) {
     clearTokenBatches();
     
-    // Small delay to ensure previous clearing is complete
     setTimeout(() => {
         switch(type) {
             case 'starter':
@@ -1336,11 +1400,11 @@ function setSimulatorPreset(type) {
             break;
         case 'optimal':
             participating = 249621024; // 50% of CS
-            totalWS = participating * 1.6; // Average age bonus of 1.6x
+            totalWS = participating * 1.6;
             break;
         case 'full':
-            participating = 400000000; // High participation
-            totalWS = participating * 1.8; // Good age bonus
+            participating = 400000000;
+            totalWS = participating * 1.8;
             break;
         default:
             return;
@@ -1446,7 +1510,7 @@ function updateChart(batchData, totalUserWS) {
                 legend: {
                     position: 'right',
                     labels: {
-                        color: 'white', // Fixed: white text for better visibility
+                        color: 'white',
                         padding: 15,
                         font: {
                             family: 'Montserrat, sans-serif',
@@ -1561,22 +1625,6 @@ function showToast(message, type = 'info') {
         toast.style.animation = 'toastOut 0.3s ease';
         setTimeout(() => toast.remove(), 300);
     }, 3000);
-}
-
-// ========== ANIMATION FUNCTIONS ==========
-function initCalculatorAnimations() {
-    const elements = document.querySelectorAll('.parameter-item, .calculator-section, .calculate-btn');
-    
-    elements.forEach((element, index) => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }, index * 100);
-    });
 }
 
 // ========== PUBLIC FUNCTIONS ==========
