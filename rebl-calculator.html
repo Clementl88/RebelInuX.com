@@ -694,23 +694,23 @@
     </section>
 
     <!-- Formula Announcement -->
-    <section id="formula-announcement">
-      <div class="container">
+<section id="formula-announcement">
+    <div class="container">
         <div class="announcement-banner calculator-announcement">
-          <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
-          <div class="formula-display">
-            <div class="formula-equation">
-              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
+            <div class="formula-display">
+                <div class="formula-equation">
+                    Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+                </div>
+                <div class="formula-component">
+                    γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+                </div>
             </div>
-            <div class="formula-component">
-              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS/∑WS))
-            </div>
-          </div>
-          <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
+            <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
         </div>
-      </div>
-    </section>
-
+    </div>
+</section>
+    
     <!-- Main Calculator -->
     <section id="rebl-calculator">
       <div class="container">
@@ -1030,29 +1030,29 @@
           </div>
           
           <!-- Gamma Components -->
-          <div class="gamma-components">
-            <div class="gamma-component">
-              <div class="component-label">P/(0.5×CS)</div>
-              <div id="participationTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
-            </div>
-            <div class="gamma-component">
-              <div class="component-label">CS/∑WS</div>
-              <div id="inflationCap" class="component-value">1.00</div>
-              <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
-            </div>
-            <div class="gamma-component">
-              <div class="component-label">MIN(1, ...)</div>
-              <div id="minTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Minimum of terms</div>
-            </div>
-            <div class="gamma-component">
-              <div class="component-label">MAX(0.4, ...)</div>
-              <div id="maxTerm" class="component-value">0.40</div>
-              <div class="input-hint" style="font-size: 10px;">Final Gamma Scale</div>
-            </div>
-          </div>
-        </div>
+   <!-- Gamma Components -->
+<div class="gamma-components">
+    <div class="gamma-component">
+        <div class="component-label">P/(0.5×CS)</div>
+        <div id="participationTerm" class="component-value">0.40</div>
+        <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
+    </div>
+    <div class="gamma-component">
+        <div class="component-label">CS×1.5/∑WS</div>
+        <div id="inflationCap" class="component-value">1.00</div>
+        <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
+    </div>
+    <div class="gamma-component">
+        <div class="component-label">MIN(1, ...)</div>
+        <div id="minTerm" class="component-value">0.40</div>
+        <div class="input-hint" style="font-size: 10px;">Minimum of terms</div>
+    </div>
+    <div class="gamma-component">
+        <div class="component-label">MAX(0.4, ...)</div>
+        <div id="maxTerm" class="component-value">0.40</div>
+        <div class="input-hint" style="font-size: 10px;">Final Gamma Scale</div>
+    </div>
+</div>
 
         <!-- Calculate Button -->
         <div class="calculate-action">
@@ -1191,18 +1191,18 @@
         </div>
 
         <!-- Formula Display -->
-        <div class="calculator-section formula-display-section">
-          <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
-          <div class="formula-container">
-            <div class="formula-main">
-              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
-            </div>
-            <div class="formula-component">
-              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS/∑WS))
-            </div>
-          </div>
-          <div class="formula-explanation">
-            <div class="explanation-item">
+      <!-- Formula Display -->
+<div class="calculator-section formula-display-section">
+    <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
+    <div class="formula-container">
+        <div class="formula-main">
+            Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+        </div>
+        <div class="formula-component">
+            γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+        </div>
+    </div>
+    <div class="formula-explanation">
               <strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]
               <div class="input-hint">Each batch gets 7% weight boost per epoch (max 20 epochs)</div>
             </div>
@@ -1221,6 +1221,10 @@
             <div class="explanation-item">
               <strong>γ:</strong> Gamma Scale Factor - adjusts rewards based on participation and fairness
               <div class="input-hint">40% minimum, scales to 100% at 50%+ participation</div>
+                      <div class="explanation-item">
+            <strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier - allows for higher age bonuses before capping
+            <div class="input-hint">Allows more age bonus before inflation cap kicks in</div>
+        </div>
             </div>
           </div>
         </div>
@@ -2081,27 +2085,27 @@
 
     // ========== PARTICIPATION CALCULATIONS ==========
     function calculateGammaScale(P, totalWS) {
-        // γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS/∑WS))
-        
-        // Term 1: P/(0.5 × CS) - Participation Scaling
-        const participationTerm = P / (0.5 * CS);
-        
-        // Term 2: CS/∑WS - Age Inflation Cap
-        const inflationCap = CS / totalWS;
-        
-        // MIN(1, participationTerm, inflationCap)
-        const minTerm = Math.min(1, participationTerm, inflationCap);
-        
-        // MAX(0.4, minTerm)
-        const gamma = Math.max(0.4, minTerm);
-        
-        return {
-            gamma: gamma,
-            participationTerm: participationTerm,
-            inflationCap: inflationCap,
-            minTerm: minTerm
-        };
-    }
+    // γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+    
+    // Term 1: P/(0.5 × CS) - Participation Scaling
+    const participationTerm = P / (0.5 * CS);
+    
+    // Term 2: CS×1.5/∑WS - Age Inflation Cap (with 1.5 multiplier)
+    const inflationCap = (CS * 1.5) / totalWS;
+    
+    // MIN(1, participationTerm, inflationCap)
+    const minTerm = Math.min(1, participationTerm, inflationCap);
+    
+    // MAX(0.4, minTerm)
+    const gamma = Math.max(0.4, minTerm);
+    
+    return {
+        gamma: gamma,
+        participationTerm: participationTerm,
+        inflationCap: inflationCap,
+        minTerm: minTerm
+    };
+}
 
     function updateParticipationDisplay() {
         // Calculate totals
@@ -2524,15 +2528,16 @@
         }
         
         // Update gamma breakdown
-        const breakdownElement = document.getElementById('gammaBreakdown');
-        if (breakdownElement) {
-            breakdownElement.innerHTML = `
-                γ = MAX(0.4, MIN(1, 
-                <span style="color: #ff3366;">${gammaData.participationTerm.toFixed(2)}</span>, 
-                <span style="color: #ffcc00;">${gammaData.inflationCap.toFixed(2)}</span>)) = 
-                <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
-            `;
-        }
+// In the updateWhatIfGamma() function, update the breakdown text:
+const breakdownElement = document.getElementById('gammaBreakdown');
+if (breakdownElement) {
+    breakdownElement.innerHTML = `
+        γ = MAX(0.4, MIN(1, 
+        <span style="color: #ff3366;">${gammaData.participationTerm.toFixed(2)}</span>, 
+        <span style="color: #ffcc00;">${gammaData.inflationCap.toFixed(2)}</span>)) = 
+        <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
+    `;
+}
     }
 
     // ========== EXAMPLE CASES ==========
