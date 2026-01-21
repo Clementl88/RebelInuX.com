@@ -946,6 +946,7 @@ function updateContributionPercentage() {
 }
 
 // ========== REWARD CALCULATION - FIXED ==========
+// ========== REWARD CALCULATION - CORRECTED ==========
 function calculateRewards() {
     // Prevent rapid calculations
     if (calculatorState.isCalculating) return;
@@ -994,7 +995,7 @@ function calculateRewards() {
         const gammaData = calculateGammaScale(participatingTokens, totalWS);
         const gamma = gammaData.gamma;
         
-        // Calculate user's share and reward
+        // Calculate user's share and reward - CORRECTED
         const userShare = totalWS > 0 ? (userWS / totalWS) : 0;
         const userReward = userShare * WERP * gamma;
         const effectivePool = WERP * gamma;
@@ -1036,7 +1037,7 @@ function calculateRewards() {
         const monthlyReward = userReward * 4.33;
         const annualReward = userReward * 52;
         
-        // ========== FIXED AVERAGE AGE & BONUS CALCULATION ==========
+        // ========== CORRECTED AVERAGE AGE & BONUS CALCULATION ==========
         // Calculate user's average age
         let totalWeightedAge = 0;
         rows.forEach(row => {
@@ -1048,11 +1049,11 @@ function calculateRewards() {
         const userAvgAge = calculatorState.totalUserTokens > 0 ? 
             (totalWeightedAge / calculatorState.totalUserTokens) : 0;
         
-        // Calculate user's average bonus (FIXED)
+        // Calculate user's average bonus (CORRECTED)
         const userAvgBonus = calculatorState.totalUserTokens > 0 ? 
             (calculatorState.totalUserWS / calculatorState.totalUserTokens) : 1.0;
         
-        // Calculate individual batch rewards
+        // Calculate individual batch rewards - CORRECTED SCALING
         let individualRewardsHTML = '';
         if (batchData.length > 0) {
             individualRewardsHTML = `
@@ -1069,16 +1070,16 @@ function calculateRewards() {
                                     <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Age</th>
                                     <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Bonus</th>
                                     <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">WS</th>
-                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Share</th>
+                                    <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Share of Your WS</th>
                                     <th style="padding: 8px; text-align: right; border-bottom: 2px solid var(--rebel-gold);">Reward</th>
                                 </tr>
                             </thead>
                             <tbody>`;
             
             batchData.forEach((batch, index) => {
-                const batchShare = totalWS > 0 ? (batch.ws / totalWS) : 0;
-                const batchReward = batchShare * WERP * gamma;
-                const batchPercentage = totalWS > 0 ? ((batch.ws / totalWS) * 100) : 0;
+                const batchShare = userWS > 0 ? (batch.ws / userWS) : 0; // Share of YOUR WS, not total WS
+                const batchReward = batchShare * userReward; // Portion of YOUR total reward
+                const batchPercentage = userWS > 0 ? ((batch.ws / userWS) * 100) : 0;
                 const batchWeightFactor = 1 + (K * Math.min(batch.age, MAX_AGE));
                 
                 individualRewardsHTML += `
@@ -1097,7 +1098,7 @@ function calculateRewards() {
                             </tbody>
                             <tfoot style="background: rgba(0, 0, 0, 0.4);">
                                 <tr>
-                                    <td style="padding: 8px; font-weight: 700;" colspan="6">Total Individual Rewards:</td>
+                                    <td style="padding: 8px; font-weight: 700;" colspan="6">Total (Sum of Batches):</td>
                                     <td style="padding: 8px; text-align: right; font-weight: 800; color: var(--rebel-red);">${formatNumber(userReward, true)} $REBL</td>
                                 </tr>
                             </tfoot>
@@ -1118,6 +1119,7 @@ function calculateRewards() {
         // Format the results with individual breakdown
         const resultHTML = `
             <div style="text-align: left;">
+                <!-- Key Metrics -->
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Total Tokens:</strong></span>
                     <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(calculatorState.totalUserTokens)}</span>
@@ -1143,11 +1145,7 @@ function calculateRewards() {
                     <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                    <span><strong>WS Multiplier:</strong></span>
-                    <span style="color: var(--rebel-gold); font-weight: bold;">${wsMultiplier.toFixed(2)}x</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                    <span><strong>Your Share of Active Pool:</strong></span>
+                    <span><strong>Your Share of Pool:</strong></span>
                     <span style="color: var(--rebel-gold); font-weight: bold;">${poolPercentage}%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
@@ -1162,14 +1160,18 @@ function calculateRewards() {
                     <span><strong>Weekly Return:</strong></span>
                     <span style="color: var(--rebel-gold); font-weight: bold;">${returnPercentage}%</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 0.5em; padding-top: 0.5em; border-top: 2px solid rgba(255, 204, 0, 0.5);">
-                    <span><strong>Your Total Reward:</strong></span>
-                    <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);">
+                
+                <!-- MAIN REWARD DISPLAY -->
+                <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 1em; padding-top: 1em; border-top: 3px solid rgba(255, 204, 0, 0.7); background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px;">
+                    <span style="font-weight: 800;"><strong>Your Sustainable Weekly Reward:</strong></span>
+                    <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); font-size: 1.4em;">
                         ${formatNumber(userReward, true)} $REBL
                     </span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                    <span><em>Based on ${formatNumber(participatingTokens)} participating tokens (Your: ${formatNumber(calculatorState.totalUserTokens)} + Other: ${formatNumber(otherTokens)}) with γ=${gamma.toFixed(2)}</em></span>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7); padding: 0 5px;">
+                    <span><em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
+                    <span><em>Formula: (${formatNumber(userWS)} / ${formatNumber(totalWS)}) × ${formatNumber(WERP)} × ${gamma.toFixed(2)}</em></span>
                 </div>
                 
                 <!-- Individual Batch Rewards -->
@@ -1214,6 +1216,18 @@ function calculateRewards() {
                     </div>
                     <div style="font-size: 0.7em; color: rgba(255, 255, 255, 0.5); margin-top: 5px; text-align: center;">
                         *Estimates assume same participation levels continue
+                    </div>
+                </div>
+                
+                <!-- Reality Check -->
+                <div style="margin-top: 1em; padding: 10px; background: rgba(0, 0, 0, 0.2); border-radius: 6px; border-left: 3px solid var(--rebel-gold); font-size: 0.85em;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                        <i class="fas fa-lightbulb" style="color: var(--rebel-gold);"></i>
+                        <strong>Reality Check:</strong>
+                    </div>
+                    <div style="color: rgba(255, 255, 255, 0.8);">
+                        Max possible weekly reward (if you owned 100% of pool with γ=1.0): ${formatNumber(WERP)} $REBL<br>
+                        Your reward is ${((userReward / WERP) * 100).toFixed(2)}% of maximum possible
                     </div>
                 </div>
             </div>
