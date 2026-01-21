@@ -371,6 +371,175 @@
       margin-left: 8px;
     }
     
+    /* Other Participants Section */
+    .other-participants-section {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .other-participants-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-blue);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    
+    .other-participants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .other-participant-item {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .participant-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .participant-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-blue);
+    }
+    
+    .participant-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .participant-btn {
+      background: rgba(0, 170, 255, 0.1);
+      color: var(--rebel-blue);
+      border: 1px solid var(--rebel-blue);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .participant-btn:hover {
+      background: rgba(0, 170, 255, 0.2);
+    }
+    
+    /* Contribution Container */
+    .contribution-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .contribution-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .contribution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .contribution-item {
+      text-align: center;
+    }
+    
+    .contribution-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    /* User Stats */
+    .user-stats-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+      display: none;
+    }
+    
+    .user-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .user-stat-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .user-stat-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .user-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 4px;
+    }
+    
+    .user-stat-percentage {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .table-actions {
@@ -396,6 +565,18 @@
       .age-bonus-grid {
         grid-template-columns: repeat(4, 1fr);
       }
+      
+      .other-participants-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contribution-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
     
     @media (max-width: 480px) {
@@ -405,6 +586,10 @@
       
       .age-bonus-grid {
         grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .user-stats-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -471,8 +656,8 @@
           <button onclick="document.querySelector('.token-batches-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
             <i class="fas fa-layer-group"></i> Token Batches
           </button>
-          <button onclick="document.querySelector('.participation-settings').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
-            <i class="fas fa-sliders-h"></i> Participation
+          <button onclick="document.querySelector('.other-participants-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-users"></i> Other Participants
           </button>
           <button onclick="document.querySelector('.gamma-simulator').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
             <i class="fas fa-chart-line"></i> Gamma Simulator
@@ -569,19 +754,96 @@
           </div>
         </div>
 
+        <!-- Other Participants Section -->
+        <div class="calculator-section other-participants-section">
+          <div class="other-participants-header">
+            <i class="fas fa-users"></i> Other Participants
+          </div>
+          
+          <div class="input-hint" style="margin-bottom: 15px;">
+            <i class="fas fa-info-circle"></i> Estimate other participants' tokens to calculate realistic Total WS (max 1.2B with age bonuses)
+          </div>
+          
+          <div class="other-participants-grid">
+            <div class="other-participant-item">
+              <div class="participant-label">
+                <i class="fas fa-user-friends"></i> Other Tokens (P - Your Tokens)
+              </div>
+              <div class="participant-value" id="otherTokensValue">100M</div>
+              <div class="participant-controls">
+                <button onclick="updateOtherTokens(-10000000)" class="participant-btn">
+                  <i class="fas fa-minus"></i> -10M
+                </button>
+                <button onclick="updateOtherTokens(10000000)" class="participant-btn">
+                  <i class="fas fa-plus"></i> +10M
+                </button>
+                <button onclick="updateOtherTokens(50000000)" class="participant-btn">
+                  <i class="fas fa-bolt"></i> +50M
+                </button>
+              </div>
+              <div class="input-hint" style="margin-top: 8px;">
+                Other participants' total tokens (not weighted)
+              </div>
+            </div>
+            
+            <div class="other-participant-item">
+              <div class="participant-label">
+                <i class="fas fa-chart-line"></i> Other Average Age Bonus
+              </div>
+              <div class="participant-value" id="otherAgeBonusValue">1.20x</div>
+              <div class="participant-controls">
+                <button onclick="updateOtherAgeBonus(-0.1)" class="participant-btn">
+                  <i class="fas fa-minus"></i> -0.1x
+                </button>
+                <button onclick="updateOtherAgeBonus(0.1)" class="participant-btn">
+                  <i class="fas fa-plus"></i> +0.1x
+                </button>
+                <button onclick="updateOtherAgeBonus('reset')" class="participant-btn">
+                  <i class="fas fa-sync"></i> Reset
+                </button>
+              </div>
+              <div class="input-hint" style="margin-top: 8px;">
+                Estimated average age bonus for other participants (1.0x to 2.4x)
+              </div>
+            </div>
+            
+            <div class="other-participant-item">
+              <div class="participant-label">
+                <i class="fas fa-calculator"></i> Other Weighted Shares
+              </div>
+              <div class="participant-value" id="otherWSValue">120M</div>
+              <div class="participant-controls">
+                <button onclick="autoCalculateOtherWS()" class="participant-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+                  <i class="fas fa-robot"></i> Auto-calc
+                </button>
+                <button onclick="setOtherWSFromYourAvg()" class="participant-btn">
+                  <i class="fas fa-user-check"></i> Use Your Avg
+                </button>
+              </div>
+              <div class="input-hint" style="margin-top: 8px;">
+                Other participants' total weighted shares = Other Tokens × Age Bonus
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-hint" style="margin-top: 10px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px;">
+            <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Total WS = Your WS + Other WS. Use the sliders below to adjust the final ∑WS value.
+          </div>
+        </div>
+
         <!-- Participation Settings -->
         <div class="calculator-section participation-settings">
-          <h3><i class="fas fa-users"></i> Participation Settings</h3>
+          <h3><i class="fas fa-sliders-h"></i> Participation Settings</h3>
           
           <!-- Auto Update Toggle -->
-          <div class="auto-update-toggle">
+          <div class="auto-update-toggle" style="margin-bottom: 20px;">
             <label class="toggle-label">
               <input type="checkbox" id="autoUpdateToggle" checked>
               <span class="toggle-slider"></span>
-              <span class="toggle-text">Auto-update participation based on your tokens</span>
+              <span class="toggle-text">Auto-calculate ∑WS from Your + Other tokens</span>
             </label>
             <div class="toggle-help" style="font-size: 12px; color: rgba(255, 255, 255, 0.7); margin-top: 8px;">
-              <i class="fas fa-info-circle"></i> When enabled, participation estimates adjust automatically based on your token batches
+              <i class="fas fa-info-circle"></i> When enabled, ∑WS is calculated as (Your WS + Other WS). When disabled, you can manually set ∑WS.
             </div>
           </div>
           
@@ -602,14 +864,14 @@
                 <div class="ws-info-hint">With age bonus</div>
               </div>
               <div class="ws-info-item">
-                <div class="ws-info-label">Avg. Bonus</div>
-                <div id="avgBonusDisplay" class="ws-info-value">1.00x</div>
-                <div class="ws-info-hint">Per token</div>
+                <div class="ws-info-label">Other WS</div>
+                <div id="calculatedOtherWSDisplay" class="ws-info-value">120M</div>
+                <div class="ws-info-hint">Calculated</div>
               </div>
               <div class="ws-info-item">
-                <div class="ws-info-label">WS Multiplier</div>
-                <div id="wsMultiplierDisplay" class="ws-info-value">1.00x</div>
-                <div class="ws-info-hint">∑WS / P</div>
+                <div class="ws-info-label">Total WS (∑WS)</div>
+                <div id="totalWSDisplay" class="ws-info-value">120M</div>
+                <div class="ws-info-hint">Your WS + Other WS</div>
               </div>
             </div>
           </div>
@@ -619,7 +881,7 @@
               <div class="slider-info">
                 <div class="slider-info-label">
                   <span>Total Participating Tokens (P):</span>
-                  <i class="fas fa-question-circle slider-info-help" title="Total tokens participating in this epoch. Includes your tokens plus estimated other participants."></i>
+                  <i class="fas fa-question-circle slider-info-help" title="Total tokens participating in this epoch = Your Tokens + Other Tokens"></i>
                 </div>
                 <div class="slider-info-value">
                   <input type="number" id="participatingTokensInput" class="value-input" 
@@ -629,7 +891,9 @@
               </div>
               <input type="range" id="participatingTokens" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
               <div class="input-hint">
-                Current: <span id="currentParticipatingDisplay">100M</span> | Your share: <span id="yourTokenShare">0%</span>
+                Current: <span id="currentParticipatingDisplay">100M</span> | 
+                Your share: <span id="yourTokenShare">0%</span> | 
+                Other share: <span id="otherTokenShare">100%</span>
               </div>
             </div>
             
@@ -637,20 +901,22 @@
               <div class="slider-info">
                 <div class="slider-info-label">
                   <span>∑WS (Total Active Weighted Shares):</span>
-                  <i class="fas fa-question-circle slider-info-help" title="Total weighted shares including age bonuses. This is always ≥ total participating tokens."></i>
+                  <i class="fas fa-question-circle slider-info-help" title="Total weighted shares including age bonuses = Your WS + Other WS (max 1.2B)"></i>
                 </div>
                 <div class="slider-info-value">
                   <input type="number" id="totalWSInput" class="value-input" 
-                         value="100000000" min="1000000" max="500000000" step="1000000">
+                         value="100000000" min="1000000" max="1200000000" step="1000000">
                   <span id="totalWSValue" class="slider-value">100M</span>
                   <span class="ws-auto-indicator" id="wsAutoIndicator">
                     <i class="fas fa-robot"></i> Auto-calculated
                   </span>
                 </div>
               </div>
-              <input type="range" id="totalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
+              <input type="range" id="totalWS" min="1000000" max="1200000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
               <div class="input-hint">
-                Current: <span id="currentWSDisplay">100M</span> | Your WS share: <span id="yourWSShare">0%</span> | Multiplier: <span id="wsMultiplierCurrent">1.00x</span>
+                Current: <span id="currentWSDisplay">100M</span> | 
+                Your WS share: <span id="yourWSShare">0%</span> | 
+                Multiplier: <span id="wsMultiplierCurrent">1.00x</span>
               </div>
             </div>
           </div>
@@ -824,15 +1090,15 @@
               <div class="slider-info">
                 <div class="slider-info-label">
                   <span>Total Weighted Shares (∑WS):</span>
-                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total weighted shares including age bonuses"></i>
+                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total weighted shares including age bonuses (max 1.2B)"></i>
                 </div>
                 <div class="slider-info-value">
                   <input type="number" id="whatIfTotalWSInput" class="value-input" 
-                         value="100000000" min="1000000" max="500000000" step="1000000">
+                         value="100000000" min="1000000" max="1200000000" step="1000000">
                   <span id="whatIfTotalWSValue" class="slider-value">100M</span>
                 </div>
               </div>
-              <input type="range" id="whatIfTotalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+              <input type="range" id="whatIfTotalWS" min="1000000" max="1200000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
               <div class="input-hint">
                 Typically 1-2.4x participating tokens
               </div>
@@ -913,10 +1179,10 @@
             </div>
             <div class="explanation-item">
               <strong>∑WS:</strong> Total Active Weighted Shares from all participants
-              <div class="input-hint">Sum of all participants' weighted shares = Σ[Token Amount × (1 + 0.07 × min(Age, 20))]</div>
+              <div class="input-hint">Sum of all participants' weighted shares = Your WS + Other WS (max 1.2B)</div>
             </div>
             <div class="explanation-item">
-              <strong>P:</strong> Total participating tokens in the epoch
+              <strong>P:</strong> Total participating tokens in the epoch = Your Tokens + Other Tokens
               <div class="input-hint">Raw token amount (not weighted)</div>
             </div>
             <div class="explanation-item">
@@ -951,27 +1217,27 @@
             </div>
             
             <div class="faq-item">
-              <h4><i class="fas fa-question-circle"></i> How is ∑WS automatically calculated?</h4>
-              <p>∑WS is estimated based on your token batches: Total WS = Your WS + (Other Tokens × Estimated Age Bonus). Age bonuses for other participants are estimated at 85% of your average bonus.</p>
-              <div class="input-hint">Auto-calculated to reflect realistic participation</div>
+              <h4><i class="fas fa-question-circle"></i> How do I account for other participants?</h4>
+              <p>Use the "Other Participants" section to estimate other tokens and their average age bonus. Total WS = Your WS + Other WS (Other Tokens × Other Average Age Bonus).</p>
+              <div class="input-hint">Estimate other participants to get realistic reward calculations</div>
             </div>
             
             <div class="faq-item">
-              <h4><i class="fas fa-question-circle"></i> What's the difference between P and ∑WS?</h4>
-              <p>P = Total participating tokens (raw amount). ∑WS = Total weighted shares (includes age bonuses). ∑WS is always ≥ P, typically 1.1x to 2.4x P.</p>
-              <div class="input-hint">∑WS includes age bonuses, making it larger than P</div>
+              <h4><i class="fas fa-question-circle"></i> Why does ∑WS go up to 1.2B?</h4>
+              <p>∑WS max = Max participating tokens (500M) × Max age bonus (2.4x) = 1.2B. This accounts for maximum possible weighted shares if all tokens had 20+ epoch age.</p>
+              <div class="input-hint">Theoretical maximum with full participation and max age bonuses</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What's a realistic average age bonus?</h4>
+              <p>Typically 1.2x-1.8x. Use 1.2x for conservative estimates, 1.5x for average, 1.8x+ for optimistic. Your average bonus is shown in your token batches section.</p>
+              <div class="input-hint">Most participants have mixed age tokens</div>
             </div>
             
             <div class="faq-item">
               <h4><i class="fas fa-question-circle"></i> Is this calculator accurate?</h4>
-              <p>This uses the exact formula from smart contracts. ∑WS is intelligently estimated based on your holdings. Results are estimates based on current participation levels.</p>
-              <div class="input-hint">Accuracy depends on participation estimates</div>
-            </div>
-            
-            <div class="faq-item">
-              <h4><i class="fas fa-question-circle"></i> How often should I recalculate?</h4>
-              <p>Recalculate when: 1) You buy/sell tokens, 2) An epoch completes (age increases), 3) Participation changes significantly.</p>
-              <div class="input-hint">Keep your inputs updated for accurate estimates</div>
+              <p>This uses the exact formula from smart contracts. Accuracy depends on your estimates of other participants' tokens and age bonuses.</p>
+              <div class="input-hint">Provides realistic estimates based on your inputs</div>
             </div>
             
             <div class="faq-item">
@@ -979,7 +1245,7 @@
               <p>You need both $rebelinux tokens and the active Rebel Key NFT. 
                 <a href="epoch-rewards.html#how-to-claim">See step-by-step claiming instructions →</a>
               </p>
-              <div class="input-hint">Weekly claiming through the official interface</div>
+              <div class="input-hint">Weekly claiming through the official interface</a></div>
             </div>
             
             <div class="faq-item">
@@ -1049,13 +1315,16 @@
     const WERP = 3200000.00; // Weekly Epoch Reward Pool
     const K = 0.07; // Age bonus per epoch
     const MAX_AGE = 20; // Maximum age for bonus
+    const MAX_WS = 1200000000; // Maximum ∑WS = 500M * 2.4 = 1.2B
 
     // State management
     let calculatorState = {
-        autoUpdateParticipation: true,
         autoUpdateWS: true,
         totalUserTokens: 0,
         totalUserWS: 0,
+        otherTokens: 100000000, // Other participants' tokens
+        otherAgeBonus: 1.2, // Other participants' average age bonus
+        otherWS: 120000000, // Other participants' weighted shares
         currentParticipatingTokens: 100000000,
         currentTotalWS: 100000000,
         isCalculating: false
@@ -1070,6 +1339,9 @@
             addTokenBatch();
         }, 100);
         
+        // Initialize other participants
+        updateOtherParticipantsDisplay();
+        
         // Initialize participation settings
         updateParticipationUI();
         updateWhatIfGamma();
@@ -1080,7 +1352,7 @@
         // Add page initialization animations
         initCalculatorAnimations();
         
-        // Setup event listeners for new elements
+        // Setup event listeners
         setupEventListeners();
         
         // Initialize quick presets
@@ -1123,7 +1395,7 @@
         if (totalWSInput && totalWSSlider) {
             totalWSInput.addEventListener('input', function() {
                 let value = parseInt(this.value) || 0;
-                value = Math.max(1000000, Math.min(500000000, value));
+                value = Math.max(1000000, Math.min(MAX_WS, value));
                 this.value = value;
                 totalWSSlider.value = value;
                 calculatorState.currentTotalWS = value;
@@ -1165,7 +1437,7 @@
         if (whatIfTotalWSInput && whatIfTotalWSSlider) {
             whatIfTotalWSInput.addEventListener('input', function() {
                 let value = parseInt(this.value) || 0;
-                value = Math.max(1000000, Math.min(500000000, value));
+                value = Math.max(1000000, Math.min(MAX_WS, value));
                 this.value = value;
                 whatIfTotalWSSlider.value = value;
                 updateWhatIfGamma();
@@ -1182,9 +1454,9 @@
         const toggle = document.getElementById('autoUpdateToggle');
         if (toggle) {
             toggle.addEventListener('change', function() {
-                calculatorState.autoUpdateParticipation = this.checked;
+                calculatorState.autoUpdateWS = this.checked;
                 updateParticipationUI();
-                showToast('Auto-update ' + (this.checked ? 'enabled' : 'disabled'), 'info');
+                showToast('Auto-calculate ∑WS ' + (this.checked ? 'enabled' : 'disabled'), 'info');
             });
         }
     }
@@ -1198,132 +1470,178 @@
         }
     }
 
-    // ========== ENHANCED WS CALCULATION FUNCTIONS ==========
-    function calculateTotalWSFromTokens() {
-        // First, get user's weighted shares
-        const rows = document.querySelectorAll('#token-batches-table tbody tr');
-        let userWS = 0;
-        let userTokens = 0;
-        
-        rows.forEach(row => {
-            const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-            const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
-            const ws = amount * weightFactor;
-            
-            userWS += ws;
-            userTokens += amount;
-        });
-        
-        // Store user totals
-        calculatorState.totalUserTokens = userTokens;
-        calculatorState.totalUserWS = userWS;
-        
-        // Calculate estimated total WS based on participation
-        const participatingTokens = calculatorState.currentParticipatingTokens;
-        
-        if (userTokens <= 0 || participatingTokens <= userTokens) {
-            // If user has no tokens or no other participants
-            return Math.max(userWS, participatingTokens * 1.1);
-        }
-        
-        // Calculate user's average age bonus
-        const userAvgBonus = userTokens > 0 ? (userWS / userTokens) : 1;
-        
-        // Estimate other participants' tokens
-        const otherTokens = participatingTokens - userTokens;
-        
-        // Assume other participants have slightly lower average age bonus (85% of user's bonus)
-        const estimatedOtherWS = otherTokens * (userAvgBonus * 0.85);
-        
-        // Total WS = User WS + Estimated Other WS
-        const totalWS = userWS + estimatedOtherWS;
-        
-        // Ensure totalWS is at least participatingTokens (minimum 1x multiplier)
-        return Math.max(totalWS, participatingTokens * 1.05, userWS * 1.1);
+    // ========== OTHER PARTICIPANTS FUNCTIONS ==========
+    function updateOtherTokens(change) {
+        calculatorState.otherTokens = Math.max(0, calculatorState.otherTokens + change);
+        updateOtherParticipantsDisplay();
+        calculateOtherWS();
+        updateParticipationUI();
     }
 
-    function updateTotalWSDisplay() {
-        if (!calculatorState.autoUpdateWS) return;
+    function updateOtherAgeBonus(change) {
+        if (change === 'reset') {
+            calculatorState.otherAgeBonus = 1.2;
+        } else {
+            calculatorState.otherAgeBonus = Math.max(1.0, Math.min(2.4, calculatorState.otherAgeBonus + change));
+        }
+        updateOtherParticipantsDisplay();
+        calculateOtherWS();
+        updateParticipationUI();
+    }
+
+    function autoCalculateOtherWS() {
+        // Calculate other WS based on tokens and age bonus
+        calculatorState.otherWS = calculatorState.otherTokens * calculatorState.otherAgeBonus;
+        updateOtherParticipantsDisplay();
+        updateParticipationUI();
+    }
+
+    function setOtherWSFromYourAvg() {
+        // Use your average age bonus for other participants
+        if (calculatorState.totalUserTokens > 0) {
+            const yourAvgBonus = calculatorState.totalUserWS / calculatorState.totalUserTokens;
+            calculatorState.otherAgeBonus = Math.min(2.4, Math.max(1.0, yourAvgBonus.toFixed(2)));
+            updateOtherParticipantsDisplay();
+            calculateOtherWS();
+            updateParticipationUI();
+            showToast('Set other age bonus to your average: ' + yourAvgBonus.toFixed(2) + 'x', 'info');
+        } else {
+            showToast('Add your tokens first to use this feature', 'warning');
+        }
+    }
+
+    function calculateOtherWS() {
+        calculatorState.otherWS = calculatorState.otherTokens * calculatorState.otherAgeBonus;
+        updateOtherParticipantsDisplay();
+    }
+
+    function updateOtherParticipantsDisplay() {
+        // Update other tokens display
+        const otherTokensValue = document.getElementById('otherTokensValue');
+        if (otherTokensValue) {
+            otherTokensValue.textContent = formatNumber(calculatorState.otherTokens);
+        }
         
-        const totalWS = calculateTotalWSFromTokens();
-        calculatorState.currentTotalWS = totalWS;
+        // Update other age bonus display
+        const otherAgeBonusValue = document.getElementById('otherAgeBonusValue');
+        if (otherAgeBonusValue) {
+            otherAgeBonusValue.textContent = calculatorState.otherAgeBonus.toFixed(2) + 'x';
+            // Color code
+            if (calculatorState.otherAgeBonus >= 2.0) {
+                otherAgeBonusValue.style.color = '#4CAF50';
+            } else if (calculatorState.otherAgeBonus >= 1.5) {
+                otherAgeBonusValue.style.color = '#FFC107';
+            } else if (calculatorState.otherAgeBonus > 1.0) {
+                otherAgeBonusValue.style.color = '#ffffff';
+            } else {
+                otherAgeBonusValue.style.color = '#ff3366';
+            }
+        }
         
-        // Update slider and input
+        // Update other WS display
+        const otherWSValue = document.getElementById('otherWSValue');
+        const calculatedOtherWSDisplay = document.getElementById('calculatedOtherWSDisplay');
+        if (otherWSValue) {
+            otherWSValue.textContent = formatNumber(calculatorState.otherWS);
+        }
+        if (calculatedOtherWSDisplay) {
+            calculatedOtherWSDisplay.textContent = formatNumber(calculatorState.otherWS);
+        }
+        
+        // Update total participating tokens
+        const totalTokens = calculatorState.totalUserTokens + calculatorState.otherTokens;
+        calculatorState.currentParticipatingTokens = Math.min(500000000, totalTokens);
+        
+        // Update sliders
+        updateSlidersFromState();
+    }
+
+    // ========== ENHANCED WS CALCULATION FUNCTIONS ==========
+    function calculateTotalWSFromState() {
+        // Total WS = Your WS + Other WS
+        const totalWS = calculatorState.totalUserWS + calculatorState.otherWS;
+        return Math.min(MAX_WS, Math.max(totalWS, calculatorState.currentParticipatingTokens * 1.05));
+    }
+
+    function updateSlidersFromState() {
+        // Update participating tokens slider
+        const participatingSlider = document.getElementById('participatingTokens');
+        const participatingInput = document.getElementById('participatingTokensInput');
+        const participatingValue = document.getElementById('participatingTokensValue');
+        
+        if (participatingSlider) {
+            participatingSlider.value = calculatorState.currentParticipatingTokens;
+        }
+        if (participatingInput) {
+            participatingInput.value = calculatorState.currentParticipatingTokens;
+        }
+        if (participatingValue) {
+            participatingValue.textContent = formatNumber(calculatorState.currentParticipatingTokens);
+        }
+        
+        // Calculate total WS
+        if (calculatorState.autoUpdateWS) {
+            calculatorState.currentTotalWS = calculateTotalWSFromState();
+        }
+        
+        // Update total WS slider
+        const totalWSSlider = document.getElementById('totalWS');
+        const totalWSInput = document.getElementById('totalWSInput');
+        const totalWSValue = document.getElementById('totalWSValue');
+        
+        if (totalWSSlider) {
+            totalWSSlider.value = calculatorState.currentTotalWS;
+        }
+        if (totalWSInput) {
+            totalWSInput.value = calculatorState.currentTotalWS;
+        }
+        if (totalWSValue) {
+            totalWSValue.textContent = formatNumber(calculatorState.currentTotalWS);
+        }
+        
+        // Update display values
+        updateParticipationDisplay();
+    }
+
+    function updateParticipationUI() {
+        const isAuto = calculatorState.autoUpdateWS;
+        
+        // Update total WS display in info container
+        const totalWSDisplay = document.getElementById('totalWSDisplay');
+        if (totalWSDisplay) {
+            const totalWS = calculateTotalWSFromState();
+            totalWSDisplay.textContent = formatNumber(totalWS);
+        }
+        
+        // Update input states
         const totalWSSlider = document.getElementById('totalWS');
         const totalWSInput = document.getElementById('totalWSInput');
         
-        if (totalWSSlider) {
-            totalWSSlider.value = totalWS;
+        if (totalWSSlider) totalWSSlider.disabled = isAuto;
+        if (totalWSInput) totalWSInput.disabled = isAuto;
+        
+        // Show/hide auto indicator
+        const wsAutoIndicator = document.getElementById('wsAutoIndicator');
+        if (wsAutoIndicator) {
+            wsAutoIndicator.style.display = isAuto ? 'inline-flex' : 'none';
         }
         
-        if (totalWSInput) {
-            totalWSInput.value = totalWS;
-        }
+        // Update sliders from state
+        updateSlidersFromState();
         
-        // Update display
-        const totalWSValue = document.getElementById('totalWSValue');
-        const currentWSDisplay = document.getElementById('currentWSDisplay');
+        // Update other token share
+        updateOtherTokenShare();
         
-        if (totalWSValue) {
-            totalWSValue.textContent = formatNumber(totalWS);
-        }
-        
-        if (currentWSDisplay) {
-            currentWSDisplay.textContent = formatNumber(totalWS);
-        }
-        
-        // Update WS multiplier
-        updateWSMultiplierDisplay();
-        
-        // Update WS share display
-        updateWSShareDisplay();
+        // Calculate rewards
+        calculateRewards();
     }
 
-    function updateWSMultiplierDisplay() {
-        const wsMultiplierCurrent = document.getElementById('wsMultiplierCurrent');
-        const wsMultiplierDisplay = document.getElementById('wsMultiplierDisplay');
-        
-        if (calculatorState.currentParticipatingTokens > 0) {
-            const multiplier = (calculatorState.currentTotalWS / calculatorState.currentParticipatingTokens).toFixed(2);
-            
-            if (wsMultiplierCurrent) {
-                wsMultiplierCurrent.textContent = `${multiplier}x`;
-                
-                // Color code
-                if (multiplier >= 2.0) {
-                    wsMultiplierCurrent.style.color = '#4CAF50';
-                } else if (multiplier >= 1.5) {
-                    wsMultiplierCurrent.style.color = '#FFC107';
-                } else if (multiplier > 1.0) {
-                    wsMultiplierCurrent.style.color = '#ffffff';
-                } else {
-                    wsMultiplierCurrent.style.color = '#ff3366';
-                }
-            }
-            
-            if (wsMultiplierDisplay) {
-                wsMultiplierDisplay.textContent = `${multiplier}x`;
-                
-                // Color code
-                if (multiplier >= 2.0) {
-                    wsMultiplierDisplay.style.color = '#4CAF50';
-                } else if (multiplier >= 1.5) {
-                    wsMultiplierDisplay.style.color = '#FFC107';
-                } else if (multiplier > 1.0) {
-                    wsMultiplierDisplay.style.color = '#ffffff';
-                } else {
-                    wsMultiplierDisplay.style.color = '#ff3366';
-                }
-            }
-        }
-    }
-
-    function updateWSShareDisplay() {
-        const yourWSShare = document.getElementById('yourWSShare');
-        if (yourWSShare && calculatorState.currentTotalWS > 0) {
-            const share = (calculatorState.totalUserWS / calculatorState.currentTotalWS * 100).toFixed(2);
-            yourWSShare.textContent = `${share}%`;
+    function updateOtherTokenShare() {
+        const otherTokenShare = document.getElementById('otherTokenShare');
+        if (otherTokenShare && calculatorState.currentParticipatingTokens > 0) {
+            const otherTokens = calculatorState.currentParticipatingTokens - calculatorState.totalUserTokens;
+            const share = Math.max(0, (otherTokens / calculatorState.currentParticipatingTokens * 100).toFixed(1));
+            otherTokenShare.textContent = `${share}%`;
         }
     }
 
@@ -1482,7 +1800,7 @@
         updateUserTotals();
         
         // Update total WS calculation
-        updateTotalWSDisplay();
+        updateParticipationUI();
         
         // Calculate rewards with slight delay to avoid rapid calculations
         if (!calculatorState.isCalculating) {
@@ -1517,10 +1835,8 @@
         if (userTokenSum) userTokenSum.textContent = formatNumber(totalTokens);
         if (userWSSum) userWSSum.textContent = formatNumber(totalWS, true);
         
-        // Update UI if auto-update is enabled
-        if (calculatorState.autoUpdateParticipation) {
-            updateParticipationUI();
-        }
+        // Update UI
+        updateParticipationUI();
         
         // Update user stats display
         updateUserStatsDisplay(totalTokens, totalWS);
@@ -1636,7 +1952,6 @@
     function updateWSInfoDisplay() {
         const yourTokensDisplay = document.getElementById('yourTokensDisplay');
         const yourWSDisplay = document.getElementById('yourWSDisplay');
-        const avgBonusDisplay = document.getElementById('avgBonusDisplay');
         
         if (yourTokensDisplay) {
             yourTokensDisplay.textContent = formatNumber(calculatorState.totalUserTokens);
@@ -1646,23 +1961,38 @@
             yourWSDisplay.textContent = formatNumber(calculatorState.totalUserWS, true);
         }
         
-        if (avgBonusDisplay) {
-            const avgBonus = calculatorState.totalUserTokens > 0 ? 
-                (calculatorState.totalUserWS / calculatorState.totalUserTokens).toFixed(2) : '1.00';
-            avgBonusDisplay.textContent = `${avgBonus}x`;
-            
-            // Color code
-            if (avgBonus >= 2.0) {
-                avgBonusDisplay.style.color = '#4CAF50';
-            } else if (avgBonus >= 1.5) {
-                avgBonusDisplay.style.color = '#FFC107';
-            } else {
-                avgBonusDisplay.style.color = '#ffffff';
-            }
+        // Update total WS display
+        const totalWSDisplay = document.getElementById('totalWSDisplay');
+        if (totalWSDisplay) {
+            const totalWS = calculatorState.totalUserWS + calculatorState.otherWS;
+            totalWSDisplay.textContent = formatNumber(totalWS);
         }
         
         // Update WS multiplier
         updateWSMultiplierDisplay();
+    }
+
+    function updateWSMultiplierDisplay() {
+        const wsMultiplierCurrent = document.getElementById('wsMultiplierCurrent');
+        
+        if (calculatorState.currentParticipatingTokens > 0) {
+            const multiplier = (calculatorState.currentTotalWS / calculatorState.currentParticipatingTokens).toFixed(2);
+            
+            if (wsMultiplierCurrent) {
+                wsMultiplierCurrent.textContent = `${multiplier}x`;
+                
+                // Color code
+                if (multiplier >= 2.0) {
+                    wsMultiplierCurrent.style.color = '#4CAF50';
+                } else if (multiplier >= 1.5) {
+                    wsMultiplierCurrent.style.color = '#FFC107';
+                } else if (multiplier > 1.0) {
+                    wsMultiplierCurrent.style.color = '#ffffff';
+                } else {
+                    wsMultiplierCurrent.style.color = '#ff3366';
+                }
+            }
+        }
     }
 
     function updateQuickInfoDisplays() {
@@ -1699,78 +2029,23 @@
         };
     }
 
-    function updateParticipationUI() {
+    function updateParticipation() {
         const participatingSlider = document.getElementById('participatingTokens');
         const totalWSSlider = document.getElementById('totalWS');
-        const participatingInput = document.getElementById('participatingTokensInput');
-        const totalWSInput = document.getElementById('totalWSInput');
         
-        if (!participatingSlider || !totalWSSlider || !participatingInput || !totalWSInput) return;
-        
-        const isAuto = calculatorState.autoUpdateParticipation;
-        
-        // Update input states
-        participatingSlider.disabled = isAuto;
-        totalWSSlider.disabled = isAuto;
-        participatingInput.disabled = isAuto;
-        totalWSInput.disabled = isAuto;
-        
-        // Show/hide auto indicator
-        const wsAutoIndicator = document.getElementById('wsAutoIndicator');
-        if (wsAutoIndicator) {
-            wsAutoIndicator.style.display = isAuto ? 'inline-flex' : 'none';
+        if (participatingSlider && totalWSSlider) {
+            calculatorState.currentParticipatingTokens = parseInt(participatingSlider.value) || 100000000;
+            calculatorState.currentTotalWS = parseInt(totalWSSlider.value) || 100000000;
+            
+            const participatingInput = document.getElementById('participatingTokensInput');
+            const totalWSInput = document.getElementById('totalWSInput');
+            
+            if (participatingInput) participatingInput.value = calculatorState.currentParticipatingTokens;
+            if (totalWSInput) totalWSInput.value = calculatorState.currentTotalWS;
+            
+            updateParticipationDisplay();
+            calculateRewards();
         }
-        
-        // Update slider values based on user's tokens
-        if (isAuto) {
-            // Get user's data
-            const userTokens = calculatorState.totalUserTokens;
-            const userWS = calculatorState.totalUserWS;
-            
-            // Estimate other participants
-            const remainingTokens = Math.max(CS - userTokens, 0);
-            
-            // Scenario 1: User only (minimum case)
-            if (userTokens === 0) {
-                // Default minimum values
-                calculatorState.currentParticipatingTokens = 10000000;
-            } 
-            // Scenario 2: User has tokens
-            else {
-                // If user has significant holdings, assume more participation
-                const userShare = userTokens / CS;
-                let otherMultiplier;
-                
-                if (userShare >= 0.01) { // User owns 1%+ of supply
-                    otherMultiplier = 2; // Assume 2x other participants
-                } else if (userShare >= 0.001) { // User owns 0.1%+ of supply
-                    otherMultiplier = 5;
-                } else {
-                    otherMultiplier = 10; // Small holder, assume more other participants
-                }
-                
-                const estimatedOtherTokens = Math.min(remainingTokens, userTokens * otherMultiplier);
-                
-                // Calculate totals
-                calculatorState.currentParticipatingTokens = Math.min(
-                    CS,
-                    Math.max(userTokens * 2, userTokens + estimatedOtherTokens, 10000000)
-                );
-            }
-            
-            // Update sliders and inputs
-            participatingSlider.value = calculatorState.currentParticipatingTokens;
-            participatingInput.value = calculatorState.currentParticipatingTokens;
-            
-            // Auto-calculate total WS based on tokens
-            updateTotalWSDisplay();
-        }
-        
-        // Update displays
-        updateParticipationDisplay();
-        
-        // Calculate rewards
-        calculateRewards();
     }
 
     function updateParticipationDisplay() {
@@ -1835,6 +2110,9 @@
         
         // Update WS info
         updateWSInfoDisplay();
+        
+        // Update other token share
+        updateOtherTokenShare();
     }
 
     function updateGammaInfoPanel(gamma) {
@@ -2063,6 +2341,10 @@
             // Calculate WS multiplier (how much age bonus increases WS)
             const wsMultiplier = totalWS / participatingTokens;
             
+            // Calculate other participants info
+            const otherTokens = participatingTokens - calculatorState.totalUserTokens;
+            const otherWS = totalWS - userWS;
+            
             // Format the results
             const resultHTML = `
                 <div style="text-align: left;">
@@ -2071,7 +2353,7 @@
                         <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(userWS, true)}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Total Active Weighted Shares (∑WS):</strong></span>
+                        <span><strong>Total Weighted Shares (∑WS):</strong></span>
                         <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
@@ -2101,7 +2383,7 @@
                         </span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                        <span><em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
+                        <span><em>Based on ${formatNumber(participatingTokens)} participating tokens (Your: ${formatNumber(calculatorState.totalUserTokens)} + Other: ${formatNumber(otherTokens)}) with γ=${gamma.toFixed(2)}</em></span>
                     </div>
                     <div style="margin-top: 1em; padding-top: 1em; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9em;">
@@ -2199,42 +2481,44 @@
 
     // ========== PRESET FUNCTIONS ==========
     function setParticipationPreset(type) {
-        let participating, totalWS;
+        let participating, otherTokens, otherAgeBonus;
         
         switch(type) {
             case 'low':
                 participating = 50000000; // 50M
-                totalWS = participating * 1.2; // 20% age bonus
+                otherTokens = Math.max(0, participating - calculatorState.totalUserTokens);
+                otherAgeBonus = 1.2;
                 break;
             case 'medium':
                 participating = 150000000; // 150M
-                totalWS = participating * 1.5; // 50% age bonus
+                otherTokens = Math.max(0, participating - calculatorState.totalUserTokens);
+                otherAgeBonus = 1.5;
                 break;
             case 'high':
                 participating = 300000000; // 300M
-                totalWS = participating * 1.8; // 80% age bonus
+                otherTokens = Math.max(0, participating - calculatorState.totalUserTokens);
+                otherAgeBonus = 1.8;
                 break;
             case 'optimal':
                 participating = 249621024; // 50% of CS
-                totalWS = participating * 1.6; // 60% age bonus
+                otherTokens = Math.max(0, participating - calculatorState.totalUserTokens);
+                otherAgeBonus = 1.6;
                 break;
             default:
                 return;
         }
         
-        // Update values
+        // Update other participants
+        calculatorState.otherTokens = otherTokens;
+        calculatorState.otherAgeBonus = otherAgeBonus;
+        calculateOtherWS();
+        
+        // Update participation
         calculatorState.currentParticipatingTokens = participating;
-        calculatorState.currentTotalWS = totalWS;
         
-        // Update inputs and sliders
-        document.getElementById('participatingTokensInput').value = participating;
-        document.getElementById('participatingTokens').value = participating;
-        document.getElementById('totalWSInput').value = totalWS;
-        document.getElementById('totalWS').value = totalWS;
-        
-        // Update display and calculate
-        updateParticipationDisplay();
-        calculateRewards();
+        // Update UI
+        updateOtherParticipantsDisplay();
+        updateParticipationUI();
         
         // Show toast
         showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} participation preset applied`, 'info');
@@ -2309,6 +2593,26 @@
                     addTokenBatch('100000', '1');
             }
             
+            // Set other participants based on example type
+            switch(type) {
+                case 'starter':
+                    calculatorState.otherTokens = 100000000;
+                    calculatorState.otherAgeBonus = 1.3;
+                    break;
+                case 'investor':
+                    calculatorState.otherTokens = 200000000;
+                    calculatorState.otherAgeBonus = 1.5;
+                    break;
+                case 'whale':
+                    calculatorState.otherTokens = 300000000;
+                    calculatorState.otherAgeBonus = 1.7;
+                    break;
+            }
+            
+            // Update other participants
+            calculateOtherWS();
+            updateOtherParticipantsDisplay();
+            
             // Add example description
             const resultElement = document.getElementById('reward-result');
             if (resultElement) {
@@ -2319,11 +2623,11 @@
                         </span>
                     </div>
                     <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
-                        Adjust participation settings and click "Calculate Sustainable Rewards" to see results!
+                        Adjust other participants and click "Calculate Sustainable Rewards" to see results!
                     </p>
                     <div style="display: flex; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
                         <button onclick="updateParticipationUI()" style="background: var(--rebel-red); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                            <i class="fas fa-sync-alt"></i> Auto-update Participation
+                            <i class="fas fa-sync-alt"></i> Auto-calculate ∑WS
                         </button>
                         <button onclick="calculateRewards()" style="background: var(--rebel-gold); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
                             <i class="fas fa-calculator"></i> Calculate Now
@@ -2333,8 +2637,8 @@
                 resultElement.className = 'reward-result';
             }
             
-            // Enable auto-update for examples
-            calculatorState.autoUpdateParticipation = true;
+            // Enable auto-update
+            calculatorState.autoUpdateWS = true;
             const toggle = document.getElementById('autoUpdateToggle');
             if (toggle) toggle.checked = true;
             updateParticipationUI();
@@ -2571,24 +2875,11 @@
     window.removeTokenBatch = removeTokenBatch;
     window.clearTokenBatches = clearTokenBatches;
     window.updateRowCalculations = updateRowCalculations;
-    window.updateParticipation = function() {
-        const participatingSlider = document.getElementById('participatingTokens');
-        const totalWSSlider = document.getElementById('totalWS');
-        
-        if (participatingSlider && totalWSSlider) {
-            calculatorState.currentParticipatingTokens = parseInt(participatingSlider.value) || 100000000;
-            calculatorState.currentTotalWS = parseInt(totalWSSlider.value) || 100000000;
-            
-            const participatingInput = document.getElementById('participatingTokensInput');
-            const totalWSInput = document.getElementById('totalWSInput');
-            
-            if (participatingInput) participatingInput.value = calculatorState.currentParticipatingTokens;
-            if (totalWSInput) totalWSInput.value = calculatorState.currentTotalWS;
-            
-            updateParticipationDisplay();
-            calculateRewards();
-        }
-    };
+    window.updateParticipation = updateParticipation;
+    window.updateOtherTokens = updateOtherTokens;
+    window.updateOtherAgeBonus = updateOtherAgeBonus;
+    window.autoCalculateOtherWS = autoCalculateOtherWS;
+    window.setOtherWSFromYourAvg = setOtherWSFromYourAvg;
     window.calculateRewards = calculateRewards;
     window.updateWhatIfGamma = updateWhatIfGamma;
     window.loadExampleCase = loadExampleCase;
