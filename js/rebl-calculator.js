@@ -1,4 +1,4 @@
-/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.1 - FIXED
+//// rebl-calculator.js -- Enhanced Calculator JavaScript v3.1 - FIXED
 
 // Global variables
 let rewardChart = null;
