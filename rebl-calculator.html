@@ -2384,91 +2384,72 @@
             const otherAvgBonus = otherTokens > 0 ? (otherWS / otherTokens) : 0;
             
             // Format the results
-            const resultHTML = `
-                <div style="text-align: left;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Weighted Share (WSᵢ):</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(userWS, true)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Total Weighted Shares (∑WS):</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Share of Active Pool:</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${poolPercentage}%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Gamma Scale Factor (γ):</strong></span>
-                        <span style="color: ${getGammaColor(gamma)}; font-weight: bold;">${gamma.toFixed(2)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Effective Weekly Pool:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: bold;">${formatNumber(effectivePool, false)} $REBL</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Weekly Return:</strong></span>
-                        <span style="color: var(--rebel-gold); font-weight: bold;">${returnPercentage}%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 0.5em; padding-top: 0.5em; border-top: 2px solid rgba(255, 204, 0, 0.5);">
-                        <span><strong>Your Sustainable Reward:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);">
-                            ${formatNumber(userReward, true)} $REBL
-                        </span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                        <span><em>Based on ${formatNumber(participatingTokens)} participating tokens (Your: ${formatNumber(calculatorState.totalUserTokens)} + Other: ${formatNumber(otherTokens)}) with γ=${gamma.toFixed(2)}</em></span>
-                    </div>
-                    
-                    <!-- Other Participants Summary -->
-                    <div style="margin-top: 1em; padding: 1em; background: rgba(0, 0, 0, 0.3); border-radius: 8px; border-left: 4px solid var(--rebel-blue);">
-                        <div style="font-weight: 600; color: var(--rebel-blue); margin-bottom: 0.5em;">
-                            <i class="fas fa-users"></i> Other Participants Summary
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9em;">
-                            <div>
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Total Other Tokens</div>
-                                <div style="color: var(--rebel-blue); font-weight: bold;">${formatNumber(otherTokens)}</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Average Age</div>
-                                <div style="color: var(--rebel-blue); font-weight: bold;">${otherAvgBonus > 0 ? ((otherAvgBonus - 1) / K).toFixed(1) : '0.0'} epochs</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Average Bonus</div>
-                                <div style="color: var(--rebel-blue); font-weight: bold;">${otherAvgBonus.toFixed(2)}x</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Total Other WS</div>
-                                <div style="color: var(--rebel-blue); font-weight: bold;">${formatNumber(otherWS)}</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Monthly/Annual Estimates -->
-                    <div style="margin-top: 1em; padding-top: 1em; border-top: 1px dashed rgba(255, 255, 255, 0.2);">
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9em;">
-                            <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 6px;">
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Monthly Estimate*</div>
-                                <div style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(monthlyReward, true)} $REBL</div>
-                            </div>
-                            <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 6px;">
-                                <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Annual Estimate*</div>
-                                <div style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(annualReward, true)} $REBL</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 0.7em; color: rgba(255, 255, 255, 0.5); margin-top: 5px; text-align: center;">
-                            *Estimates assume same participation levels continue
-                        </div>
-                    </div>
+// Format the results - SIMPLIFIED VERSION
+const resultHTML = `
+    <div style="text-align: center;">
+        <!-- User's Reward - BIG and CLEAR -->
+        <div style="background: rgba(212, 167, 106, 0.1); border: 3px solid var(--rebel-gold); border-radius: 15px; padding: 2rem; margin: 1.5rem 0; box-shadow: 0 0 20px rgba(212, 167, 106, 0.2);">
+            <div style="color: var(--rebel-gold); font-size: 1.2rem; margin-bottom: 0.8rem;">
+                <i class="fas fa-user-check"></i> YOUR WEEKLY $REBL REWARD
+            </div>
+            <div style="color: var(--rebel-red); font-size: 3rem; font-weight: 900; text-shadow: 0 0 20px rgba(255, 51, 102, 0.5); line-height: 1.2;">
+                ${formatNumber(userReward, true)}
+            </div>
+            <div style="color: var(--rebel-gold); font-size: 1.8rem; font-weight: 700; margin-top: 0.5rem;">
+                $REBL
+            </div>
+        </div>
+        
+        <!-- Key Metrics in Simple Grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 10px; border: 1px solid rgba(212, 167, 106, 0.2); text-align: center;">
+                <div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Weekly Return</div>
+                <div style="color: var(--rebel-gold); font-weight: bold; font-size: 1.5rem;">${returnPercentage}%</div>
+            </div>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 10px; border: 1px solid rgba(212, 167, 106, 0.2); text-align: center;">
+                <div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Gamma Factor</div>
+                <div style="color: ${getGammaColor(gamma)}; font-weight: bold; font-size: 1.5rem;">${gamma.toFixed(2)}</div>
+            </div>
+        </div>
+        
+        <!-- Simple Context Info -->
+        <div style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 10px; margin: 1.5rem 0;">
+            <div style="color: var(--rebel-gold); font-weight: 600; margin-bottom: 0.5rem;">
+                <i class="fas fa-info-circle"></i> How Your Reward is Calculated
+            </div>
+            <div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); line-height: 1.5;">
+                Your ${formatNumber(calculatorState.totalUserTokens)} tokens with ${calculatorState.totalUserTokens > 0 ? (calculatorState.totalUserWS / calculatorState.totalUserTokens).toFixed(2)}x age bonus give you <strong>${poolPercentage}%</strong> of the active pool.
+                <br>With γ=${gamma.toFixed(2)}, the effective weekly distribution is <strong>${formatNumber(effectivePool, false)} $REBL</strong>.
+            </div>
+        </div>
+        
+        <!-- Monthly/Annual Estimates (Keep these) -->
+        <div style="margin-top: 1.5rem;">
+            <div style="color: var(--rebel-gold); font-weight: 600; margin-bottom: 1rem; font-size: 1.1rem;">
+                <i class="fas fa-chart-line"></i> Projections (Assuming Same Conditions)
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; font-size: 0.9em;">
+                <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 10px; border: 1px solid rgba(212, 167, 106, 0.2);">
+                    <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Monthly Estimate</div>
+                    <div style="color: var(--rebel-gold); font-weight: bold; font-size: 1.3rem;">${formatNumber(monthlyReward, true)} $REBL</div>
                 </div>
-            `;
-            
-            resultElement.innerHTML = resultHTML;
-            resultElement.className = 'reward-result';
-            
-            // Update chart with weighted shares
-            updateChart(batchData, userWS);
+                <div style="text-align: center; background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 10px; border: 1px solid rgba(212, 167, 106, 0.2);">
+                    <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Annual Estimate</div>
+                    <div style="color: var(--rebel-gold); font-weight: bold; font-size: 1.3rem;">${formatNumber(annualReward, true)} $REBL</div>
+                </div>
+            </div>
+            <div style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.8rem; text-align: center; font-style: italic;">
+                *Projections assume current participation levels and gamma factor remain constant
+            </div>
+        </div>
+    </div>
+`;
+
+resultElement.innerHTML = resultHTML;
+resultElement.className = 'reward-result';
+
+// Update chart with user's weighted shares (shows how their batches contribute)
+updateChart(batchData, userWS);
             
             // Restore button
             if (calculateButton) {
@@ -2692,127 +2673,127 @@ if (breakdownElement) {
         }
     }
 
-    function updateChart(batchData, totalUserWS) {
-        const ctx = document.getElementById('rewardChart');
-        if (!ctx) return;
-        
-        const chartPlaceholder = document.getElementById('chartPlaceholder');
-        const canvas = document.getElementById('rewardChart');
-        
-        if (chartPlaceholder) chartPlaceholder.style.display = 'none';
-        if (canvas) canvas.style.display = 'block';
-        
-        // Destroy existing chart
-        if (rewardChart) rewardChart.destroy();
-        
-        // Prepare data
-        const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
-        const weightedShares = batchData.map(batch => batch.ws);
-        
-        // Calculate percentages for labels
-        const percentages = weightedShares.map(ws => ((ws / totalUserWS) * 100).toFixed(1));
-        
-        // Colors for the chart
-        const backgroundColors = [
-            'rgba(255, 51, 102, 0.8)',
-            'rgba(255, 204, 0, 0.8)',
-            'rgba(0, 170, 255, 0.8)',
-            'rgba(156, 39, 176, 0.8)',
-            'rgba(76, 175, 80, 0.8)',
-            'rgba(255, 152, 0, 0.8)',
-            'rgba(33, 150, 243, 0.8)',
-            'rgba(233, 30, 99, 0.8)'
-        ];
-        
-        const borderColors = [
-            'rgba(255, 51, 102, 1)',
-            'rgba(255, 204, 0, 1)',
-            'rgba(0, 170, 255, 1)',
-            'rgba(156, 39, 176, 1)',
-            'rgba(76, 175, 80, 1)',
-            'rgba(255, 152, 0, 1)',
-            'rgba(33, 150, 243, 1)',
-            'rgba(233, 30, 99, 1)'
-        ];
-        
-        // Create new chart
-        rewardChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels.map((label, i) => `${label} (${percentages[i]}%)`),
-                datasets: [{
-                    data: weightedShares,
-                    backgroundColor: backgroundColors.slice(0, weightedShares.length),
-                    borderColor: borderColors.slice(0, weightedShares.length),
-                    borderWidth: 2,
-                    hoverOffset: 20
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: 'white',
-                            padding: 15,
-                            font: {
-                                family: 'Montserrat, sans-serif',
-                                size: 12
-                            },
-                            generateLabels: function(chart) {
-                                const data = chart.data;
-                                if (data.labels.length && data.datasets.length) {
-                                    return data.labels.map(function(label, i) {
-                                        const value = data.datasets[0].data[i];
-                                        const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                                        return {
-                                            text: `${label.split(' ')[0]} ${label.split(' ')[1]} - ${percentage}%`,
-                                            fillStyle: data.datasets[0].backgroundColor[i],
-                                            strokeStyle: data.datasets[0].borderColor[i],
-                                            lineWidth: 2,
-                                            hidden: false,
-                                            index: i
-                                        };
-                                    });
-                                }
-                                return [];
+   function updateChart(batchData, totalUserWS) {
+    const ctx = document.getElementById('rewardChart');
+    if (!ctx) return;
+    
+    const chartPlaceholder = document.getElementById('chartPlaceholder');
+    const canvas = document.getElementById('rewardChart');
+    
+    if (chartPlaceholder) chartPlaceholder.style.display = 'none';
+    if (canvas) canvas.style.display = 'block';
+    
+    // Destroy existing chart
+    if (rewardChart) rewardChart.destroy();
+    
+    // Prepare data
+    const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+    const weightedShares = batchData.map(batch => batch.ws);
+    
+    // Calculate percentages for labels
+    const percentages = weightedShares.map(ws => ((ws / totalUserWS) * 100).toFixed(1));
+    
+    // Colors for the chart
+    const backgroundColors = [
+        'rgba(255, 51, 102, 0.8)',
+        'rgba(255, 204, 0, 0.8)',
+        'rgba(0, 170, 255, 0.8)',
+        'rgba(156, 39, 176, 0.8)',
+        'rgba(76, 175, 80, 0.8)',
+        'rgba(255, 152, 0, 0.8)',
+        'rgba(33, 150, 243, 0.8)',
+        'rgba(233, 30, 99, 0.8)'
+    ];
+    
+    const borderColors = [
+        'rgba(255, 51, 102, 1)',
+        'rgba(255, 204, 0, 1)',
+        'rgba(0, 170, 255, 1)',
+        'rgba(156, 39, 176, 1)',
+        'rgba(76, 175, 80, 1)',
+        'rgba(255, 152, 0, 1)',
+        'rgba(33, 150, 243, 1)',
+        'rgba(233, 30, 99, 1)'
+    ];
+    
+    // Create new chart
+    rewardChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels.map((label, i) => `${label} (${percentages[i]}%)`),
+            datasets: [{
+                data: weightedShares,
+                backgroundColor: backgroundColors.slice(0, weightedShares.length),
+                borderColor: borderColors.slice(0, weightedShares.length),
+                borderWidth: 2,
+                hoverOffset: 20
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: 'white',
+                        padding: 15,
+                        font: {
+                            family: 'Montserrat, sans-serif',
+                            size: 12
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const value = data.datasets[0].data[i];
+                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                                    return {
+                                        text: `${label.split(' ')[0]} ${label.split(' ')[1]} - ${percentage}%`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor[i],
+                                        lineWidth: 2,
+                                        hidden: false,
+                                        index: i
+                                    };
+                                });
                             }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                        titleColor: 'var(--rebel-gold)',
-                        bodyColor: 'white',
-                        borderColor: 'var(--rebel-gold)',
-                        borderWidth: 1,
-                        cornerRadius: 6,
-                        padding: 12,
-                        callbacks: {
-                            label: function(context) {
-                                const batch = batchData[context.dataIndex];
-                                return [
-                                    `Amount: ${formatNumber(batch.amount)} $rebelinux`,
-                                    `Age: ${batch.age} epochs`,
-                                    `Factor: ${(1 + (K * Math.min(batch.age, MAX_AGE))).toFixed(2)}x`,
-                                    `Weighted Share: ${formatNumber(batch.ws, true)}`,
-                                    `Share: ${((batch.ws / totalUserWS) * 100).toFixed(1)}%`
-                                ];
-                            }
+                            return [];
                         }
                     }
                 },
-                animation: {
-                    animateScale: true,
-                    animateRotate: true,
-                    duration: 1000,
-                    easing: 'easeOutQuart'
-                },
-                cutout: '60%'
-            }
-        });
-    }
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    titleColor: 'var(--rebel-gold)',
+                    bodyColor: 'white',
+                    borderColor: 'var(--rebel-gold)',
+                    borderWidth: 1,
+                    cornerRadius: 6,
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            const batch = batchData[context.dataIndex];
+                            return [
+                                `Amount: ${formatNumber(batch.amount)} $rebelinux`,
+                                `Age: ${batch.age} epochs`,
+                                `Factor: ${(1 + (K * Math.min(batch.age, MAX_AGE))).toFixed(2)}x`,
+                                `Weighted Share: ${formatNumber(batch.ws, true)}`,
+                                `Share: ${((batch.ws / totalUserWS) * 100).toFixed(1)}%`
+                            ];
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            cutout: '60%'
+        }
+    });
+}
 
     // ========== HELPER FUNCTIONS ==========
     function formatNumber(num, showDecimals = false) {
