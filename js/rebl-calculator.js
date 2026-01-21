@@ -720,14 +720,6 @@ function updateSummaryOther() {
     updateOtherParticipantsSummary();
 }
 
-function setSummaryAge(age) {
-    if (calculatorState.participantType !== 'summary') return;
-    
-    document.getElementById('summaryOtherAge').value = age;
-    document.getElementById('summaryOtherAgeInput').value = age;
-    updateSummaryOther();
-    showToast(`Set average age to ${age} epochs`, 'info');
-}
 
 // ========== EXAMPLE FUNCTIONS ==========
 function addExampleOtherParticipants() {
