@@ -22,13 +22,17 @@ let calculatorState = {
 };
 
 // Initialize calculator on page load
+// Initialize calculator on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Initializing Enhanced REBL Calculator v3.1 - FIXED');
     
-    // Initialize with one empty row for user and other participants
+    // Initialize with one empty row for user
     setTimeout(function() {
         addTokenBatch();
         addOtherParticipantBatch();
+        
+        // Initialize detailed batches calculation
+        calculateDetailedBatchesWS();
     }, 100);
     
     // Initialize displays
@@ -154,6 +158,9 @@ function setParticipantType(type) {
         summaryMode.style.display = 'none';
         detailedOption.classList.add('active');
         summaryOption.classList.remove('active');
+        
+        // Recalculate detailed batches when switching to detailed mode
+        calculateDetailedBatchesWS();
     } else {
         detailedMode.style.display = 'none';
         summaryMode.style.display = 'block';
@@ -505,11 +512,6 @@ function addOtherParticipantBatch(amount = '', age = '') {
     if (!table) return;
     
     const row = document.createElement('tr');
-    const amountNum = parseFloat(amount) || 0;
-    const ageNum = parseFloat(age) || 0;
-    const weightFactor = 1 + (K * Math.min(ageNum, MAX_AGE));
-    const weightedShare = amountNum * weightFactor;
-    
     row.innerHTML = `
         <td>
             <input type="number" class="other-batch-amount" value="${amount}" placeholder="Amount" 
@@ -521,8 +523,8 @@ function addOtherParticipantBatch(amount = '', age = '') {
                    oninput="updateOtherRowCalculations(this)" min="0" max="20" step="1">
             <div class="input-hint">Epochs (0-20)</div>
         </td>
-        <td class="other-batch-factor" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">${weightFactor.toFixed(2)}</td>
-        <td class="other-batch-ws" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">${formatNumber(weightedShare, true)}</td>
+        <td class="other-batch-factor" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">1.00</td>
+        <td class="other-batch-ws" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">0</td>
         <td style="text-align: center;">
             <button onclick="removeOtherParticipantBatch(this)" class="batch-btn" 
                     style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;">
@@ -532,8 +534,10 @@ function addOtherParticipantBatch(amount = '', age = '') {
     `;
     table.appendChild(row);
     
-    // Update other participants
-    updateOtherParticipantsSummary();
+    // If values were provided, trigger calculation
+    if (amount || age) {
+        setTimeout(() => updateOtherRowCalculations(row.querySelector('.other-batch-amount')), 10);
+    }
     
     // Add animation
     row.style.opacity = '0';
@@ -545,6 +549,51 @@ function addOtherParticipantBatch(amount = '', age = '') {
     }, 10);
 }
 
+// ========== CALCULATE DETAILED BATCHES WS ==========
+function calculateDetailedBatchesWS() {
+    if (calculatorState.participantType !== 'detailed') return;
+    
+    const rows = document.querySelectorAll('#other-participants-table tbody tr');
+    let totalTokens = 0;
+    let totalWS = 0;
+    let totalWeightedAge = 0;
+    
+    rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.other-batch-amount').value) || 0;
+        const age = parseFloat(row.querySelector('.other-batch-age').value) || 0;
+        
+        // Calculate weight factor: 1 + 0.07 × min(Age, 20)
+        const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
+        const weightedShare = amount * weightFactor;
+        
+        totalTokens += amount;
+        totalWS += weightedShare;
+        totalWeightedAge += amount * age;
+        
+        // Update the display cells
+        const factorCell = row.querySelector('.other-batch-factor');
+        const wsCell = row.querySelector('.other-batch-ws');
+        
+        if (factorCell) {
+            factorCell.textContent = weightFactor.toFixed(2);
+            factorCell.style.color = weightFactor > 1 ? 'var(--rebel-blue)' : '#ffffff';
+            factorCell.style.fontWeight = weightFactor > 1 ? 'bold' : 'normal';
+        }
+        
+        if (wsCell) {
+            wsCell.textContent = formatNumber(weightedShare, true);
+            wsCell.style.color = 'var(--rebel-blue)';
+            wsCell.style.fontWeight = 'bold';
+        }
+    });
+    
+    // Update state
+    calculatorState.otherTokens = totalTokens;
+    calculatorState.otherWS = totalWS;
+    calculatorState.otherAvgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
+    calculatorState.otherAvgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
+}
+
 
 function removeOtherParticipantBatch(button) {
     const row = button.closest('tr');
@@ -554,7 +603,12 @@ function removeOtherParticipantBatch(button) {
         
         setTimeout(() => {
             row.remove();
-            updateOtherParticipantsSummary();
+            
+            // Recalculate after removal
+            if (calculatorState.participantType === 'detailed') {
+                calculateDetailedBatchesWS();
+                updateOtherParticipantsSummary();
+            }
             
             // Add empty row if all are removed
             const table = document.querySelector('#other-participants-table tbody');
@@ -634,7 +688,8 @@ function updateOtherRowCalculations(input) {
         wsCell.style.fontWeight = 'bold';
     }
     
-    // Update other participants AND total participation
+    // Recalculate all detailed batches
+    calculateDetailedBatchesWS();
     updateOtherParticipantsSummary();
     
     // Calculate rewards with slight delay to avoid rapid calculations
@@ -648,45 +703,7 @@ function updateOtherRowCalculations(input) {
 }
 
 function updateOtherParticipantsSummary() {
-    let totalTokens = 0;
-    let totalWS = 0;
-    let totalWeightedAge = 0;
-    
-    if (calculatorState.participantType === 'detailed') {
-        // Calculate from detailed batches
-        const rows = document.querySelectorAll('#other-participants-table tbody tr');
-        
-        rows.forEach(row => {
-            const amount = parseFloat(row.querySelector('.other-batch-amount').value) || 0;
-            const age = parseFloat(row.querySelector('.other-batch-age').value) || 0;
-            const wsCell = row.querySelector('.other-batch-ws');
-            
-            // Calculate WS manually to ensure accuracy
-            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
-            const weightedShare = amount * weightFactor;
-            
-            totalTokens += amount;
-            totalWS += weightedShare;
-            totalWeightedAge += amount * age;
-            
-            // Update the cell display
-            if (wsCell) {
-                wsCell.textContent = formatNumber(weightedShare, true);
-            }
-        });
-    } else {
-        // For summary mode, use the calculated values
-        totalTokens = calculatorState.otherTokens;
-        totalWS = calculatorState.otherWS;
-        totalWeightedAge = totalTokens * calculatorState.otherAvgAge;
-    }
-    
-    calculatorState.otherTokens = totalTokens;
-    calculatorState.otherWS = totalWS;
-    calculatorState.otherAvgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
-    calculatorState.otherAvgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
-    
-    // Update summary display
+    // Update summary display with current state values
     const otherTotalTokens = document.getElementById('otherTotalTokens');
     const otherAvgAge = document.getElementById('otherAvgAge');
     const otherAvgBonus = document.getElementById('otherAvgBonus');
@@ -694,7 +711,7 @@ function updateOtherParticipantsSummary() {
     const displayOtherTokens = document.getElementById('displayOtherTokens');
     
     if (otherTotalTokens) {
-        otherTotalTokens.textContent = formatNumber(totalTokens);
+        otherTotalTokens.textContent = formatNumber(calculatorState.otherTokens);
     }
     if (otherAvgAge) {
         otherAvgAge.textContent = calculatorState.otherAvgAge.toFixed(1);
@@ -713,13 +730,13 @@ function updateOtherParticipantsSummary() {
         }
     }
     if (otherTotalWS) {
-        otherTotalWS.textContent = formatNumber(totalWS);
+        otherTotalWS.textContent = formatNumber(calculatorState.otherWS);
     }
     if (displayOtherTokens) {
-        displayOtherTokens.textContent = formatNumber(totalTokens);
+        displayOtherTokens.textContent = formatNumber(calculatorState.otherTokens);
     }
     
-    // CRITICAL: Update total participation after updating other participants
+    // Update total participation
     updateParticipationDisplay();
 }
 
