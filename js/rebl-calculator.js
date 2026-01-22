@@ -500,12 +500,16 @@ function updateWSInfoDisplay() {
     }
 }
 
-// ========== OTHER PARTICIPANTS FUNCTIONS ==========
 function addOtherParticipantBatch(amount = '', age = '') {
     const table = document.querySelector('#other-participants-table tbody');
     if (!table) return;
     
     const row = document.createElement('tr');
+    const amountNum = parseFloat(amount) || 0;
+    const ageNum = parseFloat(age) || 0;
+    const weightFactor = 1 + (K * Math.min(ageNum, MAX_AGE));
+    const weightedShare = amountNum * weightFactor;
+    
     row.innerHTML = `
         <td>
             <input type="number" class="other-batch-amount" value="${amount}" placeholder="Amount" 
@@ -517,8 +521,8 @@ function addOtherParticipantBatch(amount = '', age = '') {
                    oninput="updateOtherRowCalculations(this)" min="0" max="20" step="1">
             <div class="input-hint">Epochs (0-20)</div>
         </td>
-        <td class="other-batch-factor" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">1.00</td>
-        <td class="other-batch-ws" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">0</td>
+        <td class="other-batch-factor" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">${weightFactor.toFixed(2)}</td>
+        <td class="other-batch-ws" style="color: var(--rebel-blue); font-weight: bold; text-align: center;">${formatNumber(weightedShare, true)}</td>
         <td style="text-align: center;">
             <button onclick="removeOtherParticipantBatch(this)" class="batch-btn" 
                     style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;">
@@ -528,9 +532,8 @@ function addOtherParticipantBatch(amount = '', age = '') {
     `;
     table.appendChild(row);
     
-    if (amount || age) {
-        setTimeout(() => updateOtherRowCalculations(row.querySelector('.other-batch-amount')), 10);
-    }
+    // Update other participants
+    updateOtherParticipantsSummary();
     
     // Add animation
     row.style.opacity = '0';
@@ -540,10 +543,8 @@ function addOtherParticipantBatch(amount = '', age = '') {
         row.style.opacity = '1';
         row.style.transform = 'translateY(0)';
     }, 10);
-    
-    // Update other participants
-    updateOtherParticipantsSummary();
 }
+
 
 function removeOtherParticipantBatch(button) {
     const row = button.closest('tr');
@@ -633,7 +634,7 @@ function updateOtherRowCalculations(input) {
         wsCell.style.fontWeight = 'bold';
     }
     
-    // Update other participants
+    // Update other participants AND total participation
     updateOtherParticipantsSummary();
     
     // Calculate rewards with slight delay to avoid rapid calculations
@@ -647,29 +648,43 @@ function updateOtherRowCalculations(input) {
 }
 
 function updateOtherParticipantsSummary() {
+    let totalTokens = 0;
+    let totalWS = 0;
+    let totalWeightedAge = 0;
+    
     if (calculatorState.participantType === 'detailed') {
         // Calculate from detailed batches
         const rows = document.querySelectorAll('#other-participants-table tbody tr');
-        let totalTokens = 0;
-        let totalWS = 0;
-        let totalWeightedAge = 0;
         
         rows.forEach(row => {
             const amount = parseFloat(row.querySelector('.other-batch-amount').value) || 0;
             const age = parseFloat(row.querySelector('.other-batch-age').value) || 0;
-            const ws = parseFloat(row.querySelector('.other-batch-ws').textContent.replace(/,/g, '')) || 0;
+            const wsCell = row.querySelector('.other-batch-ws');
+            
+            // Calculate WS manually to ensure accuracy
+            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
+            const weightedShare = amount * weightFactor;
             
             totalTokens += amount;
-            totalWS += ws;
+            totalWS += weightedShare;
             totalWeightedAge += amount * age;
+            
+            // Update the cell display
+            if (wsCell) {
+                wsCell.textContent = formatNumber(weightedShare, true);
+            }
         });
-        
-        calculatorState.otherTokens = totalTokens;
-        calculatorState.otherWS = totalWS;
-        calculatorState.otherAvgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
-        calculatorState.otherAvgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
+    } else {
+        // For summary mode, use the calculated values
+        totalTokens = calculatorState.otherTokens;
+        totalWS = calculatorState.otherWS;
+        totalWeightedAge = totalTokens * calculatorState.otherAvgAge;
     }
-    // For summary mode, values are updated in updateSummaryOther()
+    
+    calculatorState.otherTokens = totalTokens;
+    calculatorState.otherWS = totalWS;
+    calculatorState.otherAvgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
+    calculatorState.otherAvgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
     
     // Update summary display
     const otherTotalTokens = document.getElementById('otherTotalTokens');
@@ -679,7 +694,7 @@ function updateOtherParticipantsSummary() {
     const displayOtherTokens = document.getElementById('displayOtherTokens');
     
     if (otherTotalTokens) {
-        otherTotalTokens.textContent = formatNumber(calculatorState.otherTokens);
+        otherTotalTokens.textContent = formatNumber(totalTokens);
     }
     if (otherAvgAge) {
         otherAvgAge.textContent = calculatorState.otherAvgAge.toFixed(1);
@@ -698,13 +713,13 @@ function updateOtherParticipantsSummary() {
         }
     }
     if (otherTotalWS) {
-        otherTotalWS.textContent = formatNumber(calculatorState.otherWS);
+        otherTotalWS.textContent = formatNumber(totalWS);
     }
     if (displayOtherTokens) {
-        displayOtherTokens.textContent = formatNumber(calculatorState.otherTokens);
+        displayOtherTokens.textContent = formatNumber(totalTokens);
     }
     
-    // Update total participation
+    // CRITICAL: Update total participation after updating other participants
     updateParticipationDisplay();
 }
 
