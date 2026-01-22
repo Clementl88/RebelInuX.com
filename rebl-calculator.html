@@ -21,7 +21,7 @@
   <title>RebelInuX Sustainable Reward Calculator</title>
   
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
@@ -30,588 +30,640 @@
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
-  
-  <!-- Animate.css for smooth animations -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
   <!-- CSS Files -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/header-footer.css">
   <link rel="stylesheet" href="css/rebl-calculator.css">
 
-  <!-- Enhanced Professional Calculator Styles -->
+  <!-- Enhanced Calculator Styles -->
   <style>
-    :root {
-      --professional-gold: linear-gradient(135deg, #D4A76A 0%, #FFD700 50%, #D4A76A 100%);
-      --professional-red: linear-gradient(135deg, #FF3366 0%, #FF6B9D 100%);
-      --professional-blue: linear-gradient(135deg, #00AAFF 0%, #66CCFF 100%);
-      --professional-green: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
-      --professional-purple: linear-gradient(135deg, #9C27B0 0%, #E040FB 100%);
-      --glass-bg: rgba(16, 18, 27, 0.95);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      --hover-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 167, 106, 0.2);
-    }
-
-    /* Professional Card Design */
-    .pro-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      box-shadow: var(--card-shadow);
-      padding: 25px;
-      margin-bottom: 25px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .pro-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--hover-shadow);
-      border-color: rgba(212, 167, 106, 0.3);
-    }
-
-    .pro-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid rgba(212, 167, 106, 0.2);
-    }
-
-    .pro-card-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      background: var(--professional-gold);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .pro-card-title i {
-      font-size: 1.5rem;
-    }
-
-    /* Professional Table Design */
-    .pro-table-container {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .pro-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .pro-table thead {
-      background: linear-gradient(90deg, rgba(212, 167, 106, 0.2), rgba(255, 51, 102, 0.2));
-    }
-
-    .pro-table th {
-      padding: 18px 15px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(255, 255, 255, 0.9);
-      border-bottom: 2px solid rgba(212, 167, 106, 0.3);
-    }
-
-    .pro-table tbody tr {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.3s ease;
-    }
-
-    .pro-table tbody tr:hover {
-      background: rgba(212, 167, 106, 0.05);
-      transform: translateX(5px);
-    }
-
-    .pro-table td {
-      padding: 15px;
-      vertical-align: middle;
-    }
-
-    /* Professional Input Design */
-    .pro-input {
-      background: rgba(0, 0, 0, 0.4);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 12px 15px;
-      color: white;
-      font-size: 14px;
-      font-family: 'Roboto Mono', monospace;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-
-    .pro-input:focus {
-      outline: none;
-      border-color: var(--rebel-gold);
-      box-shadow: 0 0 0 3px rgba(212, 167, 106, 0.2);
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .pro-input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* Professional Button Design */
-    .pro-btn {
-      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 14px 28px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pro-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: 0.5s;
-    }
-
-    .pro-btn:hover::before {
-      left: 100%;
-    }
-
-    .pro-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(255, 51, 102, 0.3);
-    }
-
-    .pro-btn:active {
-      transform: translateY(-1px);
-    }
-
-    .pro-btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .pro-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Professional Badge Design */
-    .pro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      background: rgba(212, 167, 106, 0.1);
-      border: 1px solid rgba(212, 167, 106, 0.3);
-      color: var(--rebel-gold);
-    }
-
-    /* Professional Tabs */
-    .pro-tabs {
-      display: flex;
-      gap: 5px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 5px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
-
-    .pro-tab {
-      flex: 1;
-      text-align: center;
-      padding: 12px 20px;
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .pro-tab.active {
-      background: linear-gradient(135deg, rgba(212, 167, 106, 0.2), rgba(255, 51, 102, 0.2));
-      color: white;
-      box-shadow: 0 4px 15px rgba(212, 167, 106, 0.2);
-    }
-
-    /* Professional Progress Bar */
-    .pro-progress {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 15px 0;
-    }
-
-    .pro-progress-bar {
-      height: 100%;
-      border-radius: 10px;
-      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pro-progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      animation: shimmer 2s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    /* Professional Metric Display */
-    .pro-metric {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .pro-metric:hover {
-      transform: translateY(-5px);
-      border-color: var(--rebel-gold);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .pro-metric-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-bottom: 8px;
-    }
-
-    .pro-metric-value {
-      font-size: 28px;
-      font-weight: 800;
-      background: var(--professional-gold);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 5px;
-    }
-
-    .pro-metric-hint {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.4);
-      font-family: 'Roboto Mono', monospace;
-    }
-
-    /* Professional Notification */
-    .pro-notification {
+    /* Toast notifications */
+    .calculator-toast {
       position: fixed;
-      top: 20px;
+      bottom: 20px;
       right: 20px;
-      padding: 20px;
-      border-radius: 15px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       z-index: 10000;
-      max-width: 400px;
-      transform: translateX(150%);
-      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       display: flex;
       align-items: center;
-      gap: 15px;
-    }
-
-    .pro-notification.show {
-      transform: translateX(0);
-    }
-
-    .pro-notification-icon {
-      font-size: 24px;
-      flex-shrink: 0;
-    }
-
-    .pro-notification-content {
-      flex: 1;
-    }
-
-    .pro-notification-title {
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: white;
-    }
-
-    .pro-notification-message {
+      gap: 10px;
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+      animation: toastIn 0.3s ease;
+      backdrop-filter: blur(10px);
+      max-width: 350px;
     }
-
-    /* Professional Formula Display */
-    .pro-formula {
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(16, 18, 27, 0.8));
-      border: 1px solid rgba(212, 167, 106, 0.2);
-      border-radius: 15px;
-      padding: 25px;
-      margin: 25px 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pro-formula::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--professional-gold);
-    }
-
-    .pro-formula-equation {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 1.5rem;
-      text-align: center;
+    
+    .calculator-toast-success {
+      background: rgba(76, 175, 80, 0.9);
       color: white;
-      margin-bottom: 15px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.5);
     }
-
-    .pro-formula-component {
-      font-family: 'Roboto Mono', monospace;
-      font-size: 1.2rem;
-      text-align: center;
-      color: var(--rebel-gold);
-      margin-top: 10px;
+    
+    .calculator-toast-info {
+      background: rgba(33, 150, 243, 0.9);
+      color: white;
+      border: 1px solid rgba(33, 150, 243, 0.5);
     }
-
-    /* Professional Chart Container */
-    .pro-chart-container {
-      background: var(--glass-bg);
-      border-radius: 20px;
-      padding: 25px;
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--card-shadow);
-      height: 400px;
+    
+    .calculator-toast-warning {
+      background: rgba(255, 193, 7, 0.9);
+      color: black;
+      border: 1px solid rgba(255, 193, 7, 0.5);
+    }
+    
+    .calculator-toast-error {
+      background: rgba(255, 51, 102, 0.9);
+      color: white;
+      border: 1px solid rgba(255, 51, 102, 0.5);
+    }
+    
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    @keyframes toastIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes toastOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    /* Help tooltips */
+    .help-tooltip {
       position: relative;
-      overflow: hidden;
+      display: inline-block;
+      cursor: help;
     }
-
-    .pro-chart-container::before {
+    
+    .help-tooltip .tooltip-text {
+      visibility: hidden;
+      width: 300px;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      text-align: left;
+      border-radius: 6px;
+      padding: 12px;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 12px;
+      line-height: 1.4;
+      border: 1px solid var(--rebel-gold);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    
+    .help-tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    /* Table actions */
+    .table-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .table-action-btn {
+      background: rgba(212, 167, 106, 0.1);
+      color: var(--rebel-gold);
+      border: 1px solid var(--rebel-gold);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .table-action-btn:hover {
+      background: rgba(212, 167, 106, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    /* Input validation */
+    input:invalid {
+      border-color: var(--rebel-red) !important;
+      box-shadow: 0 0 5px rgba(255, 51, 102, 0.5) !important;
+    }
+    
+    .input-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+      display: block;
+    }
+    
+    /* Loading state */
+    .calculate-btn.loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    
+    .calculate-btn.loading::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--professional-gold);
-    }
-
-    /* Professional Loading Animation */
-    .pro-loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
-
-    .pro-loader {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(212, 167, 106, 0.2);
-      border-top: 4px solid var(--rebel-gold);
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin-bottom: 20px;
     }
-
-    /* Professional Grid Layout */
-    .pro-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-
-    /* Professional Slider */
-    .pro-slider-container {
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Quick actions */
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
     }
-
-    .pro-slider {
-      width: 100%;
-      height: 8px;
-      -webkit-appearance: none;
-      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-      border-radius: 10px;
-      outline: none;
+    
+    .quick-action-btn {
+      background: rgba(0, 170, 255, 0.1);
+      color: var(--rebel-blue);
+      border: 1px solid var(--rebel-blue);
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-action-btn:hover {
+      background: rgba(0, 170, 255, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    /* Gamma info panels */
+    .gamma-info-panel {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 4px solid;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    .gamma-info-panel.low {
+      border-left-color: #ff3366;
+      background: rgba(255, 51, 102, 0.1);
+    }
+    
+    .gamma-info-panel.medium {
+      border-left-color: #ffcc00;
+      background: rgba(255, 204, 0, 0.1);
+    }
+    
+    .gamma-info-panel.high {
+      border-left-color: #00ff00;
+      background: rgba(0, 255, 0, 0.1);
+    }
+    
+    /* Enhanced WS Info Styles */
+    .ws-info-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
       margin: 15px 0;
     }
-
-    .pro-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: white;
-      cursor: pointer;
-      border: 3px solid var(--rebel-gold);
-      box-shadow: 0 0 10px rgba(212, 167, 106, 0.5);
+    
+    .ws-info-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-gold);
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 10px;
     }
-
-    /* Professional Comparison Cards */
-    .pro-comparison {
+    
+    .ws-info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
     }
-
-    .pro-comparison-card {
-      background: var(--glass-bg);
-      border-radius: 20px;
-      padding: 25px;
-      border: 1px solid var(--glass-border);
+    
+    .ws-info-item {
+      text-align: center;
+      padding: 10px;
+    }
+    
+    .ws-info-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+    }
+    
+    .ws-info-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    .ws-info-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    /* Age Bonus Calculator */
+    .age-bonus-calculator {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    
+    .age-bonus-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .age-bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .age-bonus-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .age-bonus-age {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .age-bonus-multiplier {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    /* Other Participants Batches Styles */
+    .other-participants-batches {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .other-participants-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-blue);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    
+    .other-participants-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .other-participants-btn {
+      background: rgba(0, 170, 255, 0.1);
+      color: var(--rebel-blue);
+      border: 1px solid var(--rebel-blue);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
       transition: all 0.3s ease;
-      position: relative;
+    }
+    
+    .other-participants-btn:hover {
+      background: rgba(0, 170, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .other-participants-btn.danger {
+      background: rgba(255, 51, 102, 0.1);
+      color: var(--rebel-red);
+      border-color: var(--rebel-red);
+    }
+    
+    .other-participants-btn.danger:hover {
+      background: rgba(255, 51, 102, 0.2);
+    }
+    
+    .other-participants-summary {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    
+    .other-summary-item {
+      text-align: center;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .other-summary-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .other-summary-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--rebel-blue);
+    }
+    
+    /* Batch styles for other participants table */
+    .other-batch-amount, .other-batch-age {
+      width: 100%;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      color: white;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .other-batch-amount:focus, .other-batch-age:focus {
+      outline: none;
+      border-color: var(--rebel-blue);
+      box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.2);
+    }
+    
+    .other-batch-factor, .other-batch-ws {
+      color: var(--rebel-blue);
+      font-weight: bold;
+      text-align: center;
+      padding: 8px;
+    }
+    
+    /* Participant type selector */
+    .participant-type-selector {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .participant-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    
+    .participant-type-option:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .participant-type-option.active {
+      background: rgba(0, 170, 255, 0.1);
+      border-color: var(--rebel-blue);
+      color: var(--rebel-blue);
+    }
+    
+    .participant-type-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    
+    .participant-type-label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .participant-type-description {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+    }
+    
+    /* Contribution Container */
+    .contribution-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .contribution-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .contribution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .contribution-item {
+      text-align: center;
+    }
+    
+    .contribution-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
       overflow: hidden;
     }
-
-    .pro-comparison-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
+    
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      border-radius: 4px;
+      transition: width 0.5s ease;
     }
-
-    .pro-comparison-card.user::before {
-      background: var(--professional-gold);
+    
+    /* User Stats */
+    .user-stats-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+      display: none;
     }
-
-    .pro-comparison-card.others::before {
-      background: var(--professional-blue);
+    
+    .user-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
     }
-
-    .pro-comparison-card.total::before {
-      background: var(--professional-green);
+    
+    .user-stat-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
     }
-
-    .pro-comparison-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--hover-shadow);
+    
+    .user-stat-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-
-    /* Mobile Responsiveness */
+    
+    .user-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 4px;
+    }
+    
+    .user-stat-percentage {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-      .pro-card {
-        padding: 20px;
-        margin-bottom: 20px;
+      .table-actions {
+        flex-direction: column;
       }
       
-      .pro-grid {
+      .table-action-btn {
+        justify-content: center;
+      }
+      
+      .quick-actions {
+        flex-direction: column;
+      }
+      
+      .quick-action-btn {
+        justify-content: center;
+      }
+      
+      .ws-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .age-bonus-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .other-participants-summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .contribution-grid {
         grid-template-columns: 1fr;
       }
       
-      .pro-table th,
-      .pro-table td {
-        padding: 12px 10px;
-        font-size: 12px;
+      .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
       
-      .pro-formula-equation {
-        font-size: 1.1rem;
-      }
-      
-      .pro-metric-value {
-        font-size: 22px;
-      }
-      
-      .pro-comparison {
-        grid-template-columns: 1fr;
-      }
-      
-      .pro-notification {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
+      .participant-type-selector {
+        flex-direction: column;
       }
     }
-
+    
     @media (max-width: 480px) {
-      .pro-card {
-        padding: 15px;
+      .ws-info-grid {
+        grid-template-columns: 1fr;
       }
       
-      .pro-table {
-        display: block;
-        overflow-x: auto;
+      .age-bonus-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
       
-      .pro-btn {
-        padding: 12px 20px;
-        font-size: 13px;
+      .other-participants-summary {
+        grid-template-columns: 1fr;
       }
       
-      .pro-formula-equation {
-        font-size: 1rem;
-        padding: 10px;
+      .user-stats-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body class="dark-theme">
-  <!-- Professional Loading Overlay -->
-  <div class="pro-loading-overlay" id="loadingOverlay">
-    <div class="pro-loader-wrapper">
-      <div class="pro-loader"></div>
-      <div class="pro-loading-text">Initializing Calculator</div>
-      <div class="pro-loading-progress">
-        <div class="pro-loading-bar"></div>
-      </div>
-    </div>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
   </div>
-
-  <!-- Professional Notifications Container -->
-  <div id="notificationContainer"></div>
   
   <!-- Back to Top Button -->
   <div class="back-to-top" id="backToTop">
@@ -625,64 +677,36 @@
     <!-- Hero Section -->
     <section class="page-hero page-hero--calculator">
       <div class="container">
-        <div class="hero-content animate__animated animate__fadeInUp">
-          <h1 class="hero-title">SUSTAINABLE REWARD CALCULATOR</h1>
-          <p class="hero-subtitle">Calculate your $REBL rewards using the new sustainable formula with Gamma Scale Factor (γ) simulation</p>
-          <p class="hero-description">Advanced simulation tool for optimizing your participation strategy and maximizing returns</p>
-          <div class="hero-buttons">
-            <a href="#rebl-calculator" class="pro-btn">
-              <i class="fas fa-rocket"></i> Start Calculating
-            </a>
-            <a href="#calculator-faq" class="pro-btn pro-btn-secondary">
-              <i class="fas fa-graduation-cap"></i> Learn Formula
-            </a>
-            <a href="epoch-rewards.html" class="pro-btn pro-btn-secondary">
-              <i class="fas fa-chart-line"></i> View Rewards
-            </a>
-          </div>
-        </div>
-        <div class="hero-stats">
-          <div class="pro-grid">
-            <div class="pro-metric">
-              <div class="pro-metric-label">Circulating Supply</div>
-              <div class="pro-metric-value">499.24M</div>
-              <div class="pro-metric-hint">$rebelinux tokens</div>
-            </div>
-            <div class="pro-metric">
-              <div class="pro-metric-label">Weekly Pool</div>
-              <div class="pro-metric-value">3.2M</div>
-              <div class="pro-metric-hint">$REBL distribution</div>
-            </div>
-            <div class="pro-metric">
-              <div class="pro-metric-label">Gamma Scale</div>
-              <div class="pro-metric-value">0.40-1.00</div>
-              <div class="pro-metric-hint">Participation factor</div>
-            </div>
-            <div class="pro-metric">
-              <div class="pro-metric-label">Age Bonus</div>
-              <div class="pro-metric-value">7% / epoch</div>
-              <div class="pro-metric-hint">Max 20 epochs</div>
-            </div>
-          </div>
+        <h1>SUSTAINABLE REWARD CALCULATOR</h1>
+        <p class="text-lead">Calculate your $REBL rewards using the new sustainable formula with Gamma Scale Factor (γ) simulation. Plan your strategy based on participation levels!</p>
+        <div class="hero-buttons">
+          <a href="#rebl-calculator" class="cta-button">
+            <i class="fas fa-calculator"></i> Start Calculating
+          </a>
+          <a href="#calculator-faq" class="cta-button gold">
+            <i class="fas fa-question-circle"></i> FAQ & Help
+          </a>
+          <a href="epoch-rewards.html" class="cta-button">
+            <i class="fas fa-gift"></i> View Epoch Rewards
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Formula Banner -->
-    <section id="formula-banner">
+    <!-- Formula Announcement -->
+    <section id="formula-announcement">
       <div class="container">
-        <div class="pro-formula animate__animated animate__fadeIn">
-          <div class="pro-formula-equation">
-            Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+        <div class="announcement-banner calculator-announcement">
+          <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
+          <div class="formula-display">
+            <div class="formula-equation">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            </div>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+            </div>
           </div>
-          <div class="pro-formula-component">
-            γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
-          </div>
-          <div class="pro-formula-info">
-            <div class="pro-badge"><i class="fas fa-check-circle"></i> Governance Approved</div>
-            <div class="pro-badge"><i class="fas fa-shield-alt"></i> Sustainable Model</div>
-            <div class="pro-badge"><i class="fas fa-chart-line"></i> Epoch 15+</div>
-          </div>
+          <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
         </div>
       </div>
     </section>
@@ -690,51 +714,97 @@
     <!-- Main Calculator -->
     <section id="rebl-calculator">
       <div class="container">
+        <h2><i class="fas fa-calculator"></i> Sustainable Reward Calculator</h2>
+        
         <!-- Quick Navigation -->
-        <div class="pro-tabs">
-          <button class="pro-tab active" onclick="scrollToSection('your-tokens')">
-            <i class="fas fa-user-circle"></i> Your Tokens
+        <div class="quick-actions">
+          <button onclick="document.querySelector('.token-batches-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-layer-group"></i> Your Tokens
           </button>
-          <button class="pro-tab" onclick="scrollToSection('other-participants')">
+          <button onclick="document.querySelector('.other-participants-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
             <i class="fas fa-users"></i> Other Participants
           </button>
-          <button class="pro-tab" onclick="scrollToSection('gamma-simulator')">
-            <i class="fas fa-sliders-h"></i> Gamma Simulator
+          <button onclick="document.querySelector('.gamma-simulator').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-chart-line"></i> Gamma Simulator
           </button>
-          <button class="pro-tab" onclick="scrollToSection('results')">
-            <i class="fas fa-chart-pie"></i> Results
+          <button onclick="document.querySelector('.calculate-action').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-bolt"></i> Calculate
           </button>
+        </div>
+        
+        <!-- Core Parameters -->
+        <div class="calculator-parameters">
+          <div class="parameter-grid">
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-coins"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">CS (Circulating Supply)</div>
+                <div class="parameter-value">499,242,047</div>
+                <div class="parameter-description">Total $rebelinux tokens</div>
+              </div>
+            </div>
+            
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-piggy-bank"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">WERP (Weekly Pool)</div>
+                <div class="parameter-value">3,200,000 $REBL</div>
+                <div class="parameter-description">Fixed weekly distribution</div>
+              </div>
+            </div>
+            
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-sliders-h"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">γ (Gamma Scale)</div>
+                <div id="gammaValueDisplay" class="parameter-value">0.40</div>
+                <div class="parameter-description">Sustainability factor</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Your Token Batches -->
-        <div class="pro-card" id="your-tokens">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-layer-group"></i> Your Token Batches
-              <span class="pro-badge" id="userBatchCount">0 batches</span>
-            </div>
-            <div class="pro-card-actions">
-              <button class="pro-btn pro-btn-secondary" onclick="quickPreset('starter')">
+        <div class="calculator-section token-batches-section">
+          <div class="section-header">
+            <h3><i class="fas fa-layer-group"></i> Your Token Batches</h3>
+            <div class="example-buttons">
+              <button onclick="loadExampleCase('starter')" class="example-btn">
                 <i class="fas fa-user-graduate"></i> Starter
               </button>
-              <button class="pro-btn pro-btn-secondary" onclick="quickPreset('investor')">
+              <button onclick="loadExampleCase('investor')" class="example-btn">
                 <i class="fas fa-chart-line"></i> Investor
               </button>
-              <button class="pro-btn pro-btn-secondary" onclick="quickPreset('whale')">
+              <button onclick="loadExampleCase('whale')" class="example-btn">
                 <i class="fas fa-whale"></i> Whale
               </button>
             </div>
           </div>
           
-          <div class="pro-table-container">
-            <table class="pro-table" id="token-batches-table">
+          <div class="table-actions">
+            <button onclick="addTokenBatch()" class="table-action-btn">
+              <i class="fas fa-plus"></i> Add Batch
+            </button>
+            <button onclick="addTokenBatch('1000000', '5')" class="table-action-btn">
+              <i class="fas fa-bolt"></i> Quick Add 1M
+            </button>
+            <button onclick="addTokenBatch('500000', '10')" class="table-action-btn">
+              <i class="fas fa-bolt"></i> Quick Add 500K
+            </button>
+            <button onclick="clearTokenBatches()" class="table-action-btn" style="background: rgba(255, 51, 102, 0.1); color: var(--rebel-red); border-color: var(--rebel-red);">
+              <i class="fas fa-trash"></i> Clear All
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table id="token-batches-table">
               <thead>
                 <tr>
-                  <th><i class="fas fa-coins"></i> $rebelinux Amount</th>
-                  <th><i class="fas fa-clock"></i> Age (Epochs)</th>
-                  <th><i class="fas fa-weight-hanging"></i> Weight Factor</th>
-                  <th><i class="fas fa-percentage"></i> WSᵢ</th>
-                  <th><i class="fas fa-cog"></i> Actions</th>
+                  <th>$rebelinux Amount</th>
+                  <th>Age (Epochs)</th>
+                  <th>Weight Factor</th>
+                  <th>WSᵢ (Weighted Share)</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -743,74 +813,66 @@
             </table>
           </div>
           
-          <div class="pro-table-footer">
-            <div class="pro-grid">
-              <div class="pro-metric">
-                <div class="pro-metric-label">Total Tokens</div>
-                <div id="userTotalTokensDisplay" class="pro-metric-value">0</div>
-                <div class="pro-metric-hint">Your $rebelinux</div>
-              </div>
-              <div class="pro-metric">
-                <div class="pro-metric-label">Weighted Share</div>
-                <div id="userTotalWSDisplay" class="pro-metric-value">0</div>
-                <div class="pro-metric-hint">Your WSᵢ</div>
-              </div>
-              <div class="pro-metric">
-                <div class="pro-metric-label">Average Age</div>
-                <div id="userAvgAgeDisplay" class="pro-metric-value">0.0</div>
-                <div class="pro-metric-hint">Epochs</div>
-              </div>
-              <div class="pro-metric">
-                <div class="pro-metric-label">Average Bonus</div>
-                <div id="userAvgBonusDisplay" class="pro-metric-value">1.00x</div>
-                <div class="pro-metric-hint">Multiplier</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="pro-card-actions">
-            <button class="pro-btn" onclick="addTokenBatch()">
-              <i class="fas fa-plus-circle"></i> Add Batch
-            </button>
-            <button class="pro-btn pro-btn-secondary" onclick="quickAddBatch('1000000', '5')">
-              <i class="fas fa-bolt"></i> Add 1M
-            </button>
-            <button class="pro-btn pro-btn-secondary" onclick="quickAddBatch('500000', '10')">
-              <i class="fas fa-bolt"></i> Add 500K
-            </button>
-            <button class="pro-btn pro-btn-secondary" onclick="clearTokenBatches()" style="background: rgba(255, 51, 102, 0.1); border-color: var(--rebel-red); color: var(--rebel-red);">
-              <i class="fas fa-trash-alt"></i> Clear All
-            </button>
+          <div class="input-hint ws-hint">
+            <i class="fas fa-info-circle"></i> <strong>∑WS Calculation:</strong> Each batch gets 7% weight boost per epoch (max 20 epochs). 
+            Total WS = Σ[Token Amount × (1 + 0.07 × min(Age, 20))]. Your tokens: <span id="userTokenSum">0</span> | Your WS: <span id="userWSSum">0</span>
           </div>
         </div>
 
-        <!-- Other Participants -->
-        <div class="pro-card" id="other-participants">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-users"></i> Other Participants
+        <!-- Other Participants Section -->
+        <div class="calculator-section other-participants-section">
+          <div class="other-participants-header">
+            <i class="fas fa-users"></i> Other Participants
+          </div>
+          
+          <!-- Participant Type Selector -->
+          <div class="participant-type-selector">
+            <div class="participant-type-option active" onclick="setParticipantType('detailed')">
+              <div class="participant-type-icon">
+                <i class="fas fa-list-ol"></i>
+              </div>
+              <div class="participant-type-label">Detailed Batches</div>
+              <div class="participant-type-description">Add specific token batches for other participants</div>
             </div>
-            <div class="pro-tabs">
-              <button class="pro-tab active" id="tabDetailed" onclick="setParticipantType('detailed')">
-                <i class="fas fa-list-ol"></i> Detailed
-              </button>
-              <button class="pro-tab" id="tabSummary" onclick="setParticipantType('summary')">
-                <i class="fas fa-chart-bar"></i> Summary
-              </button>
+            
+            <div class="participant-type-option" onclick="setParticipantType('summary')">
+              <div class="participant-type-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <div class="participant-type-label">Summary</div>
+              <div class="participant-type-description">Set total tokens & average age</div>
             </div>
           </div>
           
-          <!-- Detailed Mode -->
-          <div id="detailedMode" class="participant-mode">
-            <div class="pro-table-container">
-              <table class="pro-table" id="other-participants-table">
+          <!-- Detailed Batches Mode -->
+          <div id="detailedBatchesMode" class="participant-mode">
+            <div class="other-participants-actions">
+              <button onclick="addOtherParticipantBatch()" class="other-participants-btn">
+                <i class="fas fa-plus"></i> Add Other Batch
+              </button>
+              <button onclick="addOtherParticipantBatch('1000000', '5')" class="other-participants-btn">
+                <i class="fas fa-bolt"></i> Add 1M Batch
+              </button>
+              <button onclick="addOtherParticipantBatch('500000', '10')" class="other-participants-btn">
+                <i class="fas fa-bolt"></i> Add 500K Batch
+              </button>
+              <button onclick="addExampleOtherParticipants()" class="other-participants-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+                <i class="fas fa-magic"></i> Add Example
+              </button>
+              <button onclick="clearOtherParticipantBatches()" class="other-participants-btn danger">
+                <i class="fas fa-trash"></i> Clear All
+              </button>
+            </div>
+            
+            <div class="table-container">
+              <table id="other-participants-table">
                 <thead>
                   <tr>
-                    <th><i class="fas fa-user-friends"></i> Token Amount</th>
-                    <th><i class="fas fa-clock"></i> Age (Epochs)</th>
-                    <th><i class="fas fa-weight-hanging"></i> Weight Factor</th>
-                    <th><i class="fas fa-percentage"></i> WS</th>
-                    <th><i class="fas fa-cog"></i> Actions</th>
+                    <th>Other Participant's Tokens</th>
+                    <th>Age (Epochs)</th>
+                    <th>Weight Factor</th>
+                    <th>WS (Weighted Share)</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -818,323 +880,332 @@
                 </tbody>
               </table>
             </div>
-            
-            <div class="pro-card-actions">
-              <button class="pro-btn pro-btn-secondary" onclick="addOtherParticipantBatch()">
-                <i class="fas fa-plus-circle"></i> Add Batch
-              </button>
-              <button class="pro-btn pro-btn-secondary" onclick="addExampleOtherParticipants()">
-                <i class="fas fa-magic"></i> Add Example
-              </button>
-              <button class="pro-btn pro-btn-secondary" onclick="clearOtherParticipantBatches()" style="background: rgba(255, 51, 102, 0.1); border-color: var(--rebel-red); color: var(--rebel-red);">
-                <i class="fas fa-trash-alt"></i> Clear All
-              </button>
-            </div>
           </div>
           
           <!-- Summary Mode -->
           <div id="summaryMode" class="participant-mode" style="display: none;">
-            <div class="pro-slider-container">
-              <div class="pro-slider-group">
-                <label class="pro-slider-label">Total Other Tokens: <span id="summaryOtherTokensValue">100M</span></label>
-                <input type="range" class="pro-slider" id="summaryOtherTokens" min="0" max="500000000" step="1000000" value="100000000" oninput="updateSummaryOther()">
-                <div class="pro-slider-hint">Estimate total tokens held by other participants</div>
+            <div class="slider-group">
+              <div class="slider-container">
+                <div class="slider-info">
+                  <div class="slider-info-label">
+                    <span>Total Other Tokens:</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Total tokens owned by other participants"></i>
+                  </div>
+                  <div class="slider-info-value">
+                    <input type="number" id="summaryOtherTokensInput" class="value-input" 
+                          value="100000000" min="0" max="500000000" step="1000000">
+                    <span id="summaryOtherTokensValue" class="slider-value">100M</span>
+                  </div>
+                </div>
+                <input type="range" id="summaryOtherTokens" min="0" max="500000000" step="1000000" value="100000000" oninput="updateSummaryOther()" class="slider">
               </div>
               
-              <div class="pro-slider-group" style="margin-top: 25px;">
-                <label class="pro-slider-label">Average Age: <span id="summaryOtherAgeValue">5</span> epochs</label>
-                <input type="range" class="pro-slider" id="summaryOtherAge" min="0" max="20" step="1" value="5" oninput="updateSummaryOther()">
-                <div class="pro-slider-hint">Average age of other participants' tokens (0-20 epochs)</div>
+              <div class="slider-container">
+                <div class="slider-info">
+                  <div class="slider-info-label">
+                    <span>Average Age (Epochs):</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Average age of other participants' tokens"></i>
+                  </div>
+                  <div class="slider-info-value">
+                    <input type="number" id="summaryOtherAgeInput" class="value-input" 
+                          value="5" min="0" max="20" step="1">
+                    <span id="summaryOtherAgeValue" class="slider-value">5</span>
+                  </div>
+                </div>
+                <input type="range" id="summaryOtherAge" min="0" max="20" step="1" value="5" oninput="updateSummaryOther()" class="slider">
+                <div class="input-hint">
+                  Age range: 0 (new) to 20 (max bonus)
+                </div>
               </div>
             </div>
           </div>
           
           <!-- Other Participants Summary -->
-          <div class="pro-comparison">
-            <div class="pro-comparison-card others">
-              <div class="pro-comparison-title">
-                <i class="fas fa-users"></i> Other Participants
-              </div>
-              <div class="pro-grid">
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Total Tokens</div>
-                  <div id="otherTotalTokens" class="pro-metric-value">0</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Average Age</div>
-                  <div id="otherAvgAge" class="pro-metric-value">0.0</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Average Bonus</div>
-                  <div id="otherAvgBonus" class="pro-metric-value">1.00x</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Total WS</div>
-                  <div id="otherTotalWS" class="pro-metric-value">0</div>
-                </div>
-              </div>
+          <div class="other-participants-summary">
+            <div class="other-summary-item">
+              <div class="other-summary-label">Other Tokens</div>
+              <div id="otherTotalTokens" class="other-summary-value">0</div>
             </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Avg Age</div>
+              <div id="otherAvgAge" class="other-summary-value">0.0</div>
+            </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Avg Bonus</div>
+              <div id="otherAvgBonus" class="other-summary-value">1.00x</div>
+            </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Total WS</div>
+              <div id="otherTotalWS" class="other-summary-value">0</div>
+            </div>
+          </div>
+          
+          <div class="input-hint" style="margin-top: 10px;">
+            <i class="fas fa-info-circle"></i> These values contribute to total participating tokens (P) and total weighted shares (∑WS)
           </div>
         </div>
 
-        <!-- Participation Summary -->
-        <div class="pro-card" id="participation-summary">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-chart-network"></i> Participation Summary
+        <!-- Participation Settings -->
+        <div class="calculator-section participation-settings">
+          <h3><i class="fas fa-sliders-h"></i> Participation Summary</h3>
+          
+          <!-- WS Info Container -->
+          <div class="ws-info-container">
+            <div class="ws-info-header">
+              <i class="fas fa-calculator"></i> Total Participation Calculation
+            </div>
+            <div class="ws-info-grid">
+              <div class="ws-info-item">
+                <div class="ws-info-label">Your Tokens</div>
+                <div id="yourTokensDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">With age bonuses</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Other Tokens</div>
+                <div id="displayOtherTokens" class="ws-info-value">0</div>
+                <div class="ws-info-hint">From other participants</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Total Tokens (P)</div>
+                <div id="totalTokensDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">P = Your + Other</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Total WS (∑WS)</div>
+                <div id="totalWSDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">Weighted shares total</div>
+              </div>
             </div>
           </div>
           
-          <div class="pro-comparison">
-            <div class="pro-comparison-card user">
-              <div class="pro-comparison-title">
-                <i class="fas fa-user-circle"></i> Your Contribution
-              </div>
-              <div class="pro-grid">
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Token Share</div>
-                  <div id="tokenSharePercentage" class="pro-metric-value">0%</div>
-                  <div class="pro-metric-hint">Of total participating</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">WS Share</div>
-                  <div id="wsSharePercentage" class="pro-metric-value">0%</div>
-                  <div class="pro-metric-hint">Of total WS</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="pro-comparison-card total">
-              <div class="pro-comparison-title">
-                <i class="fas fa-globe"></i> Total Participation
-              </div>
-              <div class="pro-grid">
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Total Tokens (P)</div>
-                  <div id="totalTokensDisplay" class="pro-metric-value">0</div>
-                  <div class="pro-metric-hint">Participating tokens</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Total WS (∑WS)</div>
-                  <div id="totalWSDisplay" class="pro-metric-value">0</div>
-                  <div class="pro-metric-hint">Weighted shares</div>
-                </div>
-              </div>
-            </div>
+          <!-- Contribution Display -->
+          <div id="contributionContainer" style="display: none;">
+            <!-- Will be populated by JavaScript -->
           </div>
           
           <!-- Gamma Scale Visualization -->
-          <div class="pro-card" style="margin-top: 20px; background: rgba(0, 0, 0, 0.5);">
-            <div class="pro-card-header">
-              <div class="pro-card-title">
-                <i class="fas fa-sliders-h"></i> Gamma Scale Factor (γ)
-                <span id="gammaValueDisplay" class="pro-badge">γ = 0.40</span>
+          <div class="gamma-visualization">
+            <label>
+              Gamma Scale (γ):
+              <span id="gammaValue" class="gamma-value">0.40</span>
+            </label>
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="gammaMarker" class="gamma-marker" style="left: 40%;"></div>
               </div>
             </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span>50% Participation</span>
+              <span>100%</span>
+            </div>
             
-            <div class="gamma-visualization">
-              <div class="pro-progress">
-                <div id="gammaProgress" class="pro-progress-bar" style="width: 40%; background: var(--professional-gold);"></div>
+            <!-- Gamma Info Panel -->
+            <div id="gammaInfoPanel" class="gamma-info-panel low">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                <i class="fas fa-info-circle"></i>
+                <strong>Low Participation (γ = 0.40)</strong>
               </div>
-              <div class="gamma-labels">
-                <span>40% (Floor)</span>
-                <span>50% Participation</span>
-                <span>100% (Max)</span>
-              </div>
-              
-              <div class="pro-grid" style="margin-top: 20px;">
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Participation Term</div>
-                  <div id="participationTerm" class="pro-metric-value">0.40</div>
-                  <div class="pro-metric-hint">P/(0.5×CS)</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Inflation Cap</div>
-                  <div id="inflationCap" class="pro-metric-value">1.00</div>
-                  <div class="pro-metric-hint">CS×1.5/∑WS</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Effective Gamma</div>
-                  <div id="effectiveGamma" class="pro-metric-value">0.40</div>
-                  <div class="pro-metric-hint">MAX(0.4, MIN(...))</div>
-                </div>
-              </div>
+              <p style="margin: 0; font-size: 12px;">The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.</p>
+            </div>
+          </div>
+          
+          <!-- Gamma Components -->
+          <div class="gamma-components">
+            <div class="gamma-component">
+              <div class="component-label">P/(0.5×CS)</div>
+              <div id="participationTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">CS×1.5/∑WS</div>
+              <div id="inflationCap" class="component-value">1.00</div>
+              <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MIN(1, ...)</div>
+              <div id="minTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Minimum of terms</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MAX(0.4, ...)</div>
+              <div id="maxTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Final Gamma Scale</div>
             </div>
           </div>
         </div>
 
         <!-- Calculate Button -->
-        <div class="pro-card calculate-action" id="calculate-action">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-calculator"></i> Calculate Rewards
-            </div>
-          </div>
-          
-          <div class="pro-card-content" style="text-align: center; padding: 30px;">
-            <button class="pro-btn" id="calculateButton" onclick="calculateRewards()" style="font-size: 18px; padding: 20px 40px;">
-              <i class="fas fa-bolt"></i> CALCULATE $REBL REWARDS
-            </button>
-            <p class="pro-hint" style="margin-top: 15px; color: rgba(255, 255, 255, 0.6);">
-              Click to compute your weekly sustainable rewards based on current parameters
-            </p>
+        <div class="calculate-action">
+          <button onclick="calculateRewards()" class="calculate-btn" id="calculateButton">
+            <i class="fas fa-calculator"></i> CALCULATE YOUR $REBL REWARDS
+          </button>
+          <div class="input-hint" style="text-align: center; margin-top: 10px;">
+            <i class="fas fa-bolt"></i> Click to calculate your weekly $REBL rewards based on your tokens and other participants
           </div>
         </div>
 
         <!-- Results Display -->
-        <div class="pro-card" id="results">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-chart-pie"></i> Reward Results
-            </div>
-            <div class="pro-card-actions">
-              <button class="pro-btn pro-btn-secondary" onclick="exportResults()">
-                <i class="fas fa-download"></i> Export
-              </button>
-              <button class="pro-btn pro-btn-secondary" onclick="shareResults()">
-                <i class="fas fa-share-alt"></i> Share
-              </button>
-            </div>
-          </div>
-          
-          <div id="reward-result" class="pro-results-container">
-            <div class="pro-loading" id="resultsPlaceholder">
-              <div class="pro-loader"></div>
-              <p style="margin-top: 20px; color: rgba(255, 255, 255, 0.6);">Enter your token batches to calculate rewards</p>
-              <p style="font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-top: 10px;">
-                Try loading an example or adding your own token batches
-              </p>
-            </div>
-          </div>
-          
-          <div class="pro-chart-container" id="chartContainer">
-            <canvas id="rewardChart"></canvas>
-            <div id="chartPlaceholder" class="pro-loading">
-              <i class="fas fa-chart-pie" style="font-size: 48px; color: rgba(212, 167, 106, 0.3); margin-bottom: 20px;"></i>
-              <p style="color: rgba(255, 255, 255, 0.6);">Your reward distribution will appear here</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gamma Simulator -->
-        <div class="pro-card" id="gamma-simulator">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-flask"></i> Gamma Scale Simulator
-            </div>
-          </div>
-          
-          <div class="pro-card-content">
-            <p class="pro-description" style="margin-bottom: 25px;">
-              <i class="fas fa-lightbulb"></i> Simulate how the Gamma Scale Factor (γ) adjusts rewards based on community participation levels.
-              Adjust the sliders to see how reaching 50% participation unlocks higher rewards for everyone!
+        <div id="reward-result" class="reward-result">
+          <div style="text-align: center;">
+            <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <p>Enter your token batches to calculate your sustainable $REBL rewards!</p>
+            <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+              Try loading an example or adding your own token batches.
             </p>
-            
-            <div class="pro-grid">
-              <div class="pro-slider-container">
-                <label class="pro-slider-label">Participating Tokens (P): <span id="whatIfParticipatingValue">100M</span></label>
-                <input type="range" class="pro-slider" id="whatIfParticipating" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()">
-                <div class="pro-slider-hint">Target for full gamma: <span id="targetParticipatingDisplay">249.6M</span></div>
-              </div>
-              
-              <div class="pro-slider-container">
-                <label class="pro-slider-label">Total Weighted Shares (∑WS): <span id="whatIfTotalWSValue">100M</span></label>
-                <input type="range" class="pro-slider" id="whatIfTotalWS" min="1000000" max="1200000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()">
-                <div class="pro-slider-hint">Typically 1-2.4x participating tokens</div>
-              </div>
-            </div>
-            
-            <div class="pro-results" style="margin-top: 30px;">
-              <div class="pro-grid">
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Gamma Scale (γ)</div>
-                  <div id="gammaScaleResult" class="pro-metric-value">0.40</div>
-                  <div class="pro-metric-hint">Scale: 0.40 → 1.00</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Effective Distribution</div>
-                  <div id="effectiveDistribution" class="pro-metric-value">1.28M</div>
-                  <div class="pro-metric-hint">Weekly $REBL pool</div>
-                </div>
-                <div class="pro-metric">
-                  <div class="pro-metric-label">Participation Rate</div>
-                  <div id="participationRate" class="pro-metric-value">20%</div>
-                  <div class="pro-metric-hint">Of circulating supply</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="pro-presets" style="margin-top: 30px; text-align: center;">
-              <div class="pro-preset-buttons">
-                <button class="pro-btn pro-btn-secondary" onclick="setSimulatorPreset('current')">
-                  <i class="fas fa-sync"></i> Current Settings
-                </button>
-                <button class="pro-btn pro-btn-secondary" onclick="setSimulatorPreset('optimal')" style="background: rgba(76, 175, 80, 0.1); border-color: #4CAF50; color: #4CAF50;">
-                  <i class="fas fa-bullseye"></i> 50% Participation
-                </button>
-                <button class="pro-btn pro-btn-secondary" onclick="setSimulatorPreset('full')" style="background: rgba(0, 255, 0, 0.1); border-color: #00ff00; color: #00ff00;">
-                  <i class="fas fa-rocket"></i> Full Gamma
-                </button>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Advanced Features -->
-    <section id="advanced-features">
-      <div class="container">
-        <div class="pro-card">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-cogs"></i> Advanced Features
+        <!-- Chart Container -->
+        <div class="chart-container">
+          <canvas id="rewardChart"></canvas>
+          <div id="chartPlaceholder" class="chart-placeholder">
+            <i class="fas fa-chart-pie"></i>
+            <p>Your sustainable reward distribution will appear here</p>
+          </div>
+        </div>
+
+        <!-- Gamma Scale Simulator -->
+        <div class="calculator-section gamma-simulator">
+          <h3><i class="fas fa-chart-line"></i> Gamma Scale Simulator</h3>
+          
+          <div class="simulator-info">
+            <p>
+              <i class="fas fa-lightbulb"></i> See how the Gamma Scale Factor (γ) adjusts rewards based on community participation. 
+              Move the sliders or enter values to see how reaching 50% participation unlocks higher rewards for everyone!
+            </p>
+          </div>
+          
+          <!-- Simulator Sliders -->
+          <div class="slider-group">
+            <div class="slider-container">
+              <div class="slider-info">
+                <div class="slider-info-label">
+                  <span>Participating Tokens (P):</span>
+                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total tokens participating in the epoch"></i>
+                </div>
+                <div class="slider-info-value">
+                  <input type="number" id="whatIfParticipatingInput" class="value-input" 
+                        value="100000000" min="1000000" max="500000000" step="1000000">
+                  <span id="whatIfParticipatingValue" class="slider-value">100M</span>
+                </div>
+              </div>
+              <input type="range" id="whatIfParticipating" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+              <div class="input-hint">
+                Target for full gamma: <span id="targetParticipatingDisplay">249.6M</span>
+              </div>
+            </div>
+            
+            <div class="slider-container">
+              <div class="slider-info">
+                <div class="slider-info-label">
+                  <span>Total Weighted Shares (∑WS):</span>
+                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total weighted shares including age bonuses (max 1.2B)"></i>
+                </div>
+                <div class="slider-info-value">
+                  <input type="number" id="whatIfTotalWSInput" class="value-input" 
+                        value="100000000" min="1000000" max="1200000000" step="1000000">
+                  <span id="whatIfTotalWSValue" class="slider-value">100M</span>
+                </div>
+              </div>
+              <input type="range" id="whatIfTotalWS" min="1000000" max="1200000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+              <div class="input-hint">
+                Typically 1-2.4x participating tokens
+              </div>
             </div>
           </div>
           
-          <div class="pro-grid">
-            <div class="pro-feature-card">
-              <div class="pro-feature-icon">
-                <i class="fas fa-history"></i>
+          <!-- Gamma Scale Results -->
+          <div class="simulator-results">
+            <div class="gamma-result">
+              <div class="gamma-label">Gamma Scale Factor</div>
+              <div id="gammaScaleResult" class="gamma-result-value">γ = 0.40</div>
+              <div class="input-hint" style="margin-top: 5px;">
+                Scale: 0.40 (Floor) → 1.00 (Max)
               </div>
-              <div class="pro-feature-title">Scenario History</div>
-              <div class="pro-feature-description">Save and compare different participation scenarios</div>
-              <button class="pro-btn pro-btn-secondary" style="margin-top: 15px;" onclick="saveScenario()">
-                <i class="fas fa-save"></i> Save Scenario
+            </div>
+            <div class="effective-distribution">
+              <div class="distribution-label">Effective Distribution</div>
+              <div id="effectiveDistribution" class="distribution-value">1,280,000 $REBL</div>
+              <div class="input-hint" style="margin-top: 5px;">
+                Actual weekly rewards pool
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Visualization -->
+          <div class="gamma-visualization">
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="whatIfGammaMarker" class="gamma-marker" style="left: 40%;"></div>
+              </div>
+            </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span id="targetParticipation">249.6M (50% CS)</span>
+              <span>100%</span>
+            </div>
+          </div>
+          
+          <!-- Gamma Breakdown -->
+          <div class="gamma-breakdown">
+            <h4>γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</h4>
+            <div id="gammaBreakdown" class="breakdown-text">
+              Currently: MAX(0.4, MIN(1, 0.40, 1.00)) = 0.40
+            </div>
+          </div>
+          
+          <!-- Simulator Presets -->
+          <div style="margin-top: 25px; text-align: center;">
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
+              <button onclick="setSimulatorPreset('current')" class="table-action-btn">
+                <i class="fas fa-sync"></i> Use Current Settings
+              </button>
+              <button onclick="setSimulatorPreset('optimal')" class="table-action-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+                <i class="fas fa-bullseye"></i> 50% Participation
+              </button>
+              <button onclick="setSimulatorPreset('full')" class="table-action-btn" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00;">
+                <i class="fas fa-rocket"></i> Full Gamma (100%)
               </button>
             </div>
-            
-            <div class="pro-feature-card">
-              <div class="pro-feature-icon">
-                <i class="fas fa-project-diagram"></i>
-              </div>
-              <div class="pro-feature-title">Strategy Analysis</div>
-              <div class="pro-feature-description">Analyze optimal token distribution strategies</div>
-              <button class="pro-btn pro-btn-secondary" style="margin-top: 15px;" onclick="analyzeStrategy()">
-                <i class="fas fa-chart-bar"></i> Analyze
-              </button>
+          </div>
+        </div>
+
+        <!-- Formula Display -->
+        <div class="calculator-section formula-display-section">
+          <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
+          <div class="formula-container">
+            <div class="formula-main">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
             </div>
-            
-            <div class="pro-feature-card">
-              <div class="pro-feature-icon">
-                <i class="fas fa-bell"></i>
-              </div>
-              <div class="pro-feature-title">Alert System</div>
-              <div class="pro-feature-description">Set alerts for target reward thresholds</div>
-              <button class="pro-btn pro-btn-secondary" style="margin-top: 15px;" onclick="setAlert()">
-                <i class="fas fa-bell"></i> Set Alert
-              </button>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
             </div>
-            
-            <div class="pro-feature-card">
-              <div class="pro-feature-icon">
-                <i class="fas fa-file-export"></i>
-              </div>
-              <div class="pro-feature-title">Export Results</div>
-              <div class="pro-feature-description">Export calculations to CSV or PDF</div>
-              <button class="pro-btn pro-btn-secondary" style="margin-top: 15px;" onclick="exportToPDF()">
-                <i class="fas fa-file-pdf"></i> Export PDF
-              </button>
+          </div>
+          <div class="formula-explanation">
+            <div class="explanation-item">
+              <strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]
+              <div class="input-hint">Each batch gets 7% weight boost per epoch (max 20 epochs)</div>
+            </div>
+            <div class="explanation-item">
+              <strong>∑WS:</strong> Total Active Weighted Shares from all participants = Your WS + Other WS
+              <div class="input-hint">Sum of all participants' weighted shares</div>
+            </div>
+            <div class="explanation-item">
+              <strong>P:</strong> Total participating tokens in the epoch = Your Tokens + Other Tokens
+              <div class="input-hint">Raw token amount (not weighted)</div>
+            </div>
+            <div class="explanation-item">
+              <strong>CS:</strong> Circulating Supply (499,242,047)
+              <div class="input-hint">Total $rebelinux tokens in circulation</div>
+            </div>
+            <div class="explanation-item">
+              <strong>γ:</strong> Gamma Scale Factor - adjusts rewards based on participation and fairness
+              <div class="input-hint">40% minimum, scales to 100% at 50%+ participation</div>
+            </div>
+            <div class="explanation-item">
+              <strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier - allows for higher age bonuses before capping
+              <div class="input-hint">Allows more age bonus before inflation cap kicks in</div>
             </div>
           </div>
         </div>
@@ -1144,72 +1215,101 @@
     <!-- Calculator FAQ -->
     <section id="calculator-faq">
       <div class="container">
-        <div class="pro-card">
-          <div class="pro-card-header">
-            <div class="pro-card-title">
-              <i class="fas fa-question-circle"></i> Frequently Asked Questions
+        <h2><i class="fas fa-question-circle"></i> Calculator FAQ</h2>
+        <div class="content-card">
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How do I account for other participants?</h4>
+              <p>Use the "Other Participants" section to add their token batches with ages, or use summary mode to set total tokens and average age.</p>
+              <div class="input-hint">Detailed batches give most accurate results</div>
             </div>
-          </div>
-          
-          <div class="pro-faq-grid">
-            <!-- FAQ items will be populated by JavaScript -->
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What if I don't know other participants' details?</h4>
+              <p>Use the "Summary" mode to estimate total other tokens and average age. For realistic estimates, use 100-200M tokens with 5-10 epoch average age.</p>
+              <div class="input-hint">Example: 150M tokens with 8 epoch average age</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How does age affect rewards?</h4>
+              <p>Each epoch (week) adds 7% weight bonus, maxing at 2.4x after 20 epochs. Older tokens get more weight in the WS calculation.</p>
+              <div class="input-hint">Age bonus encourages long-term holding</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What's the Gamma Scale Factor (γ)?</h4>
+              <p>γ adjusts rewards based on participation: 40% minimum, scaling to 100% when 50%+ of supply participates. γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</p>
+              <div class="input-hint">Protects treasury while rewarding active participation</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> Is this calculator accurate?</h4>
+              <p>This uses the exact formula from smart contracts. Accuracy depends on how well you estimate other participants' tokens and ages.</p>
+              <div class="input-hint">Provides realistic estimates based on your inputs</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How often should I recalculate?</h4>
+              <p>Recalculate when: 1) You buy/sell tokens, 2) An epoch completes (age increases), 3) You learn about other participants' holdings.</p>
+              <div class="input-hint">Keep your inputs updated for accurate estimates</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How do I actually claim rewards?</h4>
+              <p>You need both $rebelinux tokens and the active Rebel Key NFT. 
+                <a href="epoch-rewards.html#how-to-claim">See step-by-step claiming instructions →</a>
+              </p>
+              <div class="input-hint">Weekly claiming through the official interface</div>
+            </div>
+            
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What happens if participation is low?</h4>
+              <p>Low participation triggers the γ floor (40%). This protects the treasury while still rewarding active participants proportionally.</p>
+              <div class="input-hint">Minimum 40% rewards even with low participation</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Related Tools -->
-    <section id="related-tools">
+    <!-- Related Pages -->
+    <section id="related-pages">
       <div class="container">
-        <h2 style="text-align: center; margin-bottom: 30px; background: var(--professional-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Related Tools & Resources</h2>
-        
-        <div class="pro-grid">
-          <a href="epoch-rewards.html" class="pro-tool-card">
-            <div class="pro-tool-icon">
-              <i class="fas fa-gift"></i>
-            </div>
-            <div class="pro-tool-title">Epoch Rewards Tracker</div>
-            <div class="pro-tool-description">Track weekly $REBL distributions and historical data</div>
-            <div class="pro-tool-arrow">
-              <i class="fas fa-arrow-right"></i>
+        <h2>Related Pages</h2>
+        <div class="related-grid">
+          <!-- Epoch Rewards -->
+          <a href="epoch-rewards.html" class="related-card rewards-card">
+            <div class="related-icon"><i class="fas fa-gift"></i></div>
+            <h3>Epoch Rewards</h3>
+            <p>Weekly $REBL distribution system</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
             </div>
           </a>
           
-          <a href="tokenomics.html" class="pro-tool-card">
-            <div class="pro-tool-icon">
-              <i class="fas fa-chart-pie"></i>
-            </div>
-            <div class="pro-tool-title">Tokenomics Dashboard</div>
-            <div class="pro-tool-description">Complete $REBL distribution & vesting details</div>
-            <div class="pro-tool-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </a>
-          
-          <a href="governance.html" class="pro-tool-card">
-            <div class="pro-tool-icon">
-              <i class="fas fa-vote-yea"></i>
-            </div>
-            <div class="pro-tool-title">Governance Portal</div>
-            <div class="pro-tool-description">DAO structure & community voting platform</div>
-            <div class="pro-tool-arrow">
-              <i class="fas fa-arrow-right"></i>
+          <!-- Tokenomics -->
+          <a href="tokenomics.html" class="related-card tokenomics-card">
+            <div class="related-icon"><i class="fas fa-chart-pie"></i></div>
+            <h3>Tokenomics</h3>
+            <p>$REBL distribution & vesting details</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
             </div>
           </a>
           
-          <a href="strategy-guide.html" class="pro-tool-card">
-            <div class="pro-tool-icon">
-              <i class="fas fa-chess-knight"></i>
-            </div>
-            <div class="pro-tool-title">Strategy Guide</div>
-            <div class="pro-tool-description">Optimal participation strategies & tips</div>
-            <div class="pro-tool-arrow">
-              <i class="fas fa-arrow-right"></i>
+          <!-- Governance -->
+          <a href="governance.html" class="related-card governance-card">
+            <div class="related-icon"><i class="fas fa-vote-yea"></i></div>
+            <h3>Governance</h3>
+            <p>DAO structure & community voting</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> Start Voting
             </div>
           </a>
         </div>
       </div>
     </section>
+    
   </main>
   
   <!-- Footer will be inserted here by JavaScript -->
