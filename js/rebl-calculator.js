@@ -22,7 +22,6 @@ let calculatorState = {
 };
 
 // Initialize calculator on page load
-// Initialize calculator on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Initializing Enhanced REBL Calculator v3.1 - FIXED');
     
@@ -33,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initialize detailed batches calculation
         calculateDetailedBatchesWS();
+        
+        // Debug
+        debugCalculatorState();
     }, 100);
     
     // Initialize displays
@@ -553,47 +555,73 @@ function addOtherParticipantBatch(amount = '', age = '') {
 function calculateDetailedBatchesWS() {
     if (calculatorState.participantType !== 'detailed') return;
     
+    console.log("Calculating detailed batches WS...");
+    
     const rows = document.querySelectorAll('#other-participants-table tbody tr');
     let totalTokens = 0;
     let totalWS = 0;
     let totalWeightedAge = 0;
+    let batchCount = 0;
     
-    rows.forEach(row => {
-        const amount = parseFloat(row.querySelector('.other-batch-amount').value) || 0;
-        const age = parseFloat(row.querySelector('.other-batch-age').value) || 0;
-        
-        // Calculate weight factor: 1 + 0.07 × min(Age, 20)
-        const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
-        const weightedShare = amount * weightFactor;
-        
-        totalTokens += amount;
-        totalWS += weightedShare;
-        totalWeightedAge += amount * age;
-        
-        // Update the display cells
+    rows.forEach((row, index) => {
+        const amountInput = row.querySelector('.other-batch-amount');
+        const ageInput = row.querySelector('.other-batch-age');
         const factorCell = row.querySelector('.other-batch-factor');
         const wsCell = row.querySelector('.other-batch-ws');
         
-        if (factorCell) {
+        if (!amountInput || !ageInput || !factorCell || !wsCell) return;
+        
+        const amount = parseFloat(amountInput.value) || 0;
+        const age = parseFloat(ageInput.value) || 0;
+        
+        console.log(`Batch ${index + 1}: Amount = ${amount}, Age = ${age}`);
+        
+        if (amount > 0) {
+            batchCount++;
+            
+            // Calculate weight factor: 1 + 0.07 × min(Age, 20)
+            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
+            const weightedShare = amount * weightFactor;
+            
+            console.log(`  Weight Factor = ${weightFactor.toFixed(2)}, WS = ${weightedShare}`);
+            
+            totalTokens += amount;
+            totalWS += weightedShare;
+            totalWeightedAge += amount * age;
+            
+            // Update the display cells
             factorCell.textContent = weightFactor.toFixed(2);
             factorCell.style.color = weightFactor > 1 ? 'var(--rebel-blue)' : '#ffffff';
             factorCell.style.fontWeight = weightFactor > 1 ? 'bold' : 'normal';
-        }
-        
-        if (wsCell) {
+            
             wsCell.textContent = formatNumber(weightedShare, true);
+            wsCell.style.color = 'var(--rebel-blue)';
+            wsCell.style.fontWeight = 'bold';
+        } else {
+            // For empty rows, show default values
+            factorCell.textContent = "1.00";
+            factorCell.style.color = '#ffffff';
+            factorCell.style.fontWeight = 'normal';
+            
+            wsCell.textContent = "0";
             wsCell.style.color = 'var(--rebel-blue)';
             wsCell.style.fontWeight = 'bold';
         }
     });
+    
+    console.log(`Total Other Tokens: ${totalTokens}`);
+    console.log(`Total Other WS: ${totalWS}`);
+    console.log(`Batch Count: ${batchCount}`);
     
     // Update state
     calculatorState.otherTokens = totalTokens;
     calculatorState.otherWS = totalWS;
     calculatorState.otherAvgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
     calculatorState.otherAvgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
+    
+    console.log(`Updated State - Other Tokens: ${calculatorState.otherTokens}, Other WS: ${calculatorState.otherWS}`);
+    console.log(`Average Age: ${calculatorState.otherAvgAge}, Average Bonus: ${calculatorState.otherAvgBonus}`);
 }
-
 
 function removeOtherParticipantBatch(button) {
     const row = button.closest('tr');
@@ -1677,6 +1705,20 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
+// ========== DEBUG FUNCTION ==========
+function debugCalculatorState() {
+    console.log("=== CALCULATOR DEBUG INFO ===");
+    console.log("User Tokens:", calculatorState.totalUserTokens);
+    console.log("User WS:", calculatorState.totalUserWS);
+    console.log("Other Tokens:", calculatorState.otherTokens);
+    console.log("Other WS:", calculatorState.otherWS);
+    console.log("Participating Tokens:", calculatorState.currentParticipatingTokens);
+    console.log("Total WS:", calculatorState.currentTotalWS);
+    console.log("Participant Type:", calculatorState.participantType);
+    console.log("Other Avg Age:", calculatorState.otherAvgAge);
+    console.log("Other Avg Bonus:", calculatorState.otherAvgBonus);
+    console.log("=== END DEBUG ===");
+}
 // ========== PUBLIC FUNCTIONS ==========
 // Expose necessary functions to global scope
 window.addTokenBatch = addTokenBatch;
