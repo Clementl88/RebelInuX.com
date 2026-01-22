@@ -953,6 +953,7 @@ function updateContributionPercentage() {
 }
 
 // ========== REWARD CALCULATION - CORRECTED ==========
+// ========== REWARD CALCULATION - COMPLETELY FIXED ==========
 function calculateRewards() {
     // Prevent rapid calculations
     if (calculatorState.isCalculating) return;
@@ -978,7 +979,6 @@ function calculateRewards() {
         rows.forEach(row => {
             const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
             const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-            const wsCell = row.querySelector('.batch-ws');
             
             // Calculate WS manually to ensure accuracy
             const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
@@ -1006,7 +1006,7 @@ function calculateRewards() {
         const gammaData = calculateGammaScale(participatingTokens, totalWS);
         const gamma = gammaData.gamma;
         
-        // Calculate user's share and reward - CORRECTED
+        // Calculate user's share and reward
         const userShare = totalWS > 0 ? (userWS / totalWS) : 0;
         const userReward = userShare * WERP * gamma;
         const effectivePool = WERP * gamma;
@@ -1048,7 +1048,6 @@ function calculateRewards() {
         const monthlyReward = userReward * 4.33;
         const annualReward = userReward * 52;
         
-        // ========== CORRECTED AVERAGE AGE & BONUS CALCULATION ==========
         // Calculate user's average age
         let totalWeightedAge = 0;
         rows.forEach(row => {
@@ -1057,14 +1056,10 @@ function calculateRewards() {
             totalWeightedAge += amount * age;
         });
         
-        const userAvgAge = totalAmount > 0 ? 
-            (totalWeightedAge / totalAmount) : 0;
+        const userAvgAge = totalAmount > 0 ? (totalWeightedAge / totalAmount) : 0;
+        const userAvgBonus = totalAmount > 0 ? (userWS / totalAmount) : 1.0;
         
-        // Calculate user's average bonus (CORRECTED)
-        const userAvgBonus = totalAmount > 0 ? 
-            (userWS / totalAmount) : 1.0;
-        
-        // Calculate individual batch rewards - CORRECTED SCALING
+        // Calculate individual batch rewards
         let individualRewardsHTML = '';
         if (batchData.length > 0) {
             individualRewardsHTML = `
@@ -1117,19 +1112,19 @@ function calculateRewards() {
                 </div>`;
         }
         
-        // Calculate other participants info CORRECTLY
+        // Calculate other participants info
         const otherTokens = participatingTokens - totalAmount;
         const otherWS = totalWS - userWS;
         const otherAvgBonus = otherTokens > 0 ? (otherWS / otherTokens) : 1.0;
         const otherAvgAge = otherAvgBonus >= 1 ? ((otherAvgBonus - 1) / K) : 0;
         
-        // Format the results with individual breakdown
+        // Format the results with proper number formatting
         const resultHTML = `
             <div style="text-align: left;">
                 <!-- Key Metrics -->
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Total Tokens:</strong></span>
-                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalAmount)}</span>
+                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatLargeNumber(totalAmount)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Average Age:</strong></span>
@@ -1141,15 +1136,15 @@ function calculateRewards() {
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Weighted Share (WSᵢ):</strong></span>
-                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(userWS, true)}</span>
+                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatLargeNumber(userWS)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Total Participating Tokens (P):</strong></span>
-                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(participatingTokens)}</span>
+                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatLargeNumber(participatingTokens)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Total Weighted Shares (∑WS):</strong></span>
-                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatNumber(totalWS)}</span>
+                    <span style="color: var(--rebel-gold); font-weight: bold;">${formatLargeNumber(totalWS)}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Share of Pool:</strong></span>
@@ -1161,7 +1156,7 @@ function calculateRewards() {
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Effective Weekly Pool:</strong></span>
-                    <span style="color: var(--rebel-red); font-weight: bold;">${formatNumber(effectivePool, false)} $REBL</span>
+                    <span style="color: var(--rebel-red); font-weight: bold;">${formatLargeNumber(effectivePool)} $REBL</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Weekly Return:</strong></span>
@@ -1177,8 +1172,8 @@ function calculateRewards() {
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7); padding: 0 5px;">
-                    <span><em>Based on ${formatNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
-                    <span><em>Formula: (${formatNumber(userWS)} / ${formatNumber(totalWS)}) × ${formatNumber(WERP)} × ${gamma.toFixed(2)}</em></span>
+                    <span><em>Based on ${formatLargeNumber(participatingTokens)} participating tokens with γ=${gamma.toFixed(2)}</em></span>
+                    <span><em>Formula: (${formatLargeNumber(userWS)} / ${formatLargeNumber(totalWS)}) × ${formatLargeNumber(WERP)} × ${gamma.toFixed(2)}</em></span>
                 </div>
                 
                 <!-- Individual Batch Rewards -->
@@ -1192,7 +1187,7 @@ function calculateRewards() {
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 0.9em;">
                         <div>
                             <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Total Other Tokens</div>
-                            <div style="color: var(--rebel-blue); font-weight: bold;">${formatNumber(otherTokens)}</div>
+                            <div style="color: var(--rebel-blue); font-weight: bold;">${formatLargeNumber(otherTokens)}</div>
                         </div>
                         <div>
                             <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Average Age</div>
@@ -1204,7 +1199,7 @@ function calculateRewards() {
                         </div>
                         <div>
                             <div style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7);">Total Other WS</div>
-                            <div style="color: var(--rebel-blue); font-weight: bold;">${formatNumber(otherWS)}</div>
+                            <div style="color: var(--rebel-blue); font-weight: bold;">${formatLargeNumber(otherWS)}</div>
                         </div>
                     </div>
                 </div>
@@ -1233,7 +1228,7 @@ function calculateRewards() {
                         <strong>Reality Check:</strong>
                     </div>
                     <div style="color: rgba(255, 255, 255, 0.8);">
-                        Max possible weekly reward (if you owned 100% of pool with γ=1.0): ${formatNumber(WERP)} $REBL<br>
+                        Max possible weekly reward (if you owned 100% of pool with γ=1.0): ${formatLargeNumber(WERP)} $REBL<br>
                         Your reward is ${((userReward / WERP) * 100).toFixed(2)}% of maximum possible
                     </div>
                 </div>
@@ -1589,7 +1584,6 @@ function updateChart(batchData, totalUserWS) {
     });
 }
 
-// ========== HELPER FUNCTIONS ==========
 function formatNumber(num, showDecimals = false) {
     if (typeof num !== 'number' || isNaN(num) || !isFinite(num)) return '0';
     
@@ -1598,21 +1592,25 @@ function formatNumber(num, showDecimals = false) {
         return '<0.001';
     }
     
-    // Format large numbers with K, M, B suffixes
+    // For numbers over 1 billion, show with abbreviation
     if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(showDecimals ? 2 : 1) + 'B';
+        const value = num / 1000000000;
+        return value.toFixed(value >= 100 ? 0 : (value >= 10 ? 1 : 2)) + 'B';
     } else if (num >= 1000000) {
-        return (num / 1000000).toFixed(showDecimals ? 2 : 1) + 'M';
+        const value = num / 1000000;
+        return value.toFixed(value >= 100 ? 0 : (value >= 10 ? 1 : 2)) + 'M';
     } else if (num >= 1000) {
-        return (num / 1000).toFixed(showDecimals ? 2 : 1) + 'K';
+        const value = num / 1000;
+        return value.toFixed(value >= 10 ? 0 : 1) + 'K';
     }
     
-    const options = {
-        minimumFractionDigits: showDecimals ? 2 : 0,
-        maximumFractionDigits: showDecimals ? 2 : 0
-    };
+    // For numbers with decimals where we want to show them
+    if (showDecimals) {
+        return num.toFixed(2);
+    }
     
-    return num.toLocaleString(undefined, options);
+    // For integers or numbers without decimals
+    return Math.round(num).toString();
 }
 
 function getGammaColor(gamma) {
