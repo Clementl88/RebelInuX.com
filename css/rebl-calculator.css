@@ -159,10 +159,7 @@ h1, .heading-1 {
   font-weight: 900;
   line-height: var(--line-height-tight);
   letter-spacing: -0.02em;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--rebel-gold); /* Removed gradient animation */
   margin-bottom: var(--spacing-lg);
   text-align: center;
 }
@@ -278,7 +275,8 @@ button,
 .calculate-btn,
 .related-card,
 .faq-item,
-.parameter-item {
+.parameter-item,
+.role-btn {
   transition: var(--transition); /* Keep transitions for interactive elements */
 }
 
@@ -293,7 +291,8 @@ button,
 .calculate-btn:hover,
 .related-card:hover,
 .faq-item:hover,
-.parameter-item:hover {
+.parameter-item:hover,
+.role-btn:hover {
   opacity: 0.9; /* Simple hover for buttons */
   transform: translateY(-1px); /* Subtle button lift */
 }
@@ -437,6 +436,253 @@ button,
   background: linear-gradient(135deg, #e6b800, var(--rebel-gold));
 }
 
+/* ========== ROLE BUTTONS (Starter, Investor, Whale) ========== */
+.role-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  margin: var(--spacing-xl) 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.role-btn {
+  background: linear-gradient(135deg, 
+      rgba(0, 170, 255, 0.2), 
+      rgba(212, 167, 106, 0.1));
+  color: var(--rebel-blue);
+  border: 2px solid var(--rebel-blue);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  transition: var(--transition);
+  min-height: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.role-btn.starter {
+  background: linear-gradient(135deg, 
+      rgba(76, 175, 80, 0.2), 
+      rgba(212, 167, 106, 0.1));
+  color: var(--rebel-green);
+  border-color: var(--rebel-green);
+}
+
+.role-btn.investor {
+  background: linear-gradient(135deg, 
+      rgba(212, 167, 106, 0.2), 
+      rgba(212, 167, 106, 0.1));
+  color: var(--rebel-gold);
+  border-color: var(--rebel-gold);
+}
+
+.role-btn.whale {
+  background: linear-gradient(135deg, 
+      rgba(215, 77, 77, 0.2), 
+      rgba(212, 167, 106, 0.1));
+  color: var(--rebel-red);
+  border-color: var(--rebel-red);
+}
+
+.role-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.2), 
+      transparent);
+  transition: var(--transition-slow);
+}
+
+.role-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.role-btn:hover::before {
+  left: 100%;
+}
+
+.role-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.role-btn i {
+  font-size: 1.2em;
+}
+
+/* ========== FORMULA CONTAINER ========== */
+.formula-container {
+  background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.5), 
+      rgba(212, 167, 106, 0.15));
+  border: 3px solid var(--rebel-gold);
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-2xl);
+  margin: var(--spacing-xl) 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+}
+
+.formula-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, 
+      rgba(212, 167, 106, 0.1) 0%, 
+      transparent 70%);
+  animation: rotate 20s linear infinite;
+  z-index: -1;
+}
+
+.gamma-formula {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+  padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius-lg);
+  border-left: 4px solid var(--rebel-gold);
+}
+
+.gamma-formula strong {
+  color: var(--rebel-gold);
+  font-weight: 700;
+}
+
+.gamma-formula span {
+  color: var(--rebel-red);
+  font-weight: 700;
+}
+
+.gamma-calculation {
+  font-size: var(--font-size-xl);
+  color: var(--rebel-gold);
+  text-align: center;
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-xl);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--border-radius-lg);
+  border: 2px solid rgba(212, 167, 106, 0.3);
+}
+
+.gamma-calculation .gamma-value {
+  color: var(--rebel-red);
+  font-weight: 900;
+  font-size: var(--font-size-2xl);
+}
+
+/* ========== SUSTAINABLE REWARD FORMULA SECTION ========== */
+.reward-formula-section {
+  background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.4), 
+      rgba(212, 167, 106, 0.1));
+  border: 2px solid rgba(212, 167, 106, 0.3);
+  border-radius: var(--border-radius-xl);
+  padding: var(--spacing-2xl);
+  margin: var(--spacing-2xl) 0;
+}
+
+.reward-formula-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.reward-formula-header h3 {
+  color: var(--rebel-gold);
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.reward-formula-header p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+.reward-equation {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(212, 167, 106, 0.2);
+  font-family: 'Courier New', monospace;
+  line-height: 1.8;
+}
+
+.reward-equation .highlight {
+  color: var(--rebel-gold);
+  font-weight: 700;
+}
+
+.formula-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.formula-term {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(212, 167, 106, 0.2);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  transition: var(--transition);
+}
+
+.formula-term:hover {
+  border-color: var(--rebel-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.term-label {
+  font-size: var(--font-size-lg);
+  color: var(--rebel-gold);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  font-family: 'Courier New', monospace;
+}
+
+.term-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-md);
+}
+
+.term-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', monospace;
+  padding: var(--spacing-sm);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--rebel-gold);
+}
+
+.term-highlight {
+  color: var(--rebel-red);
+  font-weight: 700;
+}
+
 /* ========== CALCULATOR SPECIFIC STYLES ========== */
 
 /* Calculator Hero Enhancement */
@@ -522,13 +768,6 @@ button,
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   font-family: 'Montserrat', 'Courier New', monospace;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, 
-      var(--rebel-gold) 0%, 
-      var(--rebel-red) 50%, 
-      var(--rebel-blue) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .formula-component {
@@ -684,12 +923,6 @@ button,
   color: var(--rebel-gold);
   line-height: 1;
   margin-bottom: var(--spacing-sm);
-  background: linear-gradient(135deg, 
-      var(--rebel-gold) 0%, 
-      var(--rebel-red) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   display: inline-block;
 }
 
@@ -1005,12 +1238,6 @@ button,
   font-size: var(--font-size-xl);
   min-width: 100px;
   text-align: center;
-  background: linear-gradient(135deg, 
-      var(--rebel-red) 0%, 
-      var(--rebel-gold) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .slider {
@@ -1138,13 +1365,6 @@ button,
   font-weight: 900;
   color: var(--rebel-red);
   margin-left: var(--spacing-sm);
-  background: linear-gradient(135deg, 
-      var(--rebel-red) 0%, 
-      var(--rebel-gold) 50%, 
-      var(--rebel-green) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Enhanced Gamma Components */
@@ -1205,12 +1425,6 @@ button,
   font-weight: 900;
   color: var(--rebel-gold);
   display: inline-block;
-  background: linear-gradient(135deg, 
-      var(--rebel-gold) 0%, 
-      var(--rebel-red) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Enhanced Calculate Button */
@@ -1417,12 +1631,6 @@ button,
   font-weight: 900;
   color: var(--rebel-red);
   text-shadow: 0 0 20px rgba(215, 77, 77, 0.4);
-  background: linear-gradient(135deg, 
-      var(--rebel-red) 0%, 
-      var(--rebel-gold) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   animation: glow 2s ease-in-out infinite alternate;
 }
 
@@ -1968,7 +2176,7 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
       .footer-link, .footer-contact-link, .contract-link, 
       .disclaimer-link, [class*="nav-"], .dropbtn,
       .quick-action-btn, .preset-btn, .batch-btn, 
-      .calculate-btn, .related-card, .faq-item) {
+      .calculate-btn, .related-card, .faq-item, .role-btn) {
   color: var(--color-text-muted) !important;
   text-decoration: none !important;
   transition: none !important;
@@ -1978,7 +2186,7 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
       .footer-link, .footer-contact-link, .contract-link, 
       .disclaimer-link, [class*="nav-"], .dropbtn,
       .quick-action-btn, .preset-btn, .batch-btn,
-      .calculate-btn, .related-card, .faq-item):hover {
+      .calculate-btn, .related-card, .faq-item, .role-btn):hover {
   color: var(--color-text-muted) !important;
   text-decoration: none !important;
 }
@@ -2140,13 +2348,15 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
   }
   
   .quick-actions,
-  .preset-buttons {
+  .preset-buttons,
+  .role-buttons {
     flex-direction: column;
     width: 100%;
   }
   
   .quick-action-btn,
-  .preset-btn {
+  .preset-btn,
+  .role-btn {
     width: 100%;
     justify-content: center;
   }
@@ -2191,6 +2401,10 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
     flex-direction: column;
     gap: var(--spacing-md);
     text-align: center;
+  }
+  
+  .formula-breakdown {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2258,6 +2472,17 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
   .chart-placeholder {
     font-size: var(--font-size-base);
   }
+  
+  .gamma-formula,
+  .gamma-calculation {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-md);
+  }
+  
+  .reward-equation {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-md);
+  }
 }
 
 /* Container queries support */
@@ -2287,6 +2512,7 @@ a:not(.btn, .cta-button, .brand-link, .footer-brand-link,
   .calculator-toast,
   .quick-actions,
   .preset-buttons,
+  .role-buttons,
   .calculate-btn,
   .slider,
   .batch-btn {
