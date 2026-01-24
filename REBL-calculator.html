@@ -469,8 +469,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha512-WoViKhKD4qI2WruSZqv9+kvM4WfFhUMQCLN4QlDTt5aU56fLQy2gYoxWIqlEnXqJy/+Ac5q/hk1oWfqnMDhwMA==" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!-- Main Content -->
+<!-- Formula Display - AT THE TOP -->
+<div id="formula-details" style="margin-bottom: var(--spacing-xl); padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
+    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
+        <i class="fas fa-calculator"></i> EPOCH REWARD FORMULA (Epoch 15+)
+    </h4>
+    <div class="formula-display">
+        <div class="formula-main">
+            Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+        </div>
+        <div class="formula-component" style="color: var(--rebel-red); font-weight: bold;">
+            γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS × 1.5/∑WS))
+        </div>
+    </div>
+    <div class="formula-explanation">
+        <p><strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]</p>
+        <p><strong>∑WS:</strong> Total Active Weighted Shares from all participants</p>
+        <p><strong>P:</strong> Total participating tokens in the epoch (raw amount)</p>
+        <p><strong>CS:</strong> Circulating Supply (499,242,047 $REBL)</p>
+        <p><strong>γ:</strong> Gamma Scale Factor - 40% minimum, scales to 100% at 50%+ participation</p>
+        <p><strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier</p>
+    </div>
+</div>
 
-    
         <!-- REBL Calculator -->
         <section id="rebl-calculator" class="rebl-calculator">
             <!-- Core Parameters -->
@@ -732,6 +754,8 @@
         </section>
     </div>
 
+
+    <!-- Add this section at the bottom of calculator.html -->
 <section id="calculator-faq">
   <h2>Calculator FAQ</h2>
   <div class="content-card">
