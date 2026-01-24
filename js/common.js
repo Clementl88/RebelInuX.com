@@ -15,7 +15,7 @@ const PAGE_SUBTITLES = {
     'community.html': 'Community Hub & Links',
     'security.html': 'Security & Safety Protocols',
     'whitepaper.html': 'Project Documentation',
-    'REBL-calculator.html': 'Reward Calculator Tool',
+    'rebl-calculator.html': 'Reward Calculator Tool',
     'governance.html': 'Governance & Voting',
     'roadmap.html': 'Development Roadmap',
     'integrity.html': 'Project Integrity & Values',
