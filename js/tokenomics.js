@@ -17,7 +17,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial progress calculation
     updateFounderProgress();
 });
-
+document.addEventListener('DOMContentLoaded', function() {
+  // Match accordion colors to their buttons
+  const accordionItems = document.querySelectorAll('.accordion-item');
+  
+  accordionItems.forEach(item => {
+    // Find buttons inside accordion content
+    const buttons = item.querySelectorAll('.accordion-content .cta-button');
+    const accordionColor = Array.from(item.classList)
+      .find(cls => cls.startsWith('color-'));
+    
+    if (accordionColor) {
+      buttons.forEach(button => {
+        button.classList.add(accordionColor);
+      });
+    }
+  });
+  
+  // Also match expand/collapse buttons to the most common accordion color
+  const colorCounts = {};
+  accordionItems.forEach(item => {
+    const colorClass = Array.from(item.classList)
+      .find(cls => cls.startsWith('color-'));
+    if (colorClass) {
+      colorCounts[colorClass] = (colorCounts[colorClass] || 0) + 1;
+    }
+  });
+  
+  // Find the most common color
+  let mostCommonColor = null;
+  let maxCount = 0;
+  Object.entries(colorCounts).forEach(([color, count]) => {
+    if (count > maxCount) {
+      mostCommonColor = color;
+      maxCount = count;
+    }
+  });
+  
+  // Apply the most common color to expand/collapse buttons
+  if (mostCommonColor) {
+    const expandBtn = document.getElementById('expandAll');
+    const collapseBtn = document.getElementById('collapseAll');
+    
+    if (expandBtn) expandBtn.classList.add(mostCommonColor);
+    if (collapseBtn) collapseBtn.classList.add(mostCommonColor);
+  }
+});
 // ========== ACCORDION FUNCTIONALITY ==========
 function initializeAccordion() {
     console.log('Initializing accordion...');
