@@ -1498,40 +1498,89 @@ function updateChart(batchData, totalUserWS) {
             maintainAspectRatio: false,
                 color: 'white',
             plugins: {
-legend: {
-    position: 'right',
-    display: true,
-    labels: {
-        color: (context) => {
-            // Force white color
-            return 'rgb(255, 255, 255)';
-        },
-        padding: 20,
-        font: {
-            family: 'Montserrat, sans-serif',
-            size: 12,
-            weight: '600',
-            color: 'rgb(255, 255, 255)' // Explicit font color
-        },
-        generateLabels: function(chart) {
-            const data = chart.data;
-            if (data.labels.length && data.datasets.length) {
-                return data.labels.map(function(label, i) {
-                    const value = data.datasets[0].data[i];
-                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                    const batch = batchData[i];
-                    return {
-                        text: `${label}: ${formatNumber(batch.amount)} tokens`,
-                        fillStyle: data.datasets[0].backgroundColor[i],
-                        strokeStyle: data.datasets[0].borderColor[i],
-                        lineWidth: 2,
-                        hidden: false,
-                        index: i,
-                        fontColor: 'rgb(255, 255, 255)' // Add this
-                    };
-                });
+plugins: {
+    legend: {
+        position: 'right',
+        display: true,
+        labels: {
+            color: (context) => {
+                return 'rgb(255, 255, 255)';
+            },
+            padding: 20,
+            font: {
+                family: 'Montserrat, sans-serif',
+                size: 12,
+                weight: '600',
+                color: 'rgb(255, 255, 255)'
+            },
+            // Use custom label generation with click handling
+            usePointStyle: true,
+            pointStyle: 'circle',
+            generateLabels: function(chart) {
+                const data = chart.data;
+                if (data.labels.length && data.datasets.length) {
+                    return data.labels.map(function(label, i) {
+                        const value = data.datasets[0].data[i];
+                        const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                        const batch = batchData[i];
+                        
+                        // Store original label text
+                        const originalText = `${label}: ${formatNumber(batch.amount)} tokens`;
+                        
+                        return {
+                            text: originalText,
+                            fillStyle: data.datasets[0].backgroundColor[i],
+                            strokeStyle: data.datasets[0].borderColor[i],
+                            lineWidth: 2,
+                            hidden: false,
+                            index: i,
+                            fontColor: 'rgb(255, 255, 255)',
+                            // Custom properties for our logic
+                            originalText: originalText,
+                            datasetIndex: 0
+                        };
+                    });
+                }
+                return [];
             }
-            return [];
+        },
+        // Add onClick handler for legend items
+        onClick: function(evt, legendItem, legend) {
+            const chart = legend.chart;
+            const index = legendItem.index;
+            const datasetIndex = legendItem.datasetIndex;
+            
+            // Get the dataset
+            const meta = chart.getDatasetMeta(datasetIndex);
+            
+            // Toggle the visibility of the data point
+            meta.data[index].hidden = !meta.data[index].hidden;
+            
+            // Toggle strikethrough class on the legend item
+            const legendItemElement = legend.legendItems[index];
+            const textElement = legend.legendItems[index].textElement;
+            
+            if (meta.data[index].hidden) {
+                // Add strikethrough effect
+                if (textElement) {
+                    textElement.classList.add('legend-strikethrough');
+                }
+                // Update label to indicate removal
+                legendItem.text = legendItem.originalText + ' [REMOVED]';
+            } else {
+                // Remove strikethrough effect
+                if (textElement) {
+                    textElement.classList.remove('legend-strikethrough');
+                }
+                // Restore original label
+                legendItem.text = legendItem.originalText;
+            }
+            
+            // Update the chart
+            chart.update();
+            
+            // Show a toast notification
+            showToast(`${chart.data.labels[index]} ${meta.data[index].hidden ? 'removed from' : 'added back to'} chart`, 'info');
         }
     },
     title: {
@@ -1547,30 +1596,6 @@ legend: {
             top: 10,
             bottom: 20
         }
-    },
-    // ADD THIS onClick HANDLER:
-    onClick: function(evt, legendItem, legend) {
-        const chart = legend.chart;
-        const index = legendItem.index;
-        
-        // Toggle the visibility of the corresponding chart segment
-        const meta = chart.getDatasetMeta(0);
-        meta.data[index].hidden = !meta.data[index].hidden;
-        
-        // Toggle strikethrough on the legend item
-        if (meta.data[index].hidden) {
-            // Add strikethrough class
-            legendItem.text = legendItem.text + ' [REMOVED]';
-        } else {
-            // Remove strikethrough class - restore original text
-            legendItem.text = legendItem.text.replace(' [REMOVED]', '');
-        }
-        
-        // Update the chart
-        chart.update();
-        
-        // Show notification
-        showToast(`Batch ${index + 1} ${meta.data[index].hidden ? 'removed from' : 'added back to'} chart`, 'info');
     }
 },
                 tooltip: {
