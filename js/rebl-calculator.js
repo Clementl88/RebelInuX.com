@@ -1712,6 +1712,58 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
+// ========== FORMULA DETAILS TOGGLE ==========
+function toggleFormulaDetails() {
+    const details = document.getElementById('formulaDetails');
+    const button = document.getElementById('formulaToggleBtn');
+    
+    if (!details || !button) return;
+    
+    if (details.style.display === 'none' || details.style.display === '') {
+        // Show details with animation
+        details.style.display = 'block';
+        button.innerHTML = '<i class="fas fa-times"></i> Hide Formula Details & Breakdown';
+        
+        // Animate in
+        details.style.opacity = '0';
+        details.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            details.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            details.style.opacity = '1';
+            details.style.transform = 'translateY(0)';
+        }, 10);
+        
+        showToast('Formula details expanded', 'info');
+    } else {
+        // Hide details with animation
+        details.style.opacity = '0';
+        details.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            details.style.display = 'none';
+            button.innerHTML = '<i class="fas fa-calculator"></i> Show Formula Details & Breakdown';
+        }, 300);
+    }
+}
+
+// ========== QUICK ACTIONS FOR FORMULA SECTION ==========
+function scrollToSection(sectionId) {
+    const section = document.querySelector(sectionId);
+    if (section) {
+        section.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        // Add visual feedback
+        section.style.boxShadow = '0 0 0 3px var(--rebel-gold)';
+        setTimeout(() => {
+            section.style.boxShadow = '';
+        }, 1000);
+        
+        showToast(`Scrolled to ${sectionId.replace('.', '').replace('#', '')}`, 'info');
+    }
+}
+
 // ========== EXPORT FUNCTIONS TO GLOBAL SCOPE ==========
 // Make functions available for onclick handlers
 window.addTokenBatch = addTokenBatch;
@@ -1729,6 +1781,8 @@ window.calculateRewards = calculateRewards;
 window.updateWhatIfGamma = updateWhatIfGamma;
 window.loadExampleCase = loadExampleCase;
 window.setSimulatorPreset = setSimulatorPreset;
+window.toggleFormulaDetails = toggleFormulaDetails;
+window.scrollToSection = scrollToSection;
 
 // ========== KEYBOARD SHORTCUTS ==========
 document.addEventListener('keydown', function(e) {
