@@ -1457,11 +1457,7 @@ function updateChart(batchData, totalUserWS) {
     }
     
     // Prepare data
-    const labels = batchData.map((batch, index) => {
-        const percentage = ((batch.ws / totalUserWS) * 100).toFixed(1);
-        return `Batch ${index + 1} (${percentage}%)`;
-    });
-    
+    const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
     const weightedShares = batchData.map(batch => batch.ws);
     
     // Professional color palette with rebelinux theme
@@ -1487,18 +1483,16 @@ function updateChart(batchData, totalUserWS) {
         'rgb(233, 30, 99)'
     ];
     
-    // Create hover effects
-    const hoverBackgroundColors = backgroundColors.map(color => 
-        color.replace('0.9', '1')
-    );
-    
     // Update chart stats overlay
     if (statsOverlay) {
-        document.getElementById('chartTotalWS').textContent = formatNumber(totalUserWS, true);
+        document.getElementById('chartTotalWS').textContent = totalUserWS.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
         document.getElementById('chartBatchCount').textContent = batchData.length;
     }
     
-    // Enhanced chart configuration
+    // Create new chart with enhanced options
     rewardChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1508,7 +1502,9 @@ function updateChart(batchData, totalUserWS) {
                 backgroundColor: backgroundColors.slice(0, weightedShares.length),
                 borderColor: borderColors.slice(0, weightedShares.length),
                 borderWidth: 3,
-                hoverBackgroundColor: hoverBackgroundColors.slice(0, weightedShares.length),
+                hoverBackgroundColor: backgroundColors.slice(0, weightedShares.length).map(color => 
+                    color.replace('0.9', '1')
+                ),
                 hoverBorderColor: 'white',
                 hoverBorderWidth: 4,
                 hoverOffset: 25
@@ -1528,61 +1524,6 @@ function updateChart(batchData, totalUserWS) {
                             family: 'Montserrat, sans-serif',
                             size: 12,
                             weight: '600'
-                        },
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        pointRadius: 8,
-                        boxWidth: 15,
-                        generateLabels: function(chart) {
-                            const data = chart.data;
-                            if (data.labels.length && data.datasets.length) {
-                                return data.labels.map(function(label, i) {
-                                    const value = data.datasets[0].data[i];
-                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                                    const batch = batchData[i];
-                                    
-                                    return {
-                                        text: `Batch ${i + 1}: ${formatNumber(batch.amount)} tokens`,
-                                        fillStyle: data.datasets[0].backgroundColor[i],
-                                        strokeStyle: data.datasets[0].borderColor[i],
-                                        lineWidth: 2,
-                                        hidden: !chart.getDatasetMeta(0).data[i] ? false : 
-                                                chart.getDatasetMeta(0).data[i].hidden,
-                                        index: i,
-                                        fontColor: 'rgb(255, 255, 255)'
-                                    };
-                                });
-                            }
-                            return [];
-                        }
-                    },
-                    onClick: function(evt, legendItem, legend) {
-                        const chart = legend.chart;
-                        const index = legendItem.index;
-                        const meta = chart.getDatasetMeta(0);
-                        
-                        // Toggle the visibility of the data point
-                        meta.data[index].hidden = !meta.data[index].hidden;
-                        
-                        // Update the chart
-                        chart.update();
-                        
-                        // Show toast notification
-                        const action = meta.data[index].hidden ? 'hidden' : 'shown';
-                        showToast(`Batch ${index + 1} ${action} from chart`, 'info');
-                    },
-                    title: {
-                        display: true,
-                        text: 'Token Batches',
-                        color: 'rgb(255, 204, 0)',
-                        font: {
-                            size: 14,
-                            weight: 'bold',
-                            family: 'Montserrat, sans-serif'
-                        },
-                        padding: {
-                            top: 0,
-                            bottom: 10
                         }
                     }
                 },
@@ -1594,8 +1535,6 @@ function updateChart(batchData, totalUserWS) {
                     borderWidth: 2,
                     cornerRadius: 8,
                     padding: 16,
-                    displayColors: true,
-                    boxPadding: 6,
                     titleFont: {
                         family: 'Montserrat, sans-serif',
                         size: 13,
@@ -1610,25 +1549,17 @@ function updateChart(batchData, totalUserWS) {
                             const batch = batchData[context.dataIndex];
                             const percentage = ((batch.ws / totalUserWS) * 100).toFixed(1);
                             return [
-                                `Amount: ${formatNumber(batch.amount)} $REBL`,
+                                `Amount: ${batch.amount.toLocaleString()} $rebelinux`,
                                 `Age: ${batch.age} epochs`,
-                                `Multiplier: ${batch.factor.toFixed(2)}x`,
-                                `Weighted Share: ${formatNumber(batch.ws, true)}`,
+                                `Factor: ${(1 + (0.07 * Math.min(batch.age, 20))).toFixed(2)}`,
+                                `Weighted Share: ${batch.ws.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}`,
                                 `Share: ${percentage}% of your total WS`
                             ];
-                        },
-                        labelColor: function(context) {
-                            return {
-                                borderColor: context.dataset.borderColor[context.dataIndex],
-                                backgroundColor: context.dataset.backgroundColor[context.dataIndex],
-                                borderWidth: 2,
-                                borderRadius: 4
-                            };
                         }
                     }
-                },
-                datalabels: {
-                    display: false // We'll use the plugin for better control
                 }
             },
             animation: {
@@ -1637,8 +1568,8 @@ function updateChart(batchData, totalUserWS) {
                 duration: 1200,
                 easing: 'easeOutQuart'
             },
-            cutout: '65%', // Larger cutout for better center text
-            radius: '95%',
+            cutout: '60%',
+            radius: '90%',
             interaction: {
                 intersect: false,
                 mode: 'index'
@@ -1656,101 +1587,34 @@ function updateChart(batchData, totalUserWS) {
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 
-                // Background circle for better readability
+                // Background circle
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+                ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                 ctx.fill();
-                
-                // Gold border around circle
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
                 ctx.strokeStyle = 'var(--rebel-gold)';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 2;
                 ctx.stroke();
                 
-                // Title - "YOUR WEIGHTED SHARE" with icon
-                ctx.font = 'bold 14px Montserrat';
-                ctx.fillStyle = 'var(--rebel-gold)';
-                ctx.fillText('WEIGHTED SHARE', centerX, centerY - 35);
-                
-                // Small subtitle
-                ctx.font = '600 10px Montserrat';
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.fillText('(Your WSᵢ)', centerX, centerY - 20);
-                
-                // Main value - formatted weighted share
-                ctx.font = 'bold 28px Montserrat';
-                ctx.fillStyle = 'white';
-                ctx.fillText(formatNumber(totalUserWS), centerX, centerY + 5);
-                
-                // Unit label
+                // Title text
                 ctx.font = 'bold 12px Montserrat';
-                ctx.fillStyle = 'var(--rebel-red)';
-                ctx.fillText('WS UNITS', centerX, centerY + 25);
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('YOUR TOTAL WS', centerX, centerY - 25);
+                
+                // Value text
+                ctx.font = 'bold 20px Montserrat';
+                ctx.fillStyle = 'white';
+                ctx.fillText(totalUserWS.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }), centerX, centerY + 5);
                 
                 // Batch count
-                ctx.font = '600 11px Montserrat';
+                ctx.font = '600 10px Montserrat';
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 45);
-                
-                // Decorative elements
-                // Left line
-                ctx.beginPath();
-                ctx.moveTo(centerX - 55, centerY);
-                ctx.lineTo(centerX - 35, centerY);
-                ctx.strokeStyle = 'var(--rebel-gold)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                // Right line
-                ctx.beginPath();
-                ctx.moveTo(centerX + 35, centerY);
-                ctx.lineTo(centerX + 55, centerY);
-                ctx.strokeStyle = 'var(--rebel-gold)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 25);
                 
                 ctx.restore();
-            }
-        },
-        {
-            id: 'datalabels',
-            afterDatasetsDraw: function(chart) {
-                // Optionally add labels to the chart segments
-                if (chart.data.datasets[0].data.length <= 5) {
-                    const ctx = chart.ctx;
-                    const meta = chart.getDatasetMeta(0);
-                    
-                    meta.data.forEach((element, index) => {
-                        if (!element.hidden) {
-                            const model = element;
-                            const value = chart.data.datasets[0].data[index];
-                            const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                            
-                            if (percentage >= 10) { // Only show labels for significant segments
-                                ctx.save();
-                                ctx.font = 'bold 12px Montserrat';
-                                ctx.fillStyle = 'white';
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'middle';
-                                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                                ctx.shadowBlur = 5;
-                                ctx.shadowOffsetX = 1;
-                                ctx.shadowOffsetY = 1;
-                                
-                                // Position label at segment center
-                                const angle = model.startAngle + (model.endAngle - model.startAngle) / 2;
-                                const radius = model.outerRadius * 0.7;
-                                const x = model.x + Math.cos(angle) * radius;
-                                const y = model.y + Math.sin(angle) * radius;
-                                
-                                ctx.fillText(`${percentage}%`, x, y);
-                                ctx.restore();
-                            }
-                        }
-                    });
-                }
             }
         }]
     });
