@@ -1,92 +1,168 @@
-// trade.js - Trade page specific functionality
-
-// Initialize after common components are loaded
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initTradePage, 300);
-});
-
-function initTradePage() {
-  console.log('Initializing Trade page');
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Trade - Trade $REBL tokens and other assets in the RebelInuX ecosystem" />
+  <meta name="keywords" content="RebelInuX trade, $REBL trading, swap tokens, crypto trading, decentralized exchange" />
+  <meta property="og:title" content="RebelInuX Trade - Token Trading Platform" />
+  <meta property="og:image" content="images/Logo_REBL.svg" />
+  <meta property="og:description" content="Trade $REBL tokens and other assets in the RebelInuX ecosystem on decentralized exchanges." />
+  <meta property="og:url" content="https://rebelinux.fun/trade.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Trade - Token Trading Platform">
+  <meta name="twitter:description" content="Trade $REBL tokens and other assets in the RebelInuX ecosystem on decentralized exchanges.">
+  <meta name="twitter:card" content="summary_large_image" />
   
-  // Initialize any trade-specific functionality here
-  initTradeComponents();
+  <!-- Favicons -->
+  <link rel="icon" href="images/Logo_REBL.svg">
+  <link rel="apple-touch-icon" href="images/Logo_REBL.svg">
+  <title>RebelInuX Trade - Token Trading Platform</title>
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
-}
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
-function initializeMobileDropdown() {
-  const dropbtn = document.querySelector('.dropbtn');
-  const navDesktop = document.getElementById('nav-desktop');
-  
-  if (!dropbtn) return;
-  
-  // Mobile dropdown toggle
-  dropbtn.addEventListener('click', function(e) {
-    // Only handle on mobile
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const dropdownContent = this.nextElementSibling;
-      const isActive = dropdownContent.style.display === 'block' || 
-                      dropdownContent.classList.contains('active');
-      
-      // Toggle this dropdown
-      if (!isActive) {
-        dropdownContent.style.display = 'block';
-        dropdownContent.classList.add('active');
-        this.classList.add('active');
-      } else {
-        dropdownContent.style.display = 'none';
-        dropdownContent.classList.remove('active');
-        this.classList.remove('active');
-      }
-    }
-  });
-}
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-function initTradeComponents() {
-  // Trade page specific initialization
-  console.log('Trade components initialized');
-  
-  // You can add trade-specific functionality here:
-  
-  // 1. Initialize price charts
-  initPriceCharts();
-  
-  // 2. Setup token swap interface
-  setupSwapInterface();
-  
-  // 3. Load exchange data
-  loadExchangeData();
-  
-  // 4. Setup trading pairs display
-  setupTradingPairs();
-}
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/tippy.js@6" crossorigin="anonymous"></script>
 
-function initPriceCharts() {
-  // Initialize price charts using Chart.js or other charting library
-  console.log('Initializing price charts...');
-  // Chart initialization code will go here
-}
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header-footer.css">
+  <link rel="stylesheet" href="css/trade.css">
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header will be inserted here by JavaScript -->
+  <div id="header-container"></div>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero page-hero--trade">
+      <div class="container">
+        <h1>TRADE $REBL TOKENS</h1>
+        <p class="text-lead">Swap, trade, and manage your $REBL tokens and other assets across supported decentralized exchanges</p>
+        <div class="hero-buttons">
+          <a href="#swap" class="cta-button">
+            <i class="fas fa-exchange-alt"></i> Swap Tokens
+          </a>
+          <a href="#exchanges" class="cta-button gold">
+            <i class="fas fa-chart-line"></i> View Exchanges
+          </a>
+          <a href="#trading-info" class="cta-button">
+            <i class="fas fa-info-circle"></i> Trading Info
+          </a>
+        </div>
+      </div>
+    </section>
 
-function setupSwapInterface() {
-  // Setup token swap interface
-  console.log('Setting up swap interface...');
-  // Swap interface code will go here
-}
+    <!-- Placeholder Content Sections -->
+    <section id="swap" class="placeholder-section">
+      <div class="container">
+        <h2><i class="fas fa-exchange-alt"></i> Token Swap Interface</h2>
+        <div class="content-card">
+          <p>Swap interface will be displayed here.</p>
+        </div>
+      </div>
+    </section>
 
-function loadExchangeData() {
-  // Load exchange listings data
-  console.log('Loading exchange data...');
-  // Exchange data loading code will go here
-}
+    <section id="exchanges" class="placeholder-section">
+      <div class="container">
+        <h2><i class="fas fa-chart-line"></i> Supported Exchanges</h2>
+        <div class="content-card">
+          <p>Exchange listings will be displayed here.</p>
+        </div>
+      </div>
+    </section>
 
-function setupTradingPairs() {
-  // Setup trading pairs display
-  console.log('Setting up trading pairs...');
-  // Trading pairs code will go here
-}
+    <section id="trading-info" class="placeholder-section">
+      <div class="container">
+        <h2><i class="fas fa-info-circle"></i> Trading Information</h2>
+        <div class="content-card">
+          <p>Trading information and guides will be displayed here.</p>
+        </div>
+      </div>
+    </section>
 
-// Add any additional trade-specific functions here
+    <section id="price-charts" class="placeholder-section">
+      <div class="container">
+        <h2><i class="fas fa-chart-bar"></i> Price Charts</h2>
+        <div class="content-card">
+          <p>Price charts will be displayed here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="trading-pairs" class="placeholder-section">
+      <div class="container">
+        <h2><i class="fas fa-layer-group"></i> Trading Pairs</h2>
+        <div class="content-card">
+          <p>Trading pairs information will be displayed here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Pages Section -->
+    <section id="related-pages">
+      <div class="container">
+        <h2>Related Pages</h2>
+        <div class="related-grid">
+          <!-- Epoch Rewards -->
+          <a href="epoch-rewards.html" class="related-card rewards-card">
+            <div class="related-icon"><i class="fas fa-gift"></i></div>
+            <h3>Epoch Rewards</h3>
+            <p>Claim weekly $REBL rewards</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> Claim Rewards
+            </div>
+          </a>
+          
+          <!-- Tokenomics -->
+          <a href="tokenomics.html" class="related-card tokenomics-card">
+            <div class="related-icon"><i class="fas fa-chart-pie"></i></div>
+            <h3>Tokenomics</h3>
+            <p>$REBL distribution & supply details</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
+            </div>
+          </a>
+          
+          <!-- Security -->
+          <a href="security.html" class="related-card security-card">
+            <div class="related-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3>Security</h3>
+            <p>Audits & contract verification</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> Verify Safety
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- Footer will be inserted here by JavaScript -->
+  <div id="footer-container"></div>
+  
+  <!-- JavaScript Includes -->
+  <script src="js/includes.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/trade.js"></script>
+</body>
+</html>
