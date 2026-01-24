@@ -3584,3 +3584,186 @@ canvas[aria-label*="chart"] {
         margin-top: 5px;
     }
 }
+/* ========== MOBILE RESPONSIVE FIXES FOR FORMULA EXPLANATION ITEMS ========== */
+
+/* Mobile fixes for formula explanation grid */
+@media (max-width: 768px) {
+    /* Fix the explanation grid layout */
+    #combined-formula-section .formula-explanation-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    /* Fix individual explanation items */
+    #combined-formula-section .explanation-item {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-xs);
+        min-height: auto;
+    }
+    
+    /* Highlight item should span full width */
+    #combined-formula-section .explanation-item.highlight {
+        grid-column: span 1;
+        padding: var(--spacing-md);
+        border-width: 1px;
+    }
+    
+    /* Adjust text sizes */
+    #combined-formula-section .explanation-item strong {
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 4px;
+    }
+    
+    #combined-formula-section .formula-sub {
+        font-size: 0.85rem;
+        margin-top: 6px;
+        line-height: 1.3;
+        display: block;
+    }
+    
+    #combined-formula-section .explanation-item .input-hint {
+        font-size: 0.75rem;
+        margin-top: 6px;
+        line-height: 1.3;
+    }
+    
+    /* Fix formula benefits section */
+    #combined-formula-section .formula-benefits {
+        padding: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+    
+    #combined-formula-section .formula-benefits h5 {
+        font-size: 1rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    #combined-formula-section .formula-benefits > div {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    #combined-formula-section .formula-benefits > div > div {
+        padding: var(--spacing-sm);
+    }
+    
+    #combined-formula-section .formula-benefits > div > div > div:first-child {
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+    }
+    
+    #combined-formula-section .formula-benefits > div > div > div:last-child {
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    /* Make explanation items more compact */
+    #combined-formula-section .explanation-item {
+        padding: var(--spacing-sm);
+        border-left-width: 2px;
+    }
+    
+    /* Adjust text for very small screens */
+    #combined-formula-section .explanation-item strong {
+        font-size: 0.85rem;
+    }
+    
+    #combined-formula-section .formula-sub {
+        font-size: 0.8rem;
+    }
+    
+    #combined-formula-section .explanation-item .input-hint {
+        font-size: 0.7rem;
+    }
+    
+    /* Adjust formula benefits */
+    #combined-formula-section .formula-benefits {
+        padding: var(--spacing-sm);
+    }
+    
+    #combined-formula-section .formula-benefits h5 {
+        font-size: 0.9rem;
+    }
+    
+    #combined-formula-section .formula-benefits > div > div {
+        padding: 8px;
+    }
+}
+
+/* Very small screens (under 360px) */
+@media (max-width: 360px) {
+    /* Further compact the explanation items */
+    #combined-formula-section .explanation-item {
+        padding: 10px;
+    }
+    
+    #combined-formula-section .explanation-item strong {
+        font-size: 0.8rem;
+    }
+    
+    #combined-formula-section .formula-sub {
+        font-size: 0.75rem;
+    }
+    
+    /* Make mathematical formulas wrap properly */
+    #combined-formula-section .formula-sub {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Landscape mode for formula explanations */
+@media (max-height: 600px) and (orientation: landscape) {
+    #combined-formula-section .formula-explanation-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    #combined-formula-section .explanation-item {
+        padding: 8px;
+        min-height: 100px;
+    }
+    
+    #combined-formula-section .explanation-item.highlight {
+        grid-column: span 2;
+        min-height: auto;
+    }
+    
+    /* Reduce spacing in benefits */
+    #combined-formula-section .formula-benefits > div {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
+
+/* Tablet adjustments (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    #combined-formula-section .formula-explanation-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    #combined-formula-section .explanation-item.highlight {
+        grid-column: span 2;
+    }
+}
+
+/* Improve touch interaction on mobile */
+@media (hover: none) and (pointer: coarse) {
+    #combined-formula-section .explanation-item {
+        border-left-width: 3px;
+    }
+    
+    #combined-formula-section .explanation-item:hover {
+        transform: none;
+    }
+    
+    #combined-formula-section .explanation-item:active {
+        background: rgba(212, 167, 106, 0.15);
+        transform: scale(0.98);
+    }
+}
