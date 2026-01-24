@@ -33,23 +33,36 @@ function initializeAccordion() {
     console.log(`Found ${accordionHeaders.length} accordion headers`);
     
     // Add click event to each header
-    accordionHeaders.forEach(header => {
+    accordionHeaders.forEach((header, index) => {
         header.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            const content = this.nextElementSibling;
-            const isActive = content.classList.contains('active');
+            console.log(`Clicked accordion ${index + 1}`);
+            console.log('Header element:', this);
+            console.log('Next sibling:', this.nextElementSibling);
+            console.log('Next sibling class:', this.nextElementSibling.className);
             
-            console.log('Accordion clicked, isActive:', isActive);
+            const content = this.nextElementSibling;
+            
+            // Check if it's actually an accordion-content
+            if (!content.classList.contains('accordion-content')) {
+                console.error('Next sibling is NOT accordion-content!');
+                return;
+            }
+            
+            const isActive = content.classList.contains('active');
+            console.log('Is currently active?', isActive);
             
             // Toggle this item
             if (isActive) {
                 content.classList.remove('active');
                 this.classList.remove('active');
+                console.log('Collapsed accordion');
             } else {
                 content.classList.add('active');
                 this.classList.add('active');
+                console.log('Expanded accordion');
                 
                 // Smooth scroll to expanded section
                 setTimeout(() => {
