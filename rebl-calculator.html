@@ -693,22 +693,86 @@
       </div>
     </section>
 
-    <!-- Formula Announcement -->
-    <section id="formula-announcement">
-      <div class="container">
-        <div class="announcement-banner calculator-announcement">
-          <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
-          <div class="formula-display">
-            <div class="formula-equation">
-              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
-            </div>
-            <div class="formula-component">
-              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
-            </div>
-          </div>
-          <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
+<!-- Combined Formula Section -->
+<section id="formula-section">
+  <div class="container">
+    <div class="announcement-banner formula-banner">
+      <div class="banner-header">
+        <i class="fas fa-bullhorn"></i>
+        <h3>NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
+        <span class="governance-badge">Governance Approved</span>
+      </div>
+      
+      <div class="formula-display">
+        <div class="formula-main-equation">
+          Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+        </div>
+        <div class="formula-gamma">
+          γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
         </div>
       </div>
+      
+      <p class="formula-description">This sustainable formula protects the treasury while rewarding active participants with dynamic scaling based on participation.</p>
+      
+      <!-- Formula Details (Expandable/Collapsible) -->
+      <div class="formula-details-toggle">
+        <button onclick="toggleFormulaDetails()" class="details-toggle-btn">
+          <i class="fas fa-calculator"></i> View Formula Details & Breakdown
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </button>
+      </div>
+      
+      <div id="formulaDetails" class="formula-details" style="display: none;">
+        <div class="details-grid">
+          <div class="details-item">
+            <strong>WSᵢ:</strong> Your Weighted Share
+            <div class="formula-sub">= Σ[Token Batch × (1 + 0.07 × min(Age, 20))]</div>
+            <div class="input-hint">7% weight boost per epoch (max 20 epochs = 2.4x)</div>
+          </div>
+          
+          <div class="details-item">
+            <strong>∑WS:</strong> Total Weighted Shares
+            <div class="formula-sub">= Your WS + Other Participants' WS</div>
+            <div class="input-hint">Sum of all participants' weighted shares</div>
+          </div>
+          
+          <div class="details-item">
+            <strong>P:</strong> Participating Tokens
+            <div class="formula-sub">= Your Tokens + Other Tokens</div>
+            <div class="input-hint">Raw tokens participating in epoch</div>
+          </div>
+          
+          <div class="details-item">
+            <strong>CS:</strong> Circulating Supply
+            <div class="formula-sub">= 499,242,047</div>
+            <div class="input-hint">Total $rebelinux tokens in circulation</div>
+          </div>
+          
+          <div class="details-item highlight">
+            <strong>γ:</strong> Gamma Scale Factor
+            <div class="formula-sub">= MAX(0.4, MIN(1, P/(0.5×CS), CS×1.5/∑WS))</div>
+            <div class="input-hint">40% minimum, scales to 100% at 50%+ participation</div>
+          </div>
+          
+          <div class="details-item">
+            <strong>CS×1.5/∑WS:</strong> Age Inflation Cap
+            <div class="formula-sub">1.5x multiplier for age bonus flexibility</div>
+            <div class="input-hint">Allows higher age bonuses before capping</div>
+          </div>
+        </div>
+        
+        <div class="formula-benefits">
+          <h4><i class="fas fa-shield-alt"></i> Key Benefits</h4>
+          <ul>
+            <li><strong>Treasury Protection:</strong> Minimum 40% rewards floor during low participation</li>
+            <li><strong>Fair Scaling:</strong> Rewards scale with community participation</li>
+            <li><strong>Long-term Incentive:</strong> Age bonuses encourage holding</li>
+            <li><strong>Anti-inflation:</strong> Caps prevent excessive age bonus inflation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
     </section>
     
     <!-- Main Calculator -->
@@ -1167,45 +1231,6 @@
               <button onclick="setSimulatorPreset('full')" class="table-action-btn" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00;">
                 <i class="fas fa-rocket"></i> Full Gamma (100%)
               </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Formula Display -->
-        <div class="calculator-section formula-display-section">
-          <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
-          <div class="formula-container">
-            <div class="formula-main">
-              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
-            </div>
-            <div class="formula-component">
-              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
-            </div>
-          </div>
-          <div class="formula-explanation">
-            <div class="explanation-item">
-              <strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]
-              <div class="input-hint">Each batch gets 7% weight boost per epoch (max 20 epochs)</div>
-            </div>
-            <div class="explanation-item">
-              <strong>∑WS:</strong> Total Active Weighted Shares from all participants = Your WS + Other WS
-              <div class="input-hint">Sum of all participants' weighted shares</div>
-            </div>
-            <div class="explanation-item">
-              <strong>P:</strong> Total participating tokens in the epoch = Your Tokens + Other Tokens
-              <div class="input-hint">Raw token amount (not weighted)</div>
-            </div>
-            <div class="explanation-item">
-              <strong>CS:</strong> Circulating Supply (499,242,047)
-              <div class="input-hint">Total $rebelinux tokens in circulation</div>
-            </div>
-            <div class="explanation-item">
-              <strong>γ:</strong> Gamma Scale Factor - adjusts rewards based on participation and fairness
-              <div class="input-hint">40% minimum, scales to 100% at 50%+ participation</div>
-            </div>
-            <div class="explanation-item">
-              <strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier - allows for higher age bonuses before capping
-              <div class="input-hint">Allows more age bonus before inflation cap kicks in</div>
             </div>
           </div>
         </div>
