@@ -1637,8 +1637,8 @@ function updateChart(batchData, totalUserWS) {
                 duration: 1200,
                 easing: 'easeOutQuart'
             },
-            cutout: '60%',
-            radius: '90%',
+            cutout: '65%', // Larger cutout for better center text
+            radius: '95%',
             interaction: {
                 intersect: false,
                 mode: 'index'
@@ -1656,36 +1656,105 @@ function updateChart(batchData, totalUserWS) {
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 
-                // Background circle
+                // Background circle for better readability
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                 ctx.fill();
+                
+                // Gold border around circle
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+                ctx.strokeStyle = 'var(--rebel-gold)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Title - "YOUR WEIGHTED SHARE" with icon
+                ctx.font = 'bold 14px Montserrat';
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('WEIGHTED SHARE', centerX, centerY - 35);
+                
+                // Small subtitle
+                ctx.font = '600 10px Montserrat';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillText('(Your WSᵢ)', centerX, centerY - 20);
+                
+                // Main value - formatted weighted share
+                ctx.font = 'bold 28px Montserrat';
+                ctx.fillStyle = 'white';
+                ctx.fillText(formatNumber(totalUserWS), centerX, centerY + 5);
+                
+                // Unit label
+                ctx.font = 'bold 12px Montserrat';
+                ctx.fillStyle = 'var(--rebel-red)';
+                ctx.fillText('WS UNITS', centerX, centerY + 25);
+                
+                // Batch count
+                ctx.font = '600 11px Montserrat';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 45);
+                
+                // Decorative elements
+                // Left line
+                ctx.beginPath();
+                ctx.moveTo(centerX - 55, centerY);
+                ctx.lineTo(centerX - 35, centerY);
                 ctx.strokeStyle = 'var(--rebel-gold)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 
-                // Title text
-                ctx.font = 'bold 12px Montserrat';
-                ctx.fillStyle = 'var(--rebel-gold)';
-                ctx.fillText('YOUR TOTAL WS', centerX, centerY - 25);
-                
-                // Value text
-                ctx.font = 'bold 20px Montserrat';
-                ctx.fillStyle = 'white';
-                ctx.fillText(formatNumber(totalUserWS), centerX, centerY + 5);
-                
-                // Batch count
-                ctx.font = '600 10px Montserrat';
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 25);
+                // Right line
+                ctx.beginPath();
+                ctx.moveTo(centerX + 35, centerY);
+                ctx.lineTo(centerX + 55, centerY);
+                ctx.strokeStyle = 'var(--rebel-gold)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
                 
                 ctx.restore();
+            }
+        },
+        {
+            id: 'datalabels',
+            afterDatasetsDraw: function(chart) {
+                // Optionally add labels to the chart segments
+                if (chart.data.datasets[0].data.length <= 5) {
+                    const ctx = chart.ctx;
+                    const meta = chart.getDatasetMeta(0);
+                    
+                    meta.data.forEach((element, index) => {
+                        if (!element.hidden) {
+                            const model = element;
+                            const value = chart.data.datasets[0].data[index];
+                            const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                            
+                            if (percentage >= 10) { // Only show labels for significant segments
+                                ctx.save();
+                                ctx.font = 'bold 12px Montserrat';
+                                ctx.fillStyle = 'white';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                                ctx.shadowBlur = 5;
+                                ctx.shadowOffsetX = 1;
+                                ctx.shadowOffsetY = 1;
+                                
+                                // Position label at segment center
+                                const angle = model.startAngle + (model.endAngle - model.startAngle) / 2;
+                                const radius = model.outerRadius * 0.7;
+                                const x = model.x + Math.cos(angle) * radius;
+                                const y = model.y + Math.sin(angle) * radius;
+                                
+                                ctx.fillText(`${percentage}%`, x, y);
+                                ctx.restore();
+                            }
+                        }
+                    });
+                }
             }
         }]
     });
 }
-
 // Enhanced hideChart function
 function hideChart() {
     const chartPlaceholder = document.getElementById('chartPlaceholder');
