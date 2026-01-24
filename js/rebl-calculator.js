@@ -1496,7 +1496,7 @@ function updateChart(batchData, totalUserWS) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-                color: 'white'
+                color: 'white',
             plugins: {
                legend: {
     position: 'right',
