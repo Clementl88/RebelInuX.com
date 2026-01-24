@@ -1420,8 +1420,26 @@
   <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
   <script src="js/tokenomics.js"></script>
-
   
- 
+ <script>
+    // Simple test - remove after verifying
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded');
+        
+        // Check if accordion elements exist
+        const headers = document.querySelectorAll('.accordion-header');
+        console.log('Found', headers.length, 'accordion headers');
+        
+        // Simple click test
+        if (headers.length > 0) {
+            headers[0].addEventListener('click', function() {
+                console.log('Accordion clicked!');
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+                this.classList.toggle('active');
+            });
+        }
+    });
+</script>
 </body>
 </html>
