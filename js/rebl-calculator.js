@@ -1462,35 +1462,49 @@ function updateChart(batchData, totalUserWS) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        color: 'white',
-                        padding: 15,
-                        font: {
-                            family: 'Montserrat, sans-serif',
-                            size: 12
-                        },
-                        generateLabels: function(chart) {
-                            const data = chart.data;
-                            if (data.labels.length && data.datasets.length) {
-                                return data.labels.map(function(label, i) {
-                                    const value = data.datasets[0].data[i];
-                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                                    return {
-                                        text: `${label} - ${percentage}%`,
-                                        fillStyle: data.datasets[0].backgroundColor[i],
-                                        strokeStyle: data.datasets[0].borderColor[i],
-                                        lineWidth: 2,
-                                        hidden: false,
-                                        index: i
-                                    };
-                                });
-                            }
-                            return [];
-                        }
-                    }
-                },
+    legend: {
+    position: 'right',
+    labels: {
+        color: 'white',
+        padding: 15,
+        font: {
+            family: 'Montserrat, sans-serif',
+            size: 12,
+            weight: '600'
+        },
+        generateLabels: function(chart) {
+            const data = chart.data;
+            if (data.labels.length && data.datasets.length) {
+                return data.labels.map(function(label, i) {
+                    const value = data.datasets[0].data[i];
+                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                    return {
+                        text: `${label} - ${formatNumber(value, true)} WS (${percentage}%)`,
+                        fillStyle: data.datasets[0].backgroundColor[i],
+                        strokeStyle: data.datasets[0].borderColor[i],
+                        lineWidth: 2,
+                        hidden: false,
+                        index: i
+                    };
+                });
+            }
+            return [];
+        }
+    },
+    title: {
+        display: true,
+        text: 'Your Token Batches',
+        color: 'var(--rebel-gold)',
+        font: {
+            size: 14,
+            weight: 'bold'
+        },
+        padding: {
+            top: 0,
+            bottom: 20
+        }
+    }
+},
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.9)',
                     titleColor: 'var(--rebel-gold)',
