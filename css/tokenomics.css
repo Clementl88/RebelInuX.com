@@ -578,23 +578,28 @@
   background: rgba(212, 167, 106, 0.1);
   border-color: var(--rebel-gold);
 }
-
 .accordion-content {
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
-    background: linear-gradient(180deg,
-        rgba(0, 0, 0, 0.4) 0%,
-        rgba(0, 0, 0, 0.6) 100%);
-    transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0;
-    position: relative;
+}
+
+.accordion-content > .accordion-content-inner {
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.2s;
 }
 
 .accordion-content.active {
-    max-height: 5000px;
-    padding: 2.5rem;
+    grid-template-rows: 1fr;
 }
 
+.accordion-content.active > .accordion-content-inner {
+    opacity: 1;
+    padding: 2.5rem;
+}
 .accordion-icon {
   transition: transform 0.3s ease;
 }
