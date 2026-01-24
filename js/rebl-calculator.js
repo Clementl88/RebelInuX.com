@@ -1598,7 +1598,7 @@ function updateChart(batchData, totalUserWS) {
             }
         },
         plugins: [{
-            afterDraw: function(chart) {
+            beforeDraw: function(chart) {
                 // Draw center text
                 const ctx = chart.ctx;
                 const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
@@ -1610,7 +1610,7 @@ function updateChart(batchData, totalUserWS) {
                 
                 // Total WS text
                 ctx.font = 'bold 16px Montserrat';
-                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillStyle = 'white';
                 ctx.fillText('Total WS', centerX, centerY - 15);
                 
                 ctx.font = 'bold 24px Montserrat';
