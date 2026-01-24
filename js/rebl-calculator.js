@@ -1732,3 +1732,36 @@ window.calculateRewards = calculateRewards;
 window.updateWhatIfGamma = updateWhatIfGamma;
 window.loadExampleCase = loadExampleCase;
 window.setSimulatorPreset = setSimulatorPreset;
+
+// ========== KEYBOARD SHORTCUTS ==========
+document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + Enter to calculate
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        calculateRewards();
+        showToast('Calculating rewards... (Ctrl+Enter)', 'info');
+    }
+    
+    // Ctrl/Cmd + L to toggle legend
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+        e.preventDefault();
+        toggleChartLegend();
+    }
+    
+    // Ctrl/Cmd + P to toggle pie/doughnut
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        toggleChartLabels();
+    }
+    
+    // Ctrl/Cmd + N to add new batch
+    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        addTokenBatch();
+        showToast('Added new token batch (Ctrl+N)', 'info');
+    }
+});
+
+// Add the new chart functions to window object
+window.toggleChartLegend = toggleChartLegend;
+window.toggleChartLabels = toggleChartLabels;
