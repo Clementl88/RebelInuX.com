@@ -1378,7 +1378,8 @@ function setSimulatorPreset(type) {
     showToast(`Simulator preset: ${type}`, 'info');
 }
 
-// ========== CHART FUNCTIONS ==========
+// ========== ENHANCED CHART FUNCTIONS ==========
+
 function setupChartPlaceholder() {
     const chartPlaceholder = document.getElementById('chartPlaceholder');
     const canvas = document.getElementById('rewardChart');
@@ -1387,28 +1388,48 @@ function setupChartPlaceholder() {
     if (canvas) canvas.style.display = 'none';
 }
 
-function hideChart() {
-    const chartPlaceholder = document.getElementById('chartPlaceholder');
-    const canvas = document.getElementById('rewardChart');
+// Toggle chart legend
+function toggleChartLegend() {
+    if (!rewardChart) return;
     
-    if (chartPlaceholder) chartPlaceholder.style.display = 'flex';
-    if (canvas) canvas.style.display = 'none';
+    const isVisible = rewardChart.options.plugins.legend.display;
+    rewardChart.options.plugins.legend.display = !isVisible;
+    rewardChart.update();
     
-    if (rewardChart) {
-        rewardChart.destroy();
-        rewardChart = null;
-    }
+    const btn = document.getElementById('toggleLegendBtn');
+    btn.classList.toggle('active', !isVisible);
+    btn.innerHTML = `<i class="fas fa-layer-group"></i><span>${!isVisible ? 'Hide' : 'Show'} Legend</span>`;
+    
+    showToast(`${!isVisible ? 'Showing' : 'Hiding'} chart legend`, 'info');
 }
 
+// Toggle chart labels
+function toggleChartLabels() {
+    if (!rewardChart) return;
+    
+    const currentType = rewardChart.config.type;
+    rewardChart.config.type = currentType === 'doughnut' ? 'pie' : 'doughnut';
+    rewardChart.update();
+    
+    const btn = document.getElementById('toggleLabelsBtn');
+    btn.classList.toggle('active', rewardChart.config.type === 'pie');
+    btn.innerHTML = `<i class="fas fa-tag"></i><span>${rewardChart.config.type === 'pie' ? 'Doughnut' : 'Pie'} View</span>`;
+    
+    showToast(`Switched to ${rewardChart.config.type} chart`, 'info');
+}
+
+// Enhanced updateChart function with stats overlay
 function updateChart(batchData, totalUserWS) {
     const ctx = document.getElementById('rewardChart');
     if (!ctx) return;
     
     const chartPlaceholder = document.getElementById('chartPlaceholder');
     const canvas = document.getElementById('rewardChart');
+    const statsOverlay = document.getElementById('chartStatsOverlay');
     
     if (chartPlaceholder) chartPlaceholder.style.display = 'none';
     if (canvas) canvas.style.display = 'block';
+    if (statsOverlay) statsOverlay.style.display = 'block';
     
     // Destroy existing chart
     if (rewardChart) {
@@ -1419,33 +1440,44 @@ function updateChart(batchData, totalUserWS) {
     const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
     const weightedShares = batchData.map(batch => batch.ws);
     
-    // Calculate percentages for labels
+    // Calculate percentages
     const percentages = weightedShares.map(ws => ((ws / totalUserWS) * 100).toFixed(1));
     
-    // Colors for the chart
+    // Professional color palette
     const backgroundColors = [
-        'rgba(255, 51, 102, 0.8)',
-        'rgba(255, 204, 0, 0.8)',
-        'rgba(0, 170, 255, 0.8)',
-        'rgba(156, 39, 176, 0.8)',
-        'rgba(76, 175, 80, 0.8)',
-        'rgba(255, 152, 0, 0.8)',
-        'rgba(33, 150, 243, 0.8)',
-        'rgba(233, 30, 99, 0.8)'
+        'rgba(255, 51, 102, 0.85)',   // Rebel Red
+        'rgba(255, 204, 0, 0.85)',    // Rebel Gold
+        'rgba(0, 170, 255, 0.85)',    // Blue
+        'rgba(156, 39, 176, 0.85)',   // Purple
+        'rgba(76, 175, 80, 0.85)',    // Green
+        'rgba(255, 152, 0, 0.85)',    // Orange
+        'rgba(33, 150, 243, 0.85)',   // Light Blue
+        'rgba(233, 30, 99, 0.85)'     // Pink
     ];
     
     const borderColors = [
-        'rgba(255, 51, 102, 1)',
-        'rgba(255, 204, 0, 1)',
-        'rgba(0, 170, 255, 1)',
-        'rgba(156, 39, 176, 1)',
-        'rgba(76, 175, 80, 1)',
-        'rgba(255, 152, 0, 1)',
-        'rgba(33, 150, 243, 1)',
-        'rgba(233, 30, 99, 1)'
+        'rgb(255, 51, 102)',
+        'rgb(255, 204, 0)',
+        'rgb(0, 170, 255)',
+        'rgb(156, 39, 176)',
+        'rgb(76, 175, 80)',
+        'rgb(255, 152, 0)',
+        'rgb(33, 150, 243)',
+        'rgb(233, 30, 99)'
     ];
     
-    // Create new chart
+    // Create hover effects
+    const hoverBackgroundColors = backgroundColors.map(color => 
+        color.replace('0.85', '1')
+    );
+    
+    // Update chart stats overlay
+    if (statsOverlay) {
+        document.getElementById('chartTotalWS').textContent = formatNumber(totalUserWS, true);
+        document.getElementById('chartBatchCount').textContent = batchData.length;
+    }
+    
+    // Create new chart with enhanced options
     rewardChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1454,75 +1486,100 @@ function updateChart(batchData, totalUserWS) {
                 data: weightedShares,
                 backgroundColor: backgroundColors.slice(0, weightedShares.length),
                 borderColor: borderColors.slice(0, weightedShares.length),
-                borderWidth: 2,
-                hoverOffset: 20
+                borderWidth: 3,
+                hoverBackgroundColor: hoverBackgroundColors.slice(0, weightedShares.length),
+                hoverBorderColor: 'white',
+                hoverBorderWidth: 4,
+                hoverOffset: 25
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-    legend: {
-    position: 'right',
-    labels: {
-        color: 'white',
-        padding: 15,
-        font: {
-            family: 'Montserrat, sans-serif',
-            size: 12,
-            weight: '600'
-        },
-        generateLabels: function(chart) {
-            const data = chart.data;
-            if (data.labels.length && data.datasets.length) {
-                return data.labels.map(function(label, i) {
-                    const value = data.datasets[0].data[i];
-                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                    return {
-                        text: `${label} - ${formatNumber(value, true)} WS (${percentage}%)`,
-                        fillStyle: data.datasets[0].backgroundColor[i],
-                        strokeStyle: data.datasets[0].borderColor[i],
-                        lineWidth: 2,
-                        hidden: false,
-                        index: i
-                    };
-                });
-            }
-            return [];
-        }
-    },
-    title: {
-        display: true,
-        text: 'Your Token Batches',
-        color: 'var(--rebel-gold)',
-        font: {
-            size: 14,
-            weight: 'bold'
-        },
-        padding: {
-            top: 0,
-            bottom: 20
-        }
-    }
-},
+                legend: {
+                    position: 'right',
+                    display: true, // Ensure legend is visible by default
+                    labels: {
+                        color: 'white',
+                        padding: 20,
+                        font: {
+                            family: 'Montserrat, sans-serif',
+                            size: 12,
+                            weight: '600'
+                        },
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const value = data.datasets[0].data[i];
+                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                                    const batch = batchData[i];
+                                    return {
+                                        text: `${label}: ${formatNumber(batch.amount)} tokens`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor[i],
+                                        lineWidth: 2,
+                                        hidden: false,
+                                        index: i,
+                                        extra: {
+                                            ws: formatNumber(value, true),
+                                            percentage: percentage,
+                                            age: batch.age,
+                                            factor: batch.factor.toFixed(2)
+                                        }
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Token Distribution',
+                        color: 'var(--rebel-gold)',
+                        font: {
+                            size: 14,
+                            weight: 'bold',
+                            family: 'Montserrat, sans-serif'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 20
+                        }
+                    }
+                },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.95)',
                     titleColor: 'var(--rebel-gold)',
                     bodyColor: 'white',
                     borderColor: 'var(--rebel-gold)',
-                    borderWidth: 1,
-                    cornerRadius: 6,
-                    padding: 12,
+                    borderWidth: 2,
+                    cornerRadius: 8,
+                    padding: 16,
+                    titleFont: {
+                        family: 'Montserrat, sans-serif',
+                        size: 13,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        family: 'Montserrat, sans-serif',
+                        size: 12
+                    },
                     callbacks: {
                         label: function(context) {
                             const batch = batchData[context.dataIndex];
+                            const percentage = ((batch.ws / totalUserWS) * 100).toFixed(1);
                             return [
-                                `Amount: ${formatNumber(batch.amount)} $rebelinux`,
+                                `Tokens: ${formatNumber(batch.amount)}`,
                                 `Age: ${batch.age} epochs`,
-                                `Factor: ${batch.factor.toFixed(2)}x`,
+                                `Multiplier: ${batch.factor.toFixed(2)}x`,
                                 `Weighted Share: ${formatNumber(batch.ws, true)}`,
-                                `Share: ${((batch.ws / totalUserWS) * 100).toFixed(1)}%`
+                                `Share of Your WS: ${percentage}%`
                             ];
+                        },
+                        afterLabel: function(context) {
+                            return `Weight: ${formatNumber(batchData[context.dataIndex].ws, true)}`;
                         }
                     }
                 }
@@ -1530,12 +1587,70 @@ function updateChart(batchData, totalUserWS) {
             animation: {
                 animateScale: true,
                 animateRotate: true,
-                duration: 1000,
+                duration: 1200,
                 easing: 'easeOutQuart'
             },
-            cutout: '60%'
-        }
+            cutout: '55%',
+            radius: '85%',
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        },
+        plugins: [{
+            afterDraw: function(chart) {
+                // Draw center text
+                const ctx = chart.ctx;
+                const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+                const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Total WS text
+                ctx.font = 'bold 16px Montserrat';
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('Total WS', centerX, centerY - 15);
+                
+                ctx.font = 'bold 24px Montserrat';
+                ctx.fillStyle = 'white';
+                ctx.fillText(formatNumber(totalUserWS, true), centerX, centerY + 15);
+                
+                ctx.restore();
+            }
+        }]
     });
+}
+
+// Enhanced hideChart function
+function hideChart() {
+    const chartPlaceholder = document.getElementById('chartPlaceholder');
+    const canvas = document.getElementById('rewardChart');
+    const statsOverlay = document.getElementById('chartStatsOverlay');
+    
+    if (chartPlaceholder) chartPlaceholder.style.display = 'flex';
+    if (canvas) canvas.style.display = 'none';
+    if (statsOverlay) statsOverlay.style.display = 'none';
+    
+    if (rewardChart) {
+        rewardChart.destroy();
+        rewardChart = null;
+    }
+    
+    // Reset toggle buttons
+    const legendBtn = document.getElementById('toggleLegendBtn');
+    const labelsBtn = document.getElementById('toggleLabelsBtn');
+    
+    if (legendBtn) {
+        legendBtn.classList.remove('active');
+        legendBtn.innerHTML = '<i class="fas fa-layer-group"></i><span>Legend</span>';
+    }
+    
+    if (labelsBtn) {
+        labelsBtn.classList.remove('active');
+        labelsBtn.innerHTML = '<i class="fas fa-tag"></i><span>Labels</span>';
+    }
 }
 
 // ========== HELPER FUNCTIONS ==========
