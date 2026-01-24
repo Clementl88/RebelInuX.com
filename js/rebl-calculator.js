@@ -1496,59 +1496,59 @@ function updateChart(batchData, totalUserWS) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+                color: 'white'
             plugins: {
-                legend: {
-                    position: 'right',
-                    display: true, // Ensure legend is visible by default
-                    labels: {
-                        color: 'white',
-                        padding: 20,
-                        font: {
-                            family: 'Montserrat, sans-serif',
-                            size: 12,
-                            weight: '600'
-                        },
-                        generateLabels: function(chart) {
-                            const data = chart.data;
-                            if (data.labels.length && data.datasets.length) {
-                                return data.labels.map(function(label, i) {
-                                    const value = data.datasets[0].data[i];
-                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                                    const batch = batchData[i];
-                                    return {
-                                        text: `${label}: ${formatNumber(batch.amount)} tokens`,
-                                        fillStyle: data.datasets[0].backgroundColor[i],
-                                        strokeStyle: data.datasets[0].borderColor[i],
-                                        lineWidth: 2,
-                                        hidden: false,
-                                        index: i,
-                                        extra: {
-                                            ws: formatNumber(value, true),
-                                            percentage: percentage,
-                                            age: batch.age,
-                                            factor: batch.factor.toFixed(2)
-                                        }
-                                    };
-                                });
-                            }
-                            return [];
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Token Distribution',
-                        color: 'var(--rebel-gold)',
-                        font: {
-                            size: 14,
-                            weight: 'bold',
-                            family: 'Montserrat, sans-serif'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        }
-                    }
-                },
+               legend: {
+    position: 'right',
+    display: true,
+    labels: {
+        color: (context) => {
+            // Force white color
+            return 'rgb(255, 255, 255)';
+        },
+        padding: 20,
+        font: {
+            family: 'Montserrat, sans-serif',
+            size: 12,
+            weight: '600',
+            color: 'rgb(255, 255, 255)' // Explicit font color
+        },
+        generateLabels: function(chart) {
+            const data = chart.data;
+            if (data.labels.length && data.datasets.length) {
+                return data.labels.map(function(label, i) {
+                    const value = data.datasets[0].data[i];
+                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                    const batch = batchData[i];
+                    return {
+                        text: `${label}: ${formatNumber(batch.amount)} tokens`,
+                        fillStyle: data.datasets[0].backgroundColor[i],
+                        strokeStyle: data.datasets[0].borderColor[i],
+                        lineWidth: 2,
+                        hidden: false,
+                        index: i,
+                        fontColor: 'rgb(255, 255, 255)' // Add this
+                    };
+                });
+            }
+            return [];
+        }
+    },
+    title: {
+        display: true,
+        text: 'Token Distribution',
+        color: 'rgb(255, 204, 0)',
+        font: {
+            size: 14,
+            weight: 'bold',
+            family: 'Montserrat, sans-serif'
+        },
+        padding: {
+            top: 10,
+            bottom: 20
+        }
+    }
+},
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.95)',
                     titleColor: 'var(--rebel-gold)',
