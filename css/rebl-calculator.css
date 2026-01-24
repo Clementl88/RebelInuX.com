@@ -868,34 +868,132 @@
 /* Chart Container */
 .chart-container {
     position: relative;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
-    min-height: 400px;
+    height: 350px; /* Increased height */
+    width: 100%;
+    margin: var(--spacing-lg) 0;
+    background: rgba(0, 0, 0, 0.4); /* Darker background */
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    border: 2px solid var(--rebel-gold); /* Thicker border */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rewardChart {
+    width: 100% !important;
+    height: 100% !important;
+    display: none;
 }
 
 .chart-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-muted-dark);
-    font-size: 1.2rem;
+    height: 100%;
+    width: 100%;
+    color: var(--rebel-gold);
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 26, 26, 0.8));
+    border-radius: var(--border-radius);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--spacing-xl);
+    border: 2px dashed rgba(255, 204, 0, 0.3);
 }
 
 .chart-placeholder i {
     font-size: 4rem;
     margin-bottom: var(--spacing-md);
     opacity: 0.3;
+    color: var(--rebel-gold);
 }
 
+.chart-placeholder p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-sm);
+    max-width: 300px;
+}
+
+.chart-placeholder span {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Chart stats overlay */
+.chart-stats-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--rebel-gold);
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-size: 0.85rem;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+.chart-stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.chart-stat-label {
+    color: var(--rebel-gold);
+    font-weight: 600;
+}
+
+.chart-stat-value {
+    color: white;
+    font-weight: 700;
+}
+
+/* Chart actions */
+.chart-actions {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.chart-action-btn {
+    background: rgba(255, 204, 0, 0.2);
+    color: var(--rebel-gold);
+    border: 1px solid var(--rebel-gold);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.chart-action-btn:hover {
+    background: rgba(255, 204, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.chart-action-btn.active {
+    background: rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
 /* Simulator */
 .simulator-info {
     background: rgba(0, 0, 0, 0.3);
