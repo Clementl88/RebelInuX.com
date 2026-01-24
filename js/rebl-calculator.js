@@ -1498,12 +1498,28 @@ function updateChart(batchData, totalUserWS) {
             maintainAspectRatio: false,
                 color: 'white',
             plugins: {
-               legend: {
+legend: {
     position: 'right',
     display: true,
+    onClick: function(e, legendItem, legend) {
+        // Get the chart instance
+        const chart = legend.chart;
+        const index = legendItem.index;
+        
+        // Toggle visibility
+        const meta = chart.getDatasetMeta(0);
+        if (meta.data[index]) {
+            const hidden = meta.data[index].hidden;
+            chart.setDatasetVisibility(0, index, !hidden);
+        }
+        
+        chart.update();
+        
+        // Show feedback
+        showToast(`${legendItem.text} ${meta.data[index].hidden ? 'hidden' : 'shown'}`, 'info');
+    },
     labels: {
         color: (context) => {
-            // Force white color
             return 'rgb(255, 255, 255)';
         },
         padding: 20,
@@ -1511,7 +1527,7 @@ function updateChart(batchData, totalUserWS) {
             family: 'Montserrat, sans-serif',
             size: 12,
             weight: '600',
-            color: 'rgb(255, 255, 255)' // Explicit font color
+            color: 'rgb(255, 255, 255)'
         },
         generateLabels: function(chart) {
             const data = chart.data;
@@ -1520,6 +1536,9 @@ function updateChart(batchData, totalUserWS) {
                     const value = data.datasets[0].data[i];
                     const percentage = ((value / totalUserWS) * 100).toFixed(1);
                     const batch = batchData[i];
+                    const meta = chart.getDatasetMeta(0);
+                    const hidden = meta.data[i] ? meta.data[i].hidden : false;
+                    
                     return {
                         text: `${label}: ${formatNumber(batch.amount)} tokens`,
                         fillStyle: data.datasets[0].backgroundColor[i],
@@ -1527,7 +1546,11 @@ function updateChart(batchData, totalUserWS) {
                         lineWidth: 2,
                         hidden: false,
                         index: i,
-                        fontColor: 'rgb(255, 255, 255)' // Add this
+                        fontColor: 'rgb(255, 255, 255)',
+                        // Add strikethrough style when hidden
+                        style: hidden ? 'line-through' : 'normal',
+                        lineDash: hidden ? [5, 3] : [],
+                        textDecoration: hidden ? 'line-through' : 'none'
                     };
                 });
             }
