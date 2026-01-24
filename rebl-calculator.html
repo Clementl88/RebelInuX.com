@@ -1,1280 +1,1323 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RebelInuX Calculator - Epoch Reward Formula</title>
-    <style>
-        /* EXACT SAME STYLES AS MAIN PAGE */
-        :root {
-            --rebel-red: #ff3366;
-            --rebel-gold: #ffcc00;
-            --dark-bg: #1a1a1a;
-            --text-light: #ffffff;
-            --spacing-sm: 0.5rem;
-            --spacing-md: 1rem;
-            --spacing-lg: 2rem;
-            --spacing-xl: 3rem;
-            --transition: all 0.3s ease;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            --box-shadow-hover: 0 12px 20px rgba(0, 0, 0, 0.2);
-            --card-bg: rgba(0, 0, 0, 0.4);
-            --section-bg: rgba(0, 0, 0, 0.3);
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        h2 {
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            margin-bottom: var(--spacing-lg);
-            color: var(--rebel-gold);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            border-bottom: 4px solid var(--rebel-red);
-            display: inline-block;
-            padding-bottom: var(--spacing-sm);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 900;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .rebl-calculator {
-            background: var(--section-bg);
-            padding: var(--spacing-lg);
-            border-radius: var(--border-radius);
-            margin: var(--spacing-xl) 0;
-            border: 2px solid var(--rebel-gold);
-        }
-        
-        .calculator-container {
-            background: rgba(0, 0, 0, 0.6);
-            padding: var(--spacing-lg);
-            border-radius: var(--border-radius);
-        }
-        
-        .important-note {
-            background: rgba(255, 204, 0, 0.1);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--rebel-gold);
-            margin-bottom: var(--spacing-xl);
-            display: flex;
-            gap: var(--spacing-md);
-            align-items: flex-start;
-        }
-        
-        .important-note i {
-            color: var(--rebel-gold);
-            font-size: 1.2rem;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RebelInuX Sustainable Reward Calculator - Calculate $REBL rewards using the new sustainable formula with Gamma Scale Factor" />
+  <meta name="keywords" content="RebelInuX calculator, $REBL rewards, epoch calculator, sustainable formula, gamma scale factor" />
+  <meta property="og:title" content="RebelInuX Sustainable Reward Calculator" />
+  <meta property="og:image" content="images/Logo_REBL.svg" />
+  <meta property="og:description" content="Calculate your $REBL rewards using the sustainable formula with Gamma Scale Factor (γ) simulation" />
+  <meta property="og:url" content="https://rebelinux.fun/rebl-calculator.html" />
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RebelInuX">
+  <meta name="twitter:title" content="RebelInuX Sustainable Reward Calculator">
+  <meta name="twitter:description" content="Calculate your $REBL rewards using the sustainable formula with Gamma Scale Factor (γ) simulation">
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicons -->
+  <link rel="icon" href="images/Logo_REBL.svg">
+  <link rel="apple-touch-icon" href="images/Logo_REBL.svg">
+  <title>RebelInuX Sustainable Reward Calculator</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
-        .important-note p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--rebel-gold);
-            line-height: 1.5;
-        }
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        .important-note strong {
-            color: var(--rebel-gold);
-        }
-        
-        .info-value {
-            color: var(--rebel-gold);
-            font-weight: bold;
-        }
-        
-        .tooltip-icon {
-            color: var(--rebel-gold);
-            cursor: help;
-            margin: 0 0.2em;
-        }
-        
-        .token-batches-section {
-            margin-bottom: var(--spacing-lg);
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin-bottom: var(--spacing-md);
-        }
-        
-        #token-batches-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-        
-        #token-batches-table th,
-        #token-batches-table td {
-            padding: 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        #token-batches-table th {
-            color: var(--rebel-gold);
-            font-weight: 600;
-        }
-        
-        input[type="number"] {
-            width: 100%;
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: 1px solid var(--rebel-gold);
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-        }
-        
-        .batch-controls {
-            display: flex;
-            gap: var(--spacing-sm);
-            margin-top: var(--spacing-md);
-        }
-        
-        .batch-btn {
-            flex: 1;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .add-btn {
-            background: var(--rebel-red);
-            color: white;
-        }
-        
-        .clear-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--rebel-gold);
-            border: 1px solid var(--rebel-gold);
-        }
-        
-        .calculate-btn {
-            background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-            color: var(--dark-bg);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            margin: var(--spacing-md) auto;
-            display: block;
-            font-size: 1.1rem;
-        }
-        
-        .calculate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow-hover);
-        }
-        
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
-            margin: var(--spacing-lg) 0;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--border-radius);
-            padding: var(--spacing-md);
-            border: 1px solid var(--rebel-gold);
-        }
-        
-        #rewardChart {
-            width: 100% !important;
-            height: 100% !important;
-            display: none;
-        }
-        
-        .chart-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-            color: var(--rebel-gold);
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2;
-            border-radius: var(--border-radius);
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        
-        .chart-placeholder i {
-            font-size: 3rem;
-            margin-bottom: var(--spacing-sm);
-            opacity: 0.5;
-        }
-        
-        #reward-result {
-            background: rgba(255, 204, 0, 0.1);
-            padding: var(--spacing-lg);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--rebel-gold);
-            margin-top: var(--spacing-lg);
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--rebel-gold);
-        }
-        
-        .what-if-container {
-            margin-top: var(--spacing-xl);
-            background: rgba(0, 0, 0, 0.4);
-            padding: var(--spacing-lg);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--rebel-gold);
-        }
-        
-        .slider-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-        }
-        
-        .slider-container {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-        
-        .slider-container label {
-            color: var(--rebel-gold);
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .slider-value {
-            color: white;
-            font-weight: bold;
-        }
-        
-        .slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
-            -webkit-appearance: none;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--rebel-gold);
-            cursor: pointer;
-            border: 2px solid white;
-        }
-        
-        .scenario-btn {
-            background: rgba(255, 51, 102, 0.15);
-            color: var(--rebel-gold);
-            border: 1px solid var(--rebel-red);
-            padding: 0.6rem 1rem;
-            border-radius: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-        
-        .scenario-btn:hover {
-            background: rgba(255, 51, 102, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Content Cards */
-        .content-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: var(--spacing-lg);
-            border: 2px solid var(--rebel-red);
-            margin-bottom: var(--spacing-lg);
-            transition: var(--transition);
-        }
-        
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--box-shadow-hover);
-            border-color: var(--rebel-gold);
-        }
-        
-        .content-card h3 {
-            color: var(--rebel-gold);
-            margin-bottom: var(--spacing-md);
-            font-size: 1.5rem;
-        }
-        
-        /* Buttons */
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--rebel-red);
-            color: white;
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: 50px;
-            font-weight: 700;
-            margin: var(--spacing-sm);
-            transition: var(--transition);
-            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-            gap: var(--spacing-sm);
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow-hover);
-            background: linear-gradient(90deg, var(--rebel-red), #d62828);
-        }
-        
-        .cta-button.gold {
-            background: var(--rebel-gold);
-            color: var(--dark-bg);
-        }
-        
-        /* Gamma Scale Indicator */
-        .gamma-scale {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            margin-top: 0.5rem;
-        }
-        
-        .gamma-bar {
-            flex: 1;
-            height: 10px;
-            background: linear-gradient(90deg, 
-                #ff3366 0%, 
-                #ff3366 40%, 
-                #ffcc00 40%, 
-                #00ff00 100%);
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .gamma-marker {
-            position: absolute;
-            width: 3px;
-            height: 14px;
-            background: white;
-            top: -2px;
-            transform: translateX(-50%);
-        }
-        
-        .gamma-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.25rem;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        /* Formula Display */
-        .formula-display {
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 0, 0, 0.8);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius);
-            margin: var(--spacing-md) 0;
-            border: 1px solid var(--rebel-gold);
-            text-align: center;
-        }
-        
-        .formula-main {
-            font-size: 1.4rem;
-            color: var(--rebel-red);
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .formula-component {
-            font-size: 0.9rem;
-            color: var(--rebel-gold);
-            margin-bottom: 0.25rem;
-        }
-        
-        .formula-explanation {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: var(--spacing-sm);
-            text-align: left;
-        }
-        
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .rebl-calculator {
-                padding: var(--spacing-md);
-            }
-            
-            .calculator-container {
-                padding: var(--spacing-md);
-            }
-            
-            #token-batches-table {
-                font-size: 0.8rem;
-            }
-            
-            #token-batches-table th,
-            #token-batches-table td {
-                padding: 0.5rem;
-            }
-            
-            .chart-container {
-                height: 250px;
-            }
-            
-            .slider-group {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header-footer.css">
+  <link rel="stylesheet" href="css/rebl-calculator.css">
+
+  <!-- Enhanced Calculator Styles -->
+  <style>
+    /* Toast notifications */
+    .calculator-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      animation: toastIn 0.3s ease;
+      backdrop-filter: blur(10px);
+      max-width: 350px;
+    }
     
-    <!-- Load Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    .calculator-toast-success {
+      background: rgba(76, 175, 80, 0.9);
+      color: white;
+      border: 1px solid rgba(76, 175, 80, 0.5);
+    }
     
-    <!-- Load Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
-          crossorigin="anonymous" referrerpolicy="no-referrer">
+    .calculator-toast-info {
+      background: rgba(33, 150, 243, 0.9);
+      color: white;
+      border: 1px solid rgba(33, 150, 243, 0.5);
+    }
     
-    <!-- Chart.js for charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" integrity="sha512-WoViKhKD4qI2WruSZqv9+kvM4WfFhUMQCLN4QlDTt5aU56fLQy2gYoxWIqlEnXqJy/+Ac5q/hk1oWfqnMDhwMA==" crossorigin="anonymous"></script>
+    .calculator-toast-warning {
+      background: rgba(255, 193, 7, 0.9);
+      color: black;
+      border: 1px solid rgba(255, 193, 7, 0.5);
+    }
+    
+    .calculator-toast-error {
+      background: rgba(255, 51, 102, 0.9);
+      color: white;
+      border: 1px solid rgba(255, 51, 102, 0.5);
+    }
+    
+    .toast-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    @keyframes toastIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes toastOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    /* Help tooltips */
+    .help-tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+    
+    .help-tooltip .tooltip-text {
+      visibility: hidden;
+      width: 300px;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      text-align: left;
+      border-radius: 6px;
+      padding: 12px;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 12px;
+      line-height: 1.4;
+      border: 1px solid var(--rebel-gold);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    
+    .help-tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    /* Table actions */
+    .table-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .table-action-btn {
+      background: rgba(212, 167, 106, 0.1);
+      color: var(--rebel-gold);
+      border: 1px solid var(--rebel-gold);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .table-action-btn:hover {
+      background: rgba(212, 167, 106, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    /* Input validation */
+    input:invalid {
+      border-color: var(--rebel-red) !important;
+      box-shadow: 0 0 5px rgba(255, 51, 102, 0.5) !important;
+    }
+    
+    .input-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+      display: block;
+    }
+    
+    /* Loading state */
+    .calculate-btn.loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    
+    .calculate-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Quick actions */
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .quick-action-btn {
+      background: rgba(0, 170, 255, 0.1);
+      color: var(--rebel-blue);
+      border: 1px solid var(--rebel-blue);
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-action-btn:hover {
+      background: rgba(0, 170, 255, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    /* Gamma info panels */
+    .gamma-info-panel {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 4px solid;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    .gamma-info-panel.low {
+      border-left-color: #ff3366;
+      background: rgba(255, 51, 102, 0.1);
+    }
+    
+    .gamma-info-panel.medium {
+      border-left-color: #ffcc00;
+      background: rgba(255, 204, 0, 0.1);
+    }
+    
+    .gamma-info-panel.high {
+      border-left-color: #00ff00;
+      background: rgba(0, 255, 0, 0.1);
+    }
+    
+    /* Enhanced WS Info Styles */
+    .ws-info-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .ws-info-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-gold);
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .ws-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .ws-info-item {
+      text-align: center;
+      padding: 10px;
+    }
+    
+    .ws-info-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+    }
+    
+    .ws-info-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    .ws-info-hint {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    /* Age Bonus Calculator */
+    .age-bonus-calculator {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    
+    .age-bonus-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .age-bonus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .age-bonus-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .age-bonus-age {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .age-bonus-multiplier {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+    }
+    
+    /* Other Participants Batches Styles */
+    .other-participants-batches {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 170, 255, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .other-participants-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rebel-blue);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    
+    .other-participants-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .other-participants-btn {
+      background: rgba(0, 170, 255, 0.1);
+      color: var(--rebel-blue);
+      border: 1px solid var(--rebel-blue);
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .other-participants-btn:hover {
+      background: rgba(0, 170, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .other-participants-btn.danger {
+      background: rgba(255, 51, 102, 0.1);
+      color: var(--rebel-red);
+      border-color: var(--rebel-red);
+    }
+    
+    .other-participants-btn.danger:hover {
+      background: rgba(255, 51, 102, 0.2);
+    }
+    
+    .other-participants-summary {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    
+    .other-summary-item {
+      text-align: center;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .other-summary-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .other-summary-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--rebel-blue);
+    }
+    
+    /* Batch styles for other participants table */
+    .other-batch-amount, .other-batch-age {
+      width: 100%;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      color: white;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .other-batch-amount:focus, .other-batch-age:focus {
+      outline: none;
+      border-color: var(--rebel-blue);
+      box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.2);
+    }
+    
+    .other-batch-factor, .other-batch-ws {
+      color: var(--rebel-blue);
+      font-weight: bold;
+      text-align: center;
+      padding: 8px;
+    }
+    
+    /* Participant type selector */
+    .participant-type-selector {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .participant-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    
+    .participant-type-option:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .participant-type-option.active {
+      background: rgba(0, 170, 255, 0.1);
+      border-color: var(--rebel-blue);
+      color: var(--rebel-blue);
+    }
+    
+    .participant-type-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    
+    .participant-type-label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .participant-type-description {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+    }
+    
+    /* Contribution Container */
+    .contribution-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .contribution-header {
+      color: var(--rebel-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .contribution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .contribution-item {
+      text-align: center;
+    }
+    
+    .contribution-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 8px;
+    }
+    
+    .contribution-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    /* User Stats */
+    .user-stats-container {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(212, 167, 106, 0.2);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+      display: none;
+    }
+    
+    .user-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .user-stat-item {
+      text-align: center;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+    
+    .user-stat-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .user-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin-bottom: 4px;
+    }
+    
+    .user-stat-percentage {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .table-actions {
+        flex-direction: column;
+      }
+      
+      .table-action-btn {
+        justify-content: center;
+      }
+      
+      .quick-actions {
+        flex-direction: column;
+      }
+      
+      .quick-action-btn {
+        justify-content: center;
+      }
+      
+      .ws-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .age-bonus-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .other-participants-summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .contribution-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .participant-type-selector {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .ws-info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .age-bonus-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .other-participants-summary {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Main Content -->
-<!-- Formula Display - AT THE TOP -->
-<div id="formula-details" style="margin-bottom: var(--spacing-xl); padding: var(--spacing-lg); background: rgba(0, 0, 0, 0.3); border-radius: var(--border-radius); border: 2px solid var(--rebel-gold);">
-    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm); text-align: center;">
-        <i class="fas fa-calculator"></i> EPOCH REWARD FORMULA (Epoch 15+)
-    </h4>
-    <div class="formula-display">
-        <div class="formula-main">
-            Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
-        </div>
-        <div class="formula-component" style="color: var(--rebel-red); font-weight: bold;">
-            γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS × 1.5/∑WS))
-        </div>
-    </div>
-    <div class="formula-explanation">
-        <p><strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]</p>
-        <p><strong>∑WS:</strong> Total Active Weighted Shares from all participants</p>
-        <p><strong>P:</strong> Total participating tokens in the epoch (raw amount)</p>
-        <p><strong>CS:</strong> Circulating Supply (499,242,047 $REBL)</p>
-        <p><strong>γ:</strong> Gamma Scale Factor - 40% minimum, scales to 100% at 50%+ participation</p>
-        <p><strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier</p>
-    </div>
-</div>
-
-        <!-- REBL Calculator -->
-        <section id="rebl-calculator" class="rebl-calculator">
-            <!-- Core Parameters -->
-            <div class="calculator-container">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
-                    <div>
-                        <p>
-                            <strong>CS (Circulating Supply):</strong>
-                            <span class="tooltip-icon" title="Total circulating $rebelinux tokens">
-                                <i class="fas fa-question-circle"></i>
-                            </span>
-                            <span class="info-value">499,242,047</span>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <strong>WERP (Weekly Pool):</strong>
-                            <span class="tooltip-icon" title="Fixed weekly distribution from treasury">
-                                <i class="fas fa-question-circle"></i>
-                            </span>
-                            <span class="info-value">3,200,000 $REBL</span>
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <strong>γ (Gamma Scale):</strong>
-                            <span class="tooltip-icon" title="Sustainability factor: MAX(0.4, MIN(1, P/(0.5×CS), CS×1.5/∑WS))">
-                                <i class="fas fa-question-circle"></i>
-                            </span>
-                            <span id="gammaValueDisplay" class="info-value">0.40</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Your Token Batches -->
-            <div class="token-batches-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap; gap: var(--spacing-sm);">
-                    <h4 style="color: var(--rebel-gold); margin: 0;">Your Token Batches
-                        <span class="tooltip-icon" title="WSᵢ = Σ[Token Batch × (1 + 0.07 × min(Epoch Age, 20))]">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </h4>
-                    <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
-                        <button onclick="loadExampleCase('starter')" class="scenario-btn" style="font-size: 0.8rem;">
-                            <i class="fas fa-user-graduate"></i> Starter
-                        </button>
-                        <button onclick="loadExampleCase('investor')" class="scenario-btn" style="font-size: 0.8rem;">
-                            <i class="fas fa-chart-line"></i> Investor
-                        </button>
-                        <button onclick="loadExampleCase('whale')" class="scenario-btn" style="font-size: 0.8rem;">
-                            <i class="fas fa-whale"></i> Whale
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <table id="token-batches-table">
-                        <thead>
-                            <tr>
-                                <th>$rebelinux Amount</th>
-                                <th>Age (Epochs)
-                                    <span class="tooltip-icon" title="7% weight boost per epoch, max 20 epochs (2.4x)">
-                                        <i class="fas fa-question-circle"></i>
-                                    </span>
-                                </th>
-                                <th>Weight Factor
-                                    <span class="tooltip-icon" title="1 + 0.07 × min(Age, 20)">
-                                        <i class="fas fa-question-circle"></i>
-                                    </span>
-                                </th>
-                                <th>WSᵢ (Weighted Share)</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Rows will be added dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="batch-controls">
-                    <button onclick="addTokenBatch()" class="batch-btn add-btn">
-                        <i class="fas fa-plus"></i> Add Batch
-                    </button>
-                    <button onclick="clearTokenBatches()" class="batch-btn clear-btn">
-                        <i class="fas fa-trash"></i> Clear All
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Participation Settings -->
-            <div style="background: rgba(0,0,0,0.4); padding: var(--spacing-md); border-radius: var(--border-radius); margin: var(--spacing-lg) 0; border: 1px solid var(--rebel-gold);">
-                <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-                    <i class="fas fa-users"></i> Participation Settings
-                </h4>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
-                    <div>
-                        <label style="display: flex; justify-content: space-between; color: white; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                            Total Participating Tokens (P):
-                            <span id="participatingTokensValue" style="color: var(--rebel-gold); font-weight: bold;">100M</span>
-                        </label>
-                        <input type="range" id="participatingTokens" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
-                    </div>
-                    
-                    <div>
-                        <label style="display: flex; justify-content: space-between; color: white; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                            ∑WS (Total Active Weighted Shares):
-                            <span id="totalWSValue" style="color: var(--rebel-gold); font-weight: bold;">100M</span>
-                        </label>
-                        <input type="range" id="totalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateParticipation()" class="slider">
-                    </div>
-                </div>
-                
-                <!-- Gamma Scale Visualization -->
-                <div>
-                    <label style="display: flex; justify-content: space-between; color: white; font-size: 0.9rem; margin-bottom: 0.5rem;">
-                        Gamma Scale (γ):
-                        <span id="gammaValue" style="color: #00ff00; font-weight: bold;">0.40</span>
-                    </label>
-                    <div class="gamma-scale">
-                        <div class="gamma-bar">
-                            <div id="gammaMarker" class="gamma-marker" style="left: 40%;"></div>
-                        </div>
-                    </div>
-                    <div class="gamma-labels">
-                        <span>40% (Floor)</span>
-                        <span>50% Participation</span>
-                        <span>100%</span>
-                    </div>
-                </div>
-                
-                <!-- Gamma Components -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-                    <div style="background: rgba(255, 51, 102, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius); text-align: center;">
-                        <div style="font-size: 0.8rem; color: var(--rebel-red);">P/(0.5×CS)</div>
-                        <div id="participationTerm" style="font-weight: bold; color: white;">0.40</div>
-                    </div>
-                    <div style="background: rgba(255, 204, 0, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius); text-align: center;">
-                        <div style="font-size: 0.8rem; color: var(--rebel-gold);">CS/∑WS</div>
-                        <div id="inflationCap" style="font-weight: bold; color: white;">1.00</div>
-                    </div>
-                    <div style="background: rgba(0, 170, 255, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius); text-align: center;">
-                        <div style="font-size: 0.8rem; color: #00aaff;">MIN(1, ...)</div>
-                        <div id="minTerm" style="font-weight: bold; color: white;">0.40</div>
-                    </div>
-                    <div style="background: rgba(76, 175, 80, 0.1); padding: var(--spacing-sm); border-radius: var(--border-radius); text-align: center;">
-                        <div style="font-size: 0.8rem; color: #4CAF50;">MAX(0.4, ...)</div>
-                        <div id="maxTerm" style="font-weight: bold; color: white;">0.40</div>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="calculateRewards()" class="calculate-btn">
-                <i class="fas fa-calculator"></i> CALCULATE EPOCH REWARDS
-            </button>
-            
-            <div id="reward-result">
-                Enter your token batches to calculate your epoch rewards!
-            </div>
-
-            <!-- Chart Container -->
-<div class="chart-container">
-    <div class="chart-wrapper">
-        <canvas id="rewardChart"></canvas>
-        <div id="chartPlaceholder" class="chart-placeholder">
-            <i class="fas fa-chart-pie"></i>
-            <p>Your epoch reward distribution will appear here</p>
-            <span>Add token batches and calculate rewards to see the visualization</span>
-        </div>
-        <!-- Chart stats overlay (will be populated by JS) -->
-        <div id="chartStatsOverlay" class="chart-stats-overlay" style="display: none;">
-            <div class="chart-stat-item">
-                <span class="chart-stat-label">Total WS:</span>
-                <span id="chartTotalWS" class="chart-stat-value">0</span>
-            </div>
-            <div class="chart-stat-item">
-                <span class="chart-stat-label">Batches:</span>
-                <span id="chartBatchCount" class="chart-stat-value">0</span>
-            </div>
-        </div>
-        <!-- Chart actions -->
-        <div class="chart-actions">
-            <button id="toggleLegendBtn" class="chart-action-btn" onclick="toggleChartLegend()">
-                <i class="fas fa-layer-group"></i>
-                <span>Legend</span>
-            </button>
-            <button id="toggleLabelsBtn" class="chart-action-btn" onclick="toggleChartLabels()">
-                <i class="fas fa-tag"></i>
-                <span>Labels</span>
-            </button>
-        </div>
-    </div>
-</div>
-            
-            <!-- What If Calculator -->
-            <div class="what-if-container">
-                <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-md); text-align: center;">
-                    <i class="fas fa-chart-line"></i> Gamma Scale Simulator
-                </h4>
-                
-                <div style="background: rgba(255, 204, 0, 0.05); padding: var(--spacing-md); border-radius: var(--border-radius); margin-bottom: var(--spacing-lg); border-left: 3px solid var(--rebel-gold);">
-                    <p style="margin: 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">
-                        See how the Gamma Scale Factor (γ) adjusts rewards based on community participation. 
-                        Move the slider to see how reaching 50% participation unlocks higher rewards for everyone!
-                    </p>
-                </div>
-                
-                <!-- Sliders -->
-                <div class="slider-group">
-                    <div class="slider-container">
-                        <label>
-                            Participating Tokens (P):
-                            <span id="whatIfParticipatingValue" class="slider-value">100M</span>
-                        </label>
-                        <input type="range" id="whatIfParticipating" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
-                    </div>
-                    
-                    <div class="slider-container">
-                        <label>
-                            Total Weighted Shares (∑WS):
-                            <span id="whatIfTotalWSValue" class="slider-value">100M</span>
-                        </label>
-                        <input type="range" id="whatIfTotalWS" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
-                    </div>
-                </div>
-                
-                <!-- Gamma Scale Results -->
-                <div style="text-align: center; margin-top: var(--spacing-lg);">
-                    <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-                        <i class="fas fa-cogs"></i> Gamma Scale Results
-                    </h4>
-                    <div id="gammaScaleResult" style="font-size: 2rem; font-weight: 900; color: #00ff00; margin: var(--spacing-sm) 0;">
-                        γ = 0.40
-                    </div>
-                    <div style="font-size: 1.2rem; color: var(--rebel-gold); margin: var(--spacing-sm) 0;">
-                        Effective Distribution: <span id="effectiveDistribution" style="color: white;">1,280,000 $REBL</span>
-                    </div>
-                </div>
-                
-                <!-- Gamma Scale Visualization -->
-                <div style="margin-top: var(--spacing-lg);">
-                    <div class="gamma-scale">
-                        <div class="gamma-bar">
-                            <div id="whatIfGammaMarker" class="gamma-marker" style="left: 40%;"></div>
-                        </div>
-                    </div>
-                    <div class="gamma-labels">
-                        <span>40% (Floor)</span>
-                        <span id="targetParticipation">249.6M (50% CS)</span>
-                        <span>100%</span>
-                    </div>
-                </div>
-                
-
-            </div>
-            
-        </section>
-    </div>
-
-
-    <!-- Add this section at the bottom of calculator.html -->
-<section id="calculator-faq">
-  <h2>Calculator FAQ</h2>
-  <div class="content-card">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg);">
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> What is the Gamma Scale Factor (γ)?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          γ adjusts rewards based on participation: 40% minimum, scaling to 100% when 50%+ of supply participates. γ = MAX(0.4, MIN(1, P/(0.5×CS), CS × 1.5/∑WS))
-        </p>
-      </div>
-      
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> How is WSᵢ calculated?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          WSᵢ = Token Amount × (1 + 0.07 × min(Epoch Age, 20)). Each batch gets a 7% weight boost per epoch, maxing at 2.4x after 20 epochs.
-        </p>
-      </div>
-      
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> Why do my estimates change with participation?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          The formula is proportional: Your share = Your WSᵢ ÷ Total WS. More participants = your share changes even if your tokens stay the same.
-        </p>
-      </div>
-      
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> What's the difference between P and ∑WS?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          P = Total participating tokens (raw amount). ∑WS = Total weighted shares (includes age bonuses). ∑WS is always ≥ P.
-        </p>
-      </div>
-      
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> Is this calculator accurate?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          This uses the exact formula from smart contracts. Results are estimates based on current participation levels; actual rewards depend on final epoch data.
-        </p>
-      </div>
-      
-      <div>
-        <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-          <i class="fas fa-question-circle"></i> How often should I recalculate?
-        </h4>
-        <p style="color: rgba(255, 255, 255, 0.9);">
-          Recalculate when: 1) You buy/sell tokens, 2) An epoch completes (age increases), 3) Participation changes significantly.
-        </p>
-      </div>
-        <div>
-  <h4 style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);">
-    <i class="fas fa-question-circle"></i> How do I actually claim rewards?
-  </h4>
-  <p style="color: rgba(255, 255, 255, 0.9);">
-    You need both $rebelinux tokens and the active Rebel Key NFT. 
-    <a href="epoch-rewards.html#how-to-claim" style="color: #00aaff;">See step-by-step claiming instructions →</a>
-  </p>
-</div>
-    </div>
+  <!-- Loading Animation -->
+  <div class="loader" id="loader">
+    <div class="loader-spinner"></div>
   </div>
-</section>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- Header will be inserted here by JavaScript -->
+  <div id="header-container"></div>
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero page-hero--calculator">
+      <div class="container">
+        <h1>SUSTAINABLE REWARD CALCULATOR</h1>
+        <p class="text-lead">Calculate your $REBL rewards using the new sustainable formula with Gamma Scale Factor (γ) simulation. Plan your strategy based on participation levels!</p>
+        <div class="hero-buttons">
+          <a href="#rebl-calculator" class="cta-button">
+            <i class="fas fa-calculator"></i> Start Calculating
+          </a>
+          <a href="#calculator-faq" class="cta-button gold">
+            <i class="fas fa-question-circle"></i> FAQ & Help
+          </a>
+          <a href="epoch-rewards.html" class="cta-button">
+            <i class="fas fa-gift"></i> View Epoch Rewards
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <!-- JavaScript for calculator -->
-    <script>
-        // Global variables
-        let rewardChart = null;
-        const CS = 499242047.00; // Circulating Supply
-        const WERP = 3200000.00; // Weekly Epoch Reward Pool
-        const K = 0.07; // Age bonus per epoch
-        const MAX_AGE = 20; // Maximum age for bonus
+    <!-- Formula Announcement -->
+    <section id="formula-announcement">
+      <div class="container">
+        <div class="announcement-banner calculator-announcement">
+          <h3><i class="fas fa-bullhorn"></i> NEW SUSTAINABLE FORMULA (Effective Epoch 15)</h3>
+          <div class="formula-display">
+            <div class="formula-equation">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            </div>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+            </div>
+          </div>
+          <p><strong>Governance Approved:</strong> This sustainable formula protects the treasury while rewarding active participants.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Main Calculator -->
+    <section id="rebl-calculator">
+      <div class="container">
+        <h2><i class="fas fa-calculator"></i> Sustainable Reward Calculator</h2>
         
-        // Initialize on DOM load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize calculator with one empty row
-            setTimeout(function() {
-                addTokenBatch();
-            }, 100);
-            
-            // Initialize participation settings
-            updateParticipation();
-            updateWhatIfGamma();
-            
-            // Initialize chart placeholder
-            setupChartPlaceholder();
-        });
+        <!-- Quick Navigation -->
+        <div class="quick-actions">
+          <button onclick="document.querySelector('.token-batches-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-layer-group"></i> Your Tokens
+          </button>
+          <button onclick="document.querySelector('.other-participants-section').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-users"></i> Other Participants
+          </button>
+          <button onclick="document.querySelector('.gamma-simulator').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-chart-line"></i> Gamma Simulator
+          </button>
+          <button onclick="document.querySelector('.calculate-action').scrollIntoView({behavior: 'smooth'})" class="quick-action-btn">
+            <i class="fas fa-bolt"></i> Calculate
+          </button>
+        </div>
         
-        // ========== CALCULATOR FUNCTIONS ==========
-        function addTokenBatch(amount = '', age = '') {
-            const table = document.querySelector('#token-batches-table tbody');
-            if (!table) return;
+        <!-- Core Parameters -->
+        <div class="calculator-parameters">
+          <div class="parameter-grid">
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-coins"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">CS (Circulating Supply)</div>
+                <div class="parameter-value">499,242,047</div>
+                <div class="parameter-description">Total $rebelinux tokens</div>
+              </div>
+            </div>
             
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <input type="number" class="batch-amount" value="${amount}" placeholder="Amount" 
-                           oninput="updateRowCalculations(this)" min="0" step="1000">
-                </td>
-                <td>
-                    <input type="number" class="batch-age" value="${age}" placeholder="Age" 
-                           oninput="updateRowCalculations(this)" min="0" max="20" step="1">
-                </td>
-                <td class="batch-factor" style="color: var(--rebel-gold);">1.00</td>
-                <td class="batch-ws" style="color: var(--rebel-red); font-weight: bold;">0</td>
-                <td>
-                    <button onclick="removeTokenBatch(this)" class="batch-btn" 
-                            style="background: var(--rebel-red); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer;">
-                        ×
-                    </button>
-                </td>
-            `;
-            table.appendChild(row);
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-piggy-bank"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">WERP (Weekly Pool)</div>
+                <div class="parameter-value">3,200,000 $REBL</div>
+                <div class="parameter-description">Fixed weekly distribution</div>
+              </div>
+            </div>
             
-            if (amount || age) {
-                setTimeout(() => updateRowCalculations(row.querySelector('.batch-amount')), 10);
-            }
-        }
-        
-        function removeTokenBatch(button) {
-            const row = button.closest('tr');
-            if (row) {
-                row.remove();
-                calculateRewards();
-                
-                // Add empty row if all are removed
-                const table = document.querySelector('#token-batches-table tbody');
-                if (table && table.children.length === 0) {
-                    addTokenBatch();
-                }
-            }
-        }
-        
-        function clearTokenBatches() {
-            const table = document.querySelector('#token-batches-table tbody');
-            if (table) {
-                table.innerHTML = '';
-                addTokenBatch();
-                document.getElementById('reward-result').innerHTML = 'Enter your token batches to calculate your $REBL epoch rewards!';
-                hideChart();
-            }
-        }
-        
-        function updateRowCalculations(input) {
-            const row = input.closest('tr');
-            if (!row) return;
+            <div class="parameter-item">
+              <div class="parameter-icon"><i class="fas fa-sliders-h"></i></div>
+              <div class="parameter-content">
+                <div class="parameter-label">γ (Gamma Scale)</div>
+                <div id="gammaValueDisplay" class="parameter-value">0.40</div>
+                <div class="parameter-description">Sustainability factor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Your Token Batches -->
+        <div class="calculator-section token-batches-section">
+          <div class="section-header">
+            <h3><i class="fas fa-layer-group"></i> Your Token Batches</h3>
+            <div class="example-buttons">
+              <button onclick="loadExampleCase('starter')" class="example-btn">
+                <i class="fas fa-user-graduate"></i> Starter
+              </button>
+              <button onclick="loadExampleCase('investor')" class="example-btn">
+                <i class="fas fa-chart-line"></i> Investor
+              </button>
+              <button onclick="loadExampleCase('whale')" class="example-btn">
+                <i class="fas fa-whale"></i> Whale
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-actions">
+            <button onclick="addTokenBatch()" class="table-action-btn">
+              <i class="fas fa-plus"></i> Add Batch
+            </button>
+            <button onclick="addTokenBatch('1000000', '5')" class="table-action-btn">
+              <i class="fas fa-bolt"></i> Quick Add 1M
+            </button>
+            <button onclick="addTokenBatch('500000', '10')" class="table-action-btn">
+              <i class="fas fa-bolt"></i> Quick Add 500K
+            </button>
+            <button onclick="clearTokenBatches()" class="table-action-btn" style="background: rgba(255, 51, 102, 0.1); color: var(--rebel-red); border-color: var(--rebel-red);">
+              <i class="fas fa-trash"></i> Clear All
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table id="token-batches-table">
+              <thead>
+                <tr>
+                  <th>$rebelinux Amount</th>
+                  <th>Age (Epochs)</th>
+                  <th>Weight Factor</th>
+                  <th>WSᵢ (Weighted Share)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows will be added dynamically -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="input-hint ws-hint">
+            <i class="fas fa-info-circle"></i> <strong>∑WS Calculation:</strong> Each batch gets 7% weight boost per epoch (max 20 epochs). 
+            Total WS = Σ[Token Amount × (1 + 0.07 × min(Age, 20))]. Your tokens: <span id="userTokenSum">0</span> | Your WS: <span id="userWSSum">0</span>
+          </div>
+        </div>
+
+        <!-- Other Participants Section -->
+        <div class="calculator-section other-participants-section">
+          <div class="other-participants-header">
+            <i class="fas fa-users"></i> Other Participants
+          </div>
+          
+          <!-- Participant Type Selector -->
+          <div class="participant-type-selector">
+            <div class="participant-type-option active" onclick="setParticipantType('detailed')">
+              <div class="participant-type-icon">
+                <i class="fas fa-list-ol"></i>
+              </div>
+              <div class="participant-type-label">Detailed Batches</div>
+              <div class="participant-type-description">Add specific token batches for other participants</div>
+            </div>
             
-            const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-            const age = parseFloat(row.querySelector('.batch-age').value) || 0;
+            <div class="participant-type-option" onclick="setParticipantType('summary')">
+              <div class="participant-type-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <div class="participant-type-label">Summary</div>
+              <div class="participant-type-description">Set total tokens & average age</div>
+            </div>
+          </div>
+          
+          <!-- Detailed Batches Mode -->
+          <div id="detailedBatchesMode" class="participant-mode">
+            <div class="other-participants-actions">
+              <button onclick="addOtherParticipantBatch()" class="other-participants-btn">
+                <i class="fas fa-plus"></i> Add Other Batch
+              </button>
+              <button onclick="addOtherParticipantBatch('1000000', '5')" class="other-participants-btn">
+                <i class="fas fa-bolt"></i> Add 1M Batch
+              </button>
+              <button onclick="addOtherParticipantBatch('500000', '10')" class="other-participants-btn">
+                <i class="fas fa-bolt"></i> Add 500K Batch
+              </button>
+              <button onclick="addExampleOtherParticipants()" class="other-participants-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+                <i class="fas fa-magic"></i> Add Example
+              </button>
+              <button onclick="clearOtherParticipantBatches()" class="other-participants-btn danger">
+                <i class="fas fa-trash"></i> Clear All
+              </button>
+            </div>
             
-            // Calculate weight factor: 1 + 0.07 × min(Age, 20)
-            const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
-            
-            // Calculate weighted share: Token Amount × Weight Factor
-            const weightedShare = amount * weightFactor;
-            
-            // Update display
-            const factorCell = row.querySelector('.batch-factor');
-            const wsCell = row.querySelector('.batch-ws');
-            
-            if (factorCell) {
-                factorCell.textContent = weightFactor.toFixed(2);
-            }
-            
-            if (wsCell) {
-                wsCell.textContent = weightedShare.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-            }
-            
-            calculateRewards();
-        }
-        
-        function calculateGammaScale(P, totalWS) {
-            // γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS × 1.5/∑WS))
-            
-            // Term 1: P/(0.5 × CS) - Participation Scaling
-            const participationTerm = P / (0.5 * CS);
-            
-            // Term 2: CS/∑WS - Age Inflation Cap
-            const inflationCap = CS / totalWS;
-            
-            // MIN(1, participationTerm, inflationCap)
-            const minTerm = Math.min(1, participationTerm, inflationCap);
-            
-            // MAX(0.4, minTerm)
-            const gamma = Math.max(0.4, minTerm);
-            
-            return {
-                gamma: gamma,
-                participationTerm: participationTerm,
-                inflationCap: inflationCap,
-                minTerm: minTerm
-            };
-        }
-        
-        // Update participation settings
-        function updateParticipation() {
-            const participatingTokens = parseInt(document.getElementById('participatingTokens').value) || 100000000;
-            const totalWS = parseInt(document.getElementById('totalWS').value) || 100000000;
-            
-            // Update display values
-            document.getElementById('participatingTokensValue').textContent = participatingTokens.toLocaleString();
-            document.getElementById('totalWSValue').textContent = totalWS.toLocaleString();
-            
-            // Calculate gamma scale
-            const gammaData = calculateGammaScale(participatingTokens, totalWS);
-            
-            // Update gamma display
-            document.getElementById('gammaValue').textContent = gammaData.gamma.toFixed(2);
-            document.getElementById('gammaValueDisplay').textContent = gammaData.gamma.toFixed(2);
-            
-            // Update marker position (40% to 100% scale)
-            const markerPosition = 40 + (gammaData.gamma - 0.4) * (100 / 0.6);
-            document.getElementById('gammaMarker').style.left = `${Math.min(100, Math.max(40, markerPosition))}%`;
-            
-            // Update component values
-            document.getElementById('participationTerm').textContent = gammaData.participationTerm.toFixed(2);
-            document.getElementById('inflationCap').textContent = gammaData.inflationCap.toFixed(2);
-            document.getElementById('minTerm').textContent = gammaData.minTerm.toFixed(2);
-            document.getElementById('maxTerm').textContent = gammaData.gamma.toFixed(2);
-            
-            calculateRewards();
-        }
-        
-        function calculateRewards() {
-            const rows = document.querySelectorAll('#token-batches-table tbody tr');
-            let userWS = 0; // User's total weighted shares
-            let totalAmount = 0;
-            let batchCount = 0;
-            
-            // Store batch data for chart
-            const batchData = [];
-            
-            // Calculate user's WSᵢ
-            rows.forEach(row => {
-                const amount = parseFloat(row.querySelector('.batch-amount').value) || 0;
-                const age = parseFloat(row.querySelector('.batch-age').value) || 0;
-                const ws = parseFloat(row.querySelector('.batch-ws').textContent.replace(/,/g, '')) || 0;
-                
-                userWS += ws;
-                totalAmount += amount;
-                
-                if (amount > 0) {
-                    batchCount++;
-                    batchData.push({
-                        amount: amount,
-                        age: age,
-                        ws: ws
-                    });
-                }
-            });
-            
-            // Get participation data
-            const participatingTokens = parseInt(document.getElementById('participatingTokens').value) || 100000000;
-            const totalWS = parseInt(document.getElementById('totalWS').value) || 100000000;
-            
-            // Calculate gamma scale
-            const gammaData = calculateGammaScale(participatingTokens, totalWS);
-            const gamma = gammaData.gamma;
-            
-            // Calculate user's share and reward
-            const userShare = totalWS > 0 ? (userWS / totalWS) : 0;
-            const userReward = userShare * WERP * gamma;
-            const effectivePool = WERP * gamma;
-            
-            const resultElement = document.getElementById('reward-result');
-            if (!resultElement) return;
-            
-            if (userWS <= 0 || batchData.length === 0) {
-                resultElement.innerHTML = 'Please enter valid token batches!';
-                resultElement.style.color = 'var(--rebel-red)';
-                hideChart();
-                return;
-            }
-            
-            // Calculate percentage of active pool
-            const poolPercentage = (userShare * 100).toFixed(4);
-            const returnPercentage = totalAmount > 0 ? ((userReward / totalAmount) * 100).toFixed(4) : '0.0000';
-            
-            resultElement.innerHTML = `
-                <div style="text-align: left;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Weighted Share (WSᵢ):</strong></span>
-                        <span style="color: var(--rebel-gold);">${userWS.toLocaleString(undefined, {maximumFractionDigits: 2})}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Total Active Weighted Shares (∑WS):</strong></span>
-                        <span style="color: var(--rebel-gold);">${totalWS.toLocaleString()}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
-                        <span><strong>Your Share of Active Pool:</strong></span>
-                        <span style="color: var(--rebel-gold);">${poolPercentage}%</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
-                        <span><strong>Gamma Scale Factor (γ):</strong></span>
-                        <span style="color: #00ff00; font-weight: bold;">${gamma.toFixed(2)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
-                        <span><strong>Effective Weekly Pool:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: bold;">${effectivePool.toLocaleString(undefined, {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0
-                        })} $REBL</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em; font-size: 0.9em;">
-                        <span><strong>Return on $rebelinux:</strong></span>
-                        <span style="color: var(--rebel-gold);">${returnPercentage}% weekly</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 1.2em; margin-top: 0.5em; padding-top: 0.5em; border-top: 1px solid rgba(255, 204, 0, 0.3);">
-                        <span><strong>Your Epoch Reward:</strong></span>
-                        <span style="color: var(--rebel-red); font-weight: bold;">${userReward.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })} $REBL</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.5em; font-size: 0.9em; color: rgba(255, 255, 255, 0.7);">
-                        <span><em>Based on ${participatingTokens.toLocaleString()} participating tokens with γ=${gamma.toFixed(2)}</em></span>
-                    </div>
+            <div class="table-container">
+              <table id="other-participants-table">
+                <thead>
+                  <tr>
+                    <th>Other Participant's Tokens</th>
+                    <th>Age (Epochs)</th>
+                    <th>Weight Factor</th>
+                    <th>WS (Weighted Share)</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Rows will be added dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Summary Mode -->
+          <div id="summaryMode" class="participant-mode" style="display: none;">
+            <div class="slider-group">
+              <div class="slider-container">
+                <div class="slider-info">
+                  <div class="slider-info-label">
+                    <span>Total Other Tokens:</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Total tokens owned by other participants"></i>
+                  </div>
+                  <div class="slider-info-value">
+                    <input type="number" id="summaryOtherTokensInput" class="value-input" 
+                          value="100000000" min="0" max="500000000" step="1000000">
+                    <span id="summaryOtherTokensValue" class="slider-value">100M</span>
+                  </div>
                 </div>
-            `;
-            resultElement.style.color = 'var(--rebel-gold)';
+                <input type="range" id="summaryOtherTokens" min="0" max="500000000" step="1000000" value="100000000" oninput="updateSummaryOther()" class="slider">
+              </div>
+              
+              <div class="slider-container">
+                <div class="slider-info">
+                  <div class="slider-info-label">
+                    <span>Average Age (Epochs):</span>
+                    <i class="fas fa-question-circle slider-info-help" title="Average age of other participants' tokens"></i>
+                  </div>
+                  <div class="slider-info-value">
+                    <input type="number" id="summaryOtherAgeInput" class="value-input" 
+                          value="5" min="0" max="20" step="1">
+                    <span id="summaryOtherAgeValue" class="slider-value">5</span>
+                  </div>
+                </div>
+                <input type="range" id="summaryOtherAge" min="0" max="20" step="1" value="5" oninput="updateSummaryOther()" class="slider">
+                <div class="input-hint">
+                  Age range: 0 (new) to 20 (max bonus)
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Other Participants Summary -->
+          <div class="other-participants-summary">
+            <div class="other-summary-item">
+              <div class="other-summary-label">Other Tokens</div>
+              <div id="otherTotalTokens" class="other-summary-value">0</div>
+            </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Avg Age</div>
+              <div id="otherAvgAge" class="other-summary-value">0.0</div>
+            </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Avg Bonus</div>
+              <div id="otherAvgBonus" class="other-summary-value">1.00x</div>
+            </div>
+            <div class="other-summary-item">
+              <div class="other-summary-label">Total WS</div>
+              <div id="otherTotalWS" class="other-summary-value">0</div>
+            </div>
+          </div>
+          
+          <div class="input-hint" style="margin-top: 10px;">
+            <i class="fas fa-info-circle"></i> These values contribute to total participating tokens (P) and total weighted shares (∑WS)
+          </div>
+        </div>
+
+        <!-- Participation Settings -->
+        <div class="calculator-section participation-settings">
+          <h3><i class="fas fa-sliders-h"></i> Participation Summary</h3>
+          
+          <!-- WS Info Container -->
+          <div class="ws-info-container">
+            <div class="ws-info-header">
+              <i class="fas fa-calculator"></i> Total Participation Calculation
+            </div>
+            <div class="ws-info-grid">
+              <div class="ws-info-item">
+                <div class="ws-info-label">Your Tokens</div>
+                <div id="yourTokensDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">With age bonuses</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Other Tokens</div>
+                <div id="displayOtherTokens" class="ws-info-value">0</div>
+                <div class="ws-info-hint">From other participants</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Total Tokens (P)</div>
+                <div id="totalTokensDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">P = Your + Other</div>
+              </div>
+              <div class="ws-info-item">
+                <div class="ws-info-label">Total WS (∑WS)</div>
+                <div id="totalWSDisplay" class="ws-info-value">0</div>
+                <div class="ws-info-hint">Weighted shares total</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contribution Display -->
+          <div id="contributionContainer" style="display: none;">
+            <!-- Will be populated by JavaScript -->
+          </div>
+          
+          <!-- Gamma Scale Visualization -->
+          <div class="gamma-visualization">
+            <label>
+              Gamma Scale (γ):
+              <span id="gammaValue" class="gamma-value">0.40</span>
+            </label>
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="gammaMarker" class="gamma-marker" style="left: 40%;"></div>
+              </div>
+            </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span>50% Participation</span>
+              <span>100%</span>
+            </div>
             
-            // Update chart with weighted shares instead of rewards
-            updateChart(batchData, userWS);
-        }
-        
-        // ========== WHAT-IF GAMMA SIMULATOR ==========
-        function updateWhatIfGamma() {
-            const participating = parseInt(document.getElementById('whatIfParticipating').value) || 100000000;
-            const totalWS = parseInt(document.getElementById('whatIfTotalWS').value) || 100000000;
+            <!-- Gamma Info Panel -->
+            <div id="gammaInfoPanel" class="gamma-info-panel low">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                <i class="fas fa-info-circle"></i>
+                <strong>Low Participation (γ = 0.40)</strong>
+              </div>
+              <p style="margin: 0; font-size: 12px;">The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.</p>
+            </div>
+          </div>
+          
+          <!-- Gamma Components -->
+          <div class="gamma-components">
+            <div class="gamma-component">
+              <div class="component-label">P/(0.5×CS)</div>
+              <div id="participationTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">CS×1.5/∑WS</div>
+              <div id="inflationCap" class="component-value">1.00</div>
+              <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MIN(1, ...)</div>
+              <div id="minTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Minimum of terms</div>
+            </div>
+            <div class="gamma-component">
+              <div class="component-label">MAX(0.4, ...)</div>
+              <div id="maxTerm" class="component-value">0.40</div>
+              <div class="input-hint" style="font-size: 10px;">Final Gamma Scale</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <div class="calculate-action">
+          <button onclick="calculateRewards()" class="calculate-btn" id="calculateButton">
+            <i class="fas fa-calculator"></i> CALCULATE YOUR $REBL REWARDS
+          </button>
+          <div class="input-hint" style="text-align: center; margin-top: 10px;">
+            <i class="fas fa-bolt"></i> Click to calculate your weekly $REBL rewards based on your tokens and other participants
+          </div>
+        </div>
+
+        <!-- Results Display -->
+        <div id="reward-result" class="reward-result">
+          <div style="text-align: center;">
+            <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <p>Enter your token batches to calculate your sustainable $REBL rewards!</p>
+            <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
+              Try loading an example or adding your own token batches.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+          <canvas id="rewardChart"></canvas>
+          <div id="chartPlaceholder" class="chart-placeholder">
+            <i class="fas fa-chart-pie"></i>
+            <p>Your sustainable reward distribution will appear here</p>
+          </div>
+        </div>
+
+        <!-- Gamma Scale Simulator -->
+        <div class="calculator-section gamma-simulator">
+          <h3><i class="fas fa-chart-line"></i> Gamma Scale Simulator</h3>
+          
+          <div class="simulator-info">
+            <p>
+              <i class="fas fa-lightbulb"></i> See how the Gamma Scale Factor (γ) adjusts rewards based on community participation. 
+              Move the sliders or enter values to see how reaching 50% participation unlocks higher rewards for everyone!
+            </p>
+          </div>
+          
+          <!-- Simulator Sliders -->
+          <div class="slider-group">
+            <div class="slider-container">
+              <div class="slider-info">
+                <div class="slider-info-label">
+                  <span>Participating Tokens (P):</span>
+                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total tokens participating in the epoch"></i>
+                </div>
+                <div class="slider-info-value">
+                  <input type="number" id="whatIfParticipatingInput" class="value-input" 
+                        value="100000000" min="1000000" max="500000000" step="1000000">
+                  <span id="whatIfParticipatingValue" class="slider-value">100M</span>
+                </div>
+              </div>
+              <input type="range" id="whatIfParticipating" min="1000000" max="500000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+              <div class="input-hint">
+                Target for full gamma: <span id="targetParticipatingDisplay">249.6M</span>
+              </div>
+            </div>
             
-            // Update display values
-            document.getElementById('whatIfParticipatingValue').textContent = participating.toLocaleString();
-            document.getElementById('whatIfTotalWSValue').textContent = totalWS.toLocaleString();
+            <div class="slider-container">
+              <div class="slider-info">
+                <div class="slider-info-label">
+                  <span>Total Weighted Shares (∑WS):</span>
+                  <i class="fas fa-question-circle slider-info-help" title="What-if scenario: Total weighted shares including age bonuses (max 1.2B)"></i>
+                </div>
+                <div class="slider-info-value">
+                  <input type="number" id="whatIfTotalWSInput" class="value-input" 
+                        value="100000000" min="1000000" max="1200000000" step="1000000">
+                  <span id="whatIfTotalWSValue" class="slider-value">100M</span>
+                </div>
+              </div>
+              <input type="range" id="whatIfTotalWS" min="1000000" max="1200000000" step="1000000" value="100000000" oninput="updateWhatIfGamma()" class="slider">
+              <div class="input-hint">
+                Typically 1-2.4x participating tokens
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Results -->
+          <div class="simulator-results">
+            <div class="gamma-result">
+              <div class="gamma-label">Gamma Scale Factor</div>
+              <div id="gammaScaleResult" class="gamma-result-value">γ = 0.40</div>
+              <div class="input-hint" style="margin-top: 5px;">
+                Scale: 0.40 (Floor) → 1.00 (Max)
+              </div>
+            </div>
+            <div class="effective-distribution">
+              <div class="distribution-label">Effective Distribution</div>
+              <div id="effectiveDistribution" class="distribution-value">1,280,000 $REBL</div>
+              <div class="input-hint" style="margin-top: 5px;">
+                Actual weekly rewards pool
+              </div>
+            </div>
+          </div>
+          
+          <!-- Gamma Scale Visualization -->
+          <div class="gamma-visualization">
+            <div class="gamma-scale">
+              <div class="gamma-bar">
+                <div id="whatIfGammaMarker" class="gamma-marker" style="left: 40%;"></div>
+              </div>
+            </div>
+            <div class="gamma-labels">
+              <span>40% (Floor)</span>
+              <span id="targetParticipation">249.6M (50% CS)</span>
+              <span>100%</span>
+            </div>
+          </div>
+          
+          <!-- Gamma Breakdown -->
+          <div class="gamma-breakdown">
+            <h4>γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</h4>
+            <div id="gammaBreakdown" class="breakdown-text">
+              Currently: MAX(0.4, MIN(1, 0.40, 1.00)) = 0.40
+            </div>
+          </div>
+          
+          <!-- Simulator Presets -->
+          <div style="margin-top: 25px; text-align: center;">
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;">
+              <button onclick="setSimulatorPreset('current')" class="table-action-btn">
+                <i class="fas fa-sync"></i> Use Current Settings
+              </button>
+              <button onclick="setSimulatorPreset('optimal')" class="table-action-btn" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border-color: #4CAF50;">
+                <i class="fas fa-bullseye"></i> 50% Participation
+              </button>
+              <button onclick="setSimulatorPreset('full')" class="table-action-btn" style="background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00;">
+                <i class="fas fa-rocket"></i> Full Gamma (100%)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formula Display -->
+        <div class="calculator-section formula-display-section">
+          <h3><i class="fas fa-calculator"></i> Sustainable Reward Formula</h3>
+          <div class="formula-container">
+            <div class="formula-main">
+              Rewardᵢ = (WSᵢ / ∑WS) × 3,200,000 × γ
+            </div>
+            <div class="formula-component">
+              γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS×1.5/∑WS))
+            </div>
+          </div>
+          <div class="formula-explanation">
+            <div class="explanation-item">
+              <strong>WSᵢ:</strong> Your Weighted Share = Σ[Token Batch × (1 + 0.07 × min(Age, 20))]
+              <div class="input-hint">Each batch gets 7% weight boost per epoch (max 20 epochs)</div>
+            </div>
+            <div class="explanation-item">
+              <strong>∑WS:</strong> Total Active Weighted Shares from all participants = Your WS + Other WS
+              <div class="input-hint">Sum of all participants' weighted shares</div>
+            </div>
+            <div class="explanation-item">
+              <strong>P:</strong> Total participating tokens in the epoch = Your Tokens + Other Tokens
+              <div class="input-hint">Raw token amount (not weighted)</div>
+            </div>
+            <div class="explanation-item">
+              <strong>CS:</strong> Circulating Supply (499,242,047)
+              <div class="input-hint">Total $rebelinux tokens in circulation</div>
+            </div>
+            <div class="explanation-item">
+              <strong>γ:</strong> Gamma Scale Factor - adjusts rewards based on participation and fairness
+              <div class="input-hint">40% minimum, scales to 100% at 50%+ participation</div>
+            </div>
+            <div class="explanation-item">
+              <strong>CS×1.5/∑WS:</strong> Age Inflation Cap with 1.5x multiplier - allows for higher age bonuses before capping
+              <div class="input-hint">Allows more age bonus before inflation cap kicks in</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator FAQ -->
+    <section id="calculator-faq">
+      <div class="container">
+        <h2><i class="fas fa-question-circle"></i> Calculator FAQ</h2>
+        <div class="content-card">
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How do I account for other participants?</h4>
+              <p>Use the "Other Participants" section to add their token batches with ages, or use summary mode to set total tokens and average age.</p>
+              <div class="input-hint">Detailed batches give most accurate results</div>
+            </div>
             
-            // Calculate gamma scale
-            const gammaData = calculateGammaScale(participating, totalWS);
-            const gamma = gammaData.gamma;
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What if I don't know other participants' details?</h4>
+              <p>Use the "Summary" mode to estimate total other tokens and average age. For realistic estimates, use 100-200M tokens with 5-10 epoch average age.</p>
+              <div class="input-hint">Example: 150M tokens with 8 epoch average age</div>
+            </div>
             
-            // Update gamma result
-            document.getElementById('gammaScaleResult').textContent = `γ = ${gamma.toFixed(2)}`;
-            document.getElementById('gammaScaleResult').style.color = gamma >= 1 ? '#00ff00' : gamma >= 0.8 ? '#ffff00' : gamma >= 0.6 ? '#ffcc00' : '#ff3366';
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How does age affect rewards?</h4>
+              <p>Each epoch (week) adds 7% weight bonus, maxing at 2.4x after 20 epochs. Older tokens get more weight in the WS calculation.</p>
+              <div class="input-hint">Age bonus encourages long-term holding</div>
+            </div>
             
-            // Update effective distribution
-            const effectiveDistribution = WERP * gamma;
-            document.getElementById('effectiveDistribution').textContent = effectiveDistribution.toLocaleString(undefined, {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }) + ' $REBL';
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What's the Gamma Scale Factor (γ)?</h4>
+              <p>γ adjusts rewards based on participation: 40% minimum, scaling to 100% when 50%+ of supply participates. γ = MAX(0.4, MIN(1, P/(0.5×CS), CS/∑WS))</p>
+              <div class="input-hint">Protects treasury while rewarding active participation</div>
+            </div>
             
-            // Update marker position
-            const markerPosition = 40 + (gamma - 0.4) * (100 / 0.6);
-            document.getElementById('whatIfGammaMarker').style.left = `${Math.min(100, Math.max(40, markerPosition))}%`;
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> Is this calculator accurate?</h4>
+              <p>This uses the exact formula from smart contracts. Accuracy depends on how well you estimate other participants' tokens and ages.</p>
+              <div class="input-hint">Provides realistic estimates based on your inputs</div>
+            </div>
             
-            // Update target participation label
-            const targetParticipation = (0.5 * CS).toLocaleString(undefined, {maximumFractionDigits: 0});
-            document.getElementById('targetParticipation').textContent = `${targetParticipation} (50% CS)`;
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How often should I recalculate?</h4>
+              <p>Recalculate when: 1) You buy/sell tokens, 2) An epoch completes (age increases), 3) You learn about other participants' holdings.</p>
+              <div class="input-hint">Keep your inputs updated for accurate estimates</div>
+            </div>
             
-            // Update gamma breakdown
-            document.getElementById('gammaBreakdown').innerHTML = `
-                MAX(0.4, MIN(1, 
-                <span style="color: #ff3366;">${gammaData.participationTerm.toFixed(2)}</span>, 
-                <span style="color: #ffcc00;">${gammaData.inflationCap.toFixed(2)}</span>)) = 
-                <span style="color: #00ff00;">${gamma.toFixed(2)}</span>
-            `;
-        }
-        
-        // ========== CHART FUNCTIONS ==========
-        function setupChartPlaceholder() {
-            const chartPlaceholder = document.getElementById('chartPlaceholder');
-            const canvas = document.getElementById('rewardChart');
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> How do I actually claim rewards?</h4>
+              <p>You need both $rebelinux tokens and the active Rebel Key NFT. 
+                <a href="epoch-rewards.html#how-to-claim">See step-by-step claiming instructions →</a>
+              </p>
+              <div class="input-hint">Weekly claiming through the official interface</div>
+            </div>
             
-            if (chartPlaceholder) chartPlaceholder.style.display = 'flex';
-            if (canvas) canvas.style.display = 'none';
-        }
-        
-        function hideChart() {
-            const chartPlaceholder = document.getElementById('chartPlaceholder');
-            const canvas = document.getElementById('rewardChart');
-            
-            if (chartPlaceholder) chartPlaceholder.style.display = 'flex';
-            if (canvas) canvas.style.display = 'none';
-            
-            if (rewardChart) {
-                rewardChart.destroy();
-                rewardChart = null;
-            }
-        }
-        
-        function updateChart(batchData, totalWS) {
-            const ctx = document.getElementById('rewardChart');
-            if (!ctx) return;
-            
-            const chartPlaceholder = document.getElementById('chartPlaceholder');
-            const canvas = document.getElementById('rewardChart');
-            
-            if (chartPlaceholder) chartPlaceholder.style.display = 'none';
-            if (canvas) canvas.style.display = 'block';
-            
-            // Destroy existing chart
-            if (rewardChart) rewardChart.destroy();
-            
-            const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
-            const weightedShares = batchData.map(batch => batch.ws);
-            
-            // Create new chart
-            rewardChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: weightedShares,
-                        backgroundColor: [
-                            'rgba(255, 51, 102, 0.8)',
-                            'rgba(255, 204, 0, 0.8)',
-                            'rgba(75, 192, 192, 0.8)',
-                            'rgba(153, 102, 255, 0.8)',
-                            'rgba(255, 159, 64, 0.8)',
-                            'rgba(54, 162, 235, 0.8)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 51, 102, 1)',
-                            'rgba(255, 204, 0, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(54, 162, 235, 1)'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: 'white',
-                                padding: 15
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const batch = batchData[context.dataIndex];
-                                    return [
-                                        `Amount: ${batch.amount.toLocaleString()} $rebelinux`,
-                                        `Age: ${batch.age} epochs`,
-                                        `Factor: ${(1 + (K * Math.min(batch.age, MAX_AGE))).toFixed(2)}`,
-                                        `Weighted Share: ${batch.ws.toLocaleString(undefined, {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2
-                                        })}`
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // ========== EXAMPLE CASES ==========
-        function loadExampleCase(type) {
-            clearTokenBatches();
-            
-            switch(type) {
-                case 'starter':
-                    // Small holder example
-                    addTokenBatch('100000', '5'); // 100K tokens, 5 epochs
-                    addTokenBatch('50000', '3');  // 50K tokens, 3 epochs
-                    break;
-                    
-                case 'investor':
-                    // Medium-sized investor
-                    addTokenBatch('1000000', '8'); // 1M tokens, 8 epochs
-                    addTokenBatch('2000000', '4'); // 2M tokens, 4 epochs
-                    addTokenBatch('500000', '12'); // 500K tokens, 12 epochs
-                    break;
-                    
-                case 'whale':
-                    // Large holder
-                    addTokenBatch('5000000', '10'); // 5M tokens, 10 epochs
-                    addTokenBatch('3000000', '15'); // 3M tokens, 15 epochs
-                    addTokenBatch('2000000', '20'); // 2M tokens, 20 epochs (max age bonus)
-                    addTokenBatch('1000000', '2');  // 1M tokens, 2 epochs
-                    break;
-                    
-                default:
-                    // Fallback to starter
-                    addTokenBatch('500000', '1');
-            }
-            
-            // Add example description
-            const resultElement = document.getElementById('reward-result');
-            if (resultElement) {
-                resultElement.innerHTML = `
-                    <div style="text-align: center; margin-bottom: var(--spacing-sm);">
-                        <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.1rem;">
-                            <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
-                        </span>
-                    </div>
-                    <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
-                        Adjust participation settings and click "Calculate Epoch Rewards" to see results!
-                    </p>
-                `;
-            }
-            
-            setTimeout(() => calculateRewards(), 100);
-        }
-    </script>
+            <div class="faq-item">
+              <h4><i class="fas fa-question-circle"></i> What happens if participation is low?</h4>
+              <p>Low participation triggers the γ floor (40%). This protects the treasury while still rewarding active participants proportionally.</p>
+              <div class="input-hint">Minimum 40% rewards even with low participation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Pages -->
+    <section id="related-pages">
+      <div class="container">
+        <h2>Related Pages</h2>
+        <div class="related-grid">
+          <!-- Epoch Rewards -->
+          <a href="epoch-rewards.html" class="related-card rewards-card">
+            <div class="related-icon"><i class="fas fa-gift"></i></div>
+            <h3>Epoch Rewards</h3>
+            <p>Weekly $REBL distribution system</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
+            </div>
+          </a>
+          
+          <!-- Tokenomics -->
+          <a href="tokenomics.html" class="related-card tokenomics-card">
+            <div class="related-icon"><i class="fas fa-chart-pie"></i></div>
+            <h3>Tokenomics</h3>
+            <p>$REBL distribution & vesting details</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> View Details
+            </div>
+          </a>
+          
+          <!-- Governance -->
+          <a href="governance.html" class="related-card governance-card">
+            <div class="related-icon"><i class="fas fa-vote-yea"></i></div>
+            <h3>Governance</h3>
+            <p>DAO structure & community voting</p>
+            <div class="related-arrow">
+              <i class="fas fa-arrow-right"></i> Start Voting
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- Footer will be inserted here by JavaScript -->
+  <div id="footer-container"></div>
+  
+  <!-- JavaScript Includes -->
+  <script src="js/includes.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/rebl-calculator.js"></script>
 </body>
 </html>
