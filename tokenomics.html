@@ -1421,6 +1421,371 @@
   <script src="js/common.js"></script>
   
   <!-- Page-specific JavaScript -->
-    <script src="js/tokenomics-page.js"></script>
+  <script>
+    // Initialize after common components are loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initTokenomicsPage, 300);
+    });
+    
+    function initTokenomicsPage() {
+      console.log('Initializing Tokenomics page');
+      
+      // Initialize chart
+      initializeTokenomicsChart();
+      
+      // Initialize accordion
+      initializeAccordion();
+      
+      // Initialize progress calculations
+      updateFounderCommitmentProgress();
+      updateContractProgress();
+      updateDAOReserveProgress();
+      
+      // Set up intervals for live updates
+      setInterval(updateFounderCommitmentProgress, 60000);
+      setInterval(updateContractProgress, 60000);
+      
+      // Initialize scroll animations
+      initScrollAnimations();
+      
+      // Initialize mobile dropdown
+      initializeMobileDropdown();
+      
+      // Initialize timeline animations
+      initTimelineAnimations();
+      
+      // Initialize expand/collapse all buttons
+      initAccordionControls();
+    }
+    
+    // Tokenomics Chart
+    function initializeTokenomicsChart() {
+      const ctx = document.getElementById('distributionChart');
+      if (!ctx) return;
+      
+      // Destroy existing chart if it exists
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.destroy();
+      }
+      
+      // Create new chart
+      window.tokenomicsChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [
+            'Bonding Curve (53.77%)',
+            'Founder\'s Commitment (16.23%)',
+            'ZORA Rewards Treasury (16%)',
+            'Team Fund (7%)',
+            'Ecosystem Fund (6%)',
+            'Community DAO Reserve (1%)'
+          ],
+          datasets: [{
+            data: [53.77, 16.23, 16, 7, 6, 1],
+            backgroundColor: [
+              'rgba(255, 51, 102, 0.9)',     // Red
+              'rgba(0, 170, 255, 0.9)',      // Blue
+              'rgba(156, 39, 176, 0.9)',     // Purple
+              'rgba(75, 192, 192, 0.9)',     // Teal
+              'rgba(255, 206, 86, 0.9)',     // Yellow
+              'rgba(75, 192, 86, 0.9)'       // Green
+            ],
+            borderColor: [
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)',
+              'rgba(255, 255, 255, 1)'
+            ],
+            borderWidth: 2,
+            hoverOffset: 15
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: window.innerWidth <= 768 ? 'bottom' : 'right',
+              labels: {
+                font: {
+                  size: window.innerWidth <= 768 ? 10 : 14,
+                  family: 'Montserrat',
+                  weight: '600'
+                },
+                color: 'white',
+                padding: 15,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw}%`;
+                }
+              }
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1000
+          }
+        }
+      });
+    }
+    
+    // Accordion functionality
+    function initializeAccordion() {
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+      
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          const isActive = content.classList.contains('active');
+          
+          // Toggle this item
+          if (isActive) {
+            content.classList.remove('active');
+            this.classList.remove('active');
+          } else {
+            content.classList.add('active');
+            this.classList.add('active');
+            
+            // Smooth scroll to expanded section
+            setTimeout(() => {
+              content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
+          }
+        });
+      });
+    }
+    
+    // Accordion Controls (Expand/Collapse All)
+    function initAccordionControls() {
+      const expandAllBtn = document.getElementById('expandAll');
+      const collapseAllBtn = document.getElementById('collapseAll');
+      
+      if (expandAllBtn) {
+        expandAllBtn.addEventListener('click', function() {
+          document.querySelectorAll('.accordion-content').forEach(content => {
+            content.classList.add('active');
+          });
+          document.querySelectorAll('.accordion-header').forEach(header => {
+            header.classList.add('active');
+          });
+        });
+      }
+      
+      if (collapseAllBtn) {
+        collapseAllBtn.addEventListener('click', function() {
+          document.querySelectorAll('.accordion-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          document.querySelectorAll('.accordion-header').forEach(header => {
+            header.classList.remove('active');
+          });
+        });
+      }
+    }
+    
+    // Founder's Commitment Progress
+    function updateFounderCommitmentProgress() {
+      const startDate = new Date("2025-11-01T01:28:00Z");
+      const endDate = new Date("2026-11-01T01:27:00Z");
+      const nextUnlockDate = new Date("2025-12-31T21:28:00Z");
+      
+      const now = new Date();
+      const totalDuration = endDate - startDate;
+      const elapsed = Math.max(0, now - startDate);
+      
+      // Calculate time-based progress
+      const timeProgressPercent = Math.min(100, (elapsed / totalDuration) * 100);
+      
+      // From Streamflow: 8% already unlocked
+      const unlockedPercent = 8;
+      const unlockedAmount = 13.49; // In millions
+      
+      // Update progress bars
+      const unlockedBar = document.getElementById('founderUnlockedBar');
+      const timeBar = document.getElementById('founderTimeBar');
+      const unlockedAmountEl = document.getElementById('founderUnlockedAmount');
+      const timeProgressEl = document.getElementById('founderTimeProgress');
+      const nextUnlockDateEl = document.getElementById('founderNextUnlockDate');
+      const daysCountEl = document.getElementById('founderDaysCount');
+      
+      if (unlockedBar) unlockedBar.style.width = `${unlockedPercent}%`;
+      if (timeBar) timeBar.style.width = `${timeProgressPercent.toFixed(1)}%`;
+      
+      if (unlockedAmountEl) {
+        unlockedAmountEl.textContent = `${unlockedAmount}M REBL`;
+      }
+      
+      if (timeProgressEl) {
+        const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+        timeProgressEl.textContent = `${daysElapsed} days`;
+      }
+      
+      if (nextUnlockDateEl) {
+        const timeToNextUnlock = nextUnlockDate - now;
+        if (timeToNextUnlock > 0) {
+          const daysToNext = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+          const hoursToNext = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          nextUnlockDateEl.innerHTML = `Dec 31, 2025 <span style="color: var(--rebel-gold); font-size: 0.8em;">(${daysToNext}d ${hoursToNext}h)</span>`;
+        } else {
+          nextUnlockDateEl.textContent = 'Dec 31, 2025';
+        }
+      }
+      
+      if (daysCountEl) {
+        const daysElapsed = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+        daysCountEl.innerHTML = `<strong>${daysElapsed} of 365 days</strong>`;
+      }
+      
+      // Update accordion progress
+      const founderProgressBar = document.getElementById('founderProgressBar');
+      const founderProgressText = document.getElementById('founderProgressText');
+      const founderUnlockedAmountAccordion = document.getElementById('founderUnlockedAmountAccordion');
+      const founderNextUnlockDateAccordion = document.getElementById('founderNextUnlockDateAccordion');
+      const founderDaysElapsed = document.getElementById('founderDaysElapsed');
+      const nextUnlockCountdown = document.getElementById('nextUnlockCountdown');
+      
+      if (founderProgressBar) founderProgressBar.style.width = `${unlockedPercent}%`;
+      if (founderProgressText) founderProgressText.textContent = `${unlockedPercent}%`;
+      if (founderUnlockedAmountAccordion) founderUnlockedAmountAccordion.textContent = `${unlockedAmount}M`;
+      if (founderDaysElapsed) founderDaysElapsed.textContent = daysElapsed || '~30';
+      if (founderNextUnlockDateAccordion) founderNextUnlockDateAccordion.textContent = 'Dec 31, 2025';
+      
+      if (nextUnlockCountdown) {
+        const timeToNextUnlock = nextUnlockDate - now;
+        if (timeToNextUnlock > 0) {
+          const days = Math.floor(timeToNextUnlock / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeToNextUnlock % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          nextUnlockCountdown.textContent = `${days}d ${hours}h`;
+        } else {
+          nextUnlockCountdown.textContent = 'Unlocked!';
+        }
+      }
+    }
+    
+    // Contract Progress
+    function updateContractProgress() {
+      const cliffDate = new Date("2025-09-14T17:36:00Z");
+      const endDate = new Date("2027-09-14T17:33:00Z");
+      const now = new Date();
+      
+      let progress = 47.5; // Base: 76M already unlocked out of 160M
+      
+      if (now > cliffDate) {
+        const totalDuration = endDate - cliffDate;
+        const elapsed = now - cliffDate;
+        const linearProgress = Math.min(60, (elapsed / totalDuration) * 60);
+        progress = 40 + linearProgress;
+        progress = Math.min(100, progress);
+      }
+    }
+    
+    // DAO Reserve Progress
+    function updateDAOReserveProgress() {
+      const lockupEnd = new Date("2026-07-01T00:00:00Z");
+      const vestingEnd = new Date("2028-07-01T00:00:00Z");
+      const now = new Date();
+      
+      let progress = 0;
+      
+      if (now >= lockupEnd) {
+        if (now >= vestingEnd) {
+          progress = 100;
+        } else {
+          const vestingDuration = vestingEnd - lockupEnd;
+          const elapsedAfterLockup = now - lockupEnd;
+          progress = Math.min(100, (elapsedAfterLockup / vestingDuration) * 100);
+        }
+      }
+    }
+    
+    // Timeline Animations
+    function initTimelineAnimations() {
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      
+      timelineItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px)';
+        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'translateX(0)';
+        }, index * 100);
+      });
+    }
+    
+    // Animation Functions
+    function initScrollAnimations() {
+      const cards = document.querySelectorAll('.takeaway-item, .stat-card, .vesting-card, .faq-item, .related-card, .timeline-item, .revenue-card, .supply-stat, .security-stat');
+      
+      cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      });
+      
+      function animateCards() {
+        cards.forEach((card, index) => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 100) {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 50);
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', animateCards);
+      animateCards(); // Initial check
+    }
+    
+    // Mobile dropdown
+    function initializeMobileDropdown() {
+      const dropbtn = document.querySelector('.dropbtn');
+      const navDesktop = document.getElementById('nav-desktop');
+      
+      if (!dropbtn) return;
+      
+      // Mobile dropdown toggle
+      dropbtn.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const dropdownContent = this.nextElementSibling;
+          const isActive = dropdownContent.style.display === 'block' || 
+                          dropdownContent.classList.contains('active');
+          
+          if (!isActive) {
+            dropdownContent.style.display = 'block';
+            dropdownContent.classList.add('active');
+            this.classList.add('active');
+          } else {
+            dropdownContent.style.display = 'none';
+            dropdownContent.classList.remove('active');
+            this.classList.remove('active');
+          }
+        }
+      });
+    }
+    
+    // Handle window resize for chart
+    window.addEventListener('resize', function() {
+      if (window.tokenomicsChart) {
+        window.tokenomicsChart.resize();
+        window.tokenomicsChart.options.plugins.legend.position = window.innerWidth <= 768 ? 'bottom' : 'right';
+        window.tokenomicsChart.update();
+      }
+    });
+  </script>
 </body>
 </html>
