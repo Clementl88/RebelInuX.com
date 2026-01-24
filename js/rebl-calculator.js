@@ -1404,18 +1404,37 @@ function toggleChartLegend() {
 }
 
 // Toggle chart labels
+// Toggle data labels on/off
 function toggleChartLabels() {
     if (!rewardChart) return;
     
-    const currentType = rewardChart.config.type;
-    rewardChart.config.type = currentType === 'doughnut' ? 'pie' : 'doughnut';
+    // Check if we should use Chart.js datalabels plugin or custom labels
+    const hasDatalabelsPlugin = rewardChart.config.plugins && 
+        rewardChart.config.plugins.find(p => p.id === 'datalabels');
+    
+    if (hasDatalabelsPlugin) {
+        // Toggle datalabels plugin
+        const datalabels = rewardChart.config.plugins.find(p => p.id === 'datalabels');
+        datalabels.config.display = !datalabels.config.display;
+    } else {
+        // Toggle between pie and doughnut for different label visibility
+        rewardChart.config.type = rewardChart.config.type === 'pie' ? 'doughnut' : 'pie';
+    }
+    
     rewardChart.update();
     
+    // Update toggle button state
     const btn = document.getElementById('toggleLabelsBtn');
-    btn.classList.toggle('active', rewardChart.config.type === 'pie');
-    btn.innerHTML = `<i class="fas fa-tag"></i><span>${rewardChart.config.type === 'pie' ? 'Doughnut' : 'Pie'} View</span>`;
-    
-    showToast(`Switched to ${rewardChart.config.type} chart`, 'info');
+    if (btn) {
+        const isShowingLabels = hasDatalabelsPlugin ? 
+            rewardChart.config.plugins.find(p => p.id === 'datalabels').config.display :
+            rewardChart.config.type === 'pie';
+        
+        btn.classList.toggle('active', isShowingLabels);
+        btn.innerHTML = `<i class="fas fa-tag"></i><span>${isShowingLabels ? 'Hide' : 'Show'} Labels</span>`;
+        
+        showToast(`${isShowingLabels ? 'Showing' : 'Hiding'} chart labels`, 'info');
+    }
 }
 
 // ========== ENHANCED CHART FUNCTIONS ==========
