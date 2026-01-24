@@ -1418,7 +1418,8 @@ function toggleChartLabels() {
     showToast(`Switched to ${rewardChart.config.type} chart`, 'info');
 }
 
-// Enhanced updateChart function with stats overlay
+// ========== ENHANCED CHART FUNCTIONS ==========
+
 function updateChart(batchData, totalUserWS) {
     const ctx = document.getElementById('rewardChart');
     if (!ctx) return;
@@ -1437,22 +1438,23 @@ function updateChart(batchData, totalUserWS) {
     }
     
     // Prepare data
-    const labels = batchData.map((batch, index) => `Batch ${index + 1}`);
+    const labels = batchData.map((batch, index) => {
+        const percentage = ((batch.ws / totalUserWS) * 100).toFixed(1);
+        return `Batch ${index + 1} (${percentage}%)`;
+    });
+    
     const weightedShares = batchData.map(batch => batch.ws);
     
-    // Calculate percentages
-    const percentages = weightedShares.map(ws => ((ws / totalUserWS) * 100).toFixed(1));
-    
-    // Professional color palette
+    // Professional color palette with rebelinux theme
     const backgroundColors = [
-        'rgba(255, 51, 102, 0.85)',   // Rebel Red
-        'rgba(255, 204, 0, 0.85)',    // Rebel Gold
-        'rgba(0, 170, 255, 0.85)',    // Blue
-        'rgba(156, 39, 176, 0.85)',   // Purple
-        'rgba(76, 175, 80, 0.85)',    // Green
-        'rgba(255, 152, 0, 0.85)',    // Orange
-        'rgba(33, 150, 243, 0.85)',   // Light Blue
-        'rgba(233, 30, 99, 0.85)'     // Pink
+        'rgba(255, 51, 102, 0.9)',    // Rebel Red
+        'rgba(255, 204, 0, 0.9)',     // Rebel Gold
+        'rgba(0, 170, 255, 0.9)',     // Blue
+        'rgba(156, 39, 176, 0.9)',    // Purple
+        'rgba(76, 175, 80, 0.9)',     // Green
+        'rgba(255, 152, 0, 0.9)',     // Orange
+        'rgba(33, 150, 243, 0.9)',    // Light Blue
+        'rgba(233, 30, 99, 0.9)'      // Pink
     ];
     
     const borderColors = [
@@ -1468,7 +1470,7 @@ function updateChart(batchData, totalUserWS) {
     
     // Create hover effects
     const hoverBackgroundColors = backgroundColors.map(color => 
-        color.replace('0.85', '1')
+        color.replace('0.9', '1')
     );
     
     // Update chart stats overlay
@@ -1477,7 +1479,7 @@ function updateChart(batchData, totalUserWS) {
         document.getElementById('chartBatchCount').textContent = batchData.length;
     }
     
-    // Create new chart with enhanced options
+    // Enhanced chart configuration
     rewardChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1496,108 +1498,75 @@ function updateChart(batchData, totalUserWS) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-                color: 'white',
             plugins: {
-plugins: {
-    legend: {
-        position: 'right',
-        display: true,
-        labels: {
-            color: (context) => {
-                return 'rgb(255, 255, 255)';
-            },
-            padding: 20,
-            font: {
-                family: 'Montserrat, sans-serif',
-                size: 12,
-                weight: '600',
-                color: 'rgb(255, 255, 255)'
-            },
-            // Use custom label generation with click handling
-            usePointStyle: true,
-            pointStyle: 'circle',
-            generateLabels: function(chart) {
-                const data = chart.data;
-                if (data.labels.length && data.datasets.length) {
-                    return data.labels.map(function(label, i) {
-                        const value = data.datasets[0].data[i];
-                        const percentage = ((value / totalUserWS) * 100).toFixed(1);
-                        const batch = batchData[i];
+                legend: {
+                    position: 'right',
+                    display: true,
+                    labels: {
+                        color: 'rgb(255, 255, 255)',
+                        padding: 15,
+                        font: {
+                            family: 'Montserrat, sans-serif',
+                            size: 12,
+                            weight: '600'
+                        },
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        pointRadius: 8,
+                        boxWidth: 15,
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function(label, i) {
+                                    const value = data.datasets[0].data[i];
+                                    const percentage = ((value / totalUserWS) * 100).toFixed(1);
+                                    const batch = batchData[i];
+                                    
+                                    return {
+                                        text: `Batch ${i + 1}: ${formatNumber(batch.amount)} tokens`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor[i],
+                                        lineWidth: 2,
+                                        hidden: !chart.getDatasetMeta(0).data[i] ? false : 
+                                                chart.getDatasetMeta(0).data[i].hidden,
+                                        index: i,
+                                        fontColor: 'rgb(255, 255, 255)'
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    },
+                    onClick: function(evt, legendItem, legend) {
+                        const chart = legend.chart;
+                        const index = legendItem.index;
+                        const meta = chart.getDatasetMeta(0);
                         
-                        // Store original label text
-                        const originalText = `${label}: ${formatNumber(batch.amount)} tokens`;
+                        // Toggle the visibility of the data point
+                        meta.data[index].hidden = !meta.data[index].hidden;
                         
-                        return {
-                            text: originalText,
-                            fillStyle: data.datasets[0].backgroundColor[i],
-                            strokeStyle: data.datasets[0].borderColor[i],
-                            lineWidth: 2,
-                            hidden: false,
-                            index: i,
-                            fontColor: 'rgb(255, 255, 255)',
-                            // Custom properties for our logic
-                            originalText: originalText,
-                            datasetIndex: 0
-                        };
-                    });
-                }
-                return [];
-            }
-        },
-        // Add onClick handler for legend items
-        onClick: function(evt, legendItem, legend) {
-            const chart = legend.chart;
-            const index = legendItem.index;
-            const datasetIndex = legendItem.datasetIndex;
-            
-            // Get the dataset
-            const meta = chart.getDatasetMeta(datasetIndex);
-            
-            // Toggle the visibility of the data point
-            meta.data[index].hidden = !meta.data[index].hidden;
-            
-            // Toggle strikethrough class on the legend item
-            const legendItemElement = legend.legendItems[index];
-            const textElement = legend.legendItems[index].textElement;
-            
-            if (meta.data[index].hidden) {
-                // Add strikethrough effect
-                if (textElement) {
-                    textElement.classList.add('legend-strikethrough');
-                }
-                // Update label to indicate removal
-                legendItem.text = legendItem.originalText + ' [REMOVED]';
-            } else {
-                // Remove strikethrough effect
-                if (textElement) {
-                    textElement.classList.remove('legend-strikethrough');
-                }
-                // Restore original label
-                legendItem.text = legendItem.originalText;
-            }
-            
-            // Update the chart
-            chart.update();
-            
-            // Show a toast notification
-            showToast(`${chart.data.labels[index]} ${meta.data[index].hidden ? 'removed from' : 'added back to'} chart`, 'info');
-        }
-    },
-    title: {
-        display: true,
-        text: 'Token Distribution',
-        color: 'rgb(255, 204, 0)',
-        font: {
-            size: 14,
-            weight: 'bold',
-            family: 'Montserrat, sans-serif'
-        },
-        padding: {
-            top: 10,
-            bottom: 20
-        }
-    }
-},
+                        // Update the chart
+                        chart.update();
+                        
+                        // Show toast notification
+                        const action = meta.data[index].hidden ? 'hidden' : 'shown';
+                        showToast(`Batch ${index + 1} ${action} from chart`, 'info');
+                    },
+                    title: {
+                        display: true,
+                        text: 'Token Batches',
+                        color: 'rgb(255, 204, 0)',
+                        font: {
+                            size: 14,
+                            weight: 'bold',
+                            family: 'Montserrat, sans-serif'
+                        },
+                        padding: {
+                            top: 0,
+                            bottom: 10
+                        }
+                    }
+                },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.95)',
                     titleColor: 'var(--rebel-gold)',
@@ -1606,6 +1575,8 @@ plugins: {
                     borderWidth: 2,
                     cornerRadius: 8,
                     padding: 16,
+                    displayColors: true,
+                    boxPadding: 6,
                     titleFont: {
                         family: 'Montserrat, sans-serif',
                         size: 13,
@@ -1620,17 +1591,25 @@ plugins: {
                             const batch = batchData[context.dataIndex];
                             const percentage = ((batch.ws / totalUserWS) * 100).toFixed(1);
                             return [
-                                `Tokens: ${formatNumber(batch.amount)}`,
+                                `Amount: ${formatNumber(batch.amount)} $REBL`,
                                 `Age: ${batch.age} epochs`,
                                 `Multiplier: ${batch.factor.toFixed(2)}x`,
                                 `Weighted Share: ${formatNumber(batch.ws, true)}`,
-                                `Share of Your WS: ${percentage}%`
+                                `Share: ${percentage}% of your total WS`
                             ];
                         },
-                        afterLabel: function(context) {
-                            return `Weight: ${formatNumber(batchData[context.dataIndex].ws, true)}`;
+                        labelColor: function(context) {
+                            return {
+                                borderColor: context.dataset.borderColor[context.dataIndex],
+                                backgroundColor: context.dataset.backgroundColor[context.dataIndex],
+                                borderWidth: 2,
+                                borderRadius: 4
+                            };
                         }
                     }
+                },
+                datalabels: {
+                    display: false // We'll use the plugin for better control
                 }
             },
             animation: {
@@ -1639,14 +1618,15 @@ plugins: {
                 duration: 1200,
                 easing: 'easeOutQuart'
             },
-            cutout: '55%',
-            radius: '85%',
+            cutout: '60%',
+            radius: '90%',
             interaction: {
                 intersect: false,
                 mode: 'index'
             }
         },
         plugins: [{
+            id: 'centerText',
             beforeDraw: function(chart) {
                 // Draw center text
                 const ctx = chart.ctx;
@@ -1657,14 +1637,29 @@ plugins: {
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 
-                // Total WS text
-                ctx.font = 'bold 16px Montserrat';
-                ctx.fillStyle = 'white';
-                ctx.fillText('Total WS', centerX, centerY - 15);
+                // Background circle
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fill();
+                ctx.strokeStyle = 'var(--rebel-gold)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
                 
-                ctx.font = 'bold 24px Montserrat';
+                // Title text
+                ctx.font = 'bold 12px Montserrat';
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('YOUR TOTAL WS', centerX, centerY - 25);
+                
+                // Value text
+                ctx.font = 'bold 20px Montserrat';
                 ctx.fillStyle = 'white';
-                ctx.fillText(formatNumber(totalUserWS, true), centerX, centerY + 15);
+                ctx.fillText(formatNumber(totalUserWS), centerX, centerY + 5);
+                
+                // Batch count
+                ctx.font = '600 10px Montserrat';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 25);
                 
                 ctx.restore();
             }
@@ -1701,6 +1696,7 @@ function hideChart() {
         labelsBtn.innerHTML = '<i class="fas fa-tag"></i><span>Labels</span>';
     }
 }
+
 
 // ========== HELPER FUNCTIONS ==========
 function formatNumber(num, showDecimals = false) {
