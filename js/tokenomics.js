@@ -1,5 +1,4 @@
-  <script>
-    // Initialize page
+   // Initialize page
   document.addEventListener('DOMContentLoaded', function() {
   // Hide loader
   setTimeout(function() {
@@ -598,4 +597,3 @@ function collapseAllAccordions() {
         window.tokenomicsChart.update();
       }
     }, 500);
-  </script>
