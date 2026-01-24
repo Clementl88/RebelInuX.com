@@ -2864,3 +2864,515 @@ canvas[aria-label*="chart"] {
     background: rgba(212, 167, 106, 0.2);
     transform: translateY(-2px);
 }
+/* ========== ENHANCEMENTS & IMPROVEMENTS ========== */
+
+/* 1. ENHANCED FORMULA DISPLAY - More prominent */
+#combined-formula-section .formula-display {
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.6), 
+        rgba(0, 0, 0, 0.4));
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--rebel-gold);
+    box-shadow: 
+        0 8px 32px rgba(212, 167, 106, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+#combined-formula-section .formula-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 51, 102, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 204, 0, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+#combined-formula-section .formula-equation {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--rebel-gold);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(212, 167, 106, 0.3);
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+/* Add subtle highlighting to the gamma symbol */
+#combined-formula-section .formula-equation .gamma {
+    color: #00ff00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    animation: subtlePulse 3s infinite;
+}
+
+@keyframes subtlePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.9; }
+}
+
+#combined-formula-section .formula-component {
+    font-size: 1.5rem;
+    color: var(--rebel-blue); /* Changed from red to blue for better contrast */
+    text-align: center;
+    padding: var(--spacing-md) 0;
+    border-top: 2px solid rgba(212, 167, 106, 0.2);
+    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    font-weight: 700;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 170, 255, 0.1), 
+        transparent);
+    margin: 0 calc(var(--spacing-lg) * -1);
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+}
+
+/* 2. ENHANCED EXPLANATION ITEMS - More interactive */
+#combined-formula-section .explanation-item {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.4), 
+        rgba(0, 0, 0, 0.3));
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    border: 1px solid;
+    border-left: 4px solid;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+#combined-formula-section .explanation-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+}
+
+#combined-formula-section .explanation-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(212, 167, 106, 0.2);
+    border-color: var(--rebel-gold) !important;
+}
+
+/* 3. IMPROVED TABLE STYLES - Better readability */
+#token-batches-table {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.5), 
+        rgba(26, 26, 26, 0.4));
+}
+
+#token-batches-table th {
+    background: linear-gradient(135deg, 
+        rgba(212, 167, 106, 0.25), 
+        rgba(212, 167, 106, 0.15));
+    color: var(--rebel-gold);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-bottom: 3px solid var(--rebel-gold);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#token-batches-table tr {
+    transition: all 0.2s ease;
+}
+
+#token-batches-table tr:hover {
+    background: linear-gradient(90deg, 
+        rgba(212, 167, 106, 0.1), 
+        rgba(212, 167, 106, 0.05));
+}
+
+#token-batches-table input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+#token-batches-table input:focus {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: var(--rebel-gold);
+    box-shadow: 
+        0 0 0 3px rgba(212, 167, 106, 0.2),
+        inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+/* 4. ENHANCED SLIDERS - More tactile */
+.slider {
+    height: 10px;
+    background: linear-gradient(90deg, 
+        var(--rebel-red), 
+        var(--rebel-gold));
+    border-radius: 5px;
+    border: none;
+    margin: var(--spacing-lg) 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slider::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rebel-gold), #ffcc00);
+    border: 3px solid white;
+    box-shadow: 
+        0 0 10px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(212, 167, 106, 0.4);
+    transition: all 0.2s ease;
+    cursor: grab;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 
+        0 0 15px rgba(0, 0, 0, 0.6),
+        0 6px 12px rgba(212, 167, 106, 0.5);
+}
+
+.slider::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+    cursor: grabbing;
+}
+
+/* 5. ENHANCED CALCULATE BUTTON - More engaging */
+.calculate-btn {
+    background: linear-gradient(135deg, 
+        var(--rebel-red), 
+        #ff3366,
+        var(--rebel-gold));
+    color: white;
+    border: none;
+    padding: var(--spacing-xl) var(--spacing-3xl);
+    border-radius: var(--border-radius-full);
+    font-size: 1.3rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    min-height: 70px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 32px rgba(255, 51, 102, 0.3),
+        0 4px 16px rgba(212, 167, 106, 0.2);
+}
+
+.calculate-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 
+        0 12px 40px rgba(255, 51, 102, 0.4),
+        0 6px 20px rgba(212, 167, 106, 0.3);
+    letter-spacing: 3.5px;
+}
+
+.calculate-btn:hover::before {
+    left: 100%;
+}
+
+.calculate-btn:active {
+    transform: translateY(-2px) scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* 6. ENHANCED REWARD RESULT - More celebratory */
+.reward-result {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.6), 
+        rgba(26, 26, 26, 0.5));
+    border: 2px solid var(--rebel-gold);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    animation: fadeInUp 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.reward-result::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--rebel-red), 
+        var(--rebel-gold));
+}
+
+.reward-result-main-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--rebel-red);
+    text-shadow: 
+        0 0 15px rgba(255, 51, 102, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.9; }
+}
+
+/* 7. ENHANCED CHART CONTAINER - More immersive */
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin: var(--spacing-xl) 0;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.5), 
+        rgba(20, 20, 20, 0.4));
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    border: 2px solid var(--rebel-gold);
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.chart-placeholder {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.9), 
+        rgba(30, 30, 30, 0.8));
+    border: 2px dashed rgba(212, 167, 106, 0.3);
+}
+
+/* 8. ENHANCED GAMMA VISUALIZATION - More informative */
+.gamma-scale {
+    height: 50px;
+    background: linear-gradient(90deg, 
+        var(--rebel-red), 
+        var(--rebel-gold), 
+        #00ff00);
+    border-radius: 25px;
+    margin: var(--spacing-lg) 0;
+    overflow: hidden;
+    border: 3px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        inset 0 2px 8px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.gamma-marker {
+    top: -12px;
+    width: 6px;
+    height: 74px;
+    background: white;
+    border-radius: 3px;
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.9),
+        0 0 30px rgba(255, 255, 255, 0.6);
+    z-index: 2;
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 9. IMPROVED TOAST NOTIFICATIONS - More visible */
+.calculator-toast {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 4px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+}
+
+/* 10. PERFORMANCE OPTIMIZATIONS */
+/* Hardware acceleration for smooth animations */
+.calculator-section,
+.calculate-btn,
+.explanation-item,
+#token-batches-table tr {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Optimize transitions for mobile */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 11. DARK THEME ENHANCEMENTS */
+.calculator-section {
+    background: linear-gradient(135deg, 
+        rgba(20, 20, 20, 0.9), 
+        rgba(30, 30, 30, 0.8));
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.calculator-section:hover {
+    border-color: var(--rebel-gold);
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(212, 167, 106, 0.2);
+}
+
+/* 12. IMPROVED TYPOGRAPHY HIERARCHY */
+.parameter-value {
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--rebel-gold), #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.slider-value {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--rebel-red);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 13. ENHANCED INPUT FIELDS */
+.value-input {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.6), 
+        rgba(20, 20, 20, 0.5));
+    border: 2px solid var(--rebel-gold);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.value-input:focus {
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.8), 
+        rgba(30, 30, 30, 0.6));
+    border-color: var(--rebel-red);
+    box-shadow: 
+        0 0 0 3px rgba(255, 51, 102, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    outline: none;
+}
+
+/* 14. ENHANCED MOBILE EXPERIENCE */
+@media (max-width: 768px) {
+    .calculate-btn {
+        padding: var(--spacing-lg) var(--spacing-xl);
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+        min-height: 60px;
+    }
+    
+    .reward-result-main-value {
+        font-size: 2rem;
+    }
+    
+    .chart-container {
+        height: 300px;
+        padding: var(--spacing-md);
+    }
+    
+    #combined-formula-section .formula-equation {
+        font-size: 1.5rem;
+    }
+    
+    #combined-formula-section .formula-component {
+        font-size: 1.2rem;
+    }
+}
+
+/* 15. ACCESSIBILITY IMPROVEMENTS */
+.calculate-btn:focus-visible,
+.table-action-btn:focus-visible,
+.quick-action-btn:focus-visible {
+    outline: 3px solid var(--rebel-blue);
+    outline-offset: 2px;
+}
+
+#token-batches-table input:focus-visible {
+    outline: 3px solid var(--rebel-gold);
+    outline-offset: 1px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .calculator-section {
+        border: 2px solid var(--rebel-gold);
+    }
+    
+    #token-batches-table th {
+        background: var(--rebel-gold);
+        color: black;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion) {
+    .calculate-btn,
+    .explanation-item,
+    .calculator-section {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .calculate-btn:hover {
+        transform: none;
+    }
+}
