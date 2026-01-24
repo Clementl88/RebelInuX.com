@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show welcome message
     setTimeout(() => {
-        showToast('Welcome to the Enhanced REBL Calculator! Add your tokens and other participants to calculate rewards.', 'info');
+        showToast('Welcome to the Epoch Reward Calculator! Add your tokens and other participants to calculate rewards.', 'info');
     }, 1500);
 });
 
@@ -270,7 +270,7 @@ function clearTokenBatches() {
             resultElement.innerHTML = `
                 <div style="text-align: center;">
                     <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                    <p>Enter your token batches to calculate your sustainable $REBL rewards!</p>
+                    <p>Enter your token batches to calculate your $REBL epoch rewards!</p>
                     <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
                         Try loading an example or adding your own token batches.
                     </p>
@@ -971,7 +971,7 @@ function calculateRewards() {
     const calculateButton = document.getElementById('calculateButton');
     if (calculateButton) {
         calculateButton.classList.add('loading');
-        calculateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CALCULATING...';
+        calculateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CALCULATING EPOCH REWARDS...';
     }
     
     setTimeout(() => {
@@ -1029,7 +1029,7 @@ function calculateRewards() {
             resultElement.innerHTML = `
                 <div style="text-align: center;">
                     <i class="fas fa-calculator" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                    <p>Please enter valid token batches to calculate your sustainable $REBL rewards!</p>
+                    <p>Please enter valid token batches to calculate your $REBL epoch rewards!</p>
                     <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 0.5rem;">
                         Try loading an example or adding your own token batches.
                     </p>
@@ -1041,7 +1041,7 @@ function calculateRewards() {
             // Restore button
             if (calculateButton) {
                 calculateButton.classList.remove('loading');
-                calculateButton.innerHTML = '<i class="fas fa-calculator"></i> CALCULATE YOUR $REBL REWARDS';
+                calculateButton.innerHTML = '<i class="fas fa-calculator"></i>  CALCULATE EPOCH REWARDS';
             }
             
             calculatorState.isCalculating = false;
@@ -1119,7 +1119,7 @@ function calculateRewards() {
                 
                 <!-- MAIN REWARD DISPLAY -->
                 <div style="display: flex; justify-content: space-between; font-size: 1.3em; margin-top: 1em; padding-top: 1em; border-top: 3px solid rgba(255, 204, 0, 0.7); background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px;">
-                    <span style="font-weight: 800;"><strong>Your Sustainable Weekly Reward:</strong></span>
+                    <span style="font-weight: 800;"><strong>Your Epoch Reward:</strong></span>
                     <span style="color: var(--rebel-red); font-weight: 800; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); font-size: 1.4em;">
                         ${formatNumber(userReward, true)} $REBL
                     </span>
@@ -1325,7 +1325,7 @@ function loadExampleCase(type) {
                     </span>
                 </div>
                 <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
-                    Adjust other participants and click "Calculate Your $REBL Rewards" to see results!
+                    Adjust other participants and click "Calculate Your $REBL epoch rewards" to see results!
                 </p>
                 <div style="display: flex; justify-content: center; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
                     <button onclick="calculateRewards()" style="background: var(--rebel-gold); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">
