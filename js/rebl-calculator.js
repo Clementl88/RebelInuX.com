@@ -1575,48 +1575,78 @@ function updateChart(batchData, totalUserWS) {
                 mode: 'index'
             }
         },
-        plugins: [{
-            id: 'centerText',
-            beforeDraw: function(chart) {
-                // Draw center text
-                const ctx = chart.ctx;
-                const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-                const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-                
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                // Background circle
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                ctx.fill();
-                ctx.strokeStyle = 'var(--rebel-gold)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                // Title text
-                ctx.font = 'bold 12px Montserrat';
-                ctx.fillStyle = 'var(--rebel-gold)';
-                ctx.fillText('YOUR TOTAL WS', centerX, centerY - 25);
-                
-                // Value text
-                ctx.font = 'bold 20px Montserrat';
-                ctx.fillStyle = 'white';
-                ctx.fillText(totalUserWS.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }), centerX, centerY + 5);
-                
-                // Batch count
-                ctx.font = '600 10px Montserrat';
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.fillText(`${batchData.length} batches`, centerX, centerY + 25);
-                
-                ctx.restore();
-            }
-        }]
+plugins: [{
+    id: 'centerText',
+    beforeDraw: function(chart) {
+        // Draw center text
+        const ctx = chart.ctx;
+        const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+        const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+        
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Background circle with gradient
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.fill();
+        ctx.strokeStyle = 'var(--rebel-gold)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        // Add subtle glow
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        // Main title (what this number represents)
+        ctx.font = 'bold 14px Montserrat';
+        ctx.fillStyle = 'var(--rebel-gold)';
+        ctx.fillText('YOUR WEIGHTED SHARE', centerX, centerY - 35);
+        
+        // Subtitle for clarity
+        ctx.font = '600 10px Montserrat';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillText('Total WS = Σ(Tokens × Age Bonus)', centerX, centerY - 18);
+        
+        // Divider line
+        ctx.beginPath();
+        ctx.moveTo(centerX - 40, centerY - 5);
+        ctx.lineTo(centerX + 40, centerY - 5);
+        ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        // Main value - formatted for readability
+        const formattedWS = formatNumber(totalUserWS, true);
+        ctx.font = 'bold 24px Montserrat';
+        ctx.fillStyle = 'white';
+        ctx.fillText(formattedWS, centerX, centerY + 12);
+        
+        // Unit label
+        ctx.font = 'bold 12px Montserrat';
+        ctx.fillStyle = 'var(--rebel-gold)';
+        ctx.fillText('WS UNITS', centerX, centerY + 30);
+        
+        // Footer with batch info
+        ctx.beginPath();
+        ctx.moveTo(centerX - 40, centerY + 40);
+        ctx.lineTo(centerX + 40, centerY + 40);
+        ctx.strokeStyle = 'rgba(212, 167, 106, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        ctx.font = '600 10px Montserrat';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.fillText(`${batchData.length} token batches`, centerX, centerY + 52);
+        
+        ctx.restore();
+    }
+}]
     });
 }
 // Enhanced hideChart function
