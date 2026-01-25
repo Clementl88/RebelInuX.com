@@ -5,6 +5,31 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(initTradePage, 300);
 });
 
+// Add this function to trade.js
+function initLogoExplanation() {
+  console.log("Initializing logo explanation section");
+  
+  // Add click handlers to show more info about each logo
+  document.querySelectorAll('.logo-section').forEach(section => {
+    section.addEventListener('click', function() {
+      const type = this.classList.contains('onchain') ? 'on-chain' : 'off-chain';
+      showLogoInfo(type);
+    });
+  });
+  
+  // Add to initTradeComponents()
+  initLogoExplanation();
+}
+
+function showLogoInfo(type) {
+  const messages = {
+    'on-chain': `The original RebelInuX logo is permanently stored on the Solana blockchain. This cannot be changed due to blockchain immutability.`,
+    'off-chain': `The updated RebelInuX logo represents our current brand identity and is used across websites, marketing materials, and centralized platforms.`
+  };
+  
+  showToast(messages[type], 'info');
+}
+
 function initTradePage() {
   console.log('Initializing Trade page');
   
