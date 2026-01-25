@@ -1073,93 +1073,159 @@
   margin: 0 auto;
 }
 
+/* ===== Related Pages (Exact Match) ===== */
+#related {
+  padding: 4rem 0;
+}
+
+#related h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--rebel-gold);
+  font-size: 2.5rem;
+  border-bottom: 4px solid var(--rebel-red);
+  display: inline-block;
+  padding-bottom: var(--spacing-sm);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
 .related-card {
   background: var(--card-bg);
-  border-radius: 20px;
-  padding: 2.5rem;
-  text-decoration: none;
-  color: inherit;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  text-align: center;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   display: block;
+  text-decoration: none;
+  border: 2px solid;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .related-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border-color: var(--rebel-gold);
+  box-shadow: var(--box-shadow-hover);
 }
 
-.related-card.tokenomics-card:hover {
-  border-color: #00aaff;
+.related-card[style*="border-color: #00aaff"] {
+  border-color: #00aaff !important;
+  background: rgba(0, 170, 255, 0.1) !important;
 }
 
-.related-card.security-card:hover {
-  border-color: #4CAF50;
+.related-card[style*="border-color: var(--rebel-red)"] {
+  border-color: var(--rebel-red) !important;
+  background: rgba(255, 51, 102, 0.1) !important;
 }
 
-.related-card.governance-card:hover {
-  border-color: #FF9800;
+.related-card[style*="border-color: #4CAF50"] {
+  border-color: #4CAF50 !important;
+  background: rgba(76, 175, 80, 0.1) !important;
 }
 
-.related-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-  color: white;
-}
-
-.related-card.tokenomics-card .related-icon {
-  background: linear-gradient(135deg, #00aaff 0%, #4d9fff 100%);
-}
-
-.related-card.security-card .related-icon {
-  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
-}
-
-.related-card.governance-card .related-icon {
-  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-}
-
-.related-card h3 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: var(--rebel-purple);
-}
-
-.related-card p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-}
-
-.related-arrow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--rebel-gold);
-  font-weight: 600;
-  font-size: 1.1rem;
+.related-card:hover div[style*="font-size: 0.9rem"] {
+  transform: translateX(5px);
   transition: transform 0.3s ease;
 }
 
-.related-card:hover .related-arrow {
-  transform: translateX(5px);
+.related-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto var(--spacing-md);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.related-arrow i {
-  font-size: 0.9rem;
+.related-card[style*="color: #00aaff"] .related-icon {
+  background: rgba(0, 170, 255, 0.1);
 }
 
+.related-card[style*="color: var(--rebel-red)"] .related-icon {
+  background: rgba(255, 51, 102, 0.1);
+}
+
+.related-card[style*="color: #4CAF50"] .related-icon {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.related-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+.related-card p {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.related-card div[style*="font-size: 0.9rem"] {
+  margin-top: var(--spacing-sm);
+  font-size: 0.9rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+/* ===== Responsive for Related Pages ===== */
+@media (max-width: 768px) {
+  .related-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .related-card {
+    padding: 1.5rem;
+  }
+  
+  .related-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .related-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .related-card p {
+    font-size: 0.85rem;
+  }
+  
+  .related-card div[style*="font-size: 0.9rem"] {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #related h2 {
+    font-size: 2rem;
+  }
+  
+  .related-card {
+    padding: 1.2rem;
+  }
+  
+  .related-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+  }
+}
 /* ===== Animation Classes ===== */
 @keyframes fadeInUp {
   from {
