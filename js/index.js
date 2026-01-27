@@ -1,446 +1,672 @@
-// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
+// ===== REBELINUX INDEX PAGE - COMPLETE JAVASCRIPT =====
+// All functionality for animations and interactions
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize after common components are loaded
-  setTimeout(initIndexPage, 300);
+  // Initialize all components
+  initLoader();
+  initBackToTop();
+  initParticles();
+  initCounterAnimations();
+  initCopyButtons();
+  initScrollAnimations();
+  initHoverEffects();
+  initResponsiveMenu();
+  initHeroAnimation();
+  initTokenFlowAnimations();
+  initTooltips();
 });
 
-function initIndexPage() {
-  console.log('Initializing enhanced Index page');
+// 1. Loader Animation
+function initLoader() {
+  const loader = document.getElementById('loader');
   
-  // Initialize animations
-  initScrollAnimations();
-  
-  // Initialize stats counters
-  initStatsCounters();
-  
-  // Initialize ROI calculator
-  initROICalculator();
-  
-  // Initialize copy buttons
-  initCopyButtons();
-  
-  // Smooth scroll for anchor links
-  initSmoothScroll();
-  
-  // Initialize logo animations
-  initLogoAnimations();
-}
-
-// Enhanced Scroll Animations
-function initScrollAnimations() {
-  const animatedElements = document.querySelectorAll(
-    '.value-card, .comparison-card, .step-card, .stat-card, .token-card, .logo-card, .key-takeaway, .contract-emphasis'
-  );
-  
-  // Add initial styles for animation
-  animatedElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(50px)';
-    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-  });
-  
-  function animateOnScroll() {
-    animatedElements.forEach((el, index) => {
-      const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+  // Hide loader after page load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      loader.classList.add('hidden');
       
-      if (rect.top < windowHeight - 100) {
-        setTimeout(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        }, index * 150);
-      }
-    });
-  }
-  
-  // Initial check
-  animateOnScroll();
-  
-  // Listen to scroll
-  window.addEventListener('scroll', animateOnScroll);
-  
-  // Floating logo animation
-  const floatingLogo = document.querySelector('.logo-3d');
-  if (floatingLogo) {
-    window.addEventListener('mousemove', (e) => {
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-      floatingLogo.style.transform = `translateY(-20px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-    });
-  }
-}
-
-// Stats Counters Animation
-function initStatsCounters() {
-  const statValues = document.querySelectorAll('.stat-value[data-target]');
-  
-  // Only animate when in view
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const statElement = entry.target;
-        const targetValue = parseFloat(statElement.getAttribute('data-target'));
-        
-        if (!statElement.classList.contains('animated')) {
-          animateCounter(statElement, targetValue);
-          statElement.classList.add('animated');
-        }
-      }
-    });
-  }, { threshold: 0.5 });
-  
-  statValues.forEach(stat => observer.observe(stat));
-}
-
-function animateCounter(element, target) {
-  const duration = 2000;
-  const frameDuration = 1000 / 60;
-  const totalFrames = Math.round(duration / frameDuration);
-  let frame = 0;
-  
-  const counter = setInterval(() => {
-    frame++;
-    const progress = frame / totalFrames;
-    const easeOut = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-    const current = target * easeOut;
-    
-    element.textContent = current.toFixed(target % 1 === 0 ? 0 : 2);
-    
-    if (frame === totalFrames) {
-      clearInterval(counter);
-      element.textContent = target.toFixed(target % 1 === 0 ? 0 : 2);
-    }
-  }, frameDuration);
-}
-
-// ROI Calculator - FIXED FUNCTION
-function initROICalculator() {
-  const amountSlider = document.getElementById('amount-slider');
-  const amountInput = document.getElementById('amount-input');
-  const ageSlider = document.getElementById('age-slider');
-  const ageInput = document.getElementById('age-input');
-  const weeklyRewardEl = document.getElementById('weekly-reward');
-  const ageBonusEl = document.getElementById('age-bonus');
-  const totalRewardEl = document.getElementById('total-reward');
-  
-  if (!amountSlider || !amountInput || !ageSlider || !ageInput) return;
-  
-  function updateCalculator() {
-    const amount = parseFloat(amountInput.value) || 0;
-    const age = parseInt(ageInput.value) || 0;
-    
-    // Calculate weekly reward (example: 1% of amount)
-    const weeklyReward = amount * 0.01;
-    
-    // Calculate age bonus (example: 7% per week, max 240%)
-    const ageBonusPercent = Math.min(age * 7, 240);
-    const ageBonus = weeklyReward * (ageBonusPercent / 100);
-    
-    // Calculate total reward
-    const totalReward = weeklyReward + ageBonus;
-    
-    // Update display
-    if (weeklyRewardEl) {
-      weeklyRewardEl.textContent = `$${weeklyReward.toFixed(2)}`;
-    }
-    if (ageBonusEl) {
-      ageBonusEl.textContent = `$${ageBonus.toFixed(2)} (+${ageBonusPercent}%)`;
-    }
-    if (totalRewardEl) {
-      totalRewardEl.textContent = `$${totalReward.toFixed(2)}`;
-    }
-  }
-  
-  // Event listeners
-  amountSlider.addEventListener('input', function() {
-    amountInput.value = this.value;
-    updateCalculator();
-  });
-  
-  amountInput.addEventListener('input', function() {
-    amountSlider.value = this.value;
-    updateCalculator();
-  });
-  
-  ageSlider.addEventListener('input', function() {
-    ageInput.value = this.value;
-    updateCalculator();
-  });
-  
-  ageInput.addEventListener('input', function() {
-    ageSlider.value = this.value;
-    updateCalculator();
-  });
-  
-  // Initial calculation
-  updateCalculator();
-}
-
-// Copy to Clipboard
-function initCopyButtons() {
-  const copyButtons = document.querySelectorAll('.copy-btn, .copy-contract-btn');
-  
-  copyButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      let contractText;
-      
-      if (this.classList.contains('copy-contract-btn')) {
-        contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-      } else {
-        const contract = this.getAttribute('data-contract');
-        if (!contract) {
-          contractText = this.parentElement.querySelector('code')?.textContent;
-        } else {
-          contractText = contract;
-        }
-      }
-      
-      if (contractText) {
-        copyToClipboard(contractText);
-      }
-      
-      // Visual feedback
-      const originalHTML = this.innerHTML;
-      const originalBackground = this.style.background;
-      const originalColor = this.style.color;
-      
-      this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-      this.style.background = '#4CAF50';
-      this.style.color = 'white';
-      
+      // Remove from DOM after animation
       setTimeout(() => {
-        this.innerHTML = originalHTML;
-        this.style.background = originalBackground;
-        this.style.color = originalColor;
-      }, 2000);
+        loader.style.display = 'none';
+      }, 500);
+    }, 1000);
+  });
+}
+
+// 2. Back to Top Button
+function initBackToTop() {
+  const backToTopBtn = document.getElementById('backToTop');
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
+  
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
   });
 }
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showNotification('Contract address copied to clipboard!', 'success');
-  }).catch(err => {
-    showNotification('Failed to copy address', 'error');
-    console.error('Failed to copy: ', err);
-  });
-}
-
-// Enhanced Notification
-function showNotification(message, type = 'info') {
-  // Remove existing notification
-  const existingNotification = document.querySelector('.notification');
-  if (existingNotification) {
-    existingNotification.remove();
-  }
-  
-  // Create notification element
-  const notification = document.createElement('div');
-  notification.className = `notification notification-${type}`;
-  notification.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-    <span>${message}</span>
-  `;
-  
-  // Add styles
-  notification.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    background: ${type === 'success' ? 'rgba(76, 175, 80, 0.95)' : 'rgba(244, 67, 54, 0.95)'};
-    color: white;
-    padding: 15px 25px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    z-index: 10000;
-    animation: slideInRight 0.3s ease;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    max-width: 350px;
-  `;
-  
-  // Add keyframes
-  if (!document.querySelector('#notification-styles')) {
-    const style = document.createElement('style');
-    style.id = 'notification-styles';
-    style.textContent = `
-      @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-      @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-  
-  // Add to document
-  document.body.appendChild(notification);
-  
-  // Remove after 5 seconds
-  setTimeout(() => {
-    notification.style.animation = 'slideOutRight 0.3s ease';
-    setTimeout(() => notification.remove(), 300);
-  }, 5000);
-}
-
-// Smooth Scroll
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      
-      if (href === '#' || !href.startsWith('#') || !document.querySelector(href)) return;
-      
-      e.preventDefault();
-      const target = document.querySelector(href);
-      
-      if (target) {
-        const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
-        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = targetPosition - headerHeight;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-        
-        // Update URL without page jump
-        if (href !== '#') {
-          history.pushState(null, null, href);
-        }
-      }
-    });
-  });
-}
-
-// Particle Background for Hero
+// 3. Hero Particles Animation
 function initParticles() {
-  const heroSection = document.querySelector('.page-hero--main');
-  if (!heroSection || document.querySelector('.particle')) return;
+  const particlesContainer = document.getElementById('heroParticles');
+  
+  if (!particlesContainer) return;
   
   const particleCount = 50;
+  const particles = [];
   
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'particle';
+    
+    // Random properties
+    const size = Math.random() * 3 + 1;
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const duration = Math.random() * 20 + 10;
+    const delay = Math.random() * 5;
+    
     particle.style.cssText = `
       position: absolute;
-      width: ${Math.random() * 5 + 1}px;
-      height: ${Math.random() * 5 + 1}px;
-      background: rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, 255, ${Math.random() * 0.5 + 0.2});
+      width: ${size}px;
+      height: ${size}px;
+      background: rgba(212, 167, 106, ${Math.random() * 0.3 + 0.1});
       border-radius: 50%;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      animation: float-particle ${Math.random() * 20 + 10}s linear infinite;
-      z-index: 1;
+      left: ${x}%;
+      top: ${y}%;
+      animation: floatParticle ${duration}s ease-in-out ${delay}s infinite;
+      filter: blur(${Math.random() * 2}px);
     `;
     
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes float-particle {
-        0% {
-          transform: translateY(0) translateX(0);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(${Math.random() * -300 - 100}px) translateX(${Math.random() * 200 - 100}px);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    heroSection.querySelector('.hero-particles')?.appendChild(particle);
+    particlesContainer.appendChild(particle);
+    particles.push(particle);
   }
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes floatParticle {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+      }
+      25% {
+        transform: translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) scale(1.2);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) scale(1);
+        opacity: 0.6;
+      }
+      75% {
+        transform: translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px) scale(0.8);
+        opacity: 0.4;
+      }
+    }
+  `;
+  document.head.appendChild(style);
 }
 
-// Logo Section Animations
-function initLogoAnimations() {
-  const logoCards = document.querySelectorAll('.logo-card');
+// 4. Counter Animations
+function initCounterAnimations() {
+  const counters = document.querySelectorAll('[data-target]');
   
-  if (logoCards.length === 0) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counter = entry.target;
+        const target = +counter.getAttribute('data-target');
+        const duration = 2000; // 2 seconds
+        const step = target / (duration / 16); // 60fps
+        
+        let current = 0;
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          counter.textContent = Math.floor(current);
+        }, 16);
+        
+        observer.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.5 });
   
-  logoCards.forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(50px)';
-    card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    
-    setTimeout(() => {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    }, 300 + (index * 200));
+  counters.forEach(counter => {
+    observer.observe(counter);
+  });
+}
+
+// 5. Copy Address Buttons
+function initCopyButtons() {
+  const copyButtons = document.querySelectorAll('.copy-btn');
+  
+  copyButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const contractElement = this.closest('.contract-address').querySelector('.contract-code');
+      const text = contractElement.textContent;
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(text).then(() => {
+        // Show success feedback
+        const originalIcon = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check"></i>';
+        this.style.color = '#10b981';
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+          this.innerHTML = originalIcon;
+          this.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        this.innerHTML = '<i class="fas fa-times"></i>';
+        this.style.color = '#ef4444';
+        
+        setTimeout(() => {
+          this.innerHTML = '<i class="far fa-copy"></i>';
+          this.style.color = '';
+        }, 2000);
+      });
+    });
   });
   
-  // Initialize copy contract button
-  const copyContractBtn = document.querySelector('.copy-contract-btn');
-  if (copyContractBtn) {
-    // Already initialized in initCopyButtons
-    console.log('Contract copy button initialized');
-  }
+  // Expand contract address buttons
+  const expandButtons = document.querySelectorAll('.expand-btn');
+  expandButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const contractElement = this.closest('.contract-address').querySelector('.contract-code');
+      const fullText = contractElement.getAttribute('data-full') || contractElement.textContent;
+      
+      // Toggle between truncated and full
+      if (contractElement.textContent.includes('...')) {
+        const originalText = contractElement.textContent;
+        contractElement.setAttribute('data-truncated', originalText);
+        contractElement.textContent = fullText;
+        this.innerHTML = '<i class="fas fa-compress-alt"></i>';
+      } else {
+        const truncatedText = contractElement.getAttribute('data-truncated') || fullText;
+        contractElement.textContent = truncatedText;
+        this.innerHTML = '<i class="fas fa-expand-alt"></i>';
+      }
+    });
+  });
 }
 
-// Copy Contract Address Function (for direct access if needed)
-function copyContractAddress() {
-  const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+// 6. Scroll Animations
+function initScrollAnimations() {
+  const animatedElements = document.querySelectorAll('[data-aos]');
   
-  navigator.clipboard.writeText(contractAddress).then(() => {
-    // Show success feedback
-    const button = document.querySelector('.copy-contract-btn');
-    if (button) {
-      const originalHTML = button.innerHTML;
-      button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-      button.style.background = '#4CAF50';
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const element = entry.target;
+        const animation = element.getAttribute('data-aos');
+        const delay = element.getAttribute('data-aos-delay') || 0;
+        
+        setTimeout(() => {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+          element.classList.add('aos-animate');
+        }, parseInt(delay));
+        
+        observer.unobserve(element);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  animatedElements.forEach(element => {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(30px)';
+    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(element);
+  });
+}
+
+// 7. Hover Effects
+function initHoverEffects() {
+  // Add hover effects to cards
+  const cards = document.querySelectorAll('.value-card, .stat-card, .step-card, .comparison-card');
+  
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-10px)';
+      card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+      card.style.boxShadow = '';
+    });
+  });
+  
+  // Add ripple effect to buttons
+  const buttons = document.querySelectorAll('.btn');
+  buttons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.cssText = `
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        width: ${size}px;
+        height: ${size}px;
+        top: ${y}px;
+        left: ${x}px;
+        pointer-events: none;
+      `;
+      
+      this.appendChild(ripple);
       
       setTimeout(() => {
-        button.innerHTML = originalHTML;
-        button.style.background = '';
-      }, 2000);
+        ripple.remove();
+      }, 600);
+    });
+  });
+  
+  // Add ripple animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
+  `;
+  document.head.appendChild(style);
+}
+
+// 8. Responsive Menu
+function initResponsiveMenu() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+      
+      // Toggle icon
+      const icon = menuToggle.querySelector('i');
+      if (navMenu.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
     
-    // Show notification
-    showNotification('Contract address copied to clipboard!', 'success');
-  }).catch(err => {
-    console.error('Failed to copy: ', err);
-    showNotification('Failed to copy address', 'error');
+    // Close menu when clicking on links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        menuToggle.classList.remove('active');
+        const icon = menuToggle.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
+    });
+  }
+}
+
+// 9. Hero Animation
+function initHeroAnimation() {
+  const heroTitle = document.querySelector('.hero-title');
+  const chainCards = document.querySelectorAll('.chain-card');
+  
+  if (heroTitle) {
+    // Animate title lines
+    const titleLines = heroTitle.querySelectorAll('.title-line');
+    titleLines.forEach((line, index) => {
+      line.style.opacity = '0';
+      line.style.transform = 'translateY(30px)';
+      
+      setTimeout(() => {
+        line.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        line.style.opacity = '1';
+        line.style.transform = 'translateY(0)';
+      }, index * 300);
+    });
+  }
+  
+  if (chainCards.length > 0) {
+    // Animate chain cards
+    chainCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateX(' + (index === 0 ? '-50px' : '50px') + ')';
+      
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateX(0)';
+      }, 800 + index * 200);
+    });
+  }
+  
+  // Animate bridge
+  const bridge = document.querySelector('.chain-bridge');
+  if (bridge) {
+    bridge.style.opacity = '0';
+    setTimeout(() => {
+      bridge.style.transition = 'opacity 0.8s ease';
+      bridge.style.opacity = '1';
+    }, 1000);
+  }
+}
+
+// 10. Token Flow Animations
+function initTokenFlowAnimations() {
+  const flowCoins = document.querySelectorAll('.flow-coin');
+  const pulseDots = document.querySelectorAll('.pulse-dot');
+  
+  // Animate flow coins
+  if (flowCoins.length > 0) {
+    flowCoins.forEach((coin, index) => {
+      coin.style.animationDelay = (index * 0.66) + 's';
+    });
+  }
+  
+  // Animate pulse dots
+  if (pulseDots.length > 0) {
+    pulseDots.forEach((dot, index) => {
+      dot.style.animationDelay = (index * 0.2) + 's';
+    });
+  }
+  
+  // Animate logo in final CTA
+  const logoPulse = document.querySelector('.logo-pulse');
+  if (logoPulse) {
+    logoPulse.addEventListener('mouseenter', () => {
+      logoPulse.style.animation = 'float 1.5s ease-in-out infinite';
+    });
+    
+    logoPulse.addEventListener('mouseleave', () => {
+      logoPulse.style.animation = 'float 3s ease-in-out infinite';
+    });
+  }
+}
+
+// 11. Tooltips
+function initTooltips() {
+  const tooltipElements = document.querySelectorAll('[title]');
+  
+  tooltipElements.forEach(element => {
+    element.addEventListener('mouseenter', (e) => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'custom-tooltip';
+      tooltip.textContent = element.getAttribute('title');
+      
+      document.body.appendChild(tooltip);
+      
+      const rect = element.getBoundingClientRect();
+      const tooltipRect = tooltip.getBoundingClientRect();
+      
+      let top = rect.top - tooltipRect.height - 10;
+      let left = rect.left + (rect.width - tooltipRect.width) / 2;
+      
+      // Adjust if tooltip goes off screen
+      if (top < 0) {
+        top = rect.bottom + 10;
+      }
+      if (left < 0) {
+        left = 10;
+      }
+      if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 10;
+      }
+      
+      tooltip.style.cssText = `
+        position: fixed;
+        top: ${top}px;
+        left: ${left}px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        z-index: 9999;
+        pointer-events: none;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      `;
+      
+      element.setAttribute('data-tooltip-id', 'tooltip-' + Date.now());
+      element.tooltipElement = tooltip;
+    });
+    
+    element.addEventListener('mouseleave', () => {
+      if (element.tooltipElement) {
+        element.tooltipElement.remove();
+        element.tooltipElement = null;
+      }
+    });
   });
 }
 
-// Initialize when page loads
-window.addEventListener('load', function() {
-  // Initialize particles
-  initParticles();
-  
-  // Hide loader
-  const loader = document.getElementById('loader');
-  if (loader) {
-    setTimeout(() => {
-      loader.style.opacity = '0';
-      loader.style.transform = 'scale(1.1)';
-      setTimeout(() => {
-        loader.style.display = 'none';
-      }, 500);
-    }, 800);
-  }
-});
+// 12. Parallax Effect
+function initParallax() {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.parallax');
+    
+    parallaxElements.forEach(element => {
+      const speed = element.getAttribute('data-speed') || 0.5;
+      const yPos = -(scrolled * speed);
+      element.style.transform = `translateY(${yPos}px)`;
+    });
+  });
+}
 
-// Export functions if needed
-window.IndexPage = {
-  initIndexPage,
-  initScrollAnimations,
-  initStatsCounters,
-  initLogoAnimations,
-  copyContractAddress
-};
+// 13. Active Menu Highlight
+function initActiveMenu() {
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  window.addEventListener('scroll', () => {
+    let current = '';
+    
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      
+      if (pageYOffset >= sectionTop - 100) {
+        current = section.getAttribute('id');
+      }
+    });
+    
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+}
+
+// 14. Wallet Add Button
+function initWalletButtons() {
+  const walletButtons = document.querySelectorAll('.wallet-btn, .wallet-add-btn');
+  
+  walletButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const tokenAddress = 'F4gh7VN...pump'; // Example Solana address
+      
+      // Show modal or notification
+      const notification = document.createElement('div');
+      notification.className = 'wallet-notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <i class="fas fa-wallet"></i>
+          <div>
+            <h4>Add $REBL to Wallet</h4>
+            <p>Copy the contract address to add manually:</p>
+            <code class="address-code">${tokenAddress}</code>
+            <button class="btn btn-primary copy-address-btn">
+              <i class="far fa-copy"></i> Copy Address
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Style the notification
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(17, 17, 17, 0.95);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        z-index: 9999;
+        max-width: 350px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        animation: slideIn 0.3s ease;
+      `;
+      
+      // Add styles
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        
+        .notification-content {
+          display: flex;
+          gap: 15px;
+          align-items: flex-start;
+        }
+        
+        .notification-content i {
+          font-size: 2rem;
+          color: var(--primary-gold);
+          margin-top: 5px;
+        }
+        
+        .notification-content h4 {
+          margin: 0 0 10px 0;
+          color: var(--text-primary);
+        }
+        
+        .notification-content p {
+          margin: 0 0 10px 0;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+        }
+        
+        .address-code {
+          display: block;
+          background: rgba(0, 0, 0, 0.3);
+          padding: 10px;
+          border-radius: 8px;
+          margin-bottom: 15px;
+          font-family: monospace;
+          color: var(--text-primary);
+          font-size: 0.9rem;
+          word-break: break-all;
+        }
+        
+        .copy-address-btn {
+          width: 100%;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Copy address button in notification
+      const copyBtn = notification.querySelector('.copy-address-btn');
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(tokenAddress).then(() => {
+          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          copyBtn.style.background = '#10b981';
+          
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i class="far fa-copy"></i> Copy Address';
+            copyBtn.style.background = '';
+          }, 2000);
+        });
+      });
+      
+      // Auto remove notification after 10 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease reverse';
+        setTimeout(() => notification.remove(), 300);
+      }, 10000);
+      
+      // Close on click outside
+      document.addEventListener('click', function closeNotification(e) {
+        if (!notification.contains(e.target) && e.target !== button) {
+          notification.remove();
+          document.removeEventListener('click', closeNotification);
+        }
+      });
+    });
+  });
+}
+
+// 15. Initialize all
+function initializeAll() {
+  initLoader();
+  initBackToTop();
+  initParticles();
+  initCounterAnimations();
+  initCopyButtons();
+  initScrollAnimations();
+  initHoverEffects();
+  initResponsiveMenu();
+  initHeroAnimation();
+  initTokenFlowAnimations();
+  initTooltips();
+  initParallax();
+  initActiveMenu();
+  initWalletButtons();
+  
+  // Add smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 80,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+}
+
+// Start everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeAll);
