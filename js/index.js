@@ -111,46 +111,7 @@ function animateCounter(element, target) {
   }, frameDuration);
 }
 
-// ROI Calculator
-function initROICalculator() {
-  const amountSlider = document.getElementById('rebelinuxSlider');
-  const amountInput = document.getElementById('rebelinuxAmount');
-  const ageSlider = document.getElementById('ageSlider');
-  const ageInput = document.getElementById('ageWeeks');
-  
-  // Update function
-  function updateCalculator() {
-    const holdings = parseFloat(amountInput.value);
-    const weeks = parseInt(ageInput.value);
-    
-    // Constants
-    const WEEKLY_POOL = 1280000; // 1.28M $REBL
-    const TOTAL_SUPPLY = 499200000; // 499.2M $rebelinux
-    const WEEKLY_BONUS = 0.07; // 7%
-    const MAX_BONUS_WEEKS = 34; // Weeks to reach 240% bonus
-    const MAX_BONUS = 2.4; // 240%
-    
-    // Calculate base reward
-    const baseReward = (holdings * WEEKLY_POOL) / TOTAL_SUPPLY;
-    
-    // Calculate age bonus
-    const effectiveWeeks = Math.min(weeks, MAX_BONUS_WEEKS);
-    const ageBonusMultiplier = 1 + (effectiveWeeks * WEEKLY_BONUS);
-    const cappedBonusMultiplier = Math.min(ageBonusMultiplier, 1 + MAX_BONUS);
-    
-    // Calculate total reward
-    const bonusReward = baseReward * (cappedBonusMultiplier - 1);
-    const totalReward = baseReward * cappedBonusMultiplier;
-    
-    // Update display
-    document.getElementById('weeklyReward').textContent = Math.round(totalReward).toLocaleString();
-    document.getElementById('baseReward').textContent = `${Math.round(baseReward).toLocaleString()} $REBL`;
-    document.getElementById('bonusPercent').textContent = `${Math.round((cappedBonusMultiplier - 1) * 100)}%`;
-    document.getElementById('bonusReward').textContent = `${Math.round(bonusReward).toLocaleString()} $REBL`;
-    document.getElementById('totalReward').textContent = `${Math.round(totalReward).toLocaleString()} $REBL`;
-    document.getElementById('monthlyReward').textContent = `${Math.round(totalReward * 4).toLocaleString()} $REBL`;
-    document.getElementById('annualReward').textContent = `${Math.round(totalReward * 52).toLocaleString()} $REBL`;
-  }
+
   
   // Event listeners
   amountSlider.addEventListener('input', function() {
@@ -380,5 +341,4 @@ window.IndexPage = {
   initIndexPage,
   initScrollAnimations,
   initStatsCounters,
-  initROICalculator
 };
