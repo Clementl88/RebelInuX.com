@@ -22,12 +22,15 @@ function initIndexPage() {
   
   // Smooth scroll for anchor links
   initSmoothScroll();
+  
+  // Initialize logo animations
+  initLogoAnimations();
 }
 
 // Enhanced Scroll Animations
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.value-card, .comparison-card, .step-card, .stat-card, .token-card'
+    '.value-card, .comparison-card, .step-card, .stat-card, .token-card, .logo-card, .key-takeaway, .contract-emphasis'
   );
   
   // Add initial styles for animation
@@ -111,7 +114,43 @@ function animateCounter(element, target) {
   }, frameDuration);
 }
 
-
+// ROI Calculator - FIXED FUNCTION
+function initROICalculator() {
+  const amountSlider = document.getElementById('amount-slider');
+  const amountInput = document.getElementById('amount-input');
+  const ageSlider = document.getElementById('age-slider');
+  const ageInput = document.getElementById('age-input');
+  const weeklyRewardEl = document.getElementById('weekly-reward');
+  const ageBonusEl = document.getElementById('age-bonus');
+  const totalRewardEl = document.getElementById('total-reward');
+  
+  if (!amountSlider || !amountInput || !ageSlider || !ageInput) return;
+  
+  function updateCalculator() {
+    const amount = parseFloat(amountInput.value) || 0;
+    const age = parseInt(ageInput.value) || 0;
+    
+    // Calculate weekly reward (example: 1% of amount)
+    const weeklyReward = amount * 0.01;
+    
+    // Calculate age bonus (example: 7% per week, max 240%)
+    const ageBonusPercent = Math.min(age * 7, 240);
+    const ageBonus = weeklyReward * (ageBonusPercent / 100);
+    
+    // Calculate total reward
+    const totalReward = weeklyReward + ageBonus;
+    
+    // Update display
+    if (weeklyRewardEl) {
+      weeklyRewardEl.textContent = `$${weeklyReward.toFixed(2)}`;
+    }
+    if (ageBonusEl) {
+      ageBonusEl.textContent = `$${ageBonus.toFixed(2)} (+${ageBonusPercent}%)`;
+    }
+    if (totalRewardEl) {
+      totalRewardEl.textContent = `$${totalReward.toFixed(2)}`;
+    }
+  }
   
   // Event listeners
   amountSlider.addEventListener('input', function() {
@@ -140,30 +179,40 @@ function animateCounter(element, target) {
 
 // Copy to Clipboard
 function initCopyButtons() {
-  const copyButtons = document.querySelectorAll('.copy-btn');
+  const copyButtons = document.querySelectorAll('.copy-btn, .copy-contract-btn');
   
   copyButtons.forEach(button => {
     button.addEventListener('click', function() {
-      const contract = this.getAttribute('data-contract');
-      if (!contract) {
-        const contractText = this.parentElement.querySelector('code')?.textContent;
-        if (contractText) {
-          copyToClipboard(contractText);
-        }
+      let contractText;
+      
+      if (this.classList.contains('copy-contract-btn')) {
+        contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
       } else {
-        copyToClipboard(contract);
+        const contract = this.getAttribute('data-contract');
+        if (!contract) {
+          contractText = this.parentElement.querySelector('code')?.textContent;
+        } else {
+          contractText = contract;
+        }
+      }
+      
+      if (contractText) {
+        copyToClipboard(contractText);
       }
       
       // Visual feedback
-      const originalIcon = this.innerHTML;
-      this.innerHTML = '<i class="fas fa-check"></i>';
+      const originalHTML = this.innerHTML;
+      const originalBackground = this.style.background;
+      const originalColor = this.style.color;
+      
+      this.innerHTML = '<i class="fas fa-check"></i> Copied!';
       this.style.background = '#4CAF50';
       this.style.color = 'white';
       
       setTimeout(() => {
-        this.innerHTML = originalIcon;
-        this.style.background = '';
-        this.style.color = '';
+        this.innerHTML = originalHTML;
+        this.style.background = originalBackground;
+        this.style.color = originalColor;
       }, 2000);
     });
   });
@@ -318,6 +367,57 @@ function initParticles() {
   }
 }
 
+// Logo Section Animations
+function initLogoAnimations() {
+  const logoCards = document.querySelectorAll('.logo-card');
+  
+  if (logoCards.length === 0) return;
+  
+  logoCards.forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(50px)';
+    card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    
+    setTimeout(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, 300 + (index * 200));
+  });
+  
+  // Initialize copy contract button
+  const copyContractBtn = document.querySelector('.copy-contract-btn');
+  if (copyContractBtn) {
+    // Already initialized in initCopyButtons
+    console.log('Contract copy button initialized');
+  }
+}
+
+// Copy Contract Address Function (for direct access if needed)
+function copyContractAddress() {
+  const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+  
+  navigator.clipboard.writeText(contractAddress).then(() => {
+    // Show success feedback
+    const button = document.querySelector('.copy-contract-btn');
+    if (button) {
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      button.style.background = '#4CAF50';
+      
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.style.background = '';
+      }, 2000);
+    }
+    
+    // Show notification
+    showNotification('Contract address copied to clipboard!', 'success');
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+    showNotification('Failed to copy address', 'error');
+  });
+}
+
 // Initialize when page loads
 window.addEventListener('load', function() {
   // Initialize particles
@@ -341,4 +441,6 @@ window.IndexPage = {
   initIndexPage,
   initScrollAnimations,
   initStatsCounters,
+  initLogoAnimations,
+  copyContractAddress
 };
