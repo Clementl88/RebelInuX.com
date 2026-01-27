@@ -33,19 +33,25 @@
   z-index: 0;
 }
 
+/* Update the hero grid for better balance */
 .hero-content {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 0.8fr; /* Adjusted ratio */
   gap: 60px;
   align-items: center;
 }
 
-.hero-badge {
-  margin-bottom: 20px;
+/* Or make them equal but control content width */
+.hero-text {
+  max-width: 600px;
 }
 
+.hero-visual {
+  max-width: 500px;
+  margin: 0 auto;
+}
 .badge-text {
   display: inline-flex;
   align-items: center;
@@ -1716,36 +1722,50 @@
   flex-direction: column;
   gap: 12px;
   margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }
 
 .detail-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 0;
+  padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 50px;
 }
 
 .detail-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
+.detail-item:first-child {
+  padding-top: 0;
+}
+
+
 .detail-icon {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--rebel-gold);
   flex-shrink: 0;
+  flex: 0 0 36px;
 }
 
 .detail-text {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .detail-label {
@@ -1753,24 +1773,49 @@
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  line-height: 1.2;
 }
 
+
 .detail-value {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
 .detail-value.highlight {
   color: var(--rebel-gold);
 }
+
+/* Ensure consistent heights */
+.token-details .detail-item {
+  height: 50px;
+  align-items: center;
+}
+
   
-  .token-actions {
-    flex-direction: column;
+
+}
+/* Fix for mobile */
+@media (max-width: 768px) {
+  .detail-item {
+    min-height: 45px;
+    padding: 6px 0;
+  }
+  
+  .detail-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  .detail-value {
+    font-size: 0.9rem;
   }
 }
 /* ===== DUAL LOGO SECTION STYLES ===== */
