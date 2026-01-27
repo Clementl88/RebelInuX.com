@@ -1,4 +1,4 @@
-// ===== INDEX PAGE SPECIFIC JAVASCRIPT =====
+// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
 
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize after common components are loaded
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initIndexPage() {
-  console.log('Initializing Index page');
+  console.log('Initializing enhanced Index page');
   
   // Initialize animations
   initScrollAnimations();
@@ -14,24 +14,27 @@ function initIndexPage() {
   // Initialize stats counters
   initStatsCounters();
   
-  // Initialize newsletter form
-  initNewsletterForm();
+  // Initialize ROI calculator
+  initROICalculator();
+  
+  // Initialize copy buttons
+  initCopyButtons();
   
   // Smooth scroll for anchor links
   initSmoothScroll();
 }
 
-// Scroll Animations
+// Enhanced Scroll Animations
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.ecosystem-item, .timeline-step, .link-card, .stat-card, .cta-card'
+    '.value-card, .comparison-card, .step-card, .stat-card, .token-card'
   );
   
   // Add initial styles for animation
   animatedElements.forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    el.style.transform = 'translateY(50px)';
+    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
   });
   
   function animateOnScroll() {
@@ -43,7 +46,7 @@ function initScrollAnimations() {
         setTimeout(() => {
           el.style.opacity = '1';
           el.style.transform = 'translateY(0)';
-        }, index * 100);
+        }, index * 150);
       }
     });
   }
@@ -54,29 +57,30 @@ function initScrollAnimations() {
   // Listen to scroll
   window.addEventListener('scroll', animateOnScroll);
   
-  // Hero image floating animation
-  const heroImage = document.querySelector('.hero-image img');
-  if (heroImage) {
-    setInterval(() => {
-      heroImage.style.transform = `translateY(${Math.sin(Date.now() / 1000) * 20}px)`;
-    }, 100);
+  // Floating logo animation
+  const floatingLogo = document.querySelector('.logo-3d');
+  if (floatingLogo) {
+    window.addEventListener('mousemove', (e) => {
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      floatingLogo.style.transform = `translateY(-20px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    });
   }
 }
 
 // Stats Counters Animation
 function initStatsCounters() {
-  const statValues = document.querySelectorAll('.stat-value');
+  const statValues = document.querySelectorAll('.stat-value[data-target]');
   
   // Only animate when in view
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const statElement = entry.target;
-        const targetValue = parseFloat(statElement.textContent.replace('M', '000000'));
-        const isLargeNumber = statElement.textContent.includes('M');
+        const targetValue = parseFloat(statElement.getAttribute('data-target'));
         
         if (!statElement.classList.contains('animated')) {
-          animateCounter(statElement, targetValue, isLargeNumber);
+          animateCounter(statElement, targetValue);
           statElement.classList.add('animated');
         }
       }
@@ -86,73 +90,134 @@ function initStatsCounters() {
   statValues.forEach(stat => observer.observe(stat));
 }
 
-function animateCounter(element, target, isLarge) {
-  const duration = 2000; // 2 seconds
-  const frameDuration = 1000 / 60; // 60fps
+function animateCounter(element, target) {
+  const duration = 2000;
+  const frameDuration = 1000 / 60;
   const totalFrames = Math.round(duration / frameDuration);
   let frame = 0;
   
   const counter = setInterval(() => {
     frame++;
     const progress = frame / totalFrames;
-    const current = Math.round(target * progress);
+    const easeOut = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+    const current = target * easeOut;
     
-    if (isLarge) {
-      element.textContent = (current / 1000000).toFixed(2) + 'M';
-    } else {
-      element.textContent = current;
-    }
+    element.textContent = current.toFixed(target % 1 === 0 ? 0 : 2);
     
     if (frame === totalFrames) {
       clearInterval(counter);
-      if (isLarge) {
-        element.textContent = (target / 1000000).toFixed(2) + 'M';
-      } else {
-        element.textContent = target;
-      }
+      element.textContent = target.toFixed(target % 1 === 0 ? 0 : 2);
     }
   }, frameDuration);
 }
 
-// Newsletter Form
-function initNewsletterForm() {
-  const newsletterForm = document.getElementById('newsletterForm');
-  if (!newsletterForm) return;
+// ROI Calculator
+function initROICalculator() {
+  const amountSlider = document.getElementById('rebelinuxSlider');
+  const amountInput = document.getElementById('rebelinuxAmount');
+  const ageSlider = document.getElementById('ageSlider');
+  const ageInput = document.getElementById('ageWeeks');
   
-  newsletterForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+  // Update function
+  function updateCalculator() {
+    const holdings = parseFloat(amountInput.value);
+    const weeks = parseInt(ageInput.value);
     
-    const emailInput = this.querySelector('input[type="email"]');
-    const button = this.querySelector('button');
+    // Constants
+    const WEEKLY_POOL = 1280000; // 1.28M $REBL
+    const TOTAL_SUPPLY = 499200000; // 499.2M $rebelinux
+    const WEEKLY_BONUS = 0.07; // 7%
+    const MAX_BONUS_WEEKS = 34; // Weeks to reach 240% bonus
+    const MAX_BONUS = 2.4; // 240%
     
-    if (!emailInput.value) {
-      showNotification('Please enter your email address', 'error');
-      return;
-    }
+    // Calculate base reward
+    const baseReward = (holdings * WEEKLY_POOL) / TOTAL_SUPPLY;
     
-    // Save original button text
-    const originalText = button.innerHTML;
+    // Calculate age bonus
+    const effectiveWeeks = Math.min(weeks, MAX_BONUS_WEEKS);
+    const ageBonusMultiplier = 1 + (effectiveWeeks * WEEKLY_BONUS);
+    const cappedBonusMultiplier = Math.min(ageBonusMultiplier, 1 + MAX_BONUS);
     
-    // Show loading state
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    button.disabled = true;
+    // Calculate total reward
+    const bonusReward = baseReward * (cappedBonusMultiplier - 1);
+    const totalReward = baseReward * cappedBonusMultiplier;
     
-    // Simulate API call
-    setTimeout(() => {
-      // Reset button
-      button.innerHTML = originalText;
-      button.disabled = false;
+    // Update display
+    document.getElementById('weeklyReward').textContent = Math.round(totalReward).toLocaleString();
+    document.getElementById('baseReward').textContent = `${Math.round(baseReward).toLocaleString()} $REBL`;
+    document.getElementById('bonusPercent').textContent = `${Math.round((cappedBonusMultiplier - 1) * 100)}%`;
+    document.getElementById('bonusReward').textContent = `${Math.round(bonusReward).toLocaleString()} $REBL`;
+    document.getElementById('totalReward').textContent = `${Math.round(totalReward).toLocaleString()} $REBL`;
+    document.getElementById('monthlyReward').textContent = `${Math.round(totalReward * 4).toLocaleString()} $REBL`;
+    document.getElementById('annualReward').textContent = `${Math.round(totalReward * 52).toLocaleString()} $REBL`;
+  }
+  
+  // Event listeners
+  amountSlider.addEventListener('input', function() {
+    amountInput.value = this.value;
+    updateCalculator();
+  });
+  
+  amountInput.addEventListener('input', function() {
+    amountSlider.value = this.value;
+    updateCalculator();
+  });
+  
+  ageSlider.addEventListener('input', function() {
+    ageInput.value = this.value;
+    updateCalculator();
+  });
+  
+  ageInput.addEventListener('input', function() {
+    ageSlider.value = this.value;
+    updateCalculator();
+  });
+  
+  // Initial calculation
+  updateCalculator();
+}
+
+// Copy to Clipboard
+function initCopyButtons() {
+  const copyButtons = document.querySelectorAll('.copy-btn');
+  
+  copyButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const contract = this.getAttribute('data-contract');
+      if (!contract) {
+        const contractText = this.parentElement.querySelector('code')?.textContent;
+        if (contractText) {
+          copyToClipboard(contractText);
+        }
+      } else {
+        copyToClipboard(contract);
+      }
       
-      // Clear input
-      emailInput.value = '';
+      // Visual feedback
+      const originalIcon = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-check"></i>';
+      this.style.background = '#4CAF50';
+      this.style.color = 'white';
       
-      // Show success message
-      showNotification('Thank you for subscribing!', 'success');
-    }, 1500);
+      setTimeout(() => {
+        this.innerHTML = originalIcon;
+        this.style.background = '';
+        this.style.color = '';
+      }, 2000);
+    });
   });
 }
 
-// Show notification
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showNotification('Contract address copied to clipboard!', 'success');
+  }).catch(err => {
+    showNotification('Failed to copy address', 'error');
+    console.error('Failed to copy: ', err);
+  });
+}
+
+// Enhanced Notification
 function showNotification(message, type = 'info') {
   // Remove existing notification
   const existingNotification = document.querySelector('.notification');
@@ -173,73 +238,71 @@ function showNotification(message, type = 'info') {
     position: fixed;
     top: 100px;
     right: 20px;
-    background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+    background: ${type === 'success' ? 'rgba(76, 175, 80, 0.95)' : 'rgba(244, 67, 54, 0.95)'};
     color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
+    padding: 15px 25px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     z-index: 10000;
-    animation: slideIn 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideInRight 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    max-width: 350px;
   `;
   
   // Add keyframes
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-  `;
-  document.head.appendChild(style);
+  if (!document.querySelector('#notification-styles')) {
+    const style = document.createElement('style');
+    style.id = 'notification-styles';
+    style.textContent = `
+      @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
   
   // Add to document
   document.body.appendChild(notification);
   
   // Remove after 5 seconds
   setTimeout(() => {
-    notification.style.animation = 'slideOut 0.3s ease';
+    notification.style.animation = 'slideOutRight 0.3s ease';
     setTimeout(() => notification.remove(), 300);
-    
-    // Add slideOut keyframes
-    const slideOutStyle = document.createElement('style');
-    slideOutStyle.textContent = `
-      @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(slideOutStyle);
   }, 5000);
 }
 
-// Smooth Scroll for Anchor Links
+// Smooth Scroll
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
       
-      // Skip if it's just "#"
-      if (href === '#') return;
+      if (href === '#' || !href.startsWith('#') || !document.querySelector(href)) return;
       
-      // Check if it's an internal link
-      if (href.startsWith('#') && document.querySelector(href)) {
-        e.preventDefault();
+      e.preventDefault();
+      const target = document.querySelector(href);
+      
+      if (target) {
+        const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = targetPosition - headerHeight;
         
-        const target = document.querySelector(href);
-        if (target) {
-          const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-          const offsetPosition = targetPosition - headerHeight;
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-          
-          // Update URL without page jump
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Update URL without page jump
+        if (href !== '#') {
           history.pushState(null, null, href);
         }
       }
@@ -247,35 +310,68 @@ function initSmoothScroll() {
   });
 }
 
-// Chain icons hover effect
-function initChainIcons() {
-  const chainIcons = document.querySelectorAll('.chain-icon');
+// Particle Background for Hero
+function initParticles() {
+  const heroSection = document.querySelector('.page-hero--main');
+  if (!heroSection || document.querySelector('.particle')) return;
   
-  chainIcons.forEach(icon => {
-    icon.addEventListener('mouseenter', function() {
-      this.style.transform = 'scale(1.1)';
-      this.style.transition = 'transform 0.3s ease';
-    });
+  const particleCount = 50;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.cssText = `
+      position: absolute;
+      width: ${Math.random() * 5 + 1}px;
+      height: ${Math.random() * 5 + 1}px;
+      background: rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, 255, ${Math.random() * 0.5 + 0.2});
+      border-radius: 50%;
+      top: ${Math.random() * 100}%;
+      left: ${Math.random() * 100}%;
+      animation: float-particle ${Math.random() * 20 + 10}s linear infinite;
+      z-index: 1;
+    `;
     
-    icon.addEventListener('mouseleave', function() {
-      this.style.transform = 'scale(1)';
-    });
-  });
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float-particle {
+        0% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(${Math.random() * -300 - 100}px) translateX(${Math.random() * 200 - 100}px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    heroSection.querySelector('.hero-particles')?.appendChild(particle);
+  }
 }
 
 // Initialize when page loads
 window.addEventListener('load', function() {
-  initChainIcons();
+  // Initialize particles
+  initParticles();
   
   // Hide loader
   const loader = document.getElementById('loader');
   if (loader) {
     setTimeout(() => {
       loader.style.opacity = '0';
+      loader.style.transform = 'scale(1.1)';
       setTimeout(() => {
         loader.style.display = 'none';
-      }, 300);
-    }, 500);
+      }, 500);
+    }, 800);
   }
 });
 
@@ -283,5 +379,6 @@ window.addEventListener('load', function() {
 window.IndexPage = {
   initIndexPage,
   initScrollAnimations,
-  initStatsCounters
+  initStatsCounters,
+  initROICalculator
 };
