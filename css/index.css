@@ -727,16 +727,33 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  gap: 10px;
 }
+
 
 .contract-address code {
-  color: rgba(255, 255, 255, 0.9);
   font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   letter-spacing: 0.5px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
 }
 
-.copy-btn {
+.contract-address code.expanded {
+  white-space: normal;
+  word-break: break-all;
+  font-size: 0.75rem;
+}
+
+.copy-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.copy-btn, .view-btn, .wallet-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;
   color: rgba(255, 255, 255, 0.7);
@@ -748,18 +765,37 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  font-size: 0.9rem;
 }
 
 .copy-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+.view-btn:hover {
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196F3;
 }
 
+.wallet-btn:hover {
+  background: rgba(212, 167, 106, 0.2);
+  color: var(--rebel-gold);
+}
 .token-actions {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.action-btn.wallet-action {
+  background: rgba(212, 167, 106, 0.2);
+  color: var(--rebel-gold);
+  border: 1px solid rgba(212, 167, 106, 0.3);
 }
 
+.action-btn.wallet-action:hover {
+  background: var(--rebel-gold);
+  color: white;
+}
 .action-btn {
   flex: 1;
   padding: 12px 15px;
@@ -836,6 +872,26 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.nft-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nft-status i {
+  color: var(--rebel-gold);
+}
+
+.nft-status strong {
+  color: var(--rebel-gold);
+  font-weight: 700;
 }
 
 .bridge-animation {
@@ -1683,10 +1739,63 @@
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .token-details {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
+.token-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--rebel-gold);
+  flex-shrink: 0;
+}
+
+.detail-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-value.highlight {
+  color: var(--rebel-gold);
+}
   
   .token-actions {
     flex-direction: column;
@@ -2347,7 +2456,43 @@
   line-height: 1.4;
   margin: 0;
 }
+/* Bonus info - ADD THIS AFTER LINE 716 (after .step-content p) */
+.bonus-info {
+  background: linear-gradient(135deg, rgba(212, 167, 106, 0.1), rgba(215, 77, 77, 0.1));
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 30px;
+  border: 1px solid rgba(212, 167, 106, 0.2);
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
 
+.bonus-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(45deg, var(--rebel-gold), var(--rebel-red));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.bonus-content h5 {
+  color: white;
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.bonus-content p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
 .flow-link {
   color: var(--rebel-blue);
   text-decoration: none;
@@ -2641,45 +2786,3 @@
   }
 }
 
-/* CSS for icon approach */
-.detail-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-align: left;
-}
-
-.detail-icon {
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: var(--rebel-gold);
-  flex-shrink: 0;
-}
-
-.detail-text {
-  flex: 1;
-  min-width: 0; /* Important for text truncation */
-}
-
-.detail-label {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-.detail-value {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
