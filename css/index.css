@@ -946,7 +946,11 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--shadow-light);
 }
-
+.chain-node.base-node .token-badge {
+  background: rgba(215, 77, 77, 0.2); /* Red background */
+  color: var(--rebel-red); /* Red text */
+  border-color: rgba(215, 77, 77, 0.3); /* Red border */
+}
 .token-badge.nft {
   background: rgba(255, 215, 0, 0.2);
   color: var(--rebel-gold);
@@ -1103,11 +1107,12 @@ body {
 }
 
 .rebelinux-ticker .ticker-symbol {
-  background: var(--purple-gradient);
+  background: var(--red-gradient); /* Changed from purple to red */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: var(--rebel-purple);
+    text-shadow: 0 2px 10px rgba(215, 77, 77, 0.3); /* Red glow */
 }
 
 .ticker-name {
@@ -1136,7 +1141,7 @@ body {
 
 /* Keep the floating animation for both */
 .token-logo-container .token-logo-img {
-  filter: drop-shadow(0 0 15px rgba(156, 39, 176, 0.4));
+  filter: drop-shadow(0 0 15px rgba(215, 77, 77, 0.5)); /* Changed to red */
   animation: float 3s ease-in-out infinite;
 }
 
@@ -1144,10 +1149,11 @@ body {
 .rebelinux-glow {
   background: radial-gradient(
     circle at center,
-    rgba(156, 39, 176, 0.4) 0%,
-    rgba(123, 44, 191, 0.2) 30%,
+        rgba(215, 77, 77, 0.4) 0%, /* Changed to red */
+    rgba(215, 77, 77, 0.2) 30%, /* Changed to red */
     transparent 70%
   );
+    box-shadow: 0 0 60px rgba(215, 77, 77, 0.3); /* Added red shadow */
 }
 
 .main-logo-container .logo-glow {
@@ -1157,6 +1163,66 @@ body {
     rgba(212, 167, 106, 0.2) 30%,
     transparent 70%
   );
+}
+/* Optional red pulse effect for $rebelinux logo */
+.rebelinux-logo {
+  position: relative;
+}
+
+.rebelinux-logo::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid var(--rebel-red);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse-red 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-red {
+  0%, 100% { 
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .ticker-symbol {
+    font-size: 1.5rem;
+  }
+  
+  .main-logo-container .floating-logo,
+  .token-logo-container .floating-logo {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .main-logo-container,
+  .token-logo-container {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-logo-container .floating-logo,
+  .token-logo-container .floating-logo {
+    width: 120px;
+    height: 120px;
+  }
+  
+  /* Hide pulse effect on very small screens */
+  .rebelinux-logo::before {
+    display: none;
+  }
 }
 
 /* Mobile Responsive */
@@ -1268,14 +1334,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(45deg, #9d4edd, #7b2cbf);
+  background: linear-gradient(45deg, var(--rebel-red), #e74c3c); /* Changed to red */
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   font-size: 0.95rem;
   font-weight: 700;
-  border: 2px solid rgba(157, 78, 221, 0.3);
-  box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
+  border: 2px solid rgba(215, 77, 77, 0.3); /* Changed to red */
+  box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3); /* Changed to red */
   animation: achievement-pulse 2s ease-in-out infinite;
   backdrop-filter: blur(10px);
   transition: transform var(--animation-fast) ease;
@@ -1283,17 +1349,17 @@ body {
 
 .achievement-badge:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(157, 78, 221, 0.4);
+  box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4); /* Changed to red */
 }
 
 @keyframes achievement-pulse {
   0%, 100% { 
     transform: scale(1); 
-    box-shadow: 0 4px 15px rgba(157, 78, 221, 0.3);
+    box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3); /* Changed to red */
   }
   50% { 
     transform: scale(1.02); 
-    box-shadow: 0 6px 20px rgba(157, 78, 221, 0.4);
+    box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4); /* Changed to red */
   }
 }
 
@@ -1303,25 +1369,25 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(123, 44, 191, 0.1));
-  color: var(--rebel-purple);
+  background: linear-gradient(45deg, rgba(215, 77, 77, 0.1), rgba(231, 76, 60, 0.1)); /* Red */
+  color: var(--rebel-red); /* Red text */
   padding: 0.75rem 1rem;
   border-radius: 10px;
   margin: 1rem 0;
   font-size: 0.85rem;
   font-weight: 600;
-  border: 1px solid rgba(157, 78, 221, 0.2);
+  border: 1px solid rgba(215, 77, 77, 0.2); /* Red border */
   transition: all var(--animation-fast) ease;
 }
 
 .token-achievement:hover {
-  background: linear-gradient(45deg, rgba(157, 78, 221, 0.15), rgba(123, 44, 191, 0.15));
+  background: linear-gradient(45deg, rgba(215, 77, 77, 0.15), rgba(231, 76, 60, 0.15));
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(157, 78, 221, 0.15);
+  box-shadow: 0 4px 12px rgba(215, 77, 77, 0.15);
 }
 .token-achievement i {
   font-size: 1rem;
-  color: var(--rebel-purple);
+  color: var(--rebel-red); /* Red icon */
 }
 /* $rebelinux Token Achievement (Purple) */
 .token-achievement {
