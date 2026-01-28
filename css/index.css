@@ -1117,25 +1117,43 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
-/* $rebelinux logo specific styling */
-.rebelinux-logo {
-  width: 120px;
-  height: 120px;
+/* Logo Styling - BOTH SAME SIZE */
+.main-logo-container .floating-logo,
+.token-logo-container .floating-logo {
+  width: 180px;  /* Same size for both */
+  height: 180px; /* Same size for both */
+  margin: 0 auto;
 }
 
-.rebelinux-logo .token-logo-img {
+/* Make sure logo images fill containers properly */
+.main-logo-container .logo-3d,
+.token-logo-container .token-logo-img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+/* Keep the floating animation for both */
+.token-logo-container .token-logo-img {
   filter: drop-shadow(0 0 15px rgba(156, 39, 176, 0.4));
   animation: float 3s ease-in-out infinite;
 }
 
+/* Glow effects */
 .rebelinux-glow {
   background: radial-gradient(
     circle at center,
     rgba(156, 39, 176, 0.4) 0%,
     rgba(123, 44, 191, 0.2) 30%,
+    transparent 70%
+  );
+}
+
+.main-logo-container .logo-glow {
+  background: radial-gradient(
+    circle at center,
+    rgba(212, 167, 106, 0.4) 0%,
+    rgba(212, 167, 106, 0.2) 30%,
     transparent 70%
   );
 }
@@ -1146,9 +1164,10 @@ body {
     font-size: 1.5rem;
   }
   
-  .rebelinux-logo {
-    width: 100px;
-    height: 100px;
+  .main-logo-container .floating-logo,
+  .token-logo-container .floating-logo {
+    width: 150px;
+    height: 150px;
   }
   
   .main-logo-container,
@@ -1156,6 +1175,20 @@ body {
     margin-bottom: 1.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .main-logo-container .floating-logo,
+  .token-logo-container .floating-logo {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+
+
+}
+
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
