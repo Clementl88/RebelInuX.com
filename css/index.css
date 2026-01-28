@@ -735,21 +735,20 @@ body {
   margin: 0 auto 2rem;
   position: relative;
   /* Add extra padding top to accommodate upward movement */
-  padding-top: 20px; /* Space for upward float */
-  margin-bottom: 40px; /* Extra space below for glow */
+  padding-top: 0; /* Space for upward float */
+  margin-bottom: 30px; /* Extra space below for glow */
 }
 
 @media (min-width: 768px) {
   .floating-logo {
     width: 250px;
     height: 250px;
-    padding-top: 30px; /* More space on larger screens */
-    margin-bottom: 50px;
+    margin-bottom: 40px;
   }
 }
 
 
-/* Adjust logo 3d positioning */
+/* Adjust logo 3d positioning - fixed */
 .logo-3d {
   width: 100%;
   height: 100%;
@@ -757,44 +756,68 @@ body {
   animation: float 3s ease-in-out infinite;
   transform-style: preserve-3d;
   position: relative;
-  /* Start from lower position */
-  top: 0;
-  transition: top 0.3s ease;
 }
 
-/* Adjust float animation to stay within bounds */
+/* Keep the float animation gentle */
 @keyframes float {
   0%, 100% { 
     transform: translateY(0px) rotateY(0deg); 
   }
   50% { 
-    transform: translateY(-15px) rotateY(5deg); /* Reduced from -20px */
+    transform: translateY(-10px) rotateY(5deg); /* Reduced from 15px */
   }
 }
 
-/* Adjust logo glow to account for movement */
+/* Fix logo glow positioning - NO CUTTING */
 .logo-glow {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(212, 167, 106, 0.3) 0%, transparent 70%);
+  width: 110%; /* Slightly larger than container */
+  height: 110%; /* Slightly larger than container */
+  background: radial-gradient(
+    circle at center,
+    rgba(212, 167, 106, 0.4) 0%,
+    rgba(212, 167, 106, 0.2) 30%,
+    transparent 70%
+  );
   z-index: -1;
   border-radius: 50%;
-  /* Move glow down slightly to accommodate float */
-  top: calc(50% + 10px);
+  /* Remove the top adjustment that was causing the cut */
+  top: 50%;
+  /* Ensure it doesn't get cut by overflow */
+  pointer-events: none;
+  box-shadow: 0 0 60px rgba(212, 167, 106, 0.3);
 }
 
 @media (min-width: 768px) {
   .logo-glow {
-    width: 350px;
-    height: 350px;
-    top: calc(50% + 15px);
+    width: 120%;
+    height: 120%;
+    box-shadow: 0 0 80px rgba(212, 167, 106, 0.4);
   }
 }
+/* Ensure visual container doesn't cut the glow */
+.visual-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  /* Allow glow to overflow naturally */
+  overflow: visible;
+  padding: 10px 0; /* Add vertical padding for glow */
+}
 
+/* Ensure hero section allows overflow for glow effects */
+.page-hero--main {
+  position: relative;
+  overflow: visible; /* Changed from hidden to visible */
+}
+
+.page-hero--main .container {
+  overflow: visible; /* Allow glow effects to show */
+}
 /* Chain Visualization */
 .chain-visualization {
   display: flex;
