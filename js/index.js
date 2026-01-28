@@ -5,46 +5,32 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(initIndexPage, 300);
 });
 
-async function initIndexPage() {
-  try {
-    console.time('PageInitialization');
-    console.log('Initializing enhanced Index page');
-    
-    // Batch DOM reads and initializations
-    await Promise.all([
-      initScrollAnimations(),
-      initStatsCounters(),
-      initROICalculator(),
-      initCopyButtons(),
-      initSmoothScroll(),
-      initLogoAnimations(),
-      initIntersectionObservers(),
-      initParticles()
-    ]);
-    
-    // Initialize lazy loading
-    initLazyLoading();
-    
-    // Initialize Web Vitals monitoring
-    if ('PerformanceObserver' in window) {
-      initPerformanceMonitoring();
-    }
-    
-    // Set up event listener cleanup on page unload
-    setupCleanup();
-    
-    console.timeEnd('PageInitialization');
-  } catch (error) {
-    console.error('Failed to initialize page:', error);
-    // Fallback: at least ensure basic functionality
-    initEssentialFeatures();
-  }
+function initIndexPage() {
+  console.log('Initializing enhanced Index page');
+  
+  // Initialize animations
+  initScrollAnimations();
+  
+  // Initialize stats counters
+  initStatsCounters();
+  
+  // Initialize ROI calculator
+  initROICalculator();
+  
+  // Initialize copy buttons
+  initCopyButtons();
+  
+  // Smooth scroll for anchor links
+  initSmoothScroll();
+  
+  // Initialize logo animations
+  initLogoAnimations();
 }
 
-// Enhanced Scroll Animations with IntersectionObserver
+// Enhanced Scroll Animations
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.value-card, .comparison-card, .step-card, .stat-card, .token-card, .logo-card, .ecosystem-feature, .contract-emphasis, .animate-on-scroll'
+    '.value-card, .comparison-card, .step-card, .stat-card, .token-card, .logo-card, .key-takeaway, .contract-emphasis'
   );
   
   // Add initial styles for animation
@@ -52,79 +38,44 @@ function initScrollAnimations() {
     el.style.opacity = '0';
     el.style.transform = 'translateY(50px)';
     el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    el.style.willChange = 'opacity, transform';
   });
+  
+  function animateOnScroll() {
+    animatedElements.forEach((el, index) => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      if (rect.top < windowHeight - 100) {
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, index * 150);
+      }
+    });
+  }
+  
+  // Initial check
+  animateOnScroll();
+  
+  // Listen to scroll
+  window.addEventListener('scroll', animateOnScroll);
   
   // Floating logo animation
   const floatingLogo = document.querySelector('.logo-3d');
   if (floatingLogo) {
-    let mouseX = 0;
-    let mouseY = 0;
-    let logoX = 0;
-    let logoY = 0;
-    const factor = 25;
-    
     window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      floatingLogo.style.transform = `translateY(-20px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
     });
-    
-    function updateLogoPosition() {
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
-      
-      // Calculate rotation based on mouse position
-      const targetX = (windowWidth / 2 - mouseX) / factor;
-      const targetY = (windowHeight / 2 - mouseY) / factor;
-      
-      // Smooth interpolation
-      logoX += (targetX - logoX) * 0.1;
-      logoY += (targetY - logoY) * 0.1;
-      
-      floatingLogo.style.transform = `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
-      
-      requestAnimationFrame(updateLogoPosition);
-    }
-    
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      requestAnimationFrame(updateLogoPosition);
-    }
   }
-}
-
-// Intersection Observer for animations
-function initIntersectionObservers() {
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '50px'
-  };
-  
-  const fadeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const delay = entry.target.dataset.delay || 0;
-        
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          fadeObserver.unobserve(entry.target);
-        }, delay);
-      }
-    });
-  }, observerOptions);
-  
-  // Observe all elements that need animation
-  document.querySelectorAll('.animate-on-scroll').forEach(el => {
-    fadeObserver.observe(el);
-  });
 }
 
 // Stats Counters Animation
 function initStatsCounters() {
   const statValues = document.querySelectorAll('.stat-value[data-target]');
   
-  if (statValues.length === 0) return;
-  
+  // Only animate when in view
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -147,12 +98,6 @@ function animateCounter(element, target) {
   const frameDuration = 1000 / 60;
   const totalFrames = Math.round(duration / frameDuration);
   let frame = 0;
-  
-  // Check for reduced motion preference
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    element.textContent = target.toFixed(target % 1 === 0 ? 0 : 2);
-    return;
-  }
   
   const counter = setInterval(() => {
     frame++;
@@ -207,52 +152,37 @@ function initROICalculator() {
     }
   }
   
-  // Event listeners with debouncing
-  const updateCalculatorDebounced = debounce(updateCalculator, 100);
-  
+  // Event listeners
   amountSlider.addEventListener('input', function() {
     amountInput.value = this.value;
-    updateCalculatorDebounced();
+    updateCalculator();
   });
   
   amountInput.addEventListener('input', function() {
     amountSlider.value = this.value;
-    updateCalculatorDebounced();
+    updateCalculator();
   });
   
   ageSlider.addEventListener('input', function() {
     ageInput.value = this.value;
-    updateCalculatorDebounced();
+    updateCalculator();
   });
   
   ageInput.addEventListener('input', function() {
     ageSlider.value = this.value;
-    updateCalculatorDebounced();
+    updateCalculator();
   });
   
   // Initial calculation
   updateCalculator();
 }
 
-// Debounce utility function
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-// Copy to Clipboard with fallback
+// Copy to Clipboard
 function initCopyButtons() {
   const copyButtons = document.querySelectorAll('.copy-btn, .copy-contract-btn');
   
   copyButtons.forEach(button => {
-    button.addEventListener('click', async function() {
+    button.addEventListener('click', function() {
       let contractText;
       
       if (this.classList.contains('copy-contract-btn')) {
@@ -267,106 +197,33 @@ function initCopyButtons() {
       }
       
       if (contractText) {
-        await copyToClipboard(contractText.trim());
+        copyToClipboard(contractText);
       }
+      
+      // Visual feedback
+      const originalHTML = this.innerHTML;
+      const originalBackground = this.style.background;
+      const originalColor = this.style.color;
+      
+      this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      this.style.background = '#4CAF50';
+      this.style.color = 'white';
+      
+      setTimeout(() => {
+        this.innerHTML = originalHTML;
+        this.style.background = originalBackground;
+        this.style.color = originalColor;
+      }, 2000);
     });
   });
 }
 
-// Enhanced copy functionality with fallback
-async function copyToClipboard(text) {
-  try {
-    // Use modern clipboard API first
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-      showNotification('Contract address copied to clipboard!', 'success');
-      return true;
-    } else {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.opacity = '0';
-      textArea.style.pointerEvents = 'none';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      
-      const successful = document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      if (successful) {
-        showNotification('Copied to clipboard!', 'success');
-        return true;
-      } else {
-        throw new Error('Copy command failed');
-      }
-    }
-  } catch (err) {
-    console.error('Failed to copy:', err);
-    showNotification('Failed to copy. Please copy manually.', 'error');
-    
-    // Show text for manual copy as fallback
-    showManualCopyFallback(text);
-    return false;
-  }
-}
-
-function showManualCopyFallback(text) {
-  const fallbackDiv = document.createElement('div');
-  fallbackDiv.className = 'manual-copy-fallback';
-  fallbackDiv.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    z-index: 10001;
-    max-width: 90%;
-    max-height: 90%;
-    overflow: auto;
-    border: 2px solid var(--rebel-gold);
-  `;
-  
-  fallbackDiv.innerHTML = `
-    <h4 style="margin: 0 0 15px 0; color: #333;">Copy Text Manually</h4>
-    <code style="display: block; margin: 15px 0; padding: 15px; background: #f5f5f5; border-radius: 8px; word-break: break-all; font-family: monospace; font-size: 14px;">${text}</code>
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-      <button onclick="this.parentElement.parentElement.remove()" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 6px; cursor: pointer;">Close</button>
-    </div>
-  `;
-  
-  document.body.appendChild(fallbackDiv);
-  
-  // Close on escape key
-  const closeHandler = (e) => {
-    if (e.key === 'Escape') {
-      fallbackDiv.remove();
-      document.removeEventListener('keydown', closeHandler);
-    }
-  };
-  document.addEventListener('keydown', closeHandler);
-  
-  // Close on background click
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 10000;
-  `;
-  document.body.appendChild(overlay);
-  
-  overlay.addEventListener('click', () => {
-    fallbackDiv.remove();
-    overlay.remove();
-    document.removeEventListener('keydown', closeHandler);
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showNotification('Contract address copied to clipboard!', 'success');
+  }).catch(err => {
+    showNotification('Failed to copy address', 'error');
+    console.error('Failed to copy: ', err);
   });
 }
 
@@ -381,12 +238,8 @@ function showNotification(message, type = 'info') {
   // Create notification element
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
-  notification.setAttribute('role', 'alert');
-  notification.setAttribute('aria-live', 'polite');
-  
-  const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
   notification.innerHTML = `
-    <i class="fas fa-${icon}" aria-hidden="true"></i>
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
     <span>${message}</span>
   `;
   
@@ -410,7 +263,7 @@ function showNotification(message, type = 'info') {
     max-width: 350px;
   `;
   
-  // Add keyframes if not already added
+  // Add keyframes
   if (!document.querySelector('#notification-styles')) {
     const style = document.createElement('style');
     style.id = 'notification-styles';
@@ -431,72 +284,37 @@ function showNotification(message, type = 'info') {
   document.body.appendChild(notification);
   
   // Remove after 5 seconds
-  const timeout = setTimeout(() => {
+  setTimeout(() => {
     notification.style.animation = 'slideOutRight 0.3s ease';
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.remove();
-      }
-    }, 300);
+    setTimeout(() => notification.remove(), 300);
   }, 5000);
-  
-  // Allow manual dismissal
-  notification.addEventListener('click', () => {
-    clearTimeout(timeout);
-    notification.style.animation = 'slideOutRight 0.3s ease';
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.remove();
-      }
-    }, 300);
-  });
 }
 
 // Smooth Scroll
 function initSmoothScroll() {
-  const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
-  
-  // Store calculated offsets to prevent recalculation
-  const offsets = new Map();
-  
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
       
-      if (!href.startsWith('#') || href === '#') return;
+      if (href === '#' || !href.startsWith('#') || !document.querySelector(href)) return;
       
       e.preventDefault();
+      const target = document.querySelector(href);
       
-      const targetId = href.substring(1);
-      let targetElement = document.getElementById(targetId);
-      
-      if (!targetElement) {
-        // Try to find by name attribute as fallback
-        targetElement = document.querySelector(`[name="${targetId}"]`);
-      }
-      
-      if (targetElement) {
-        // Calculate offset once and cache it
-        if (!offsets.has(targetId)) {
-          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-          offsets.set(targetId, targetPosition - headerHeight);
-        }
-        
-        // Check for reduced motion preference
-        const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      if (target) {
+        const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = targetPosition - headerHeight;
         
         window.scrollTo({
-          top: offsets.get(targetId),
-          behavior: behavior
+          top: offsetPosition,
+          behavior: 'smooth'
         });
         
-        // Update URL without reload
-        history.replaceState(null, null, href);
-        
-        // Focus the target for accessibility
-        targetElement.setAttribute('tabindex', '-1');
-        targetElement.focus();
-        setTimeout(() => targetElement.removeAttribute('tabindex'), 1000);
+        // Update URL without page jump
+        if (href !== '#') {
+          history.pushState(null, null, href);
+        }
       }
     });
   });
@@ -507,45 +325,24 @@ function initParticles() {
   const heroSection = document.querySelector('.page-hero--main');
   if (!heroSection || document.querySelector('.particle')) return;
   
-  // Check for reduced motion preference
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
-  
   const particleCount = 50;
-  const particlesContainer = heroSection.querySelector('.hero-particles');
-  
-  if (!particlesContainer) return;
   
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement('div');
     particle.className = 'particle';
-    particle.setAttribute('aria-hidden', 'true');
-    
-    const size = Math.random() * 5 + 1;
-    const duration = Math.random() * 20 + 10;
-    const delay = Math.random() * 5;
-    
     particle.style.cssText = `
       position: absolute;
-      width: ${size}px;
-      height: ${size}px;
+      width: ${Math.random() * 5 + 1}px;
+      height: ${Math.random() * 5 + 1}px;
       background: rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 155}, 255, ${Math.random() * 0.5 + 0.2});
       border-radius: 50%;
       top: ${Math.random() * 100}%;
       left: ${Math.random() * 100}%;
-      animation: float-particle ${duration}s linear ${delay}s infinite;
+      animation: float-particle ${Math.random() * 20 + 10}s linear infinite;
       z-index: 1;
-      pointer-events: none;
     `;
     
-    particlesContainer.appendChild(particle);
-  }
-  
-  // Add animation keyframes
-  if (!document.querySelector('#particle-animations')) {
     const style = document.createElement('style');
-    style.id = 'particle-animations';
     style.textContent = `
       @keyframes float-particle {
         0% {
@@ -565,6 +362,8 @@ function initParticles() {
       }
     `;
     document.head.appendChild(style);
+    
+    heroSection.querySelector('.hero-particles')?.appendChild(particle);
   }
 }
 
@@ -578,221 +377,44 @@ function initLogoAnimations() {
     card.style.opacity = '0';
     card.style.transform = 'translateY(50px)';
     card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    card.style.willChange = 'opacity, transform';
+    
+    setTimeout(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, 300 + (index * 200));
   });
+  
+  // Initialize copy contract button
+  const copyContractBtn = document.querySelector('.copy-contract-btn');
+  if (copyContractBtn) {
+    // Already initialized in initCopyButtons
+    console.log('Contract copy button initialized');
+  }
 }
 
-// Copy Contract Address Function
+// Copy Contract Address Function (for direct access if needed)
 function copyContractAddress() {
   const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
   
-  copyToClipboard(contractAddress).then(success => {
-    if (success) {
-      // Show success feedback on button
-      const button = document.querySelector('.copy-contract-btn');
-      if (button) {
-        const originalHTML = button.innerHTML;
-        const originalBackground = button.style.background;
-        
-        button.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Copied!';
-        button.style.background = '#4CAF50';
-        button.setAttribute('aria-label', 'Address copied successfully');
-        
-        setTimeout(() => {
-          button.innerHTML = originalHTML;
-          button.style.background = originalBackground;
-          button.setAttribute('aria-label', 'Copy contract address');
-        }, 2000);
-      }
-    }
-  });
-}
-
-// Add to Wallet function (placeholder)
-function addToWallet(contractAddress) {
-  // This is a placeholder - in a real implementation, you would:
-  // 1. Check if the wallet extension is available
-  // 2. Use the appropriate wallet API (Solana or Ethereum)
-  // 3. Add the token to the user's wallet
-  
-  showNotification('Wallet integration coming soon! For now, manually add the contract address to your wallet.', 'info');
-  
-  // For demonstration purposes, we'll copy the contract address
-  copyToClipboard(contractAddress);
-}
-
-// Toggle contract view
-function toggleContractView(button) {
-  const contractElement = button.closest('.contract-address').querySelector('code');
-  const isExpanded = contractElement.classList.toggle('expanded');
-  
-  button.innerHTML = isExpanded 
-    ? '<i class="fas fa-compress-alt" aria-hidden="true"></i>'
-    : '<i class="fas fa-expand-alt" aria-hidden="true"></i>';
-  
-  button.setAttribute('aria-label', isExpanded ? 'Collapse contract address' : 'Expand contract address');
-}
-
-// Lazy loading for non-critical images
-function initLazyLoading() {
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          
-          // Check if it's a picture element or regular img
-          if (img.tagName === 'PICTURE') {
-            const sources = img.querySelectorAll('source[data-srcset]');
-            sources.forEach(source => {
-              source.srcset = source.dataset.srcset;
-              source.removeAttribute('data-srcset');
-            });
-            
-            const imgElement = img.querySelector('img[data-src]');
-            if (imgElement) {
-              imgElement.src = imgElement.dataset.src;
-              imgElement.removeAttribute('data-src');
-            }
-          } else if (img.dataset.src) {
-            // Regular img element
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-          }
-          
-          img.classList.remove('lazy');
-          imageObserver.unobserve(img);
-        }
-      });
-    }, {
-      rootMargin: '100px 0px',
-      threshold: 0.1
-    });
-    
-    document.querySelectorAll('img.lazy, picture.lazy').forEach(img => {
-      imageObserver.observe(img);
-    });
-  } else {
-    // Fallback for older browsers
-    document.querySelectorAll('img.lazy, picture.lazy').forEach(img => {
-      if (img.tagName === 'PICTURE') {
-        const sources = img.querySelectorAll('source[data-srcset]');
-        sources.forEach(source => {
-          source.srcset = source.dataset.srcset;
-        });
-        
-        const imgElement = img.querySelector('img[data-src]');
-        if (imgElement) {
-          imgElement.src = imgElement.dataset.src;
-        }
-      } else {
-        img.src = img.dataset.src;
-      }
-      img.classList.remove('lazy');
-    });
-  }
-}
-
-// Performance monitoring
-function initPerformanceMonitoring() {
-  try {
-    // Largest Contentful Paint
-    const lcpObserver = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-      const lastEntry = entries[entries.length - 1];
-      console.log('LCP:', lastEntry.startTime);
+  navigator.clipboard.writeText(contractAddress).then(() => {
+    // Show success feedback
+    const button = document.querySelector('.copy-contract-btn');
+    if (button) {
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      button.style.background = '#4CAF50';
       
-      // You could send this to analytics
-      // trackPerformanceMetric('LCP', lastEntry.startTime);
-    });
-    
-    // First Input Delay
-    const fidObserver = new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        const delay = entry.processingStart - entry.startTime;
-        console.log('FID:', delay);
-        
-        // You could send this to analytics
-        // trackPerformanceMetric('FID', delay);
-      }
-    });
-    
-    // Cumulative Layout Shift
-    const clsObserver = new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries()) {
-        if (!entry.hadRecentInput) {
-          console.log('CLS:', entry.value);
-          
-          // You could send this to analytics
-          // trackPerformanceMetric('CLS', entry.value);
-        }
-      }
-    });
-    
-    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-    fidObserver.observe({ entryTypes: ['first-input'] });
-    clsObserver.observe({ entryTypes: ['layout-shift'] });
-    
-  } catch (error) {
-    console.warn('Performance monitoring failed:', error);
-  }
-}
-
-// Essential features fallback
-function initEssentialFeatures() {
-  console.log('Loading essential features fallback');
-  
-  // Ensure copy buttons work
-  document.querySelectorAll('.copy-btn, .copy-contract-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const contract = this.dataset.contract || 
-                      this.closest('.contract-address')?.querySelector('code')?.textContent;
-      if (contract) copyToClipboard(contract);
-    });
-  });
-  
-  // Ensure links work
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView();
-        }
-      }
-    });
-  });
-  
-  // Ensure all buttons have basic functionality
-  document.querySelectorAll('button').forEach(button => {
-    if (!button.hasAttribute('type')) {
-      button.setAttribute('type', 'button');
-    }
-  });
-}
-
-// Setup cleanup for event listeners
-function setupCleanup() {
-  // Store references to remove later if needed
-  window.pageListeners = [];
-  
-  // Add cleanup on page unload
-  window.addEventListener('beforeunload', () => {
-    // Clean up any intervals or timeouts
-    const maxId = setTimeout(() => {}, 0);
-    for (let i = 0; i < maxId; i++) {
-      clearTimeout(i);
-      clearInterval(i);
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.style.background = '';
+      }, 2000);
     }
     
-    // Remove stored listeners (if you track them)
-    if (window.pageListeners && window.pageListeners.length > 0) {
-      window.pageListeners.forEach(({ element, event, handler }) => {
-        element.removeEventListener(event, handler);
-      });
-    }
+    // Show notification
+    showNotification('Contract address copied to clipboard!', 'success');
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+    showNotification('Failed to copy address', 'error');
   });
 }
 
@@ -804,50 +426,15 @@ window.addEventListener('load', function() {
   // Hide loader
   const loader = document.getElementById('loader');
   if (loader) {
-    // Check for reduced motion
-    const transitionDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? '0s' : '0.5s';
-    
-    loader.style.transition = `opacity ${transitionDuration} ease, transform ${transitionDuration} ease`;
-    loader.style.opacity = '0';
-    loader.style.transform = 'scale(1.1)';
-    
     setTimeout(() => {
-      loader.style.display = 'none';
-      loader.setAttribute('aria-hidden', 'true');
-      
-      // Set focus to main content for screen readers
-      const mainContent = document.getElementById('main-content');
-      if (mainContent) {
-        mainContent.setAttribute('tabindex', '-1');
-        mainContent.focus();
-        setTimeout(() => mainContent.removeAttribute('tabindex'), 1000);
-      }
-    }, 500);
-  }
-  
-  // Register service worker
-  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('ServiceWorker registered:', registration.scope);
-      })
-      .catch(error => {
-        console.log('ServiceWorker registration failed:', error);
-      });
+      loader.style.opacity = '0';
+      loader.style.transform = 'scale(1.1)';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500);
+    }, 800);
   }
 });
-
-// Error handling for images
-document.addEventListener('error', function(e) {
-  if (e.target.tagName === 'IMG') {
-    console.warn('Image failed to load:', e.target.src);
-    e.target.style.opacity = '0.5';
-    e.target.title = 'Image failed to load';
-    
-    // You could set a fallback image here
-    // e.target.src = 'images/fallback.svg';
-  }
-}, true);
 
 // Export functions if needed
 window.IndexPage = {
@@ -855,24 +442,5 @@ window.IndexPage = {
   initScrollAnimations,
   initStatsCounters,
   initLogoAnimations,
-  copyContractAddress,
-  addToWallet,
-  copyToClipboard
+  copyContractAddress
 };
-
-// Add this to handle browser back/forward navigation
-window.addEventListener('pageshow', function(event) {
-  // If the page was loaded from cache, reinitialize some features
-  if (event.persisted) {
-    initIntersectionObservers();
-    initStatsCounters();
-  }
-});
-
-// Handle visibility change (tab switching)
-document.addEventListener('visibilitychange', function() {
-  if (!document.hidden) {
-    // Page became visible again
-    initStatsCounters();
-  }
-});
