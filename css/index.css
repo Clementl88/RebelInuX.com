@@ -905,9 +905,9 @@ body {
 }
 
 .solana-node .node-icon {
-  background: rgba(0, 170, 255, 0.25);
-  border-color: rgba(0, 170, 255, 0.4);
-  color: var(--rebel-blue);
+  background: rgba(212, 167, 106, 0.25); /* Gold instead of blue */
+  border-color: rgba(212, 167, 106, 0.4); /* Gold border */
+  color: var(--rebel-gold); /* Gold icon color */
 }
 
 .node-label {
@@ -958,11 +958,16 @@ body {
 }
 
 .token-badge.reward {
-  background: rgba(0, 170, 255, 0.2);
-  color: var(--rebel-blue);
-  border-color: rgba(0, 170, 255, 0.3);
+  background: rgba(212, 167, 106, 0.2); /* Gold/Yellow background */
+  color: var(--rebel-gold); /* Gold text */
+  border-color: rgba(212, 167, 106, 0.3); /* Gold border */
 }
-
+.chain-node.solana-node .token-badge.reward {
+  background: rgba(212, 167, 106, 0.25); /* Slightly stronger gold */
+  color: var(--rebel-gold);
+  border-color: rgba(212, 167, 106, 0.4);
+  font-weight: 700;
+}
 /* Bridge Animation */
 .bridge-animation {
   position: relative;
@@ -980,7 +985,7 @@ body {
 .bridge-line {
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--rebel-gold), var(--rebel-blue), var(--rebel-gold));
+  background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold), var(--rebel-red));
   position: relative;
   border-radius: 3px;
 }
@@ -1018,7 +1023,7 @@ body {
 .moving-coin {
   width: 20px;
   height: 20px;
-  background: linear-gradient(45deg, var(--rebel-gold), var(--rebel-blue));
+  background: linear-gradient(45deg, var(--rebel-red), var(--rebel-gold));
   border-radius: 50%;
   animation: move-right 2.5s ease-in-out infinite;
   box-shadow: 0 0 10px rgba(212, 167, 106, 0.5);
@@ -1315,6 +1320,52 @@ body {
   margin-top: 2rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== COLORED STATS ===== */
+.stat-item.red-stat .stat-number {
+  background: var(--red-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: var(--rebel-red); /* Fallback */
+}
+
+.stat-item.yellow-stat .stat-number {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: var(--rebel-gold); /* Fallback */
+}
+
+/* Add subtle hover effects */
+.stat-item.red-stat:hover .stat-number {
+  text-shadow: 0 0 10px rgba(215, 77, 77, 0.3);
+}
+
+.stat-item.yellow-stat:hover .stat-number {
+  text-shadow: 0 0 10px rgba(212, 167, 106, 0.3);
+}
+
+/* Update stat titles to match colors */
+.stat-item.red-stat .stat-title {
+  color: var(--rebel-red) !important;
+  opacity: 0.9;
+}
+
+.stat-item.yellow-stat .stat-title {
+  color: var(--rebel-gold) !important;
+  opacity: 0.9;
+}
+
+/* Optional: Add background color on hover */
+.stat-item.red-stat:hover {
+  background: rgba(215, 77, 77, 0.05);
+}
+
+.stat-item.yellow-stat:hover {
+  background: rgba(212, 167, 106, 0.05);
 }
 
 /* ===== ACHIEVEMENT BADGES ===== */
