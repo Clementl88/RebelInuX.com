@@ -211,6 +211,114 @@
   box-sizing: border-box;
 }
 
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  /* Fix container padding */
+  .container {
+    padding: 0 1rem;
+  }
+  
+  /* Fix hero section overflow */
+  .page-hero--main {
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  /* Stack chain visualization vertically */
+  .chain-visualization {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0;
+  }
+  
+  /* Make nodes full width but with max width */
+  .chain-node {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  /* Adjust bridge animation for vertical layout */
+  .bridge-animation {
+    padding: 1rem 0;
+    width: 3px;
+    height: 50px;
+  }
+  
+  .bridge-line {
+    width: 3px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
+  }
+  
+  .bridge-tokens {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Fix floating logo size on mobile */
+  .floating-logo {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .logo-glow {
+    width: 220px;
+    height: 220px;
+  }
+  
+  /* Fix metrics grid on mobile */
+  .hero-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0 0.5rem;
+  }
+  
+  .metric-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  /* Fix buttons on mobile */
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-buttons .cta-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  /* Fix trust badges */
+  .hero-trust-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .trust-badge {
+    width: 100%;
+    max-width: 250px;
+    justify-content: center;
+  }
+  
+  /* Fix quick stats bar */
+  .quick-stats-bar {
+    width: calc(100% - 2rem);
+    margin: 1.5rem auto 0;
+    padding: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
 
 /* Small mobile fixes */
 @media (max-width: 480px) {
@@ -762,15 +870,12 @@ body {
     gap: 2rem;
   }
 }
-/* MOBILE FIX - Chain Visualization */
+/* MOBILE FIX - Add this new section */
 @media (max-width: 767px) {
   .chain-visualization {
     gap: 1.5rem !important;
     margin: 1.5rem auto 2rem !important;
     width: 100%;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
   }
   
   .chain-node {
@@ -778,24 +883,15 @@ body {
     max-width: 280px !important;
     margin: 0 auto !important;
     padding: 1.5rem !important;
-    order: 1;
-  }
-  
-  .chain-node:first-child {
-    order: 1;
   }
   
   .bridge-animation {
     width: 100% !important;
-    padding: 0.5rem 0 !important;
+    padding: 1rem 0 !important;
     order: 2;
     transform: rotate(90deg);
     height: 60px;
     margin: 0.5rem 0;
-  }
-  
-  .chain-node:last-child {
-    order: 3;
   }
   
   .bridge-line {
@@ -810,12 +906,10 @@ body {
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) rotate(-90deg) !important;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     padding: 0.5rem 0.75rem !important;
     border-radius: 20px;
     font-size: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
   }
   
   .bridge-tokens i {
@@ -1327,45 +1421,7 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-/* Quick Stats Bar Mobile Fix */
-@media (max-width: 767px) {
-  .quick-stats-bar {
-    margin-top: 1rem !important;
-    padding: 1rem !important;
-    width: calc(100% - 1.5rem) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    position: relative;
-    z-index: 5;
-    clear: both;
-  }
-  
-  .quick-stats-bar .stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
-  }
-  
-  .stat-item {
-    padding: 0.5rem 0.25rem !important;
-    text-align: center;
-    min-height: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .stat-number {
-    font-size: 1.1rem !important;
-    margin-bottom: 0.125rem !important;
-    line-height: 1.2;
-  }
-  
-  .stat-title {
-    font-size: 0.65rem !important;
-    line-height: 1.1 !important;
-    margin: 0;
-  }
-}
+
 /* ===== COLORED STATS ===== */
 .stat-item.red-stat .stat-number {
   background: var(--red-gradient);
@@ -2144,20 +2200,18 @@ body {
   .ecosystem-flow {
     flex-direction: column !important;
     gap: 2rem !important;
-    width: 100%;
   }
   
-  .bridge-animation {
-    /* Target ALL bridge animations in token ecosystem */
+  .bridge-animation:not(:first-of-type) {
+    /* Target the second bridge animation in token ecosystem */
     width: 100% !important;
     padding: 1.5rem 0 !important;
     margin: 0.5rem 0 !important;
     height: 60px;
     transform: rotate(90deg);
-    order: 2;
   }
   
-  .bridge-animation .bridge-line {
+  .bridge-animation:not(:first-of-type) .bridge-line {
     width: 3px !important;
     height: 60px !important;
     background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue)) !important;
@@ -2175,7 +2229,6 @@ body {
     text-align: center;
     background: rgba(255, 255, 255, 0.15) !important;
     border-radius: 20px;
-    min-width: 140px;
   }
   
   .bridge-content img {
@@ -2191,17 +2244,6 @@ body {
   /* Hide particles on mobile */
   .bridge-particles {
     display: none !important;
-  }
-  
-  /* Ensure chain platforms stack properly */
-  .chain-platform {
-    order: 1;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .chain-platform:last-child {
-    order: 3;
   }
 }
 .bridge-animation .bridge-line {
@@ -4228,5 +4270,43 @@ body {
     border: 1px solid black !important;
     background: white !important;
     color: black !important;
+  }
+}
+/* ===== FINAL MOBILE OVERLAP FIXES ===== */
+@media (max-width: 767px) {
+  /* Prevent all overlapping */
+  .hero-visual > * {
+    margin-bottom: 1.5rem !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+  
+  .token-logo-container {
+    margin-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    clear: both;
+  }
+  
+  .hero-content {
+    gap: 1.5rem !important;
+  }
+  
+  /* Ensure containers don't overflow */
+  .container, 
+  .hero-content,
+  .visual-container {
+    overflow: visible !important;
+    max-width: 100% !important;
+  }
+  
+  /* Force proper stacking */
+  .page-hero--main {
+    overflow: visible !important;
+  }
+  
+  .page-hero--main .container {
+    overflow: visible !important;
+    padding-bottom: 1rem !important;
   }
 }
