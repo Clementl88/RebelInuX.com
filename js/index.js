@@ -490,6 +490,7 @@ function initBackToTop() {
     });
   });
 }
+
 // Enhanced mobile optimizations for token ecosystem - FIXED
 function optimizeTokenEcosystemForMobile() {
   if (!isMobile()) return;
@@ -604,50 +605,6 @@ function updateBridgeForMobile(bridgeElement) {
   }
 }
 
-// Add swipe hint for horizontal scrolling sections
-function addSwipeHint() {
-  const tokenSection = document.getElementById('token-ecosystem');
-  if (!tokenSection || !isMobile()) return;
-  
-  // Check if content might overflow
-  const checkOverflow = () => {
-    const cards = tokenSection.querySelectorAll('.token-card, .nft-card');
-    let totalWidth = 0;
-    cards.forEach(card => {
-      totalWidth += card.offsetWidth;
-    });
-    
-    if (totalWidth > window.innerWidth - 40) {
-      // Add swipe hint
-      const hint = document.createElement('div');
-      hint.className = 'swipe-hint';
-      hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> <span>Swipe to view</span>';
-      hint.style.cssText = `
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(212, 167, 106, 0.1);
-        border-radius: 20px;
-        color: var(--rebel-gold);
-        font-size: 0.8rem;
-        margin: 1rem auto;
-        width: fit-content;
-        border: 1px solid rgba(212, 167, 106, 0.2);
-        animation: pulse 2s infinite;
-      `;
-      
-      const platformHeaders = tokenSection.querySelectorAll('.platform-header');
-      if (platformHeaders.length > 0) {
-        platformHeaders[0].parentNode.insertBefore(hint, platformHeaders[0].nextSibling);
-      }
-    }
-  };
-  
-  // Run after images load
-  setTimeout(checkOverflow, 500);
-}
-
 // Mobile Optimizations
 function initMobileOptimizations() {
   if (!isMobile()) return;
@@ -674,8 +631,7 @@ function initMobileOptimizations() {
   
   // Mobile-specific optimizations
   optimizeForMobile();
-    optimizeTokenEcosystemForMobile();
-
+  optimizeTokenEcosystemForMobile();
 }
 
 // Add new optimization function AFTER initMobileOptimizations
@@ -701,11 +657,11 @@ function optimizeForMobile() {
     rootMargin: '20px'
   };
   
-  // Adjust touch targets for mobile
+  // Adjust touch targets for better mobile UX
   adjustTouchTargets();
 }
 
-// Adjust touch targets for better mobile UX - ADD this new function
+// Adjust touch targets for better mobile UX
 function adjustTouchTargets() {
   const touchElements = document.querySelectorAll('.action-btn, .copy-btn, .view-btn, .wallet-btn, .cta-button');
   
@@ -738,7 +694,7 @@ function adjustTouchTargets() {
   });
 }
 
-// Find and UPDATE the initTouchInteractions function (around line 370-400):
+// Enhanced touch interactions
 function initTouchInteractions() {
   // Add long-press to copy on mobile
   if (isMobile()) {
@@ -785,6 +741,7 @@ function initTouchInteractions() {
     }, { passive: true });
   });
 }
+
 // Lazy Loading Enhancement
 function initLazyLoading() {
   if ('IntersectionObserver' in window) {
