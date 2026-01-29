@@ -514,13 +514,106 @@ function initMobileOptimizations() {
       img.loading = 'eager';
     }
   });
+  
+  // Mobile-specific optimizations
+  optimizeForMobile();
 }
 
-// Touch Interactions
-function initTouchInteractions() {
-  if (!isMobile()) return;
+// Add new optimization function AFTER initMobileOptimizations
+function optimizeForMobile() {
+  // Disable heavy animations on mobile
+  if (isMobile()) {
+    // Reduce floating animation intensity
+    const floatingElements = document.querySelectorAll('.floating-logo, .logo-3d');
+    floatingElements.forEach(el => {
+      el.style.animationDuration = '4s';
+    });
+    
+    // Simplify bridge animation
+    const bridgeElements = document.querySelectorAll('.bridge-animation, .bridge-particles');
+    bridgeElements.forEach(el => {
+      el.style.animationPlayState = 'paused';
+    });
+  }
   
-  // Add touch feedback to interactive elements
+  // Adjust scroll animations for mobile
+  const observerOptions = {
+    threshold: 0.05,
+    rootMargin: '20px'
+  };
+  
+  // Adjust touch targets for mobile
+  adjustTouchTargets();
+}
+
+// Adjust touch targets for better mobile UX - ADD this new function
+function adjustTouchTargets() {
+  const touchElements = document.querySelectorAll('.action-btn, .copy-btn, .view-btn, .wallet-btn, .cta-button');
+  
+  touchElements.forEach(el => {
+    // Ensure minimum touch target size
+    if (el.offsetHeight < 44 || el.offsetWidth < 44) {
+      const style = window.getComputedStyle(el);
+      const paddingY = parseInt(style.paddingTop) + parseInt(style.paddingBottom);
+      const paddingX = parseInt(style.paddingLeft) + parseInt(style.paddingRight);
+      
+      if (el.offsetHeight - paddingY < 44) {
+        el.style.minHeight = '44px';
+      }
+      
+      if (el.offsetWidth - paddingX < 44) {
+        el.style.minWidth = '44px';
+      }
+    }
+    
+    // Add touch feedback
+    el.addEventListener('touchstart', function() {
+      this.style.transform = 'scale(0.98)';
+      this.style.opacity = '0.9';
+    }, { passive: true });
+    
+    el.addEventListener('touchend', function() {
+      this.style.transform = '';
+      this.style.opacity = '';
+    }, { passive: true });
+  });
+}
+
+// Find and UPDATE the initTouchInteractions function (around line 370-400):
+function initTouchInteractions() {
+  // Add long-press to copy on mobile
+  if (isMobile()) {
+    const contractAddresses = document.querySelectorAll('.contract-address code');
+    
+    contractAddresses.forEach(code => {
+      let pressTimer;
+      
+      code.addEventListener('touchstart', function(e) {
+        pressTimer = setTimeout(() => {
+          const fullAddress = this.getAttribute('data-full') || this.textContent;
+          copyToClipboard(fullAddress.trim())
+            .then(() => showNotification('Address copied!', 'success'))
+            .catch(() => showNotification('Copy failed', 'error'));
+          
+          // Visual feedback
+          this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+          setTimeout(() => {
+            this.style.backgroundColor = '';
+          }, 500);
+        }, 800); // 800ms long press
+      }, { passive: true });
+      
+      code.addEventListener('touchend', function() {
+        clearTimeout(pressTimer);
+      }, { passive: true });
+      
+      code.addEventListener('touchmove', function() {
+        clearTimeout(pressTimer);
+      }, { passive: true });
+    });
+  }
+  
+  // Basic touch feedback for all touch devices
   const touchElements = document.querySelectorAll('button, a, .token-card, .value-card');
   
   touchElements.forEach(el => {
@@ -533,7 +626,6 @@ function initTouchInteractions() {
     }, { passive: true });
   });
 }
-
 // Lazy Loading Enhancement
 function initLazyLoading() {
   if ('IntersectionObserver' in window) {
