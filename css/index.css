@@ -121,26 +121,18 @@
 /* ===== HERO SECTION ENHANCEMENTS ===== */
 .page-hero--main {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background: var(--hero-gradient);
   padding: 4rem 0 2rem;
 }
-/* Quick Stats Bar */
-.quick-stats-bar {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+
 @media (min-width: 768px) {
   .page-hero--main {
     padding: 6rem 0 3rem;
   }
 }
-/* ===== FIX HERO SECTION WIDTH ===== */
 
+/* ===== FIX HERO SECTION WIDTH ===== */
 /* Ensure all sections use the same container */
 .container {
   width: 100%;
@@ -156,7 +148,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-  overflow: hidden; /* Prevent horizontal scroll */
+  overflow: visible;
 }
 
 /* Ensure hero content doesn't overflow */
@@ -175,7 +167,8 @@
   max-width: 500px;
   margin: 0 auto;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;
+  padding: 10px 0;
 }
 
 /* Fix chain visualization width on mobile */
@@ -392,7 +385,6 @@ body {
   width: 100%;
 }
 
-
 .hero-background-pattern {
   position: absolute;
   top: 0;
@@ -543,6 +535,7 @@ body {
     font-size: 1.1rem;
   }
 }
+
 .hero-sub-description {
   font-size: 0.95rem;
   line-height: 1.5;
@@ -751,22 +744,13 @@ body {
   color: var(--rebel-gold);
 }
 
-/* Visual Container */
-.visual-container {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
 .floating-logo {
   width: 200px;
   height: 200px;
   margin: 0 auto 2rem;
   position: relative;
-  /* Add extra padding top to accommodate upward movement */
-  padding-top: 0; /* Space for upward float */
-  margin-bottom: 30px; /* Extra space below for glow */
+  padding-top: 0;
+  margin-bottom: 30px;
 }
 
 @media (min-width: 768px) {
@@ -776,7 +760,6 @@ body {
     margin-bottom: 40px;
   }
 }
-
 
 /* Adjust logo 3d positioning - fixed */
 .logo-3d {
@@ -794,7 +777,7 @@ body {
     transform: translateY(0px) rotateY(0deg); 
   }
   50% { 
-    transform: translateY(-10px) rotateY(5deg); /* Reduced from 15px */
+    transform: translateY(-10px) rotateY(5deg);
   }
 }
 
@@ -804,8 +787,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 110%; /* Slightly larger than container */
-  height: 110%; /* Slightly larger than container */
+  width: 110%;
+  height: 110%;
   background: radial-gradient(
     circle at center,
     rgba(212, 167, 106, 0.4) 0%,
@@ -814,9 +797,7 @@ body {
   );
   z-index: -1;
   border-radius: 50%;
-  /* Remove the top adjustment that was causing the cut */
   top: 50%;
-  /* Ensure it doesn't get cut by overflow */
   pointer-events: none;
   box-shadow: 0 0 60px rgba(212, 167, 106, 0.3);
 }
@@ -828,26 +809,7 @@ body {
     box-shadow: 0 0 80px rgba(212, 167, 106, 0.4);
   }
 }
-/* Ensure visual container doesn't cut the glow */
-.visual-container {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  /* Allow glow to overflow naturally */
-  overflow: visible;
-  padding: 10px 0; /* Add vertical padding for glow */
-}
 
-/* Ensure hero section allows overflow for glow effects */
-.page-hero--main {
-  position: relative;
-  overflow: visible; /* Changed from hidden to visible */
-}
-
-.page-hero--main .container {
-  overflow: visible; /* Allow glow effects to show */
-}
 /* Chain Visualization */
 .chain-visualization {
   display: flex;
@@ -905,9 +867,9 @@ body {
 }
 
 .solana-node .node-icon {
-  background: rgba(212, 167, 106, 0.25); /* Gold instead of blue */
-  border-color: rgba(212, 167, 106, 0.4); /* Gold border */
-  color: var(--rebel-gold); /* Gold icon color */
+  background: rgba(212, 167, 106, 0.25);
+  border-color: rgba(212, 167, 106, 0.4);
+  color: var(--rebel-gold);
 }
 
 .node-label {
@@ -946,11 +908,13 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--shadow-light);
 }
+
 .chain-node.base-node .token-badge {
-  background: rgba(215, 77, 77, 0.2); /* Red background */
-  color: var(--rebel-red); /* Red text */
-  border-color: rgba(215, 77, 77, 0.3); /* Red border */
+  background: rgba(215, 77, 77, 0.2);
+  color: var(--rebel-red);
+  border-color: rgba(215, 77, 77, 0.3);
 }
+
 .token-badge.nft {
   background: rgba(255, 215, 0, 0.2);
   color: var(--rebel-gold);
@@ -958,16 +922,18 @@ body {
 }
 
 .token-badge.reward {
-  background: rgba(212, 167, 106, 0.2); /* Gold/Yellow background */
-  color: var(--rebel-gold); /* Gold text */
-  border-color: rgba(212, 167, 106, 0.3); /* Gold border */
+  background: rgba(212, 167, 106, 0.2);
+  color: var(--rebel-gold);
+  border-color: rgba(212, 167, 106, 0.3);
 }
+
 .chain-node.solana-node .token-badge.reward {
-  background: rgba(212, 167, 106, 0.25); /* Slightly stronger gold */
+  background: rgba(212, 167, 106, 0.25);
   color: var(--rebel-gold);
   border-color: rgba(212, 167, 106, 0.4);
   font-weight: 700;
 }
+
 /* Bridge Animation */
 .bridge-animation {
   position: relative;
@@ -1112,12 +1078,12 @@ body {
 }
 
 .rebelinux-ticker .ticker-symbol {
-  background: var(--red-gradient); /* Changed from purple to red */
+  background: var(--red-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: var(--rebel-purple);
-    text-shadow: 0 2px 10px rgba(215, 77, 77, 0.3); /* Red glow */
+  text-shadow: 0 2px 10px rgba(215, 77, 77, 0.3);
 }
 
 .ticker-name {
@@ -1128,11 +1094,12 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
 /* Logo Styling - BOTH SAME SIZE */
 .main-logo-container .floating-logo,
 .token-logo-container .floating-logo {
-  width: 180px;  /* Same size for both */
-  height: 180px; /* Same size for both */
+  width: 180px;
+  height: 180px;
   margin: 0 auto;
 }
 
@@ -1146,7 +1113,7 @@ body {
 
 /* Keep the floating animation for both */
 .token-logo-container .token-logo-img {
-  filter: drop-shadow(0 0 15px rgba(215, 77, 77, 0.5)); /* Changed to red */
+  filter: drop-shadow(0 0 15px rgba(215, 77, 77, 0.5));
   animation: float 3s ease-in-out infinite;
 }
 
@@ -1154,11 +1121,11 @@ body {
 .rebelinux-glow {
   background: radial-gradient(
     circle at center,
-        rgba(215, 77, 77, 0.4) 0%, /* Changed to red */
-    rgba(215, 77, 77, 0.2) 30%, /* Changed to red */
+    rgba(215, 77, 77, 0.4) 0%,
+    rgba(215, 77, 77, 0.2) 30%,
     transparent 70%
   );
-    box-shadow: 0 0 60px rgba(215, 77, 77, 0.3); /* Added red shadow */
+  box-shadow: 0 0 60px rgba(215, 77, 77, 0.3);
 }
 
 .main-logo-container .logo-glow {
@@ -1169,6 +1136,7 @@ body {
     transparent 70%
   );
 }
+
 /* Optional red pulse effect for $rebelinux logo */
 .rebelinux-logo {
   position: relative;
@@ -1230,36 +1198,15 @@ body {
   }
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .ticker-symbol {
-    font-size: 1.5rem;
-  }
-  
-  .main-logo-container .floating-logo,
-  .token-logo-container .floating-logo {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .main-logo-container,
-  .token-logo-container {
-    margin-bottom: 1.5rem;
-  }
+/* Quick Stats Bar */
+.quick-stats-bar {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-@media (max-width: 480px) {
-  .main-logo-container .floating-logo,
-  .token-logo-container .floating-logo {
-    width: 120px;
-    height: 120px;
-  }
-}
-
-
-
-}
-
 
 .stats-grid {
   display: grid;
@@ -1312,15 +1259,6 @@ body {
     font-size: 0.875rem;
   }
 }
-/* Quick Stats Bar */
-.quick-stats-bar {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
 
 /* ===== COLORED STATS ===== */
 .stat-item.red-stat .stat-number {
@@ -1328,7 +1266,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: var(--rebel-red); /* Fallback */
+  color: var(--rebel-red);
 }
 
 .stat-item.yellow-stat .stat-number {
@@ -1336,7 +1274,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: var(--rebel-gold); /* Fallback */
+  color: var(--rebel-gold);
 }
 
 /* Add subtle hover effects */
@@ -1385,14 +1323,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(45deg, var(--rebel-red), #e74c3c); /* Changed to red */
+  background: linear-gradient(45deg, var(--rebel-red), #e74c3c);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   font-size: 0.95rem;
   font-weight: 700;
-  border: 2px solid rgba(215, 77, 77, 0.3); /* Changed to red */
-  box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3); /* Changed to red */
+  border: 2px solid rgba(215, 77, 77, 0.3);
+  box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3);
   animation: achievement-pulse 2s ease-in-out infinite;
   backdrop-filter: blur(10px);
   transition: transform var(--animation-fast) ease;
@@ -1400,34 +1338,33 @@ body {
 
 .achievement-badge:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4); /* Changed to red */
+  box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4);
 }
 
 @keyframes achievement-pulse {
   0%, 100% { 
     transform: scale(1); 
-    box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3); /* Changed to red */
+    box-shadow: 0 4px 15px rgba(215, 77, 77, 0.3);
   }
   50% { 
     transform: scale(1.02); 
-    box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4); /* Changed to red */
+    box-shadow: 0 6px 20px rgba(215, 77, 77, 0.4);
   }
 }
-
 
 /* Token Achievement Badge */
 .token-achievement {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: linear-gradient(45deg, rgba(215, 77, 77, 0.1), rgba(231, 76, 60, 0.1)); /* Red */
-  color: var(--rebel-red); /* Red text */
+  background: linear-gradient(45deg, rgba(215, 77, 77, 0.1), rgba(231, 76, 60, 0.1));
+  color: var(--rebel-red);
   padding: 0.75rem 1rem;
   border-radius: 10px;
   margin: 1rem 0;
   font-size: 0.85rem;
   font-weight: 600;
-  border: 1px solid rgba(215, 77, 77, 0.2); /* Red border */
+  border: 1px solid rgba(215, 77, 77, 0.2);
   transition: all var(--animation-fast) ease;
 }
 
@@ -1436,10 +1373,12 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(215, 77, 77, 0.15);
 }
+
 .token-achievement i {
   font-size: 1rem;
-  color: var(--rebel-red); /* Red icon */
+  color: var(--rebel-red);
 }
+
 /* $rebelinux Token Achievement (Purple) */
 .token-achievement {
   background: linear-gradient(45deg, rgba(157, 78, 221, 0.1), rgba(123, 44, 191, 0.1));
@@ -1451,7 +1390,6 @@ body {
   font-size: 1rem;
   color: var(--rebel-purple);
 }
-
 
 /* $REBL Token Achievement (Gold/Blue) */
 .rebl-achievement {
@@ -1473,11 +1411,7 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(157, 78, 221, 0.15);
 }
-/* ===== VALUE PROPOSITION SECTION ===== */
-.value-proposition {
-  padding: 4rem 0;
-  background: white;
-}
+
 /* ===== VALUE PROPOSITION SECTION ===== */
 .value-proposition {
   padding: 4rem 0;
@@ -2135,28 +2069,29 @@ body {
   font-weight: 600;
   font-size: 0.9rem;
 }
+
 /* ===== ZORA BRIDGE STYLING ===== */
 .bridge-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem; /* Reduced gap */
-  padding: 0.5rem 1rem; /* Reduced padding */
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 30px; /* Slightly smaller radius */
+  border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   white-space: nowrap;
-  min-width: auto; /* Allow it to shrink */
-  max-width: 200px; /* Set a max width */
+  min-width: auto;
+  max-width: 200px;
 }
 
 .zora-logo-above {
-  margin-bottom: 0.125rem; /* Reduced margin */
+  margin-bottom: 0.125rem;
 }
 
 .zora-logo-top {
-  width: 24px; /* Smaller logo */
+  width: 24px;
   height: 24px;
   border-radius: 6px;
   background: white;
@@ -2167,24 +2102,21 @@ body {
 .bridge-text-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced gap */
-  padding: 0.25rem 0.5rem; /* Added inner padding */
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .bridge-icon {
   color: var(--rebel-gold);
-  font-size: 1rem; /* Smaller icon */
+  font-size: 1rem;
 }
 
 .bridge-label {
   color: white;
   font-weight: 600;
-  font-size: 0.8rem; /* Smaller text */
+  font-size: 0.8rem;
   white-space: nowrap;
 }
-
-/* Remove the connecting line to save space */
-/* .zora-logo-above::after { display: none; } */
 
 .summary-card {
   background: rgba(255, 255, 255, 0.05);
@@ -4048,50 +3980,6 @@ body {
   }
 }
 
-/* ===== PRINT STYLES ===== */
-@media print {
-  .page-hero--main,
-  .token-ecosystem,
-  .final-cta {
-    background: white !important;
-    color: black !important;
-  }
-  
-  .hero-background-pattern,
-  .hero-particles,
-  .visual-container,
-  .floating-logo,
-  .bridge-animation,
-  .reward-flow,
-  .back-to-top {
-    display: none !important;
-  }
-  
-  .hero-title,
-  .hero-subtitle,
-  .section-header h2,
-  .section-subtitle,
-  .metric-value,
-  .stat-number,
-  .detail-value,
-  .logo-label,
-  .governance-content h3 {
-    color: black !important;
-    background: none !important;
-    -webkit-background-clip: initial !important;
-    -webkit-text-fill-color: initial !important;
-  }
-  
-  .cta-button,
-  .action-btn,
-  .copy-btn,
-  .view-btn,
-  .wallet-btn {
-    border: 1px solid black !important;
-    background: white !important;
-    color: black !important;
-  }
-}
 /* ===== MOBILE OPTIMIZATION FOR TOKEN ECOSYSTEM ===== */
 @media (max-width: 768px) {
   /* Fix token ecosystem flow layout */
@@ -4184,7 +4072,7 @@ body {
   .bridge-animation {
     padding: 1rem 0;
     margin: 1rem auto;
-    order: 2; /* Place bridge between platforms */
+    order: 2;
   }
   
   .bridge-line {
@@ -4402,6 +4290,7 @@ body {
     }
   }
 }
+
 /* Ensure stats section doesn't overflow */
 @media (max-width: 767px) {
   .live-statistics .container {
@@ -4431,5 +4320,50 @@ body {
 @media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .page-hero--main,
+  .token-ecosystem,
+  .final-cta {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .hero-background-pattern,
+  .hero-particles,
+  .visual-container,
+  .floating-logo,
+  .bridge-animation,
+  .reward-flow,
+  .back-to-top {
+    display: none !important;
+  }
+  
+  .hero-title,
+  .hero-subtitle,
+  .section-header h2,
+  .section-subtitle,
+  .metric-value,
+  .stat-number,
+  .detail-value,
+  .logo-label,
+  .governance-content h3 {
+    color: black !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+  }
+  
+  .cta-button,
+  .action-btn,
+  .copy-btn,
+  .view-btn,
+  .wallet-btn {
+    border: 1px solid black !important;
+    background: white !important;
+    color: black !important;
   }
 }
