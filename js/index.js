@@ -490,27 +490,65 @@ function initBackToTop() {
     });
   });
 }
-// Enhanced mobile optimizations for token ecosystem
+// Enhanced mobile optimizations for token ecosystem - FIXED
 function optimizeTokenEcosystemForMobile() {
   if (!isMobile()) return;
   
   const ecosystemFlow = document.querySelector('.ecosystem-flow');
-  if (ecosystemFlow) {
-    // Reorder elements for better mobile flow
-    const bridge = ecosystemFlow.querySelector('.bridge-animation');
-    const basePlatform = ecosystemFlow.querySelector('.base-platform');
-    const solanaPlatform = ecosystemFlow.querySelector('.solana-platform');
+  if (!ecosystemFlow) return;
+  
+  // Get all elements
+  const basePlatform = ecosystemFlow.querySelector('.base-platform');
+  const solanaPlatform = ecosystemFlow.querySelector('.solana-platform');
+  const bridgeAnimation = ecosystemFlow.querySelector('.bridge-animation');
+  
+  if (basePlatform && solanaPlatform && bridgeAnimation) {
+    // Clear current order
+    ecosystemFlow.innerHTML = '';
     
-    if (bridge && basePlatform && solanaPlatform) {
-      // Clear and reorder for better mobile viewing
-      ecosystemFlow.innerHTML = '';
-      ecosystemFlow.appendChild(basePlatform);
-      ecosystemFlow.appendChild(bridge);
-      ecosystemFlow.appendChild(solanaPlatform);
-      
-      // Add visual indicator for mobile
-      bridge.classList.add('mobile-bridge');
-    }
+    // Create a proper mobile layout
+    const mobileLayout = document.createElement('div');
+    mobileLayout.className = 'ecosystem-mobile-layout';
+    mobileLayout.style.cssText = `
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+    `;
+    
+    // Add base platform
+    const baseWrapper = document.createElement('div');
+    baseWrapper.className = 'mobile-platform-wrapper';
+    baseWrapper.appendChild(basePlatform);
+    mobileLayout.appendChild(baseWrapper);
+    
+    // Add bridge (positioned between platforms)
+    const bridgeWrapper = document.createElement('div');
+    bridgeWrapper.className = 'mobile-bridge-wrapper';
+    bridgeWrapper.style.cssText = `
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 1rem 0;
+    `;
+    
+    // Transform bridge for mobile
+    bridgeAnimation.classList.add('mobile-bridge');
+    bridgeWrapper.appendChild(bridgeAnimation);
+    mobileLayout.appendChild(bridgeWrapper);
+    
+    // Add solana platform
+    const solanaWrapper = document.createElement('div');
+    solanaWrapper.className = 'mobile-platform-wrapper';
+    solanaWrapper.appendChild(solanaPlatform);
+    mobileLayout.appendChild(solanaWrapper);
+    
+    // Add to ecosystem flow
+    ecosystemFlow.appendChild(mobileLayout);
+    
+    // Update bridge styling for mobile
+    updateBridgeForMobile(bridgeAnimation);
   }
   
   // Optimize contract addresses for mobile
@@ -518,15 +556,52 @@ function optimizeTokenEcosystemForMobile() {
   contractCodes.forEach(code => {
     const fullText = code.getAttribute('data-full') || code.textContent;
     if (fullText.length > 20) {
-      // Show shorter version on mobile
       const mobileText = `${fullText.substring(0, 8)}...${fullText.substring(fullText.length - 6)}`;
       code.textContent = mobileText;
-      code.setAttribute('title', fullText);
+      code.setAttribute('title', 'Tap to view full address. Long press to copy.');
     }
   });
+}
+
+// Helper to update bridge for mobile
+function updateBridgeForMobile(bridgeElement) {
+  const bridgeLine = bridgeElement.querySelector('.bridge-line');
+  const bridgeContent = bridgeElement.querySelector('.bridge-content');
   
-  // Add swipe hint for mobile
-  addSwipeHint();
+  if (bridgeLine && bridgeContent) {
+    // Change bridge line to vertical for mobile
+    bridgeLine.style.cssText = `
+      width: 3px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
+      margin: 0 auto;
+      border-radius: 3px;
+    `;
+    
+    // Center bridge content
+    bridgeContent.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+      z-index: 2;
+    `;
+    
+    // Update text for mobile
+    const bridgeText = bridgeContent.querySelector('span');
+    if (bridgeText) {
+      bridgeText.textContent = 'Cross-Chain';
+    }
+  }
 }
 
 // Add swipe hint for horizontal scrolling sections
