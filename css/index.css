@@ -761,16 +761,16 @@ body {
   .chain-visualization {
     gap: 2rem;
   }
-}
-/* MOBILE FIX - Chain Visualization */
+}/* MOBILE FIX - Chain Visualization */
 @media (max-width: 767px) {
   .chain-visualization {
-    gap: 1.5rem !important;
+    gap: 0.5rem !important;
     margin: 1.5rem auto 2rem !important;
     width: 100%;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    position: relative;
   }
   
   .chain-node {
@@ -778,25 +778,63 @@ body {
     max-width: 280px !important;
     margin: 0 auto !important;
     padding: 1.5rem !important;
-    order: 1;
   }
   
-  .chain-node:first-child {
+  .chain-node.base-node {
     order: 1;
+    margin-bottom: 0.5rem !important;
   }
   
   .bridge-animation {
     width: 100% !important;
     padding: 0.5rem 0 !important;
     order: 2;
-    transform: rotate(90deg);
-    height: 60px;
-    margin: 0.5rem 0;
+    height: 40px;
+    margin: 0 auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
   }
   
-  .chain-node:last-child {
-    order: 3;
+  .bridge-line {
+    width: 3px !important;
+    height: 40px !important;
+    background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold), var(--rebel-blue)) !important;
+    margin: 0 auto;
   }
+  
+  .bridge-tokens {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .bridge-tokens i {
+    font-size: 0.8rem !important;
+  }
+  
+  .moving-coin {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  
+  .chain-node.solana-node {
+    order: 3;
+    margin-top: 0.5rem !important;
+  }
+}
   
   .bridge-line {
     width: 3px !important;
@@ -2143,19 +2181,80 @@ body {
 @media (max-width: 767px) {
   .ecosystem-flow {
     flex-direction: column !important;
-    gap: 2rem !important;
+    gap: 1rem !important;
     width: 100%;
+    position: relative;
+  }
+  
+  .chain-platform.base-platform {
+    order: 1;
+    margin-bottom: 0.5rem !important;
   }
   
   .bridge-animation {
     /* Target ALL bridge animations in token ecosystem */
     width: 100% !important;
-    padding: 1.5rem 0 !important;
-    margin: 0.5rem 0 !important;
-    height: 60px;
-    transform: rotate(90deg);
+    padding: 0.75rem 0 !important;
+    margin: 0 auto !important;
+    height: 40px;
     order: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+  
+  .bridge-animation .bridge-line {
+    width: 3px !important;
+    height: 40px !important;
+    background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue)) !important;
+    margin: 0 auto;
+  }
+  
+  .bridge-content {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    padding: 0.5rem 0.75rem !important;
+    flex-direction: row;
+    gap: 0.5rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 20px;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .bridge-content img {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .bridge-content span {
+    font-size: 0.7rem !important;
+    white-space: nowrap;
+  }
+  
+  /* Hide particles on mobile */
+  .bridge-particles {
+    display: none !important;
+  }
+  
+  /* Ensure chain platforms stack properly */
+  .chain-platform {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .chain-platform.solana-platform {
+    order: 3;
+    margin-top: 0.5rem !important;
+  }
+}
   
   .bridge-animation .bridge-line {
     width: 3px !important;
@@ -4228,5 +4327,27 @@ body {
     border: 1px solid black !important;
     background: white !important;
     color: black !important;
+  }
+}
+/* TEMPORARY VISUAL TEST - Remove after confirming */
+@media (max-width: 767px) {
+  .chain-node.base-node {
+    border: 2px solid rgba(255, 0, 0, 0.3) !important;
+  }
+  
+  .bridge-animation {
+    border: 2px solid rgba(0, 255, 0, 0.3) !important;
+  }
+  
+  .chain-node.solana-node {
+    border: 2px solid rgba(0, 0, 255, 0.3) !important;
+  }
+  
+  .chain-platform.base-platform {
+    border: 2px solid rgba(255, 0, 0, 0.3) !important;
+  }
+  
+  .chain-platform.solana-platform {
+    border: 2px solid rgba(0, 0, 255, 0.3) !important;
   }
 }
