@@ -1345,3 +1345,60 @@ window.addEventListener('error', function(e) {
     });
   }
 });
+// Add at the beginning of initIndexPage() function
+console.log('🎬 Initializing animations...');
+
+// Add animation classes to elements
+function activateAnimations() {
+  console.log('🎯 Activating animations...');
+  
+  // Floating logo animation
+  const floatingLogo = document.querySelector('.logo-3d');
+  if (floatingLogo) {
+    floatingLogo.style.animation = 'float 3s ease-in-out infinite';
+    console.log('✅ Floating logo animation activated');
+  }
+  
+  // Loader spinner
+  const loaderSpinner = document.querySelector('.loader-spinner');
+  if (loaderSpinner) {
+    loaderSpinner.style.animation = 'spin 1s linear infinite';
+  }
+  
+  // Progress bar
+  const progressBar = document.querySelector('.progress-bar');
+  if (progressBar) {
+    progressBar.style.animation = 'progress-load 3s ease-in-out forwards';
+  }
+  
+  // Moving coin animation
+  const movingCoin = document.querySelector('.moving-coin');
+  if (movingCoin) {
+    movingCoin.style.animation = 'move-right 2.5s ease-in-out infinite';
+  }
+  
+  // Pulse animations
+  const pulseElements = document.querySelectorAll('.badge-text, .flow-dot');
+  pulseElements.forEach(el => {
+    el.style.animation = 'pulse 2s infinite';
+  });
+  
+  // Glow animations
+  const primaryGlowButtons = document.querySelectorAll('.primary-glow');
+  primaryGlowButtons.forEach(btn => {
+    btn.style.position = 'relative';
+  });
+  
+  console.log(`✅ ${pulseElements.length} pulse animations activated`);
+}
+
+// Call this in your initIndexPage() function
+function initIndexPage() {
+  console.log('✨ Initializing enhanced Index page features');
+  
+  // Initialize components
+  initLoader();
+  activateAnimations(); // ADD THIS LINE
+  
+  // Rest of your initialization code...
+}
