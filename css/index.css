@@ -4551,3 +4551,59 @@ body {
     flex-direction: column !important;
   }
 }
+/* Wallet Button States */
+.wallet-action {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.wallet-action.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.wallet-action.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.wallet-action.success {
+  background: #4CAF50 !important;
+  border-color: #45a049 !important;
+}
+
+.wallet-action.error {
+  background: #f44336 !important;
+  border-color: #d32f2f !important;
+}
+
+/* Modal animations */
+.token-instructions-modal {
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
