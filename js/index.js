@@ -223,9 +223,7 @@ function animateCounter(element, target, prefix = '', suffix = '') {
   requestAnimationFrame(updateCounter);
 }
 
-// Enhanced Copy to Clipboard with Feedback
-// In your copyToClipboard handlers, add this for Solana-specific handling
-// Enhanced copy function with correct decimals info
+// Update copy function to mention Base instead of Ethereum
 function handleCopyClick(e) {
   e.preventDefault();
   
@@ -234,7 +232,7 @@ function handleCopyClick(e) {
   const button = e.currentTarget;
   
   if (button.classList.contains('copy-contract-btn')) {
-    // $REBL token (Solana, 9 decimals)
+    // $REBL token (Solana)
     contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
     tokenInfo = 'Solana token (9 decimals)';
   } else if (button.closest('.contract-address')) {
@@ -244,7 +242,7 @@ function handleCopyClick(e) {
       
       // Determine token type
       if (contractText.includes('0xf95beeF')) {
-        tokenInfo = 'Base token (18 decimals)';  // <-- UPDATED to 18!
+        tokenInfo = 'Base token (18 decimals)';  // Base chain, not Ethereum!
       } else if (contractText.includes('F4gh7VN')) {
         tokenInfo = 'Solana token (9 decimals)';
       }
