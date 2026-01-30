@@ -223,45 +223,45 @@ function animateCounter(element, target, prefix = '', suffix = '') {
   requestAnimationFrame(updateCounter);
 }
 
-// Update copy function to mention Base instead of Ethereum
+// Enhanced Copy to Clipboard with Feedback
+// In your copyToClipboard handlers, add this for Solana-specific handling
 function handleCopyClick(e) {
   e.preventDefault();
   
   let contractText = '';
-  let tokenInfo = '';
   const button = e.currentTarget;
   
   if (button.classList.contains('copy-contract-btn')) {
-    // $REBL token (Solana)
+    // This is the $REBL (Solana) contract
     contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-    tokenInfo = 'Solana token (9 decimals)';
   } else if (button.closest('.contract-address')) {
+    // Check if it's a Solana or Ethereum address
     const codeElement = button.closest('.contract-address')?.querySelector('code');
     if (codeElement) {
       contractText = codeElement.getAttribute('data-full') || codeElement.textContent;
       
-      // Determine token type
-      if (contractText.includes('0xf95beeF')) {
-        tokenInfo = 'Base token (18 decimals)';  // Base chain, not Ethereum!
-      } else if (contractText.includes('F4gh7VN')) {
-        tokenInfo = 'Solana token (9 decimals)';
-      }
+      // Add token type info to notification
+      const isSolana = contractText.length > 32;
+      const tokenType = isSolana ? 'Solana ($REBL)' : 'Base ($rebelinux)';
+      
+      copyToClipboard(contractText.trim())
+        .then(() => {
+          showNotification(`${tokenType} address copied!`, 'success');
+          showCopyFeedback(button, true);
+        })
+        .catch(() => {
+          showNotification('Failed to copy address', 'error');
+          showCopyFeedback(button, false);
+        });
+      return;
     }
   }
   
+  // Fallback for other cases
   if (contractText) {
     copyToClipboard(contractText.trim())
-      .then(() => {
-        const message = tokenInfo ? 
-          `Address copied! ${tokenInfo}` : 
-          'Address copied!';
-        showNotification(message, 'success');
-        showCopyFeedback(button, true);
-      })
-      .catch(() => {
-        showNotification('Failed to copy address', 'error');
-        showCopyFeedback(button, false);
-      });
+      .then(() => showCopyFeedback(button, true))
+      .catch(() => showCopyFeedback(button, false));
   }
 }
 
@@ -921,105 +921,19 @@ function showNotification(message, type = 'info') {
   }, 5000);
 }
 
-// ===== ADD TO WALLET FUNCTIONS - BASE & SOLANA =====
-
-// Main function to add tokens
+// Add to Wallet Function - UPDATED FOR SOLANA
+// Enhanced Add Token to Wallet Function
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
-  console.log(`Adding ${symbol} to wallet (${network} network, ${decimals} decimals)`);
+  console.log(`Adding ${symbol} to wallet (${network} network)`);
   
   if (network === 'Solana') {
     addSolanaTokenToWallet(contractAddress, symbol);
   } else if (network === 'Base') {
     addBaseTokenToWallet(contractAddress, symbol, decimals);
-  }
-}
-
-// Function for adding Base chain tokens
-function addBaseTokenToWallet(contractAddress, symbol, decimals) {
-  console.log(`Adding ${symbol} with ${decimals} decimals on Base chain`);
-  
-  // Check for any EVM wallet (MetaMask, Coinbase Wallet, etc.)
-  if (typeof window.ethereum !== 'undefined') {
-    
-    // First check current network
-    ethereum.request({ method: 'eth_chainId' })
-      .then(currentChainId => {
-        const baseChainId = '0x2105'; // Base mainnet
-        
-        if (currentChainId === baseChainId) {
-          // Already on Base, add token
-          addTokenToEVMWallet(contractAddress, symbol, decimals);
-        } else {
-          // Not on Base - try to add token anyway (some wallets work cross-chain)
-          addTokenToEVMWallet(contractAddress, symbol, decimals);
-          
-          // Suggest switching to Base
-          setTimeout(() => {
-            showNotification('Tip: Switch to Base network for best experience', 'info');
-          }, 1500);
-        }
-      })
-      .catch(error => {
-        console.error('Error checking chain:', error);
-        // Still try to add token
-        addTokenToEVMWallet(contractAddress, symbol, decimals);
-      });
-      
   } else {
-    // No EVM wallet detected
-    showNotification(`Please install a Base-compatible wallet like MetaMask or Coinbase Wallet`, 'warning');
-    
-    setTimeout(() => {
-      if (confirm('A Base-compatible wallet is required. Would you like to install MetaMask?')) {
-        window.open('https://metamask.io/', '_blank');
-      }
-    }, 1000);
+    // Generic Ethereum-compatible chain
+    addEthereumTokenToWallet(contractAddress, symbol, decimals, network);
   }
-}
-
-// Add token to EVM wallet (works for Base, Ethereum, etc.)
-function addTokenToEVMWallet(contractAddress, symbol, decimals) {
-  const tokenImages = {
-    'rebelinux': 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg',
-    'REBL': 'https://rebelinux.fun/images/Logo_REBL.svg'
-  };
-  
-  console.log(`Adding ${symbol} to wallet`);
-  
-  ethereum.request({
-    method: 'wallet_watchAsset',
-    params: {
-      type: 'ERC20',
-      options: {
-        address: contractAddress,
-        symbol: symbol,
-        decimals: parseInt(decimals),
-        image: tokenImages[symbol] || ''
-      }
-    }
-  })
-  .then(success => {
-    if (success) {
-      showNotification(`${symbol} added to wallet successfully!`, 'success');
-    } else {
-      showNotification(`User rejected adding ${symbol} to wallet`, 'warning');
-    }
-  })
-  .catch(error => {
-    console.error('Error adding token:', error);
-    
-    if (error.code === 4001) {
-      showNotification(`You rejected the request to add ${symbol}`, 'warning');
-    } else if (error.message.includes('wallet_watchAsset')) {
-      // Wallet doesn't support auto-add, copy address
-      copyToClipboard(contractAddress)
-        .then(() => {
-          showNotification(`${symbol} address copied! Add manually in your wallet.`, 'info');
-        });
-    } else {
-      showNotification(`Failed to add ${symbol}: ${error.message}`, 'error');
-    }
-  });
 }
 
 // Function for adding Solana tokens
@@ -1028,16 +942,9 @@ function addSolanaTokenToWallet(contractAddress, symbol) {
   if (window.phantom?.solana || window.solana) {
     const solana = window.phantom?.solana || window.solana;
     
-    // Copy address and show instructions
-    copyToClipboard(contractAddress)
-      .then(() => {
-        showNotification(`${symbol} address copied!`, 'success');
-        showSolanaInstructionsModal(contractAddress, symbol);
-      })
-      .catch(() => {
-        showNotification('Failed to copy address', 'error');
-      });
-      
+    // Show instructions modal
+    showSolanaInstructionsModal(contractAddress, symbol);
+    
   } else {
     // Phantom not installed
     showNotification(`Please install Phantom wallet for Solana tokens`, 'warning');
@@ -1050,90 +957,246 @@ function addSolanaTokenToWallet(contractAddress, symbol) {
   }
 }
 
-// Show instructions modal for Solana tokens
-function showSolanaInstructionsModal(contractAddress, symbol) {
-  const modal = document.createElement('div');
-  modal.innerHTML = `
-    <div class="token-instructions-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px);">
-      <div style="background: var(--dark-bg); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 2px solid var(--rebel-gold); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <h3 style="color: var(--rebel-gold); margin: 0; font-size: 1.5rem;">
-            <i class="fas fa-wallet" style="margin-right: 0.75rem;"></i>
-            Add ${symbol} to Phantom
-          </h3>
-          <button onclick="this.closest('.token-instructions-modal').remove()" 
-                  style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        
-        <ol style="color: white; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
-          <li style="margin-bottom: 1rem;">Open <strong>Phantom wallet</strong> on your device</li>
-          <li style="margin-bottom: 1rem;">Tap the <strong style="color: var(--rebel-gold);">+</strong> button in your tokens list</li>
-          <li style="margin-bottom: 1rem;">Select <strong>"Add Token"</strong></li>
-          <li style="margin-bottom: 1rem;">
-            Paste this address:
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 0.5rem; font-family: monospace; word-break: break-all; font-size: 0.9rem;">
-              ${contractAddress}
-            </div>
-          </li>
-          <li>Tap <strong>"Add"</strong> to complete</li>
-        </ol>
-        
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <button onclick="copyToClipboard('${contractAddress}').then(() => { showNotification('Address copied again!', 'success'); })" 
-                  style="background: var(--rebel-gold); color: white; border: none; padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600; flex: 1;">
-            <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>
-            Copy Address
-          </button>
-          <button onclick="window.open('https://phantom.app/', '_blank')" 
-                  style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; flex: 1;">
-            <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
-            Get Phantom
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-}
-
-// Fallback function for older buttons (backward compatibility)
-function addToWallet(contractAddress) {
-  // Token configurations
-  const tokenConfigs = {
-    '0xf95beeF6439ec38fA757238Cdec8417ABDA536bd': {
-      symbol: 'rebelinux',
-      decimals: 18,
-      network: 'Base'
-    },
-    'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump': {
-      symbol: 'REBL',
-      decimals: 9,
-      network: 'Solana'
-    }
-  };
-  
-  const tokenConfig = tokenConfigs[contractAddress];
-  
-  if (tokenConfig) {
-    addTokenToWallet(
-      contractAddress,
-      tokenConfig.symbol,
-      tokenConfig.decimals,
-      tokenConfig.network
-    );
+// Function for adding Base chain tokens (Ethereum-compatible)
+function addBaseTokenToWallet(contractAddress, symbol, decimals) {
+  // Check for Ethereum provider (MetaMask, Coinbase Wallet, etc.)
+  if (typeof window.ethereum !== 'undefined') {
+    
+    // Base chain ID is 8453
+    const baseChainId = '0x2105'; // 8453 in hex
+    
+    // Check if we're on Base chain
+    ethereum.request({ method: 'eth_chainId' })
+      .then(currentChainId => {
+        if (currentChainId === baseChainId) {
+          // Already on Base chain, add token
+          addTokenViaEthereum(contractAddress, symbol, decimals, 'Base');
+        } else {
+          // Not on Base chain, ask to switch
+          switchToBaseChain(contractAddress, symbol, decimals);
+        }
+      })
+      .catch(error => {
+        console.error('Error checking chain:', error);
+        showNotification('Failed to check network. Please ensure your wallet is connected.', 'error');
+      });
+      
   } else {
-    // Detect by address length
-    if (contractAddress.length > 32) {
-      addTokenToWallet(contractAddress, 'Unknown', 9, 'Solana');
-    } else {
-      addTokenToWallet(contractAddress, 'Unknown', 18, 'Base');
-    }
+    // No Ethereum wallet detected
+    showNotification(`Please install MetaMask or another Web3 wallet for ${symbol}`, 'warning');
+    
+    setTimeout(() => {
+      if (confirm('MetaMask is required for Base chain tokens. Install now?')) {
+        window.open('https://metamask.io/', '_blank');
+      }
+    }, 1000);
   }
 }
 
+// Switch to Base chain and add token
+function switchToBaseChain(contractAddress, symbol, decimals) {
+  if (confirm(`To add ${symbol}, you need to switch to Base network. Switch now?`)) {
+    ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x2105' }], // Base mainnet
+    })
+    .then(() => {
+      // Successfully switched, now add token
+      setTimeout(() => {
+        addTokenViaEthereum(contractAddress, symbol, decimals, 'Base');
+      }, 1000);
+    })
+    .catch((switchError) => {
+      // If chain is not added, add it first
+      if (switchError.code === 4902) {
+        ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x2105',
+              chainName: 'Base Mainnet',
+              nativeCurrency: {
+                name: 'Ether',
+                symbol: 'ETH',
+                decimals: 18
+              },
+              rpcUrls: ['https://mainnet.base.org'],
+              blockExplorerUrls: ['https://basescan.org']
+            }
+          ]
+        })
+        .then(() => {
+          // Chain added, now add token
+          setTimeout(() => {
+            addTokenViaEthereum(contractAddress, symbol, decimals, 'Base');
+          }, 1000);
+        })
+        .catch(addError => {
+          console.error('Error adding Base chain:', addError);
+          showNotification('Failed to add Base network to wallet', 'error');
+        });
+      } else {
+        console.error('Error switching to Base:', switchError);
+        showNotification('Failed to switch to Base network', 'error');
+      }
+    });
+  }
+}
+
+// Generic function to add tokens via Ethereum wallet_watchAsset
+function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
+  const tokenImages = {
+    'rebelinux': 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg',
+    'REBL': 'https://rebelinux.fun/images/Logo_REBL.svg'
+  };
+  
+  ethereum.request({
+    method: 'wallet_watchAsset',
+    params: {
+      type: 'ERC20',
+      options: {
+        address: contractAddress,
+        symbol: symbol,
+        decimals: decimals,
+        image: tokenImages[symbol] || ''
+      }
+    }
+  })
+  .then(success => {
+    if (success) {
+      showNotification(`${symbol} added to wallet successfully!`, 'success');
+    } else {
+      showNotification(`Failed to add ${symbol} to wallet`, 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error adding token:', error);
+    showNotification(`Error adding ${symbol}: ${error.message}`, 'error');
+  });
+}
+
+// Show instructions modal for Solana tokens
+function showSolanaInstructionsModal(contractAddress, symbol) {
+  copyToClipboard(contractAddress)
+    .then(() => {
+      showNotification(`${symbol} contract address copied!`, 'success');
+      
+      // Create modal
+      const modal = document.createElement('div');
+      modal.innerHTML = `
+        <div class="token-instructions-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px);">
+          <div style="background: var(--dark-bg); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 2px solid var(--rebel-gold); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+              <h3 style="color: var(--rebel-gold); margin: 0; font-size: 1.5rem;">
+                <i class="fas fa-wallet" style="margin-right: 0.75rem;"></i>
+                Add ${symbol} to Phantom
+              </h3>
+              <button onclick="this.closest('.token-instructions-modal').remove()" 
+                      style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <ol style="color: white; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+              <li style="margin-bottom: 1rem;">Open <strong>Phantom wallet</strong> on your device</li>
+              <li style="margin-bottom: 1rem;">Tap the <strong style="color: var(--rebel-gold);">+</strong> button in your tokens list</li>
+              <li style="margin-bottom: 1rem;">Select <strong>"Add Token"</strong></li>
+              <li style="margin-bottom: 1rem;">
+                Paste this address:
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 0.5rem; font-family: monospace; word-break: break-all; font-size: 0.9rem;">
+                  ${contractAddress}
+                </div>
+              </li>
+              <li>Tap <strong>"Add"</strong> to complete</li>
+            </ol>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <button onclick="copyToClipboard('${contractAddress}').then(() => { showNotification('Address copied again!', 'success'); })" 
+                      style="background: var(--rebel-gold); color: white; border: none; padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600; flex: 1;">
+                <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>
+                Copy Address
+              </button>
+              <button onclick="window.open('https://phantom.app/', '_blank')" 
+                      style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; flex: 1;">
+                <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
+                Get Phantom
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+    })
+    .catch(() => {
+      showNotification('Failed to copy address', 'error');
+    });
+}
+
+// Fallback function for old buttons (backward compatibility)
+function addToWallet(contractAddress) {
+  // Detect token type by address length
+  if (contractAddress.length > 32) {
+    // Solana token (REBL)
+    addTokenToWallet(contractAddress, 'REBL', 9, 'Solana');
+  } else {
+    // Base token (rebelinux)
+    addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
+  }
+}
+
+// Function for adding Solana tokens
+function addSolanaTokenToWallet(contractAddress) {
+  // Check for Phantom wallet
+  if (window.phantom?.solana || window.solana) {
+    const solana = window.phantom?.solana || window.solana;
+    
+    // Check if wallet is connected
+    solana.connect({ onlyIfTrusted: true })
+      .then(() => {
+        // Wallet is connected, show instruction
+        showNotification('Please add $REBL manually using the contract address', 'info');
+        
+        // Copy address to clipboard
+        copyToClipboard(contractAddress)
+          .then(() => {
+            showNotification('Contract address copied! Paste it in your wallet', 'success');
+            
+            // Show more detailed instructions
+            setTimeout(() => {
+              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
+            }, 1500);
+          })
+          .catch(() => {
+            showNotification('Failed to copy address', 'error');
+          });
+      })
+      .catch(() => {
+        // Wallet not connected or user rejected
+        showNotification('Please connect your Phantom wallet first', 'warning');
+        
+        // Try to connect
+        solana.connect()
+          .then(() => {
+            showNotification('Wallet connected! Now try adding the token again', 'success');
+          })
+          .catch((error) => {
+            console.error('Connection error:', error);
+            showNotification('Failed to connect wallet', 'error');
+          });
+      });
+  } else {
+    // Phantom not installed
+    showNotification('Please install Phantom wallet for Solana', 'warning');
+    
+    // Offer to redirect to Phantom
+    setTimeout(() => {
+      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
+        window.open('https://phantom.app/', '_blank');
+      }
+    }, 1000);
+  }
+}
 
 // Function for adding Ethereum tokens (for $rebelinux)
 function addEthereumTokenToWallet(contractAddress) {
