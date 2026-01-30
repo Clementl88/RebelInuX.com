@@ -1465,7 +1465,61 @@ static showSolanaWalletSelector(contractAddress, symbol) {
           Notification.show('Failed to copy address', 'error');
         });
     }
+    // Add to Utilities class or as a standalone function
+static generateQRCode(text) {
+  return new Promise((resolve) => {
+    // Use a simple QR code library or create basic version
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 200;
+    canvas.height = 200;
     
+    // Simple QR code (for demo, consider using a library like qrcode.js)
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 200, 200);
+    ctx.fillStyle = 'black';
+    
+    // This is a very basic representation
+    // For production, use: https://github.com/davidshimjs/qrcodejs
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('QR Code for:', 100, 30);
+    ctx.fillText(text.substring(0, 20), 100, 50);
+    ctx.fillText(text.substring(20, 40), 100, 65);
+    ctx.fillText('Scan with wallet', 100, 100);
+    
+    resolve(canvas.toDataURL());
+  });
+}
+
+// Add to window object
+window.showQRCode = async function(contractAddress) {
+  const qrDataURL = await Utilities.generateQRCode(contractAddress);
+  
+  const modal = document.createElement('div');
+  modal.className = 'qr-modal';
+  modal.innerHTML = `
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-qrcode"></i> Scan QR Code</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <img src="${qrDataURL}" alt="QR Code for token address" class="qr-image">
+          <p class="qr-note">Scan with your wallet app to add token</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
+  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+    if (e.target === modal.querySelector('.modal-overlay')) modal.remove();
+  });
+};
     static createInstructionModal(contractAddress, symbol) {
       const modal = document.createElement('div');
       modal.className = 'token-instructions-modal';
@@ -1657,8 +1711,24 @@ static showSolanaWalletSelector(contractAddress, symbol) {
       });
     }
   }
+// In MobileOptimizer class, add:
+static optimizeWalletButtons() {
+  if (!Utilities.isMobile()) return;
   
-  // ===== GLOBAL EXPORTS =====
+  // Make wallet buttons easier to tap
+  const walletButtons = document.querySelectorAll('.wallet-action, .wallet-btn');
+  
+  walletButtons.forEach(button => {
+    // Ensure minimum tap target size
+    button.style.minHeight = '44px';
+    button.style.minWidth = '44px';
+    
+    // Add haptic feedback on mobile
+    button.addEventListener('touchstart', () => {
+      if (navigator.vibrate) navigator.vibrate(10);
+    }, { passive: true });
+  });
+}
   
   // ===== GLOBAL EXPORTS =====
 
@@ -1719,23 +1789,51 @@ window.RebelInuX = {
       });
   };
 
-  window.addTokenToWallet = function(contractAddress, symbol, decimals, network) {
+window.addTokenToWallet = async function(contractAddress, symbol, decimals, network) {
+  try {
+    // Show loading notification
+    Notification.show(`Adding ${symbol} to wallet...`, 'info');
+    
     if (window.RebelInuX && window.RebelInuX.addTokenToWallet) {
-      window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
+      await window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
     } else {
       console.error('RebelInuX wallet manager not initialized');
-      Notification.show('Please wait for page to fully load', 'error');
       
-      // Fallback: Try to initialize and retry
-      setTimeout(() => {
-        if (window.RebelInuX && window.RebelInuX.addTokenToWallet) {
-          window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
-        } else {
-          Notification.show('Wallet functionality not available', 'error');
-        }
-      }, 1000);
+      // Try to initialize dynamically
+      if (typeof WalletManager !== 'undefined') {
+        await WalletManager.addTokenToWallet(contractAddress, symbol, decimals, network);
+      } else {
+        throw new Error('Wallet functionality not available');
+      }
     }
-  };
+  } catch (error) {
+    console.error('Token addition error:', error);
+    Notification.show(`Failed: ${error.message}`, 'error');
+    
+    // Show fallback instructions
+    setTimeout(() => {
+      const modal = document.createElement('div');
+      modal.innerHTML = `
+        <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999">
+          <div style="background:var(--dark-bg);padding:2rem;border-radius:20px;max-width:500px;width:90%;border:2px solid var(--rebel-red)">
+            <h3 style="color:var(--rebel-red)"><i class="fas fa-exclamation-triangle"></i> Manual Addition Required</h3>
+            <p style="color:white;margin:1rem 0">Copy this address and manually add it to your wallet:</p>
+            <div style="background:rgba(0,0,0,0.3);padding:1rem;border-radius:10px;margin:1rem 0">
+              <code style="word-break:break-all;color:white;display:block;margin-bottom:1rem">${contractAddress}</code>
+              <button onclick="copyToClipboard('${contractAddress}')" style="background:var(--rebel-gold);color:white;border:none;padding:0.5rem 1rem;border-radius:8px;cursor:pointer">
+                <i class="fas fa-copy"></i> Copy Address
+              </button>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" style="background:none;border:1px solid white;color:white;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;margin-top:1rem">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }, 1000);
+  }
+};
 
   window.addToWallet = function(contractAddress) {
     // Determine which token based on the address
