@@ -1391,14 +1391,239 @@ function activateAnimations() {
   
   console.log(`✅ ${pulseElements.length} pulse animations activated`);
 }
+// Mobile bridge positioning - Add this function
+function optimizeBridgesForMobile() {
+  if (!isMobile()) return;
+  
+  // Fix hero bridge
+  const heroBridge = document.querySelector('.bridge-animation');
+  if (heroBridge) {
+    heroBridge.style.cssText = `
+      position: relative;
+      padding: 1rem 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    const bridgeLine = heroBridge.querySelector('.bridge-line');
+    if (bridgeLine) {
+      bridgeLine.style.cssText = `
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, var(--rebel-red), var(--rebel-gold));
+        margin: 0;
+      `;
+    }
+    
+    const bridgeTokens = heroBridge.querySelector('.bridge-tokens');
+    if (bridgeTokens) {
+      bridgeTokens.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+      `;
+    }
+  }
+  
+  // Fix token ecosystem bridge
+  const tokenBridge = document.querySelector('.token-ecosystem .bridge-animation');
+  if (tokenBridge) {
+    tokenBridge.style.cssText = `
+      order: 2;
+      padding: 1rem 0;
+      height: 80px;
+      margin: 0.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    const tokenBridgeLine = tokenBridge.querySelector('.bridge-line');
+    if (tokenBridgeLine) {
+      tokenBridgeLine.style.cssText = `
+        width: 2px;
+        height: 50px;
+        background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
+        margin: 0 auto;
+      `;
+    }
+    
+    const tokenBridgeContent = tokenBridge.querySelector('.bridge-content');
+    if (tokenBridgeContent) {
+      tokenBridgeContent.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      `;
+    }
+  }
+  
+  // Add mobile bridge particles if needed
+  addMobileBridgeParticles();
+}
 
-// Call this in your initIndexPage() function
+function addMobileBridgeParticles() {
+  const bridges = document.querySelectorAll('.bridge-animation');
+  bridges.forEach(bridge => {
+    // Remove existing particles
+    const existingParticles = bridge.querySelectorAll('.bridge-particles');
+    existingParticles.forEach(p => p.remove());
+    
+    // Add mobile-optimized particles
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'bridge-particles mobile-particles';
+    particlesContainer.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+    `;
+    
+    // Add fewer particles for mobile
+    const particleCount = 3;
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.cssText = `
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--rebel-gold);
+        border-radius: 50%;
+        opacity: 0;
+        animation: mobile-particle-float 3s ease-in-out infinite;
+        animation-delay: ${i * 0.5}s;
+      `;
+      
+      // Position particles along the bridge
+      if (bridge.closest('.token-ecosystem')) {
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.left = '50%';
+        particle.style.transform = 'translateX(-50%)';
+      } else {
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = '50%';
+        particle.style.transform = 'translateY(-50%)';
+      }
+      
+      particlesContainer.appendChild(particle);
+    }
+    
+    bridge.appendChild(particlesContainer);
+  });
+  
+  // Add mobile particle animation
+  if (!document.querySelector('#mobile-particle-animations')) {
+    const style = document.createElement('style');
+    style.id = 'mobile-particle-animations';
+    style.textContent = `
+      @keyframes mobile-particle-float {
+        0%, 100% {
+          opacity: 0;
+          transform: ${isMobile() ? 'translateY(0)' : 'translateX(0)'};
+        }
+        50% {
+          opacity: 0.7;
+        }
+        100% {
+          opacity: 0;
+          transform: ${isMobile() ? 'translateY(-40px)' : 'translateX(40px)'};
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+// Update the initMobileOptimizations function to include bridge optimization
+function initMobileOptimizations() {
+  if (!isMobile()) return;
+  
+  // Optimize animations for mobile
+  document.documentElement.style.setProperty('--animation-medium', '0.4s');
+  document.documentElement.style.setProperty('--animation-slow', '0.6s');
+  
+  // Reduce particle count
+  const particles = document.querySelectorAll('.particle');
+  if (particles.length > 10) {
+    for (let i = 10; i < particles.length; i++) {
+      particles[i].remove();
+    }
+  }
+  
+  // Optimize image loading
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  images.forEach(img => {
+    if (isInViewport(img)) {
+      img.loading = 'eager';
+    }
+  });
+  
+  // Mobile-specific optimizations
+  optimizeForMobile();
+  optimizeTokenEcosystemForMobile();
+  optimizeBridgesForMobile(); // ADD THIS LINE
+  
+  // Add swipe hint for horizontal content
+  setTimeout(() => {
+    addSwipeHint();
+  }, 1000);
+}
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
-  // Initialize components
-  initLoader();
-  activateAnimations(); // ADD THIS LINE
+  // All initialization components in order:
+  const initQueue = [
+    initLoader,                    // Loader with progress bar
+    activateAnimations,           // Animation activations (NEW - added by you)
+    initScrollAnimations,         // Scroll-triggered animations
+    initStatsCounters,           // Animated number counters
+    initCopyButtons,             // Copy-to-clipboard functionality
+    initContractViews,           // Contract address view toggles
+    initSmoothScroll,            // Smooth scrolling for anchor links
+    initParticles,               // Particle background effects
+    initLogoAnimations,          // Logo animations and transitions
+    initBackToTop,               // Back-to-top button
+    initMobileOptimizations,     // Mobile-specific optimizations
+    initTouchInteractions,       // Touch and mobile interactions
+    initLazyLoading,             // Lazy loading for images
+    initPerformanceObservers,    // Performance monitoring
+    initWalletDetection          // Wallet detection and setup
+  ];
   
-  // Rest of your initialization code...
+  // Execute initialization queue
+  initQueue.forEach((initFn, index) => {
+    setTimeout(() => {
+      try {
+        initFn();
+      } catch (error) {
+        console.warn(`⚠️ Failed to initialize ${initFn.name}:`, error);
+      }
+    }, index * 100);
+  });
 }
