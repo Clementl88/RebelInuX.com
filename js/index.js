@@ -225,7 +225,6 @@ function animateCounter(element, target, prefix = '', suffix = '') {
 }
 
 // Enhanced Copy to Clipboard with Feedback
-// In your copyToClipboard handlers, add this for Solana-specific handling
 function handleCopyClick(e) {
   e.preventDefault();
   
@@ -487,7 +486,8 @@ function initBackToTop() {
     });
   });
 }
-// Enhanced mobile optimizations for token ecosystem - FIXED
+
+// Enhanced mobile optimizations for token ecosystem
 function optimizeTokenEcosystemForMobile() {
   if (!isMobile()) return;
   
@@ -601,50 +601,6 @@ function updateBridgeForMobile(bridgeElement) {
   }
 }
 
-// Add swipe hint for horizontal scrolling sections
-function addSwipeHint() {
-  const tokenSection = document.getElementById('token-ecosystem');
-  if (!tokenSection || !isMobile()) return;
-  
-  // Check if content might overflow
-  const checkOverflow = () => {
-    const cards = tokenSection.querySelectorAll('.token-card, .nft-card');
-    let totalWidth = 0;
-    cards.forEach(card => {
-      totalWidth += card.offsetWidth;
-    });
-    
-    if (totalWidth > window.innerWidth - 40) {
-      // Add swipe hint
-      const hint = document.createElement('div');
-      hint.className = 'swipe-hint';
-      hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> <span>Swipe to view</span>';
-      hint.style.cssText = `
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(212, 167, 106, 0.1);
-        border-radius: 20px;
-        color: var(--rebel-gold);
-        font-size: 0.8rem;
-        margin: 1rem auto;
-        width: fit-content;
-        border: 1px solid rgba(212, 167, 106, 0.2);
-        animation: pulse 2s infinite;
-      `;
-      
-      const platformHeaders = tokenSection.querySelectorAll('.platform-header');
-      if (platformHeaders.length > 0) {
-        platformHeaders[0].parentNode.insertBefore(hint, platformHeaders[0].nextSibling);
-      }
-    }
-  };
-  
-  // Run after images load
-  setTimeout(checkOverflow, 500);
-}
-
 // Mobile Optimizations
 function initMobileOptimizations() {
   if (!isMobile()) return;
@@ -671,11 +627,9 @@ function initMobileOptimizations() {
   
   // Mobile-specific optimizations
   optimizeForMobile();
-    optimizeTokenEcosystemForMobile();
-
+  optimizeTokenEcosystemForMobile();
 }
 
-// Add new optimization function AFTER initMobileOptimizations
 function optimizeForMobile() {
   // Disable heavy animations on mobile
   if (isMobile()) {
@@ -702,7 +656,7 @@ function optimizeForMobile() {
   adjustTouchTargets();
 }
 
-// Adjust touch targets for better mobile UX - ADD this new function
+// Adjust touch targets for better mobile UX
 function adjustTouchTargets() {
   const touchElements = document.querySelectorAll('.action-btn, .copy-btn, .view-btn, .wallet-btn, .cta-button');
   
@@ -735,7 +689,7 @@ function adjustTouchTargets() {
   });
 }
 
-// Find and UPDATE the initTouchInteractions function (around line 370-400):
+// Touch Interactions
 function initTouchInteractions() {
   // Add long-press to copy on mobile
   if (isMobile()) {
@@ -782,6 +736,7 @@ function initTouchInteractions() {
     }, { passive: true });
   });
 }
+
 // Lazy Loading Enhancement
 function initLazyLoading() {
   if ('IntersectionObserver' in window) {
@@ -815,19 +770,6 @@ function initPerformanceObservers() {
     });
     
     observer.observe({ entryTypes: ['longtask'] });
-  }
-  
-  // Observe layout shifts
-  if ('LayoutShiftObserver' in window) {
-    let cls = 0;
-    new LayoutShiftObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.hadRecentInput) {
-          cls += entry.value;
-          console.log(`⚠️ Layout shift detected: ${entry.value.toFixed(3)}`);
-        }
-      });
-    });
   }
 }
 
@@ -921,7 +863,6 @@ function showNotification(message, type = 'info') {
     setTimeout(() => notification.remove(), 300);
   }, 5000);
 }
-
 
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
   console.log(`Adding ${symbol} to wallet (${network} network)`);
@@ -1066,7 +1007,6 @@ function switchToBaseChain(contractAddress, symbol, decimals) {
   }
 }
 
-
 // Generic function to add tokens via Ethereum wallet_watchAsset
 function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
   const tokenImages = {
@@ -1156,6 +1096,7 @@ function showSolanaInstructionsModal(contractAddress, symbol) {
       showNotification('Failed to copy address', 'error');
     });
 }
+
 // Detect wallet type and add appropriate styling
 function detectWallet() {
   if (window.phantom || window.solana) {
@@ -1169,6 +1110,7 @@ function detectWallet() {
     return 'none';
   }
 }
+
 // Fallback function for old buttons (backward compatibility)
 function addToWallet(contractAddress) {
   // Detect token type by address length
@@ -1180,6 +1122,7 @@ function addToWallet(contractAddress) {
     addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
   }
 }
+
 // Initialize wallet detection on page load
 function initWalletDetection() {
   const walletType = detectWallet();
@@ -1210,59 +1153,6 @@ function initWalletDetection() {
       }, 3000);
     });
   });
-}
-
-// Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Check if wallet is connected
-    solana.connect({ onlyIfTrusted: true })
-      .then(() => {
-        // Wallet is connected, show instruction
-        showNotification('Please add $REBL manually using the contract address', 'info');
-        
-        // Copy address to clipboard
-        copyToClipboard(contractAddress)
-          .then(() => {
-            showNotification('Contract address copied! Paste it in your wallet', 'success');
-            
-            // Show more detailed instructions
-            setTimeout(() => {
-              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
-            }, 1500);
-          })
-          .catch(() => {
-            showNotification('Failed to copy address', 'error');
-          });
-      })
-      .catch(() => {
-        // Wallet not connected or user rejected
-        showNotification('Please connect your Phantom wallet first', 'warning');
-        
-        // Try to connect
-        solana.connect()
-          .then(() => {
-            showNotification('Wallet connected! Now try adding the token again', 'success');
-          })
-          .catch((error) => {
-            console.error('Connection error:', error);
-            showNotification('Failed to connect wallet', 'error');
-          });
-      });
-  } else {
-    // Phantom not installed
-    showNotification('Please install Phantom wallet for Solana', 'warning');
-    
-    // Offer to redirect to Phantom
-    setTimeout(() => {
-      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
-  }
 }
 
 // Function for adding Ethereum tokens (for $rebelinux)
@@ -1345,10 +1235,8 @@ window.addEventListener('error', function(e) {
     });
   }
 });
-// Add at the beginning of initIndexPage() function
-console.log('🎬 Initializing animations...');
 
-// Add animation classes to elements
+// Animation activation
 function activateAnimations() {
   console.log('🎯 Activating animations...');
   
@@ -1392,13 +1280,13 @@ function activateAnimations() {
   console.log(`✅ ${pulseElements.length} pulse animations activated`);
 }
 
-// Call this in your initIndexPage() function
+// Add this to your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
   // Initialize components
   initLoader();
-  activateAnimations(); // ADD THIS LINE
+  activateAnimations();
   
   // Rest of your initialization code...
 }
