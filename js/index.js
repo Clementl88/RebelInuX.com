@@ -1350,3 +1350,13 @@ window.addEventListener('error', function(e) {
 window.addEventListener('unhandledrejection', function(e) {
   console.error('❌ Unhandled promise rejection:', e.reason);
 });
+window.addEventListener('error', function(e) {
+  console.error('Global error:', e.error);
+  // Optionally send to analytics
+  if (window.gtag) {
+    window.gtag('event', 'exception', {
+      description: e.error.message,
+      fatal: false
+    });
+  }
+});
