@@ -44,7 +44,8 @@ function initIndexPage() {
     initMobileOptimizations,
     initTouchInteractions,
     initLazyLoading,
-    initPerformanceObservers
+    initPerformanceObservers,
+    initWalletButtons 
   ];
   
   // Execute initialization queue
@@ -924,11 +925,18 @@ function showNotification(message, type = 'info') {
 // ===== ADD TO WALLET FUNCTIONS - BASE & SOLANA =====
 
 // Main function to add tokens
+// Main function to add tokens
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
   console.log(`Adding ${symbol} to wallet (${network} network, ${decimals} decimals)`);
   
   if (network === 'Solana') {
-    addSolanaTokenToWallet(contractAddress, symbol);
+    // Pass decimals and image for Solana
+    addSolanaTokenToWallet(
+      contractAddress, 
+      symbol, 
+      decimals, 
+      `https://rebelinux.fun/images/Logo_REBL.svg`
+    );
   } else if (network === 'Base') {
     addBaseTokenToWallet(contractAddress, symbol, decimals);
   }
