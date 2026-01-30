@@ -224,48 +224,44 @@ function animateCounter(element, target, prefix = '', suffix = '') {
 }
 
 // Enhanced Copy to Clipboard with Feedback
-function initCopyButtons() {
-  const copyButtons = document.querySelectorAll('.copy-btn, .copy-contract-btn, [onclick*="copyToClipboard"]');
+// In your copyToClipboard handlers, add this for Solana-specific handling
+function handleCopyClick(e) {
+  e.preventDefault();
   
-  copyButtons.forEach(button => {
-    // Remove inline onclick if present
-    if (button.hasAttribute('onclick')) {
-      const onclick = button.getAttribute('onclick');
-      button.removeAttribute('onclick');
+  let contractText = '';
+  const button = e.currentTarget;
+  
+  if (button.classList.contains('copy-contract-btn')) {
+    // This is the $REBL (Solana) contract
+    contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+  } else if (button.closest('.contract-address')) {
+    // Check if it's a Solana or Ethereum address
+    const codeElement = button.closest('.contract-address')?.querySelector('code');
+    if (codeElement) {
+      contractText = codeElement.getAttribute('data-full') || codeElement.textContent;
       
-      if (onclick.includes('copyToClipboard')) {
-        button.addEventListener('click', handleCopyClick);
-      }
-    } else {
-      button.addEventListener('click', handleCopyClick);
-    }
-  });
-  
-  function handleCopyClick(e) {
-    e.preventDefault();
-    
-    let contractText = '';
-    const button = e.currentTarget;
-    
-    if (button.classList.contains('copy-contract-btn')) {
-      contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-    } else {
-      const contract = button.getAttribute('data-contract');
-      if (contract) {
-        contractText = contract;
-      } else {
-        const codeElement = button.closest('.contract-address')?.querySelector('code');
-        if (codeElement) {
-          contractText = codeElement.getAttribute('data-full') || codeElement.textContent;
-        }
-      }
-    }
-    
-    if (contractText) {
+      // Add token type info to notification
+      const isSolana = contractText.length > 32;
+      const tokenType = isSolana ? 'Solana ($REBL)' : 'Base ($rebelinux)';
+      
       copyToClipboard(contractText.trim())
-        .then(() => showCopyFeedback(button, true))
-        .catch(() => showCopyFeedback(button, false));
+        .then(() => {
+          showNotification(`${tokenType} address copied!`, 'success');
+          showCopyFeedback(button, true);
+        })
+        .catch(() => {
+          showNotification('Failed to copy address', 'error');
+          showCopyFeedback(button, false);
+        });
+      return;
     }
+  }
+  
+  // Fallback for other cases
+  if (contractText) {
+    copyToClipboard(contractText.trim())
+      .then(() => showCopyFeedback(button, true))
+      .catch(() => showCopyFeedback(button, false));
   }
 }
 
@@ -925,10 +921,76 @@ function showNotification(message, type = 'info') {
   }, 5000);
 }
 
-// Add to Wallet Function
+// Add to Wallet Function - UPDATED FOR SOLANA
 function addToWallet(contractAddress) {
+  // Check if it's a Solana token (by checking the address format)
+  const isSolanaToken = contractAddress.length > 32; // Solana addresses are longer
+  
+  if (isSolanaToken) {
+    // Solana token - use Phantom/Solana wallet API
+    addSolanaTokenToWallet(contractAddress);
+  } else {
+    // Ethereum/BSC token - use Ethereum wallet API
+    addEthereumTokenToWallet(contractAddress);
+  }
+}
+
+// Function for adding Solana tokens
+function addSolanaTokenToWallet(contractAddress) {
+  // Check for Phantom wallet
+  if (window.phantom?.solana || window.solana) {
+    const solana = window.phantom?.solana || window.solana;
+    
+    // Check if wallet is connected
+    solana.connect({ onlyIfTrusted: true })
+      .then(() => {
+        // Wallet is connected, show instruction
+        showNotification('Please add $REBL manually using the contract address', 'info');
+        
+        // Copy address to clipboard
+        copyToClipboard(contractAddress)
+          .then(() => {
+            showNotification('Contract address copied! Paste it in your wallet', 'success');
+            
+            // Show more detailed instructions
+            setTimeout(() => {
+              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
+            }, 1500);
+          })
+          .catch(() => {
+            showNotification('Failed to copy address', 'error');
+          });
+      })
+      .catch(() => {
+        // Wallet not connected or user rejected
+        showNotification('Please connect your Phantom wallet first', 'warning');
+        
+        // Try to connect
+        solana.connect()
+          .then(() => {
+            showNotification('Wallet connected! Now try adding the token again', 'success');
+          })
+          .catch((error) => {
+            console.error('Connection error:', error);
+            showNotification('Failed to connect wallet', 'error');
+          });
+      });
+  } else {
+    // Phantom not installed
+    showNotification('Please install Phantom wallet for Solana', 'warning');
+    
+    // Offer to redirect to Phantom
+    setTimeout(() => {
+      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
+        window.open('https://phantom.app/', '_blank');
+      }
+    }, 1000);
+  }
+}
+
+// Function for adding Ethereum tokens (for $rebelinux)
+function addEthereumTokenToWallet(contractAddress) {
   if (typeof window.ethereum !== 'undefined') {
-    // Ethereum wallet
     try {
       window.ethereum.request({
         method: 'wallet_watchAsset',
@@ -936,13 +998,14 @@ function addToWallet(contractAddress) {
           type: 'ERC20',
           options: {
             address: contractAddress,
-            symbol: 'REBL',
-            decimals: 9
+            symbol: 'rebelinux',
+            decimals: 18,
+            image: 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg'
           }
         }
       }).then(success => {
         if (success) {
-          showNotification('Token added to wallet successfully!', 'success');
+          showNotification('$rebelinux added to wallet!', 'success');
         } else {
           showNotification('Failed to add token to wallet', 'error');
         }
@@ -951,15 +1014,10 @@ function addToWallet(contractAddress) {
         showNotification('Error adding token to wallet', 'error');
       });
     } catch (error) {
-      showNotification('Please install a Web3 wallet', 'warning');
+      showNotification('Please install a Web3 wallet like MetaMask', 'warning');
     }
-  } else if (window.solana || window.phantom?.solana) {
-    // Solana wallet
-    showNotification('For Solana tokens, please add manually using contract address', 'info');
-    copyToClipboard(contractAddress)
-      .then(() => showNotification('Contract address copied for manual addition', 'success'));
   } else {
-    showNotification('Please install a cryptocurrency wallet', 'warning');
+    showNotification('Please install MetaMask or another Web3 wallet', 'warning');
   }
 }
 
