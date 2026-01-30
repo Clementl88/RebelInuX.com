@@ -1330,7 +1330,72 @@ function addEthereumTokenToWallet(contractAddress) {
     showNotification('Please install MetaMask or another Web3 wallet', 'warning');
   }
 }
+// Detect available wallets and update UI
+function detectAvailableWallets() {
+  const wallets = {
+    evm: false,
+    solana: false,
+    detected: []
+  };
+  
+  // Check for EVM wallets
+  if (typeof window.ethereum !== 'undefined') {
+    wallets.evm = true;
+    wallets.detected.push('EVM (MetaMask/Coinbase)');
+  }
+  
+  // Check for Solana wallets
+  if (window.phantom?.solana || window.solana) {
+    wallets.solana = true;
+    wallets.detected.push('Solana (Phantom)');
+  }
+  
+  return wallets;
+}
 
+// Update button states based on wallet detection
+function updateWalletButtonStates() {
+  const wallets = detectAvailableWallets();
+  const baseButtons = document.querySelectorAll('[data-network="Base"]');
+  const solanaButtons = document.querySelectorAll('[data-network="Solana"]');
+  
+  // Update Base wallet buttons
+  if (!wallets.evm && baseButtons.length > 0) {
+    baseButtons.forEach(btn => {
+      btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Install EVM Wallet';
+      btn.style.opacity = '0.8';
+      btn.style.cursor = 'help';
+      btn.title = 'Install MetaMask or Coinbase Wallet for Base chain';
+      btn.onclick = () => window.open('https://metamask.io/', '_blank');
+    });
+  }
+  
+  // Update Solana wallet buttons
+  if (!wallets.solana && solanaButtons.length > 0) {
+    solanaButtons.forEach(btn => {
+      btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Install Phantom';
+      btn.style.opacity = '0.8';
+      btn.style.cursor = 'help';
+      btn.title = 'Install Phantom Wallet for Solana chain';
+      btn.onclick = () => window.open('https://phantom.app/', '_blank');
+    });
+  }
+}
+
+// Add this to your initialization
+function initWalletDetection() {
+  updateWalletButtonStates();
+  
+  // Re-check when page becomes visible again
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      setTimeout(updateWalletButtonStates, 500);
+    }
+  });
+}
+
+// Add to your initQueue after initWalletButtons
+// Add initWalletDetection to your initQueue array
 // Export functions for global access
 window.RebelInuX = {
   initIndexPage,
