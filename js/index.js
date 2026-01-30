@@ -1273,14 +1273,17 @@
   
   // ===== GLOBAL EXPORTS =====
   
-  window.RebelInuX = {
-    initIndexPage: InitializationManager.initialize,
-    copyToClipboard: ClipboardManager.copyToClipboard,
-    addToWallet: WalletManager.addTokenToWallet,
-    showNotification: Notification.show,
-    scrollToElement: SmoothScroll.scrollToElement,
-    isMobile: Utilities.isMobile
-  };
+  // ===== GLOBAL EXPORTS =====
+
+window.RebelInuX = {
+  initIndexPage: InitializationManager.initialize,
+  copyToClipboard: ClipboardManager.copyToClipboard,
+  addTokenToWallet: WalletManager.addTokenToWallet, // Add this line
+  addToWallet: WalletManager.addTokenToWallet,
+  showNotification: Notification.show,
+  scrollToElement: SmoothScroll.scrollToElement,
+  isMobile: Utilities.isMobile
+};
   
   // ===== EVENT HANDLERS =====
   
@@ -1312,9 +1315,73 @@
     console.error('❌ Unhandled promise rejection:', e.reason);
   });
   
-  // Cleanup animations on page unload
+ // Cleanup animations on page unload
   window.addEventListener('beforeunload', () => {
     STATE.activeAnimations.forEach(id => cancelAnimationFrame(id));
   });
-  
+
+  // ===== GLOBAL HELPER FUNCTIONS =====
+  window.copyContractAddress = function() {
+    const address = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+    ClipboardManager.copyToClipboard(address)
+      .then(() => {
+        Notification.show('Contract address copied!', 'success');
+      })
+      .catch(() => {
+        Notification.show('Failed to copy address', 'error');
+      });
+  };
+
+  window.addTokenToWallet = function(contractAddress, symbol, decimals, network) {
+    if (window.RebelInuX && window.RebelInuX.addTokenToWallet) {
+      window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
+    } else {
+      console.error('RebelInuX wallet manager not initialized');
+      Notification.show('Please wait for page to fully load', 'error');
+      
+      // Fallback: Try to initialize and retry
+      setTimeout(() => {
+        if (window.RebelInuX && window.RebelInuX.addTokenToWallet) {
+          window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
+        } else {
+          Notification.show('Wallet functionality not available', 'error');
+        }
+      }, 1000);
+    }
+  };
+
+  window.addToWallet = function(contractAddress) {
+    // Determine which token based on the address
+    if (contractAddress === 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump') {
+      window.addTokenToWallet(contractAddress, 'REBL', 9, 'Solana');
+    } else {
+      window.addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
+    }
+  };
+
+  window.copyToClipboard = function(text) {
+    if (window.RebelInuX && window.RebelInuX.copyToClipboard) {
+      return window.RebelInuX.copyToClipboard(text);
+    } else {
+      // Fallback implementation
+      return ClipboardManager.copyToClipboard(text);
+    }
+  };
+
+  window.toggleContractView = function(button) {
+    const codeElement = button.closest('.contract-address')?.querySelector('code');
+    if (codeElement) {
+      const isExpanded = codeElement.classList.toggle('expanded');
+      const icon = button.querySelector('i');
+      
+      if (isExpanded) {
+        icon.className = 'fas fa-compress-alt';
+        button.setAttribute('title', 'Collapse address');
+      } else {
+        icon.className = 'fas fa-expand-alt';
+        button.setAttribute('title', 'Expand address');
+      }
+    }
+  };
+
 })();
