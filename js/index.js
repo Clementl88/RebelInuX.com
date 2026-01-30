@@ -923,11 +923,11 @@ function showNotification(message, type = 'info') {
   }, 5000);
 }
 
-// ===== ADD TO WALLET FUNCTIONS - CORRECT DECIMALS =====
+// ===== ADD TO WALLET FUNCTIONS - BASE & SOLANA =====
 // $rebelinux: 18 decimals (Base chain)
 // $REBL: 9 decimals (Solana)
 
-// Enhanced Add Token to Wallet Function
+// Main function to add tokens
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
   console.log(`Adding ${symbol} to wallet (${network} network, ${decimals} decimals)`);
   
@@ -935,73 +935,60 @@ function addTokenToWallet(contractAddress, symbol, decimals, network) {
     addSolanaTokenToWallet(contractAddress, symbol);
   } else if (network === 'Base') {
     addBaseTokenToWallet(contractAddress, symbol, decimals);
-  } else {
-    addEthereumTokenToWallet(contractAddress, symbol, decimals, network);
   }
 }
 
-// Function for adding Solana tokens (9 decimals)
-function addSolanaTokenToWallet(contractAddress, symbol) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Copy address and show instructions
-    copyToClipboard(contractAddress)
-      .then(() => {
-        showNotification(`${symbol} contract address copied!`, 'success');
-        showSolanaInstructionsModal(contractAddress, symbol);
-      })
-      .catch(() => {
-        showNotification('Failed to copy address', 'error');
-      });
-      
-  } else {
-    // Phantom not installed
-    showNotification(`Please install Phantom wallet for Solana tokens`, 'warning');
-    
-    setTimeout(() => {
-      if (confirm(`Phantom wallet is required for ${symbol}. Install now?`)) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
-  }
-}
-
-// Function for adding Base chain tokens (18 decimals)
+// Function for adding Base chain tokens
 function addBaseTokenToWallet(contractAddress, symbol, decimals) {
   console.log(`Adding ${symbol} with ${decimals} decimals on Base chain`);
   
+  // Check for any EVM wallet (MetaMask, Coinbase Wallet, etc.)
   if (typeof window.ethereum !== 'undefined') {
-    // Try to add token directly first
-    addTokenViaEthereum(contractAddress, symbol, decimals, 'Base');
     
+    // First check current network
+    ethereum.request({ method: 'eth_chainId' })
+      .then(currentChainId => {
+        const baseChainId = '0x2105'; // Base mainnet
+        
+        if (currentChainId === baseChainId) {
+          // Already on Base, add token
+          addTokenToEVMWallet(contractAddress, symbol, decimals);
+        } else {
+          // Not on Base - try to add token anyway (some wallets work cross-chain)
+          addTokenToEVMWallet(contractAddress, symbol, decimals);
+          
+          // Suggest switching to Base
+          setTimeout(() => {
+            showNotification('Tip: Switch to Base network for best experience', 'info');
+          }, 1500);
+        }
+      })
+      .catch(error => {
+        console.error('Error checking chain:', error);
+        // Still try to add token
+        addTokenToEVMWallet(contractAddress, symbol, decimals);
+      });
+      
   } else {
-    // No Ethereum wallet detected
-    showNotification(`Please install MetaMask or another Web3 wallet for ${symbol}`, 'warning');
+    // No EVM wallet detected
+    showNotification(`Please install a Base-compatible wallet like MetaMask or Coinbase Wallet`, 'warning');
     
     setTimeout(() => {
-      if (confirm('MetaMask is required for Base chain tokens. Install now?')) {
+      if (confirm('A Base-compatible wallet is required. Would you like to install MetaMask?')) {
         window.open('https://metamask.io/', '_blank');
       }
     }, 1000);
   }
 }
 
-// Generic function to add tokens via Ethereum wallet_watchAsset
-function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
+// Add token to EVM wallet (works for Base, Ethereum, etc.)
+function addTokenToEVMWallet(contractAddress, symbol, decimals) {
   const tokenImages = {
     'rebelinux': 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg',
     'REBL': 'https://rebelinux.fun/images/Logo_REBL.svg'
   };
   
-  // Log the details for debugging
-  console.log(`Adding token details:
-    Symbol: ${symbol}
-    Address: ${contractAddress}
-    Decimals: ${decimals}
-    Network: ${network}
-  `);
+  console.log(`Adding ${symbol} to wallet`);
   
   ethereum.request({
     method: 'wallet_watchAsset',
@@ -1025,22 +1012,46 @@ function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
   .catch(error => {
     console.error('Error adding token:', error);
     
-    // User-friendly error messages
     if (error.code === 4001) {
       showNotification(`You rejected the request to add ${symbol}`, 'warning');
-    } else if (error.message.includes('Invalid params')) {
-      showNotification(`Invalid token parameters. Please check contract address and decimals.`, 'error');
     } else if (error.message.includes('wallet_watchAsset')) {
-      // Some wallets don't support this method
-      showNotification(`Your wallet doesn't support auto-adding tokens. Please add manually using the contract address.`, 'warning');
-      
-      // Copy address to clipboard for manual addition
+      // Wallet doesn't support auto-add, copy address
       copyToClipboard(contractAddress)
-        .then(() => showNotification('Contract address copied for manual addition', 'success'));
+        .then(() => {
+          showNotification(`${symbol} address copied! Add manually in your wallet.`, 'info');
+        });
     } else {
-      showNotification(`Error: ${error.message}`, 'error');
+      showNotification(`Failed to add ${symbol}: ${error.message}`, 'error');
     }
   });
+}
+
+// Function for adding Solana tokens
+function addSolanaTokenToWallet(contractAddress, symbol) {
+  // Check for Phantom wallet
+  if (window.phantom?.solana || window.solana) {
+    const solana = window.phantom?.solana || window.solana;
+    
+    // Copy address and show instructions
+    copyToClipboard(contractAddress)
+      .then(() => {
+        showNotification(`${symbol} address copied!`, 'success');
+        showSolanaInstructionsModal(contractAddress, symbol);
+      })
+      .catch(() => {
+        showNotification('Failed to copy address', 'error');
+      });
+      
+  } else {
+    // Phantom not installed
+    showNotification(`Please install Phantom wallet for Solana tokens`, 'warning');
+    
+    setTimeout(() => {
+      if (confirm(`Phantom wallet is required for ${symbol}. Install now?`)) {
+        window.open('https://phantom.app/', '_blank');
+      }
+    }, 1000);
+  }
 }
 
 // Show instructions modal for Solana tokens
@@ -1092,13 +1103,13 @@ function showSolanaInstructionsModal(contractAddress, symbol) {
   document.body.appendChild(modal);
 }
 
-// Fallback function for backward compatibility
+// Fallback function for older buttons (backward compatibility)
 function addToWallet(contractAddress) {
   // Token configurations
   const tokenConfigs = {
     '0xf95beeF6439ec38fA757238Cdec8417ABDA536bd': {
       symbol: 'rebelinux',
-      decimals: 18,  // <-- CORRECTED TO 18!
+      decimals: 18,
       network: 'Base'
     },
     'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump': {
@@ -1118,12 +1129,10 @@ function addToWallet(contractAddress) {
       tokenConfig.network
     );
   } else {
-    // Unknown token - detect by address length
+    // Detect by address length
     if (contractAddress.length > 32) {
-      // Likely Solana (9 decimals)
       addTokenToWallet(contractAddress, 'Unknown', 9, 'Solana');
     } else {
-      // Likely Ethereum/Base (18 decimals)
       addTokenToWallet(contractAddress, 'Unknown', 18, 'Base');
     }
   }
