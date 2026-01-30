@@ -1085,24 +1085,170 @@ function addTokenToWallet(contractAddress, symbol, decimals, chain) {
 
 // For Solana (Phantom) tokens
 async function addSolanaTokenToWallet(contractAddress, symbol = 'REBL') {
-  // Check if Phantom is installed
+  // First try to detect Phantom with better detection
   const phantomProvider = window.phantom?.solana || window.solana;
   
   if (!phantomProvider) {
-    showNotification('Please install Phantom wallet for Solana', 'warning');
-    // Offer to install
-    setTimeout(() => {
-      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
+    // Try to trigger Phantom extension popup
+    try {
+      // Try to connect to Phantom - this will trigger the extension if installed
+      await window.solana.connect();
+    } catch (error) {
+      // If that fails, Phantom is not installed
+      showNotification('Phantom wallet not detected', 'warning');
+      
+      // Create a better install prompt
+      setTimeout(() => {
+        const installModal = document.createElement('div');
+        installModal.className = 'phantom-install-modal';
+        installModal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10003;
+          backdrop-filter: blur(10px);
+        `;
+        
+        installModal.innerHTML = `
+          <div style="
+            background: linear-gradient(135deg, #1a237e, #311b92);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid #7958e1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            text-align: center;
+          ">
+            <div style="margin-bottom: 1.5rem;">
+              <div style="
+                width: 80px;
+                height: 80px;
+                background: #7958e1;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+                margin: 0 auto 1.5rem;
+              ">
+                <i class="fas fa-ghost"></i>
+              </div>
+              <h3 style="color: white; margin-bottom: 1rem;">Phantom Wallet Required</h3>
+              <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1.5rem;">
+                To add $REBL tokens, you need the Phantom wallet extension.
+                Please install it from your browser's extension store.
+              </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <button onclick="window.open('https://chrome.google.com/webstore/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa', '_blank'); this.closest('.phantom-install-modal').remove();"
+                      style="
+                        background: #7958e1;
+                        color: white;
+                        border: none;
+                        padding: 1rem 1.5rem;
+                        border-radius: 12px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.75rem;
+                        transition: all 0.3s ease;
+                      "
+                      onmouseover="this.style.background='#6a4bc7';"
+                      onmouseout="this.style.background='#7958e1';">
+                <i class="fab fa-chrome"></i>
+                <span>Install Phantom for Chrome</span>
+              </button>
+              
+              <button onclick="window.open('https://addons.mozilla.org/en-US/firefox/addon/phantom-app/', '_blank'); this.closest('.phantom-install-modal').remove();"
+                      style="
+                        background: #ff9500;
+                        color: white;
+                        border: none;
+                        padding: 1rem 1.5rem;
+                        border-radius: 12px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.75rem;
+                        transition: all 0.3s ease;
+                      "
+                      onmouseover="this.style.background='#e68500';"
+                      onmouseout="this.style.background='#ff9500';">
+                <i class="fab fa-firefox"></i>
+                <span>Install Phantom for Firefox</span>
+              </button>
+              
+              <button onclick="window.open('https://phantom.app/download', '_blank'); this.closest('.phantom-install-modal').remove();"
+                      style="
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                        border: 1px solid rgba(255,255,255,0.3);
+                        padding: 1rem 1.5rem;
+                        border-radius: 12px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.75rem;
+                        transition: all 0.3s ease;
+                      "
+                      onmouseover="this.style.background='rgba(255,255,255,0.2)';"
+                      onmouseout="this.style.background='rgba(255,255,255,0.1)';">
+                <i class="fas fa-download"></i>
+                <span>Other Browsers</span>
+              </button>
+              
+              <button onclick="this.closest('.phantom-install-modal').remove()"
+                      style="
+                        background: transparent;
+                        color: rgba(255,255,255,0.7);
+                        border: none;
+                        padding: 0.75rem;
+                        font-size: 0.9rem;
+                        cursor: pointer;
+                        margin-top: 0.5rem;
+                      ">
+                Cancel
+              </button>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(installModal);
+        
+        // Close when clicking outside
+        installModal.addEventListener('click', (e) => {
+          if (e.target === installModal) {
+            installModal.remove();
+          }
+        });
+      }, 500);
+    }
     return;
   }
   
+  // ... rest of your existing code for when Phantom IS detected
   try {
     // Check if connected
     if (!phantomProvider.isConnected) {
-      showNotification('Please connect Phantom wallet first', 'info');
+      showNotification('Connecting to Phantom...', 'info');
       // Try to connect
       const response = await phantomProvider.connect();
       const address = response.publicKey.toString();
@@ -1309,7 +1455,7 @@ function showSolanaTokenInstructions(contractAddress, symbol) {
                 ">
           Close
         </button>
-        <button onclick="window.open('https://phantom.app/', '_blank')"
+<button onclick="openPhantomExtension()"
                 style="
                   background: rgba(121, 88, 225, 0.8);
                   color: white;
@@ -1325,7 +1471,33 @@ function showSolanaTokenInstructions(contractAddress, symbol) {
       </div>
     </div>
   `;
-  
+  // Function to trigger Phantom extension popup
+function openPhantomExtension() {
+  // Try to trigger Phantom by attempting to connect
+  if (window.phantom?.solana || window.solana) {
+    const phantom = window.phantom?.solana || window.solana;
+    
+    // This will open the Phantom extension popup
+    phantom.connect({ onlyIfTrusted: false })
+      .then(() => {
+        showNotification('Phantom extension opened!', 'success');
+      })
+      .catch(() => {
+        // If it fails, show install modal
+        showPhantomInstallModal();
+      });
+  } else {
+    showPhantomInstallModal();
+  }
+}
+
+// Helper function for Phantom install modal
+function showPhantomInstallModal() {
+  const installModal = document.createElement('div');
+  installModal.className = 'phantom-install-modal';
+  // ... same modal HTML as above ...
+  document.body.appendChild(installModal);
+}
   document.body.appendChild(modal);
   
   // Close modal when clicking outside
