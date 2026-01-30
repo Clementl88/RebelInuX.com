@@ -877,184 +877,46 @@
       this.setupWalletButtons();
     }
     
-   // In WalletManager class
-static detectWalletType() {
-  const wallets = {
-    phantom: window.phantom?.solana || window.solana,
-    ethereum: typeof window.ethereum !== 'undefined',
-    solflare: window.solflare,
-    backpack: window.backpack,
-    metamask: window.ethereum?.isMetaMask,
-    coinbase: window.ethereum?.isCoinbaseWallet,
-    trustwallet: window.ethereum?.isTrust,
-    rabby: window.ethereum?.isRabby
-  };
-  
-  if (wallets.phantom) {
-    console.log('🔍 Phantom wallet detected');
-    return 'phantom';
-  } else if (wallets.solflare) {
-    console.log('🔍 Solflare wallet detected');
-    return 'solflare';
-  } else if (wallets.backpack) {
-    console.log('🔍 Backpack wallet detected');
-    return 'backpack';
-  } else if (wallets.ethereum) {
-    // Detect specific Ethereum wallet
-    if (wallets.metamask) {
-      console.log('🔍 MetaMask wallet detected');
-      return 'metamask';
-    } else if (wallets.coinbase) {
-      console.log('🔍 Coinbase Wallet detected');
-      return 'coinbase';
-    } else if (wallets.trustwallet) {
-      console.log('🔍 Trust Wallet detected');
-      return 'trustwallet';
-    } else if (wallets.rabby) {
-      console.log('🔍 Rabby Wallet detected');
-      return 'rabby';
-    }
-    console.log('🔍 Ethereum wallet detected (unspecified)');
-    return 'ethereum';
-  } else {
-    console.log('🔍 No wallet detected');
-    return 'none';
-  }
-}
-
-static getWalletName(type) {
-  const walletNames = {
-    phantom: 'Phantom',
-    solflare: 'Solflare',
-    backpack: 'Backpack',
-    metamask: 'MetaMask',
-    coinbase: 'Coinbase Wallet',
-    trustwallet: 'Trust Wallet',
-    rabby: 'Rabby',
-    ethereum: 'Web3 Wallet'
-  };
-  return walletNames[type] || 'Wallet';
-}
-    
-static setupWalletButtons() {
-  const walletType = this.detectWalletType();
-  
-  DOM.walletButtons.forEach(button => {
-    const originalHTML = button.innerHTML;
-    const originalClass = button.className;
-    
-    // Determine which token this button is for
-    const isSolanaButton = button.textContent.includes('REBL') || 
-                          button.onclick?.toString().includes('Solana');
-    
-    // Update button text and icon based on detected wallet
-    let newHTML = originalHTML;
-    let walletName = '';
-    
-    if (isSolanaButton) {
-      switch(walletType) {
-        case 'phantom':
-          newHTML = '<i class="fas fa-ghost"></i><span>Add to Phantom</span>';
-          walletName = 'Phantom';
-          break;
-        case 'solflare':
-          newHTML = '<i class="fas fa-fire"></i><span>Add to Solflare</span>';
-          walletName = 'Solflare';
-          break;
-        case 'backpack':
-          newHTML = '<i class="fas fa-briefcase"></i><span>Add to Backpack</span>';
-          walletName = 'Backpack';
-          break;
-        default:
-          newHTML = '<i class="fas fa-wallet"></i><span>Add to Solana Wallet</span>';
-          walletName = 'Solana Wallet';
-      }
-    } else {
-      // Base/Ethereum chain button
-      switch(walletType) {
-        case 'metamask':
-          newHTML = '<i class="fab fa-metamask"></i><span>Add to MetaMask</span>';
-          walletName = 'MetaMask';
-          break;
-        case 'coinbase':
-          newHTML = '<i class="fab fa-bitcoin"></i><span>Add to Coinbase Wallet</span>';
-          walletName = 'Coinbase Wallet';
-          break;
-        case 'trustwallet':
-          newHTML = '<i class="fas fa-shield-alt"></i><span>Add to Trust Wallet</span>';
-          walletName = 'Trust Wallet';
-          break;
-        default:
-          newHTML = '<i class="fab fa-ethereum"></i><span>Add to Wallet</span>';
-          walletName = 'Wallet';
+    static detectWalletType() {
+      if (window.phantom || window.solana) {
+        console.log('🔍 Phantom wallet detected');
+        return 'phantom';
+      } else if (typeof window.ethereum !== 'undefined') {
+        console.log('🔍 Ethereum wallet detected');
+        return 'ethereum';
+      } else {
+        console.log('🔍 No wallet detected');
+        return 'none';
       }
     }
     
-    button.innerHTML = newHTML;
-    
-    // Store original data for reset
-    button.dataset.originalHTML = originalHTML;
-    button.dataset.originalClass = originalClass;
-    button.dataset.walletName = walletName;
-    
-    // Enhanced click handler with proper error handling
-    button.addEventListener('click', async (e) => {
-      e.preventDefault();
+    static setupWalletButtons() {
+      const walletType = this.detectWalletType();
       
-      if (button.disabled || button.classList.contains('loading')) return;
-      
-      // Store current state
-      const currentHTML = button.innerHTML;
-      const currentClass = button.className;
-      
-      // Set loading state
-      button.classList.add('loading');
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Connecting...</span>';
-      button.disabled = true;
-      
-      try {
-        // Determine which function to call
-        if (isSolanaButton) {
-          await this.addSolanaToken(
-            'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', 
-            'REBL', 
-            9
-          );
-        } else {
-          await this.addBaseToken(
-            '0xf95beeF6439ec38fA757238Cdec8417ABDA536bd',
-            'rebelinux',
-            18
-          );
+      DOM.walletButtons.forEach(button => {
+        const isSolanaButton = button.textContent.includes('REBL') || 
+          button.onclick?.toString().includes('Solana');
+        
+        if (walletType === 'phantom' && isSolanaButton) {
+          button.innerHTML = '<i class="fas fa-wallet"></i><span>Add to Phantom</span>';
+        } else if (walletType === 'ethereum' && !isSolanaButton) {
+          button.innerHTML = '<i class="fab fa-ethereum"></i><span>Add to MetaMask</span>';
         }
         
-        // Success state
-        button.classList.remove('loading');
-        button.classList.add('success');
-        button.innerHTML = '<i class="fas fa-check"></i><span>Added!</span>';
-        
-      } catch (error) {
-        console.error('Wallet addition error:', error);
-        
-        // Error state
-        button.classList.remove('loading');
-        button.classList.add('error');
-        button.innerHTML = '<i class="fas fa-times"></i><span>Failed</span>';
-        
-        // Show error notification
-        Notification.show(error.message || 'Failed to add token to wallet', 'error');
-      }
-      
-      // Reset button after delay
-      setTimeout(() => {
-        button.disabled = false;
-        button.classList.remove('loading', 'success', 'error');
-        button.innerHTML = currentHTML;
-        button.className = currentClass;
-      }, 3000);
-    });
-  });
-}
+        button.addEventListener('click', (e) => {
+          if (button.disabled) return;
+          
+          const originalHTML = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Connecting...</span>';
+          button.disabled = true;
+          
+          setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.disabled = false;
+          }, 3000);
+        });
+      });
+    }
     
     static async addTokenToWallet(contractAddress, symbol, decimals, network) {
       console.log(`Adding ${symbol} to wallet (${network} network)`);
@@ -1071,287 +933,38 @@ static setupWalletButtons() {
       }
     }
     
-static async addSolanaToken(contractAddress, symbol, decimals) {
-  const walletType = this.detectWalletType();
-  let wallet;
-  
-  switch(walletType) {
-    case 'phantom':
-      wallet = window.phantom?.solana || window.solana;
-      break;
-    case 'solflare':
-      wallet = window.solflare;
-      break;
-    case 'backpack':
-      wallet = window.backpack;
-      break;
-    default:
-      wallet = null;
-  }
-  
-  if (!wallet) {
-    const walletName = this.getWalletName(walletType);
-    const message = `Please install a Solana wallet (Phantom, Solflare, or Backpack) for ${symbol}`;
-    
-    Notification.show(message, 'warning');
-    
-    // Create wallet selection modal
-    setTimeout(() => {
-      this.showSolanaWalletSelector(contractAddress, symbol);
-    }, 1500);
-    throw new Error('No Solana wallet detected');
-  }
-  
-  try {
-    // Try to connect first
-    const connectionResponse = await wallet.connect({ onlyIfTrusted: true });
-    console.log('Wallet connected:', connectionResponse);
-    
-    // Show instructions for adding token
-    this.showSolanaInstructions(contractAddress, symbol, walletType);
-    
-  } catch (connectError) {
-    console.log('Wallet not connected, requesting connection...');
-    
-    try {
-      // Request connection
-      await wallet.connect();
-      Notification.show(`${this.getWalletName(walletType)} connected! Now add the token`, 'success');
+    static async addSolanaToken(contractAddress, symbol, decimals) {
+      const phantom = window.phantom?.solana || window.solana;
       
-      // Show instructions after connection
-      setTimeout(() => {
-        this.showSolanaInstructions(contractAddress, symbol, walletType);
-      }, 1000);
+      if (!phantom) {
+        Notification.show(`Please install Phantom wallet for ${symbol}`, 'warning');
+        setTimeout(() => {
+          if (confirm(`Phantom wallet is required for ${symbol}. Install now?`)) {
+            window.open('https://phantom.app/', '_blank');
+          }
+        }, 1000);
+        return;
+      }
       
-    } catch (connectionError) {
-      console.error('Connection error:', connectionError);
-      
-      if (connectionError.code === 4001) {
-        throw new Error('Connection rejected by user');
-      } else {
-        throw new Error(`Failed to connect wallet: ${connectionError.message}`);
+      try {
+        await phantom.connect({ onlyIfTrusted: true });
+        this.showSolanaInstructions(contractAddress, symbol);
+      } catch {
+        Notification.show('Please connect your Phantom wallet first', 'warning');
+        
+        try {
+          await phantom.connect();
+          Notification.show('Wallet connected! Now add the token', 'success');
+          setTimeout(() => {
+            this.showSolanaInstructions(contractAddress, symbol);
+          }, 1000);
+        } catch (error) {
+          console.error('Connection error:', error);
+          Notification.show('Failed to connect wallet', 'error');
+        }
       }
     }
-  }
-}
-
-static showSolanaWalletSelector(contractAddress, symbol) {
-  const modal = document.createElement('div');
-  modal.className = 'wallet-selector-modal';
-  modal.innerHTML = `
-    <div class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3><i class="fas fa-wallet"></i> Add ${symbol} to Wallet</h3>
-          <button class="modal-close" aria-label="Close">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        
-        <div class="modal-body">
-          <p>To add ${symbol}, you need a Solana wallet. Choose one to install:</p>
-          
-          <div class="wallet-options">
-            <a href="https://phantom.app/" target="_blank" rel="noopener noreferrer" 
-               class="wallet-option">
-              <div class="wallet-icon">
-                <i class="fas fa-ghost"></i>
-              </div>
-              <div class="wallet-info">
-                <h4>Phantom</h4>
-                <p>Most popular Solana wallet</p>
-              </div>
-              <i class="fas fa-external-link-alt"></i>
-            </a>
-            
-            <a href="https://solflare.com/" target="_blank" rel="noopener noreferrer"
-               class="wallet-option">
-              <div class="wallet-icon">
-                <i class="fas fa-fire"></i>
-              </div>
-              <div class="wallet-info">
-                <h4>Solflare</h4>
-                <p>Feature-rich Solana wallet</p>
-              </div>
-              <i class="fas fa-external-link-alt"></i>
-            </a>
-            
-            <a href="https://www.backpack.app/" target="_blank" rel="noopener noreferrer"
-               class="wallet-option">
-              <div class="wallet-icon">
-                <i class="fas fa-briefcase"></i>
-              </div>
-              <div class="wallet-info">
-                <h4>Backpack</h4>
-                <p>Wallet with built-in exchange</p>
-              </div>
-              <i class="fas fa-external-link-alt"></i>
-            </a>
-          </div>
-          
-          <div class="modal-actions">
-            <button class="btn-secondary copy-address-btn">
-              <i class="fas fa-copy"></i> Copy Address for Later
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  // Close modal
-  modal.querySelector('.modal-close').addEventListener('click', () => {
-    modal.remove();
-  });
-  
-  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
-    if (e.target === modal.querySelector('.modal-overlay')) {
-      modal.remove();
-    }
-  });
-  
-  // Copy address button
-  modal.querySelector('.copy-address-btn').addEventListener('click', async () => {
-    try {
-      await ClipboardManager.copyToClipboard(contractAddress);
-      Notification.show('Address copied! Install a wallet and paste this address', 'success');
-      modal.remove();
-    } catch (error) {
-      Notification.show('Failed to copy address', 'error');
-    }
-  });
-  
-  // Escape key to close
-  const handleEscape = (e) => {
-    if (e.key === 'Escape') {
-      modal.remove();
-      document.removeEventListener('keydown', handleEscape);
-    }
-  };
-  
-  document.addEventListener('keydown', handleEscape);
-}
-    static createInstructionModal(contractAddress, symbol, walletType = 'phantom') {
-  const modal = document.createElement('div');
-  modal.className = 'token-instructions-modal';
-  
-  const walletName = this.getWalletName(walletType);
-  const walletIcon = {
-    phantom: 'fa-ghost',
-    solflare: 'fa-fire',
-    backpack: 'fa-briefcase',
-    metamask: 'fa-fox',
-    coinbase: 'fa-coinbase',
-    trustwallet: 'fa-shield-alt',
-    rabby: 'fa-paw',
-    ethereum: 'fa-ethereum'
-  }[walletType] || 'fa-wallet';
-  
-  const isSolana = ['phantom', 'solflare', 'backpack'].includes(walletType);
-  
-  const instructions = isSolana ? [
-    `Open <strong>${walletName}</strong> on your device`,
-    `Tap the <strong style="color: var(--rebel-gold);">+</strong> button in your tokens list`,
-    `Select <strong>"Add Token"</strong>`,
-    `Paste this address in the token field:`,
-    `Tap <strong>"Add"</strong> to complete`
-  ] : [
-    `Open <strong>${walletName}</strong> on your device`,
-    `Tap the <strong>"Import Tokens"</strong> or "Add Token" option`,
-    `Select <strong>"Custom Token"</strong>`,
-    `Paste this address in the token address field:`,
-    `Tap <strong>"Import"</strong> or "Add" to complete`
-  ];
-  
-  modal.innerHTML = `
-    <div class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>
-            <i class="fas ${walletIcon}"></i>
-            Add ${symbol} to ${walletName}
-          </h3>
-          <button class="modal-close" aria-label="Close">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        
-        <div class="modal-body">
-          <ol class="instructions-list">
-            ${instructions.map((step, index) => `
-              <li class="instruction-step">
-                ${index === 3 ? `
-                  <span>${step}</span>
-                  <div class="address-display">
-                    <code>${contractAddress}</code>
-                    <button class="copy-address-btn-sm" 
-                            onclick="ClipboardManager.copyToClipboard('${contractAddress}')"
-                            title="Copy address">
-                      <i class="fas fa-copy"></i>
-                    </button>
-                  </div>
-                ` : `<span>${step}</span>`}
-              </li>
-            `).join('')}
-          </ol>
-          
-          <div class="modal-actions">
-            <button class="btn-primary copy-again-btn"
-                    onclick="ClipboardManager.copyToClipboard('${contractAddress}')">
-              <i class="fas fa-copy"></i> Copy Address Again
-            </button>
-            
-            <button class="btn-secondary switch-wallet-btn">
-              <i class="fas fa-sync-alt"></i> Switch Wallet Type
-            </button>
-          </div>
-          
-          <div class="quick-actions">
-            <button class="btn-outline qr-btn" onclick="this.showQRCode('${contractAddress}')">
-              <i class="fas fa-qrcode"></i> Show QR Code
-            </button>
-            
-            <button class="btn-outline test-btn" onclick="this.testTokenAddition('${contractAddress}', '${symbol}')">
-              <i class="fas fa-vial"></i> Test Connection
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  // Add event listeners
-  modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
-  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
-    if (e.target === modal.querySelector('.modal-overlay')) modal.remove();
-  });
-  
-  // Switch wallet button
-  modal.querySelector('.switch-wallet-btn').addEventListener('click', () => {
-    modal.remove();
-    this.showSolanaWalletSelector(contractAddress, symbol);
-  });
-  
-  // Close on escape
-  const handleEscape = (e) => {
-    if (e.key === 'Escape') {
-      modal.remove();
-      document.removeEventListener('keydown', handleEscape);
-    }
-  };
-  document.addEventListener('keydown', handleEscape);
-  
-  // Auto-copy address
-  setTimeout(() => {
-    ClipboardManager.copyToClipboard(contractAddress)
-      .then(() => Notification.show(`Address copied to clipboard!`, 'success'))
-      .catch(() => Notification.show('Failed to copy address', 'error'));
-  }, 300);
-}
+    
     static async addBaseToken(contractAddress, symbol, decimals) {
       if (typeof window.ethereum !== 'undefined') {
         const baseChainId = '0x2105';
@@ -1465,61 +1078,7 @@ static showSolanaWalletSelector(contractAddress, symbol) {
           Notification.show('Failed to copy address', 'error');
         });
     }
-    // Add to Utilities class or as a standalone function
-static generateQRCode(text) {
-  return new Promise((resolve) => {
-    // Use a simple QR code library or create basic version
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 200;
-    canvas.height = 200;
     
-    // Simple QR code (for demo, consider using a library like qrcode.js)
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, 200, 200);
-    ctx.fillStyle = 'black';
-    
-    // This is a very basic representation
-    // For production, use: https://github.com/davidshimjs/qrcodejs
-    ctx.font = '10px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('QR Code for:', 100, 30);
-    ctx.fillText(text.substring(0, 20), 100, 50);
-    ctx.fillText(text.substring(20, 40), 100, 65);
-    ctx.fillText('Scan with wallet', 100, 100);
-    
-    resolve(canvas.toDataURL());
-  });
-}
-
-// Add to window object
-window.showQRCode = async function(contractAddress) {
-  const qrDataURL = await Utilities.generateQRCode(contractAddress);
-  
-  const modal = document.createElement('div');
-  modal.className = 'qr-modal';
-  modal.innerHTML = `
-    <div class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3><i class="fas fa-qrcode"></i> Scan QR Code</h3>
-          <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <img src="${qrDataURL}" alt="QR Code for token address" class="qr-image">
-          <p class="qr-note">Scan with your wallet app to add token</p>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  modal.querySelector('.modal-close').addEventListener('click', () => modal.remove());
-  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
-    if (e.target === modal.querySelector('.modal-overlay')) modal.remove();
-  });
-};
     static createInstructionModal(contractAddress, symbol) {
       const modal = document.createElement('div');
       modal.className = 'token-instructions-modal';
@@ -1711,36 +1270,17 @@ window.showQRCode = async function(contractAddress) {
       });
     }
   }
-// In MobileOptimizer class, add:
-static optimizeWalletButtons() {
-  if (!Utilities.isMobile()) return;
-  
-  // Make wallet buttons easier to tap
-  const walletButtons = document.querySelectorAll('.wallet-action, .wallet-btn');
-  
-  walletButtons.forEach(button => {
-    // Ensure minimum tap target size
-    button.style.minHeight = '44px';
-    button.style.minWidth = '44px';
-    
-    // Add haptic feedback on mobile
-    button.addEventListener('touchstart', () => {
-      if (navigator.vibrate) navigator.vibrate(10);
-    }, { passive: true });
-  });
-}
   
   // ===== GLOBAL EXPORTS =====
-
-window.RebelInuX = {
-  initIndexPage: InitializationManager.initialize,
-  copyToClipboard: ClipboardManager.copyToClipboard,
-  addTokenToWallet: WalletManager.addTokenToWallet, // Add this line
-  addToWallet: WalletManager.addTokenToWallet,
-  showNotification: Notification.show,
-  scrollToElement: SmoothScroll.scrollToElement,
-  isMobile: Utilities.isMobile
-};
+  
+  window.RebelInuX = {
+    initIndexPage: InitializationManager.initialize,
+    copyToClipboard: ClipboardManager.copyToClipboard,
+    addToWallet: WalletManager.addTokenToWallet,
+    showNotification: Notification.show,
+    scrollToElement: SmoothScroll.scrollToElement,
+    isMobile: Utilities.isMobile
+  };
   
   // ===== EVENT HANDLERS =====
   
@@ -1772,101 +1312,9 @@ window.RebelInuX = {
     console.error('❌ Unhandled promise rejection:', e.reason);
   });
   
- // Cleanup animations on page unload
+  // Cleanup animations on page unload
   window.addEventListener('beforeunload', () => {
     STATE.activeAnimations.forEach(id => cancelAnimationFrame(id));
   });
-
-  // ===== GLOBAL HELPER FUNCTIONS =====
-  window.copyContractAddress = function() {
-    const address = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-    ClipboardManager.copyToClipboard(address)
-      .then(() => {
-        Notification.show('Contract address copied!', 'success');
-      })
-      .catch(() => {
-        Notification.show('Failed to copy address', 'error');
-      });
-  };
-
-window.addTokenToWallet = async function(contractAddress, symbol, decimals, network) {
-  try {
-    // Show loading notification
-    Notification.show(`Adding ${symbol} to wallet...`, 'info');
-    
-    if (window.RebelInuX && window.RebelInuX.addTokenToWallet) {
-      await window.RebelInuX.addTokenToWallet(contractAddress, symbol, decimals, network);
-    } else {
-      console.error('RebelInuX wallet manager not initialized');
-      
-      // Try to initialize dynamically
-      if (typeof WalletManager !== 'undefined') {
-        await WalletManager.addTokenToWallet(contractAddress, symbol, decimals, network);
-      } else {
-        throw new Error('Wallet functionality not available');
-      }
-    }
-  } catch (error) {
-    console.error('Token addition error:', error);
-    Notification.show(`Failed: ${error.message}`, 'error');
-    
-    // Show fallback instructions
-    setTimeout(() => {
-      const modal = document.createElement('div');
-      modal.innerHTML = `
-        <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999">
-          <div style="background:var(--dark-bg);padding:2rem;border-radius:20px;max-width:500px;width:90%;border:2px solid var(--rebel-red)">
-            <h3 style="color:var(--rebel-red)"><i class="fas fa-exclamation-triangle"></i> Manual Addition Required</h3>
-            <p style="color:white;margin:1rem 0">Copy this address and manually add it to your wallet:</p>
-            <div style="background:rgba(0,0,0,0.3);padding:1rem;border-radius:10px;margin:1rem 0">
-              <code style="word-break:break-all;color:white;display:block;margin-bottom:1rem">${contractAddress}</code>
-              <button onclick="copyToClipboard('${contractAddress}')" style="background:var(--rebel-gold);color:white;border:none;padding:0.5rem 1rem;border-radius:8px;cursor:pointer">
-                <i class="fas fa-copy"></i> Copy Address
-              </button>
-            </div>
-            <button onclick="this.parentElement.parentElement.remove()" style="background:none;border:1px solid white;color:white;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;margin-top:1rem">
-              Close
-            </button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
-    }, 1000);
-  }
-};
-
-  window.addToWallet = function(contractAddress) {
-    // Determine which token based on the address
-    if (contractAddress === 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump') {
-      window.addTokenToWallet(contractAddress, 'REBL', 9, 'Solana');
-    } else {
-      window.addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
-    }
-  };
-
-  window.copyToClipboard = function(text) {
-    if (window.RebelInuX && window.RebelInuX.copyToClipboard) {
-      return window.RebelInuX.copyToClipboard(text);
-    } else {
-      // Fallback implementation
-      return ClipboardManager.copyToClipboard(text);
-    }
-  };
-
-  window.toggleContractView = function(button) {
-    const codeElement = button.closest('.contract-address')?.querySelector('code');
-    if (codeElement) {
-      const isExpanded = codeElement.classList.toggle('expanded');
-      const icon = button.querySelector('i');
-      
-      if (isExpanded) {
-        icon.className = 'fas fa-compress-alt';
-        button.setAttribute('title', 'Collapse address');
-      } else {
-        icon.className = 'fas fa-expand-alt';
-        button.setAttribute('title', 'Expand address');
-      }
-    }
-  };
-
+  
 })();
