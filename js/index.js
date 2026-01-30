@@ -1,4 +1,4 @@
-//// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
+/// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
 // Professional Crypto Project - Mobile Optimized
 
 // Wait for DOM to be fully loaded
@@ -1344,33 +1344,7 @@ async function addEthereumTokenToWallet(contractAddress, symbol = 'rebelinux', d
     showNotification('Failed to add token: ' + error.message, 'error');
   }
 }
-  // Function to trigger Phantom extension popup
-function openPhantomExtension() {
-  // Try to trigger Phantom by attempting to connect
-  if (window.phantom?.solana || window.solana) {
-    const phantom = window.phantom?.solana || window.solana;
-    
-    // This will open the Phantom extension popup
-    phantom.connect({ onlyIfTrusted: false })
-      .then(() => {
-        showNotification('Phantom extension opened!', 'success');
-      })
-      .catch(() => {
-        // If it fails, show install modal
-        showPhantomInstallModal();
-      });
-  } else {
-    showPhantomInstallModal();
-  }
-}
 
-// Helper function for Phantom install modal
-function showPhantomInstallModal() {
-  const installModal = document.createElement('div');
-  installModal.className = 'phantom-install-modal';
-  // ... same modal HTML as above ...
-  document.body.appendChild(installModal);
-}
 // Show Solana token instructions modal
 function showSolanaTokenInstructions(contractAddress, symbol) {
   const modal = document.createElement('div');
@@ -1497,7 +1471,33 @@ function showSolanaTokenInstructions(contractAddress, symbol) {
       </div>
     </div>
   `;
+  // Function to trigger Phantom extension popup
+function openPhantomExtension() {
+  // Try to trigger Phantom by attempting to connect
+  if (window.phantom?.solana || window.solana) {
+    const phantom = window.phantom?.solana || window.solana;
+    
+    // This will open the Phantom extension popup
+    phantom.connect({ onlyIfTrusted: false })
+      .then(() => {
+        showNotification('Phantom extension opened!', 'success');
+      })
+      .catch(() => {
+        // If it fails, show install modal
+        showPhantomInstallModal();
+      });
+  } else {
+    showPhantomInstallModal();
+  }
+}
 
+// Helper function for Phantom install modal
+function showPhantomInstallModal() {
+  const installModal = document.createElement('div');
+  installModal.className = 'phantom-install-modal';
+  // ... same modal HTML as above ...
+  document.body.appendChild(installModal);
+}
   document.body.appendChild(modal);
   
   // Close modal when clicking outside
