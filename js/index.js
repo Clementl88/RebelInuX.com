@@ -95,7 +95,7 @@ function initLoader() {
 }
 
 // Enhanced Scroll Animations with Intersection Observer
-initScrollAnimations() {
+function  initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
     '.value-card, .comparison-card, .step-card, .stat-card, ' +
     '.token-card, .logo-card, .key-takeaway, .contract-emphasis, ' +
