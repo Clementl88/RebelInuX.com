@@ -1,4 +1,4 @@
-//// ===== REBELINUX INDEX JS - OPTIMIZED VERSION =====
+///// ===== REBELINUX INDEX JS - OPTIMIZED VERSION =====
 // Professional Crypto Project - Mobile Optimized
 // Modular, Maintainable, and High Performance
 
