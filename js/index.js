@@ -1073,3 +1073,265 @@ window.addEventListener('error', function(e) {
 window.addEventListener('unhandledrejection', function(e) {
   console.error('❌ Unhandled promise rejection:', e.reason);
 });
+// ===== ENHANCED ADD TO WALLET FUNCTIONS =====
+
+function addTokenToWallet(contractAddress, symbol, decimals, chain) {
+  if (chain === 'Solana') {
+    addSolanaTokenToWallet(contractAddress, symbol);
+  } else {
+    addEthereumTokenToWallet(contractAddress, symbol, decimals);
+  }
+}
+
+// For Solana (Phantom) tokens
+async function addSolanaTokenToWallet(contractAddress, symbol = 'REBL') {
+  // Check if Phantom is installed
+  const phantomProvider = window.phantom?.solana || window.solana;
+  
+  if (!phantomProvider) {
+    showNotification('Please install Phantom wallet for Solana', 'warning');
+    // Offer to install
+    setTimeout(() => {
+      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
+        window.open('https://phantom.app/', '_blank');
+      }
+    }, 1000);
+    return;
+  }
+  
+  try {
+    // Check if connected
+    if (!phantomProvider.isConnected) {
+      showNotification('Please connect Phantom wallet first', 'info');
+      // Try to connect
+      const response = await phantomProvider.connect();
+      const address = response.publicKey.toString();
+      showNotification(`Connected to Phantom: ${address.substring(0, 6)}...`, 'success');
+    }
+    
+    // Copy address to clipboard for manual addition
+    await copyToClipboard(contractAddress);
+    
+    // Show instructions modal
+    showSolanaTokenInstructions(contractAddress, symbol);
+    
+  } catch (error) {
+    console.error('Phantom error:', error);
+    showNotification('Failed to connect Phantom', 'error');
+  }
+}
+
+// For Ethereum/Base (MetaMask) tokens
+async function addEthereumTokenToWallet(contractAddress, symbol = 'rebelinux', decimals = 18) {
+  if (typeof window.ethereum === 'undefined') {
+    showNotification('Please install MetaMask for Base chain', 'warning');
+    setTimeout(() => {
+      if (confirm('MetaMask not detected. Would you like to install it?')) {
+        window.open('https://metamask.io/download/', '_blank');
+      }
+    }, 1000);
+    return;
+  }
+  
+  try {
+    // Check if connected
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    
+    if (accounts.length === 0) {
+      showNotification('Please connect MetaMask first', 'info');
+      // Request connection
+      const connectedAccounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
+      showNotification(`Connected to MetaMask: ${connectedAccounts[0].substring(0, 6)}...`, 'success');
+    }
+    
+    // Check if on Base network
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    const BASE_CHAIN_ID = '0x2105';
+    
+    if (chainId !== BASE_CHAIN_ID) {
+      showNotification('Please switch to Base network', 'info');
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: BASE_CHAIN_ID }],
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: BASE_CHAIN_ID,
+              chainName: 'Base Mainnet',
+              nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+              rpcUrls: ['https://mainnet.base.org'],
+              blockExplorerUrls: ['https://basescan.org']
+            }]
+          });
+        }
+      }
+    }
+    
+    // Add token to MetaMask
+    const success = await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: contractAddress,
+          symbol: symbol,
+          decimals: decimals,
+          image: 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg'
+        }
+      }
+    });
+    
+    if (success) {
+      showNotification(`$${symbol} added to MetaMask!`, 'success');
+    } else {
+      showNotification('Failed to add token to MetaMask', 'error');
+    }
+    
+  } catch (error) {
+    console.error('MetaMask error:', error);
+    showNotification('Failed to add token: ' + error.message, 'error');
+  }
+}
+
+// Show Solana token instructions modal
+function showSolanaTokenInstructions(contractAddress, symbol) {
+  const modal = document.createElement('div');
+  modal.className = 'token-instructions-modal';
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10002;
+    backdrop-filter: blur(5px);
+  `;
+  
+  modal.innerHTML = `
+    <div style="
+      background: linear-gradient(135deg, var(--dark-bg), #2a1f14);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      border: 2px solid rgba(121, 88, 225, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    ">
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="
+          width: 50px;
+          height: 50px;
+          background: rgba(121, 88, 225, 0.3);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          color: white;
+        ">
+          <i class="fas fa-ghost"></i>
+        </div>
+        <div>
+          <h3 style="margin: 0; color: white;">Add $${symbol} to Phantom</h3>
+          <p style="margin: 0.25rem 0 0 0; color: rgba(255,255,255,0.7);">
+            Contract address copied to clipboard
+          </p>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h4 style="color: white; margin-bottom: 1rem;">Steps to add token:</h4>
+        <ol style="color: rgba(255,255,255,0.9); padding-left: 1.5rem; line-height: 1.6;">
+          <li style="margin-bottom: 0.75rem;">Open Phantom wallet</li>
+          <li style="margin-bottom: 0.75rem;">Tap the "+" button</li>
+          <li style="margin-bottom: 0.75rem;">Select "Add Token"</li>
+          <li style="margin-bottom: 0.75rem;">Paste the contract address</li>
+          <li style="margin-bottom: 0.75rem;">Confirm to add $${symbol}</li>
+        </ol>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+        <p style="margin: 0 0 0.5rem 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+          Contract Address:
+        </p>
+        <code style="
+          background: rgba(0,0,0,0.3);
+          padding: 0.75rem;
+          border-radius: 8px;
+          display: block;
+          font-family: monospace;
+          font-size: 0.85rem;
+          color: #7958e1;
+          word-break: break-all;
+          margin-bottom: 0.5rem;
+        ">
+          ${contractAddress}
+        </code>
+        <button onclick="copyToClipboard('${contractAddress}').then(() => showNotification('Copied again!', 'success'))"
+                style="
+                  background: rgba(121, 88, 225, 0.3);
+                  color: white;
+                  border: 1px solid rgba(121, 88, 225, 0.5);
+                  padding: 0.5rem 1rem;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-size: 0.9rem;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  margin: 0 auto;
+                ">
+          <i class="fas fa-copy"></i>
+          Copy Again
+        </button>
+      </div>
+      
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button onclick="this.closest('.token-instructions-modal').remove()"
+                style="
+                  background: rgba(255,255,255,0.1);
+                  color: white;
+                  border: 1px solid rgba(255,255,255,0.3);
+                  padding: 0.75rem 1.5rem;
+                  border-radius: 10px;
+                  cursor: pointer;
+                  font-weight: 600;
+                ">
+          Close
+        </button>
+        <button onclick="window.open('https://phantom.app/', '_blank')"
+                style="
+                  background: rgba(121, 88, 225, 0.8);
+                  color: white;
+                  border: none;
+                  padding: 0.75rem 1.5rem;
+                  border-radius: 10px;
+                  cursor: pointer;
+                  font-weight: 600;
+                ">
+          <i class="fas fa-external-link-alt"></i>
+          Open Phantom
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
