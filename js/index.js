@@ -1375,3 +1375,101 @@ window.addEventListener('error', function(e) {
 window.addEventListener('unhandledrejection', function(e) {
   console.error('❌ Unhandled promise rejection:', e.reason);
 });
+// Initialize wallet button event listeners
+function initWalletButtons() {
+  const walletButtons = document.querySelectorAll('.wallet-action');
+  
+  walletButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const contract = this.getAttribute('data-contract');
+      const symbol = this.getAttribute('data-symbol');
+      const decimals = parseInt(this.getAttribute('data-decimals'));
+      const network = this.getAttribute('data-network');
+      const image = this.getAttribute('data-image');
+      
+      if (contract && symbol && network) {
+        if (network === 'Solana') {
+          addSolanaTokenToWallet(contract, symbol, decimals, image);
+        } else {
+          addTokenToWallet(contract, symbol, decimals, network);
+        }
+      }
+    });
+  });
+}
+
+// Add to your initialization queue
+const initQueue = [
+  initLoader,
+  initScrollAnimations,
+  initStatsCounters,
+  initCopyButtons,
+  initContractViews,
+  initSmoothScroll,
+  initParticles,
+  initLogoAnimations,
+  initBackToTop,
+  initMobileOptimizations,
+  initTouchInteractions,
+  initLazyLoading,
+  initPerformanceObservers,
+  initWalletButtons  // Add this line
+];
+/* Wallet Button States */
+.wallet-action {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.wallet-action.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.wallet-action.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.wallet-action.success {
+  background: #4CAF50 !important;
+  border-color: #45a049 !important;
+}
+
+.wallet-action.error {
+  background: #f44336 !important;
+  border-color: #d32f2f !important;
+}
+
+/* Modal animations */
+.token-instructions-modal {
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
