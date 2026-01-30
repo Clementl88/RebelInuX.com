@@ -44,7 +44,8 @@ function initIndexPage() {
     initMobileOptimizations,
     initTouchInteractions,
     initLazyLoading,
-    initPerformanceObservers
+    initPerformanceObservers,
+    initWalletDetection
   ];
   
   // Execute initialization queue
@@ -921,13 +922,12 @@ function showNotification(message, type = 'info') {
   }, 5000);
 }
 
-// Add to Wallet Function - UPDATED FOR SOLANA
-// Enhanced Add Token to Wallet Function
+
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
   console.log(`Adding ${symbol} to wallet (${network} network)`);
   
   if (network === 'Solana') {
-    addSolanaTokenToWallet(contractAddress, symbol);
+    addSolanaTokenToWallet(contractAddress, symbol, decimals);
   } else if (network === 'Base') {
     addBaseTokenToWallet(contractAddress, symbol, decimals);
   } else {
@@ -937,20 +937,40 @@ function addTokenToWallet(contractAddress, symbol, decimals, network) {
 }
 
 // Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress, symbol) {
+function addSolanaTokenToWallet(contractAddress, symbol, decimals) {
   // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Show instructions modal
-    showSolanaInstructionsModal(contractAddress, symbol);
-    
+  const phantom = window.phantom?.solana || window.solana;
+  
+  if (phantom) {
+    // Check if wallet is connected
+    phantom.connect({ onlyIfTrusted: true })
+      .then(() => {
+        showSolanaInstructionsModal(contractAddress, symbol);
+      })
+      .catch(() => {
+        // Wallet not connected or user rejected
+        showNotification('Please connect your Phantom wallet first', 'warning');
+        
+        // Try to connect
+        phantom.connect()
+          .then(() => {
+            showNotification('Wallet connected! Now add the token', 'success');
+            setTimeout(() => {
+              showSolanaInstructionsModal(contractAddress, symbol);
+            }, 1000);
+          })
+          .catch((error) => {
+            console.error('Connection error:', error);
+            showNotification('Failed to connect wallet', 'error');
+          });
+      });
   } else {
     // Phantom not installed
-    showNotification(`Please install Phantom wallet for Solana tokens`, 'warning');
+    showNotification(`Please install Phantom wallet for ${symbol}`, 'warning');
     
     setTimeout(() => {
-      if (confirm(`Phantom wallet is required for ${symbol}. Install now?`)) {
+      const install = confirm(`Phantom wallet is required for ${symbol}. Install now?`);
+      if (install) {
         window.open('https://phantom.app/', '_blank');
       }
     }, 1000);
@@ -986,7 +1006,8 @@ function addBaseTokenToWallet(contractAddress, symbol, decimals) {
     showNotification(`Please install MetaMask or another Web3 wallet for ${symbol}`, 'warning');
     
     setTimeout(() => {
-      if (confirm('MetaMask is required for Base chain tokens. Install now?')) {
+      const install = confirm('MetaMask is required for Base chain tokens. Install now?');
+      if (install) {
         window.open('https://metamask.io/', '_blank');
       }
     }, 1000);
@@ -995,7 +1016,9 @@ function addBaseTokenToWallet(contractAddress, symbol, decimals) {
 
 // Switch to Base chain and add token
 function switchToBaseChain(contractAddress, symbol, decimals) {
-  if (confirm(`To add ${symbol}, you need to switch to Base network. Switch now?`)) {
+  const switchConfirm = confirm(`To add ${symbol}, you need to switch to Base network. Switch now?`);
+  
+  if (switchConfirm) {
     ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: '0x2105' }], // Base mainnet
@@ -1042,6 +1065,7 @@ function switchToBaseChain(contractAddress, symbol, decimals) {
     });
   }
 }
+
 
 // Generic function to add tokens via Ethereum wallet_watchAsset
 function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
@@ -1132,7 +1156,19 @@ function showSolanaInstructionsModal(contractAddress, symbol) {
       showNotification('Failed to copy address', 'error');
     });
 }
-
+// Detect wallet type and add appropriate styling
+function detectWallet() {
+  if (window.phantom || window.solana) {
+    console.log('🔍 Phantom wallet detected');
+    return 'phantom';
+  } else if (typeof window.ethereum !== 'undefined') {
+    console.log('🔍 Ethereum wallet detected');
+    return 'ethereum';
+  } else {
+    console.log('🔍 No wallet detected');
+    return 'none';
+  }
+}
 // Fallback function for old buttons (backward compatibility)
 function addToWallet(contractAddress) {
   // Detect token type by address length
@@ -1143,6 +1179,37 @@ function addToWallet(contractAddress) {
     // Base token (rebelinux)
     addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
   }
+}
+// Initialize wallet detection on page load
+function initWalletDetection() {
+  const walletType = detectWallet();
+  const walletButtons = document.querySelectorAll('.wallet-action');
+  
+  walletButtons.forEach(button => {
+    // Add wallet-specific icons
+    const isSolanaButton = button.textContent.includes('REBL') || button.onclick.toString().includes('Solana');
+    
+    if (walletType === 'phantom' && isSolanaButton) {
+      button.innerHTML = '<i class="fas fa-wallet"></i><span>Add to Phantom</span>';
+    } else if (walletType === 'ethereum' && !isSolanaButton) {
+      button.innerHTML = '<i class="fab fa-ethereum"></i><span>Add to MetaMask</span>';
+    }
+    
+    // Add click handler for better UX
+    button.addEventListener('click', function(e) {
+      const originalText = this.innerHTML;
+      
+      // Show loading state
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Connecting...</span>';
+      this.disabled = true;
+      
+      // Restore after 3 seconds
+      setTimeout(() => {
+        this.innerHTML = originalText;
+        this.disabled = false;
+      }, 3000);
+    });
+  });
 }
 
 // Function for adding Solana tokens
