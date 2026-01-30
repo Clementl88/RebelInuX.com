@@ -935,97 +935,13 @@ function addToWallet(contractAddress) {
   }
 }
 
-// Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Check if wallet is connected
-    solana.connect({ onlyIfTrusted: true })
-      .then(() => {
-        // Wallet is connected, show instruction
-        showNotification('Please add $REBL manually using the contract address', 'info');
-        
-        // Copy address to clipboard
-        copyToClipboard(contractAddress)
-          .then(() => {
-            showNotification('Contract address copied! Paste it in your wallet', 'success');
-            
-            // Show more detailed instructions
-            setTimeout(() => {
-              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
-            }, 1500);
-          })
-          .catch(() => {
-            showNotification('Failed to copy address', 'error');
-          });
-      })
-      .catch(() => {
-        // Wallet not connected or user rejected
-        showNotification('Please connect your Phantom wallet first', 'warning');
-        
-        // Try to connect
-        solana.connect()
-          .then(() => {
-            showNotification('Wallet connected! Now try adding the token again', 'success');
-          })
-          .catch((error) => {
-            console.error('Connection error:', error);
-            showNotification('Failed to connect wallet', 'error');
-          });
-      });
-  } else {
-    // Phantom not installed
-    showNotification('Please install Phantom wallet for Solana', 'warning');
-    
-    // Offer to redirect to Phantom
-    setTimeout(() => {
-      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
-  }
-}
-
-// Function for adding Ethereum tokens (for $rebelinux)
-function addEthereumTokenToWallet(contractAddress) {
-  if (typeof window.ethereum !== 'undefined') {
-    try {
-      window.ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: contractAddress,
-            symbol: 'rebelinux',
-            decimals: 18,
-            image: 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg'
-          }
-        }
-      }).then(success => {
-        if (success) {
-          showNotification('$rebelinux added to wallet!', 'success');
-        } else {
-          showNotification('Failed to add token to wallet', 'error');
-        }
-      }).catch(error => {
-        console.error('Error adding token:', error);
-        showNotification('Error adding token to wallet', 'error');
-      });
-    } catch (error) {
-      showNotification('Please install a Web3 wallet like MetaMask', 'warning');
-    }
-  } else {
-    showNotification('Please install MetaMask or another Web3 wallet', 'warning');
-  }
-}
 
 // Export functions for global access
 window.RebelInuX = {
   initIndexPage,
   copyToClipboard,
-  addToWallet,
+  addTokenToWallet, // Change from addToWallet to addTokenToWallet
+  openZORACreatorCoin, // Add this new function
   showNotification,
   scrollToElement: window.scrollToElement
 };
@@ -1078,11 +994,231 @@ window.addEventListener('unhandledrejection', function(e) {
 function addTokenToWallet(contractAddress, symbol, decimals, chain) {
   if (chain === 'Solana') {
     addSolanaTokenToWallet(contractAddress, symbol);
+  } else if (chain === 'ZORA') {
+    // Special handling for ZORA Creator Coin
+    openZORACreatorCoin(contractAddress, symbol);
   } else {
+    // For other ERC-20 tokens (if any)
     addEthereumTokenToWallet(contractAddress, symbol, decimals);
   }
 }
+// Function for ZORA Creator Coins (not ERC-20!)
+function openZORACreatorCoin(contractAddress, symbol = 'rebelinux') {
+  // Since ZORA Creator Coins are NFTs (ERC-721M), we can't add them via wallet_watchAsset
+  // Instead, open ZORA page or show instructions
+  
+  const zoraUrl = `https://zora.co/coin/base:${contractAddress}`;
+  
+  // Show a modal with options
+  showZORAModal(contractAddress, symbol, zoraUrl);
+}
 
+// Function to show ZORA Creator Coin modal
+function showZORAModal(contractAddress, symbol, zoraUrl) {
+  const modal = document.createElement('div');
+  modal.className = 'zora-creator-modal';
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10004;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+  `;
+  
+  modal.innerHTML = `
+    <div style="
+      background: linear-gradient(135deg, #1a237e, #311b92);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      border: 2px solid #7958e1;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      text-align: center;
+    ">
+      <div style="margin-bottom: 1.5rem;">
+        <div style="
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(45deg, #d74d4d, #9c27b0);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.5rem;
+          color: white;
+          margin: 0 auto 1.5rem;
+        ">
+          <i class="fas fa-gem"></i>
+        </div>
+        <h3 style="color: white; margin-bottom: 1rem;">ZORA Creator Coin</h3>
+        <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1.5rem;">
+          $${symbol} is a ZORA Creator Coin (ERC-721M), not a standard ERC-20 token. 
+          You can view it on ZORA or add it to your wallet as an NFT.
+        </p>
+      </div>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px;">
+          <p style="margin: 0 0 0.5rem 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+            Contract Address:
+          </p>
+          <code style="
+            background: rgba(0,0,0,0.3);
+            padding: 0.75rem;
+            border-radius: 8px;
+            display: block;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #ff9500;
+            word-break: break-all;
+            margin-bottom: 0.5rem;
+          ">
+            ${contractAddress}
+          </code>
+          <button onclick="copyToClipboard('${contractAddress}').then(() => {
+            const button = this;
+            const original = button.innerHTML;
+            button.innerHTML = '<i class=\"fas fa-check\"></i> Copied!';
+            button.style.background = '#4CAF50';
+            setTimeout(() => {
+              button.innerHTML = original;
+              button.style.background = '';
+            }, 2000);
+          })"
+                  style="
+                    background: rgba(255, 149, 0, 0.3);
+                    color: white;
+                    border: 1px solid rgba(255, 149, 0, 0.5);
+                    padding: 0.5rem 1rem;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    margin: 0 auto;
+                  ">
+            <i class="fas fa-copy"></i>
+            Copy Address
+          </button>
+        </div>
+      </div>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <button onclick="window.open('${zoraUrl}', '_blank'); this.closest('.zora-creator-modal').remove();"
+                style="
+                  background: linear-gradient(45deg, #d74d4d, #9c27b0);
+                  color: white;
+                  border: none;
+                  padding: 1rem 1.5rem;
+                  border-radius: 12px;
+                  font-size: 1rem;
+                  font-weight: 600;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 0.75rem;
+                  transition: all 0.3s ease;
+                "
+                onmouseover="this.style.transform='translateY(-2px)';"
+                onmouseout="this.style.transform='';">
+          <i class="fas fa-external-link-alt"></i>
+          <span>Open on ZORA</span>
+        </button>
+        
+        <button onclick="showNFTReminder()"
+                style="
+                  background: rgba(255,255,255,0.1);
+                  color: white;
+                  border: 1px solid rgba(255,255,255,0.3);
+                  padding: 1rem 1.5rem;
+                  border-radius: 12px;
+                  font-size: 1rem;
+                  font-weight: 600;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 0.75rem;
+                  transition: all 0.3s ease;
+                "
+                onmouseover="this.style.background='rgba(255,255,255,0.2)';"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)';">
+          <i class="fas fa-info-circle"></i>
+          <span>How to Add as NFT</span>
+        </button>
+        
+        <button onclick="this.closest('.zora-creator-modal').remove()"
+                style="
+                  background: transparent;
+                  color: rgba(255,255,255,0.7);
+                  border: none;
+                  padding: 0.75rem;
+                  font-size: 0.9rem;
+                  cursor: pointer;
+                  margin-top: 0.5rem;
+                ">
+          Cancel
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Close when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
+// Helper function for NFT instructions
+function showNFTReminder() {
+  showNotification('In MetaMask: Go to NFTs tab → Import NFT → Enter contract address', 'info');
+  
+  // More detailed instructions
+  setTimeout(() => {
+    const modal = document.querySelector('.zora-creator-modal');
+    if (modal) {
+      const instructionDiv = document.createElement('div');
+      instructionDiv.style.cssText = `
+        background: rgba(255, 149, 0, 0.1);
+        border: 1px solid rgba(255, 149, 0, 0.3);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        text-align: left;
+      `;
+      instructionDiv.innerHTML = `
+        <h4 style="color: white; margin-bottom: 0.5rem; font-size: 1rem;">
+          <i class="fas fa-lightbulb"></i> Add as NFT:
+        </h4>
+        <ol style="color: rgba(255,255,255,0.8); font-size: 0.85rem; padding-left: 1.5rem; margin: 0;">
+          <li style="margin-bottom: 0.25rem;">Open MetaMask</li>
+          <li style="margin-bottom: 0.25rem;">Go to NFTs tab</li>
+          <li style="margin-bottom: 0.25rem;">Click "Import NFT"</li>
+          <li style="margin-bottom: 0.25rem;">Enter contract address</li>
+          <li style="margin-bottom: 0.25rem;">Token ID: 1 (for creator coins)</li>
+          <li>Save to view in your wallet</li>
+        </ol>
+      `;
+      
+      modal.querySelector('div > div:nth-child(3)').before(instructionDiv);
+    }
+  }, 500);
+}
 // For Solana (Phantom) tokens
 async function addSolanaTokenToWallet(contractAddress, symbol = 'REBL') {
   // First try to detect Phantom with better detection
