@@ -95,7 +95,7 @@ function initLoader() {
 }
 
 // Enhanced Scroll Animations with Intersection Observer
-function initScrollAnimations() {
+initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
     '.value-card, .comparison-card, .step-card, .stat-card, ' +
     '.token-card, .logo-card, .key-takeaway, .contract-emphasis, ' +
@@ -1022,44 +1022,119 @@ function addTokenToEVMWallet(contractAddress, symbol, decimals) {
   });
 }
 
-// Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress, symbol) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
+async function addSolanaTokenToWallet(contractAddress, symbol, decimals = 9, image) {
+  console.log(`Attempting to add ${symbol} to Solana wallet`);
+  
+  // Check for Phantom or other Solana wallets
+  const solana = window.phantom?.solana || window.solana;
+  
+  if (!solana) {
+    // No Solana wallet detected
+    showNotification('Please install Phantom wallet for Solana tokens', 'warning');
     
-    // Copy address and show instructions
-    copyToClipboard(contractAddress)
-      .then(() => {
-        showNotification(`${symbol} address copied!`, 'success');
-        showSolanaInstructionsModal(contractAddress, symbol);
-      })
-      .catch(() => {
-        showNotification('Failed to copy address', 'error');
-      });
-      
-  } else {
-    // Phantom not installed
-    showNotification(`Please install Phantom wallet for Solana tokens`, 'warning');
-    
+    // Show install prompt
     setTimeout(() => {
-      if (confirm(`Phantom wallet is required for ${symbol}. Install now?`)) {
+      if (confirm(`Phantom wallet is required for ${symbol}. Would you like to install it?`)) {
         window.open('https://phantom.app/', '_blank');
       }
     }, 1000);
+    return false;
   }
+  
+  try {
+    // Check if wallet is connected
+    if (!solana.isConnected) {
+      // Request connection
+      try {
+        const response = await solana.connect();
+        console.log('Wallet connected:', response.publicKey.toString());
+        showNotification('Wallet connected successfully!', 'success');
+      } catch (connectError) {
+        console.warn('User rejected connection:', connectError);
+        showNotification('Please connect your wallet first', 'warning');
+        
+        // Fallback to instructions
+        copyToClipboard(contractAddress)
+          .then(() => {
+            showSolanaInstructionsModal(contractAddress, symbol);
+          });
+        return false;
+      }
+    }
+    
+    // Try to add token directly using Phantom's watchAsset API
+    if (solana.watchAsset) {
+      try {
+        // Prepare token data
+        const tokenInfo = {
+          type: 'token',
+          options: {
+            address: contractAddress,
+            symbol: symbol,
+            decimals: decimals,
+            image: image || `https://rebelinux.fun/images/Logo_REBL.svg`
+          }
+        };
+        
+        console.log('Attempting to add token:', tokenInfo);
+        
+        const result = await solana.watchAsset(tokenInfo);
+        
+        if (result) {
+          showNotification(`${symbol} added to wallet successfully!`, 'success');
+          return true;
+        } else {
+          throw new Error('Token addition rejected or failed');
+        }
+        
+      } catch (directAddError) {
+        console.warn('Direct token addition failed:', directAddError);
+        // Fallback to instructions
+        showSolanaInstructionsModal(contractAddress, symbol);
+      }
+    } else {
+      // Phantom version doesn't support watchAsset
+      console.log('watchAsset not supported, showing instructions');
+      copyToClipboard(contractAddress)
+        .then(() => {
+          showSolanaInstructionsModal(contractAddress, symbol);
+        });
+    }
+    
+  } catch (error) {
+    console.error('Error adding Solana token:', error);
+    showNotification(`Failed to add ${symbol}: ${error.message}`, 'error');
+    
+    // Fallback
+    copyToClipboard(contractAddress)
+      .then(() => {
+        showSolanaInstructionsModal(contractAddress, symbol);
+      });
+  }
+  
+  return false;
 }
 
-// Show instructions modal for Solana tokens
 function showSolanaInstructionsModal(contractAddress, symbol) {
+  // Remove existing modal
+  const existingModal = document.querySelector('.token-instructions-modal');
+  if (existingModal) existingModal.remove();
+  
+  // Create modal
   const modal = document.createElement('div');
+  modal.className = 'token-instructions-modal';
+  
+  const solana = window.phantom?.solana || window.solana;
+  const isWalletAvailable = !!solana;
+  const isConnected = solana?.isConnected || false;
+  
   modal.innerHTML = `
-    <div class="token-instructions-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px);">
-      <div style="background: var(--dark-bg); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 2px solid var(--rebel-gold); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px);">
+      <div style="background: var(--dark-bg); padding: 2rem; border-radius: 20px; max-width: 500px; width: 90%; border: 2px solid var(--rebel-gold); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
           <h3 style="color: var(--rebel-gold); margin: 0; font-size: 1.5rem;">
             <i class="fas fa-wallet" style="margin-right: 0.75rem;"></i>
-            Add ${symbol} to Phantom
+            ${isWalletAvailable ? 'Add to Phantom' : 'Install Phantom for Solana'}
           </h3>
           <button onclick="this.closest('.token-instructions-modal').remove()" 
                   style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">
@@ -1067,36 +1142,116 @@ function showSolanaInstructionsModal(contractAddress, symbol) {
           </button>
         </div>
         
+        ${isWalletAvailable ? `
+          <!-- Wallet Connection Status -->
+          <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(212, 167, 106, 0.1); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+            <i class="fas fa-plug" style="color: ${isConnected ? '#4CAF50' : '#FF9800'}; font-size: 1.2rem;"></i>
+            <div>
+              <div style="font-weight: 600; color: white;">Wallet Status</div>
+              <div style="color: ${isConnected ? '#4CAF50' : '#FF9800'}; font-size: 0.9rem;">
+                ${isConnected ? 'Connected' : 'Not Connected'}
+              </div>
+            </div>
+            ${!isConnected ? `
+              <button onclick="connectPhantomWallet()" 
+                      style="margin-left: auto; background: var(--rebel-gold); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                Connect
+              </button>
+            ` : ''}
+          </div>
+        ` : ''}
+        
         <ol style="color: white; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
-          <li style="margin-bottom: 1rem;">Open <strong>Phantom wallet</strong> on your device</li>
-          <li style="margin-bottom: 1rem;">Tap the <strong style="color: var(--rebel-gold);">+</strong> button in your tokens list</li>
-          <li style="margin-bottom: 1rem;">Select <strong>"Add Token"</strong></li>
           <li style="margin-bottom: 1rem;">
-            Paste this address:
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 0.5rem; font-family: monospace; word-break: break-all; font-size: 0.9rem;">
-              ${contractAddress}
+            ${isWalletAvailable ? 'Open <strong>Phantom wallet</strong> app' : 'Install <strong>Phantom wallet</strong> from phantom.app'}
+          </li>
+          ${isWalletAvailable ? `
+            <li style="margin-bottom: 1rem;">Tap the <strong style="color: var(--rebel-gold);">+</strong> button in your tokens list</li>
+            <li style="margin-bottom: 1rem;">Select <strong>"Add Token"</strong></li>
+          ` : `
+            <li style="margin-bottom: 1rem;">Create or import your Solana wallet</li>
+            <li style="margin-bottom: 1rem;">Return to this page after installation</li>
+          `}
+          <li style="margin-bottom: 1rem;">
+            Paste this ${symbol} address:
+            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin-top: 0.5rem; font-family: monospace; word-break: break-all; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span style="flex: 1;">${contractAddress}</span>
+              <button onclick="copyToClipboard('${contractAddress}').then(() => { showNotification('Address copied!', 'success'); })" 
+                      style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.5rem; border-radius: 5px; cursor: pointer;">
+                <i class="fas fa-copy"></i>
+              </button>
             </div>
           </li>
           <li>Tap <strong>"Add"</strong> to complete</li>
         </ol>
         
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <button onclick="copyToClipboard('${contractAddress}').then(() => { showNotification('Address copied again!', 'success'); })" 
+          <button onclick="copyToClipboard('${contractAddress}').then(() => { showNotification('${symbol} address copied!', 'success'); })" 
                   style="background: var(--rebel-gold); color: white; border: none; padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: 600; flex: 1;">
             <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>
             Copy Address
           </button>
+          
+          ${isWalletAvailable && !isConnected ? `
+            <button onclick="connectPhantomWallet()" 
+                    style="background: rgba(76, 175, 80, 0.9); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; flex: 1;">
+              <i class="fas fa-plug" style="margin-right: 0.5rem;"></i>
+              Connect Wallet
+            </button>
+          ` : ''}
+          
           <button onclick="window.open('https://phantom.app/', '_blank')" 
                   style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; flex: 1;">
             <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
-            Get Phantom
+            ${isWalletAvailable ? 'Get Phantom' : 'Install Phantom'}
           </button>
         </div>
+        
+        ${isWalletAvailable ? `
+          <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(0, 170, 255, 0.1); border-radius: 10px; border-left: 3px solid var(--rebel-blue);">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <i class="fas fa-bolt" style="color: var(--rebel-blue);"></i>
+              <strong style="color: white;">Quick Tip:</strong>
+            </div>
+            <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+              Some Phantom versions support direct token addition. If available, the "Connect Wallet" button will attempt to add ${symbol} automatically.
+            </div>
+          </div>
+        ` : ''}
       </div>
     </div>
   `;
   
   document.body.appendChild(modal);
+}
+
+// Helper function for connecting Phantom wallet
+async function connectPhantomWallet() {
+  try {
+    const solana = window.phantom?.solana || window.solana;
+    if (!solana) {
+      showNotification('Phantom wallet not detected', 'warning');
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+    
+    const response = await solana.connect();
+    showNotification('Wallet connected!', 'success');
+    
+    // Close and reopen modal to refresh status
+    const modal = document.querySelector('.token-instructions-modal');
+    if (modal) {
+      modal.remove();
+      // Reopen with updated status (you might want to pass context here)
+      setTimeout(() => {
+        showSolanaInstructionsModal('F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump', 'REBL');
+      }, 500);
+    }
+    
+  } catch (error) {
+    console.error('Failed to connect Phantom:', error);
+    showNotification('Connection failed: ' + error.message, 'error');
+  }
 }
 
 // Fallback function for older buttons (backward compatibility)
