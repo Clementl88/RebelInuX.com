@@ -1890,7 +1890,87 @@ class PageTransitions {
     });
   }
 }
+// Add this at the beginning of your initIndexPage function
+function initIndexPage() {
+  console.log('🚀 RebelInuX Index Page Initializing...');
+  
+  // Initialize page transitions first
+  setTimeout(() => {
+    // Activate hero section
+    const heroSection = document.querySelector('.page-hero--main');
+    if (heroSection) {
+      heroSection.classList.add('active');
+    }
+    
+    // Initialize other components after a delay
+    setTimeout(() => {
+      initScrollAnimations();
+      initPerformanceMonitoring();
+      initRevealOnScroll(); // Add this new function
+      
+      // Mark page as loaded for transitions
+      document.documentElement.classList.add('page-loaded');
+      
+      console.log('✅ Page transitions initialized');
+    }, 300);
+  }, 100);
+}
 
+// Add this new function for reveal on scroll
+function initRevealOnScroll() {
+  const revealElements = document.querySelectorAll('.reveal-on-scroll');
+  
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  });
+  
+  revealElements.forEach(element => {
+    revealObserver.observe(element);
+  });
+}
+
+// Update the loader to work with transitions
+function initLoader() {
+  const loader = document.getElementById('loader');
+  if (!loader) return;
+  
+  // Create a loading bar for page transitions
+  const loadingBar = document.createElement('div');
+  loadingBar.className = 'loading-bar';
+  document.body.appendChild(loadingBar);
+  
+  // Simulate loading progress
+  const progressBar = loader.querySelector('.progress-bar');
+  if (progressBar) {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+      
+      if (progress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          loader.classList.add('loaded');
+          document.body.classList.add('loaded');
+          
+          // Show loading bar animation
+          loadingBar.classList.add('active');
+          setTimeout(() => {
+            loadingBar.remove();
+          }, 1000);
+        }, 500);
+      }
+    }, 100);
+  }
+}
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
   window.RebelTransitions = new PageTransitions();
