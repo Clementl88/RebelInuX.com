@@ -1,4 +1,4 @@
-/// ===== INDEX PAGE ENHANCED JAVASCRIPT ========
+//// ===== INDEX PAGE ENHANCED JAVASCRIPT ========
 // Professional Crypto Project - Mobile Optimized
 
 // Wait for DOM to be fully loaded
