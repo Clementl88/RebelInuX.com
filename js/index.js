@@ -284,13 +284,7 @@ function showCopyFeedback(button, success) {
     button.style.color = originalColor;
   }, 2000);
 }
-function initCopyButtons() {
-  const copyButtons = document.querySelectorAll('.copy-btn, .copy-contract-btn');
-  
-  copyButtons.forEach(button => {
-    button.addEventListener('click', handleCopyClick);
-  });
-}
+
 // Contract View Toggle
 function initContractViews() {
   const viewButtons = document.querySelectorAll('.view-btn');
@@ -1416,9 +1410,19 @@ function initContractAddresses() {
     }
   });
 }
-function initContractAddresses() {
-  const contractCodes = document.querySelectorAll('.contract-short');
+// Initialize contract views on page load
+function initContractViews() {
+  const viewButtons = document.querySelectorAll('.view-btn');
   
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      toggleContractView(this);
+    });
+  });
+  
+  // Initialize all contract addresses to shortened version
+  const contractCodes = document.querySelectorAll('.contract-short');
   contractCodes.forEach(code => {
     const fullAddress = code.getAttribute('data-full') || code.textContent;
     if (fullAddress.length > 20) {
