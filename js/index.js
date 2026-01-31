@@ -1403,14 +1403,78 @@ function activateAnimations() {
   
   console.log(`✅ ${pulseElements.length} pulse animations activated`);
 }
+// Contract View Toggle Function
+function toggleContractView(button) {
+  const contractAddress = button.closest('.contract-address');
+  const codeElement = contractAddress?.querySelector('code');
+  
+  if (codeElement) {
+    const isExpanded = codeElement.classList.toggle('expanded');
+    const icon = button.querySelector('i');
+    
+    if (isExpanded) {
+      // Show full address
+      codeElement.textContent = codeElement.getAttribute('data-full') || codeElement.textContent;
+      icon.className = 'fas fa-compress-alt';
+      button.setAttribute('title', 'Collapse address');
+      button.setAttribute('aria-label', 'Collapse contract address view');
+    } else {
+      // Show shortened address
+      const fullAddress = codeElement.getAttribute('data-full') || codeElement.textContent;
+      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
+      codeElement.textContent = shortAddress;
+      icon.className = 'fas fa-expand-alt';
+      button.setAttribute('title', 'Expand address');
+      button.setAttribute('aria-label', 'Expand contract address view');
+    }
+    
+    // Add smooth transition
+    codeElement.style.transition = 'all 0.3s ease';
+  }
+}
 
+// Initialize contract views on page load
+function initContractViews() {
+  const viewButtons = document.querySelectorAll('.view-btn');
+  
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      toggleContractView(this);
+    });
+  });
+  
+  // Initialize all contract addresses to shortened version
+  const contractCodes = document.querySelectorAll('.contract-short');
+  contractCodes.forEach(code => {
+    const fullAddress = code.getAttribute('data-full') || code.textContent;
+    if (fullAddress.length > 20) {
+      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
+      code.textContent = shortAddress;
+    }
+  });
+}
 // Call this in your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
-  // Initialize components
-  initLoader();
-  activateAnimations(); // ADD THIS LINE
+ // Initialize components in order of priority
+  const initQueue = [
+    initLoader,
+    initScrollAnimations,
+    initStatsCounters,
+    initCopyButtons,
+    initContractViews, // <-- ADD THIS LINE
+    initSmoothScroll,
+    initParticles,
+    initLogoAnimations,
+    initBackToTop,
+    initMobileOptimizations,
+    initTouchInteractions,
+    initLazyLoading,
+    initPerformanceObservers,
+    initWalletDetection
+  ];
   
   // Rest of your initialization code...
 }
