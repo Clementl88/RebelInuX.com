@@ -1592,4 +1592,4 @@ if (!document.querySelector('#value-card-styles')) {
   style.id = 'value-card-styles';
   style.textContent = valueCardStyles;
   document.head.appendChild(style);
-}}
+}
