@@ -62,7 +62,6 @@ function initLoader() {
   }
 }
 
-// Enhanced Scroll Animations with Intersection Observer
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
     '.value-card, .comparison-card, .step-card, .stat-card, ' +
@@ -102,36 +101,40 @@ function initScrollAnimations() {
     observer.observe(el);
   });
   
-// Floating logo mouse interaction
-const floatingLogo = document.querySelector('.logo-3d');
-if (floatingLogo && !isMobile()) {
-  let mouseX = 0;
-  let mouseY = 0;
-  let logoX = 0;
-  let logoY = 0;
-  
-  // Store the mousemove listener for cleanup
-  const mousemoveHandler = (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) / 25;
-    mouseY = (e.clientY - window.innerHeight / 2) / 25;
-  };
-  
-  window.addEventListener('mousemove', mousemoveHandler);
-  window.mousemoveListener = mousemoveHandler; // Store for cleanup
-  
-  function animateLogo() {
-    // Smooth interpolation for better performance
-    logoX += (mouseX - logoX) * 0.1;
-    logoY += (mouseY - logoY) * 0.1;
+  // Floating logo mouse interaction
+  const floatingLogo = document.querySelector('.logo-3d');
+  if (floatingLogo && !isMobile()) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let logoX = 0;
+    let logoY = 0;
     
-    floatingLogo.style.transform = 
-      `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
+    // Store the mousemove listener for cleanup
+    const mousemoveHandler = (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2) / 25;
+      mouseY = (e.clientY - window.innerHeight / 2) / 25;
+    };
     
-    // Store animation frame ID for cleanup
+    window.addEventListener('mousemove', mousemoveHandler);
+    window.mousemoveListener = mousemoveHandler; // Store for cleanup
+    
+    function animateLogo() {
+      // Smooth interpolation for better performance
+      logoX += (mouseX - logoX) * 0.1;
+      logoY += (mouseY - logoY) * 0.1;
+      
+      floatingLogo.style.transform = 
+        `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
+      
+      // Store animation frame ID for cleanup
+      window.logoAnimationId = requestAnimationFrame(animateLogo);
+    }
+    
     window.logoAnimationId = requestAnimationFrame(animateLogo);
   }
   
-  window.logoAnimationId = requestAnimationFrame(animateLogo);
+  // Store observer reference for cleanup
+  window.scrollAnimationObserver = observer;
 }
 
 // Advanced Stats Counters with Number Formatting
@@ -812,7 +815,7 @@ function initPerformanceObservers() {
   }
   
   // Observe layout shifts
-  if ('LayoutShiftObserver' in window) {
+if ('PerformanceObserver' in window && 'LayoutShiftObserver' in window.PerformanceObserver) {
     let cls = 0;
     new LayoutShiftObserver((entries) => {
       entries.forEach(entry => {
