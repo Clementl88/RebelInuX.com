@@ -5114,3 +5114,314 @@ body {
     transform: translateY(-40px) translateX(var(--tx, 20px));
   }
 }
+/* ===== CHAIN VISUALIZATION MOBILE FIXES ===== */
+@media (max-width: 768px) {
+  /* Stack visualization vertically on mobile */
+  .chain-visualization {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 2rem auto !important;
+    padding: 0 1rem !important;
+  }
+  
+  /* Chain nodes full width with constraints */
+  .chain-node {
+    width: 100% !important;
+    max-width: 320px !important;
+    min-width: 0 !important;
+    padding: 1.5rem !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Bridge animation vertical redesign */
+  .bridge-animation {
+    order: 2 !important; /* Force bridge to be in middle */
+    width: 100% !important;
+    max-width: 320px !important;
+    padding: 1.5rem 0 !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  /* Bridge line - vertical orientation */
+  .bridge-animation .bridge-line {
+    width: 3px !important;
+    height: 80px !important;
+    background: linear-gradient(
+      to bottom,
+      var(--rebel-red) 0%,
+      var(--rebel-gold) 50%,
+      var(--rebel-red) 100%
+    ) !important;
+    border-radius: 3px !important;
+    margin: 0 auto !important;
+    position: relative !important;
+  }
+  
+  /* Bridge tokens positioning for vertical layout */
+  .bridge-tokens {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 2px solid rgba(212, 167, 106, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 1rem 1.5rem !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    z-index: 2 !important;
+  }
+  
+  /* Arrow icon for vertical flow */
+  .bridge-tokens i.fa-arrow-right {
+    transform: rotate(90deg) !important;
+    font-size: 1.5rem !important;
+    color: var(--rebel-gold) !important;
+  }
+  
+  /* Moving coin animation for vertical flow */
+  .moving-coin {
+    width: 20px !important;
+    height: 20px !important;
+    background: linear-gradient(45deg, var(--rebel-red), var(--rebel-gold)) !important;
+    border-radius: 50% !important;
+    animation: move-down 2.5s ease-in-out infinite !important;
+    box-shadow: 0 0 15px rgba(212, 167, 106, 0.5) !important;
+  }
+  
+  /* Vertical movement animation */
+  @keyframes move-down {
+    0% {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+  }
+  
+  /* Node icon adjustments */
+  .node-icon {
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0 auto 1rem !important;
+  }
+  
+  .chain-logo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+  
+  .node-label {
+    font-size: 1.1rem !important;
+    margin-bottom: 1rem !important;
+    text-align: center !important;
+  }
+  
+  /* Token badges mobile optimization */
+  .node-tokens {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  
+  .token-badge {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  /* Base chain specific styling */
+  .base-node .token-badge {
+    background: rgba(215, 77, 77, 0.15) !important;
+    color: var(--rebel-red) !important;
+    border: 1px solid rgba(215, 77, 77, 0.3) !important;
+  }
+  
+  .base-node .token-badge.nft {
+    background: rgba(255, 215, 0, 0.15) !important;
+    color: var(--rebel-gold) !important;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+  }
+  
+  /* Add decorative elements for visual separation */
+  .chain-node::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 60% !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, transparent, var(--rebel-gold), transparent) !important;
+    border-radius: 2px !important;
+  }
+}
+
+/* Extra small mobile optimizations */
+@media (max-width: 480px) {
+  .chain-visualization {
+    gap: 1.25rem !important;
+    padding: 0 0.75rem !important;
+  }
+  
+  .chain-node {
+    max-width: 100% !important;
+    padding: 1.25rem !important;
+  }
+  
+  .bridge-animation {
+    max-width: 100% !important;
+  }
+  
+  .bridge-tokens {
+    padding: 0.75rem 1.25rem !important;
+  }
+  
+  .token-badge {
+    padding: 0.625rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .node-icon {
+    width: 45px !important;
+    height: 45px !important;
+  }
+  
+  .node-label {
+    font-size: 1rem !important;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .chain-node {
+    min-height: 160px !important;
+  }
+  
+  .token-badge {
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .bridge-tokens {
+    min-width: 120px !important;
+    min-height: 120px !important;
+  }
+}
+
+/* Add subtle mobile animations */
+@media (max-width: 768px) {
+  .chain-node {
+    animation: fadeInUp 0.5s ease-out forwards !important;
+    opacity: 0 !important;
+  }
+  
+  .base-node {
+    animation-delay: 0.1s !important;
+  }
+  
+  .bridge-animation {
+    animation: fadeInUp 0.5s ease-out 0.2s forwards !important;
+    opacity: 0 !important;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Ensure proper spacing in hero section */
+@media (max-width: 768px) {
+  .hero-visual {
+    margin-top: 1rem !important;
+  }
+  
+  .chain-visualization {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Add particle effects for mobile bridge */
+@media (max-width: 768px) {
+  .bridge-animation {
+    position: relative !important;
+  }
+  
+  .bridge-particles {
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 3px !important;
+    height: 100% !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+  }
+  
+  .bridge-particle {
+    position: absolute !important;
+    left: 0 !important;
+    width: 6px !important;
+    height: 6px !important;
+    background: var(--rebel-gold) !important;
+    border-radius: 50% !important;
+    opacity: 0 !important;
+    animation: bridge-particle-flow 2s linear infinite !important;
+  }
+  
+  @keyframes bridge-particle-flow {
+    0% {
+      top: 0;
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    10% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  }
+  
+  /* Add multiple particles */
+  .bridge-particle:nth-child(1) { animation-delay: 0s; }
+  .bridge-particle:nth-child(2) { animation-delay: 0.5s; }
+  .bridge-particle:nth-child(3) { animation-delay: 1s; }
+  .bridge-particle:nth-child(4) { animation-delay: 1.5s; }
+}
