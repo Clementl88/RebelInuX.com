@@ -26,40 +26,6 @@ function initPerformanceMonitoring() {
   }
 }
 
-// Main initialization
-function initIndexPage() {
-  console.log('✨ Initializing enhanced Index page features');
-  
-  // Initialize components in order of priority
-  const initQueue = [
-    initLoader,
-    initScrollAnimations,
-    initStatsCounters,
-    initContractAddresses, // Add this
-    initCopyButtons,
-    initContractViews,
-    initSmoothScroll,
-    initParticles,
-    initLogoAnimations,
-    initBackToTop,
-    initMobileOptimizations,
-    initTouchInteractions,
-    initLazyLoading,
-    initPerformanceObservers,
-    initWalletDetection
-  ];
-  
-  // Execute initialization queue
-  initQueue.forEach((initFn, index) => {
-    setTimeout(() => {
-      try {
-        initFn();
-      } catch (error) {
-        console.warn(`⚠️ Failed to initialize ${initFn.name}:`, error);
-      }
-    }, index * 100);
-  });
-}
 
 // Enhanced Loader with Progress
 function initLoader() {
@@ -1557,33 +1523,32 @@ function initValueCardEffects() {
 }
 
 
-// Call this in your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
- // Initialize components in order of priority
+  // Initialize components in order of priority
   const initQueue = [
-initLoader,
+    initLoader,
     initScrollAnimations,
-    initParallaxEffects, // Add this
+    initParallaxEffects,        // From second version
     initStatsCounters,
-    initEnhancedCounters, // Add this
+    initContractAddresses,      // From first version (important!)
+    initEnhancedCounters,       // From second version
     initCopyButtons,
     initContractViews,
     initSmoothScroll,
     initParticles,
     initLogoAnimations,
-    initLogoInteractions, // Add this
+    initLogoInteractions,       // From second version
     initBackToTop,
     initMobileOptimizations,
     initTouchInteractions,
     initLazyLoading,
     initPerformanceObservers,
     initWalletDetection,
-    initChainAnimation, // Add this
-    initValueCardEffects // Add this
+    initChainAnimation,         // From second version
+    initValueCardEffects        // From second version
   ];
-  
   
   // Execute initialization queue
   initQueue.forEach((initFn, index) => {
