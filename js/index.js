@@ -1181,105 +1181,15 @@ function detectWallet() {
     return 'none';
   }
 }
-function addToWallet(contractAddress, event) {
-  console.log('🔄 Add to Wallet clicked:', contractAddress);
-  
-  // Show loading state
-  const button = event?.target || document.activeElement;
-  if (button && button.classList.contains('wallet-action')) {
-    const originalHTML = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Processing...</span>';
-    button.disabled = true;
-    
-    // Auto-reset after 5 seconds
-    setTimeout(() => {
-      button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-      button.disabled = false;
-    }, 5000);
-  }
-  
-  // Check for Phantom wallet for Solana
-  const isSolana = contractAddress.length > 32;
-  
-  if (isSolana) {
-    // $REBL on Solana
-    if (window.phantom?.solana || window.solana) {
-      // Show instructions
-      copyToClipboard(contractAddress)
-        .then(() => {
-          showNotification('$REBL address copied! Open Phantom wallet to add it.', 'success');
-          
-          // Reset button immediately
-          if (button) {
-            button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-            button.disabled = false;
-          }
-        })
-        .catch(err => {
-          console.error('Copy failed:', err);
-          showNotification('Failed to copy. Address: ' + contractAddress, 'error');
-          
-          if (button) {
-            button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-            button.disabled = false;
-          }
-        });
-    } else {
-      showNotification('Please install Phantom wallet for Solana tokens', 'warning');
-      
-      // Reset button
-      if (button) {
-        button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-        button.disabled = false;
-      }
-    }
+// Fallback function for old buttons (backward compatibility)
+function addToWallet(contractAddress) {
+  // Detect token type by address length
+  if (contractAddress.length > 32) {
+    // Solana token (REBL)
+    addTokenToWallet(contractAddress, 'REBL', 9, 'Solana');
   } else {
-    // $rebelinux on Base
-    if (typeof window.ethereum !== 'undefined') {
-      ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: contractAddress,
-            symbol: 'rebelinux',
-            decimals: 18,
-            image: 'https://rebelinux.fun/images/rebelinux_logo/$rebelinux%20SVG%20(4).svg'
-          }
-        }
-      })
-      .then(success => {
-        if (success) {
-          showNotification('$rebelinux added to wallet!', 'success');
-        } else {
-          showNotification('Token addition cancelled', 'info');
-        }
-        
-        // Reset button
-        if (button) {
-          button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-          button.disabled = false;
-        }
-      })
-      .catch(err => {
-        console.error('Add token error:', err);
-        showNotification('Failed to add token', 'error');
-        
-        // Reset button
-        if (button) {
-          button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-          button.disabled = false;
-        }
-      });
-    } else {
-      showNotification('Please install MetaMask for Base tokens', 'warning');
-      
-      // Reset button
-      if (button) {
-        button.innerHTML = '<i class="fas fa-plus-circle"></i><span>Add to Wallet</span>';
-        button.disabled = false;
-      }
-    }
+    // Base token (rebelinux)
+    addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
   }
 }
 // Initialize wallet detection on page load
@@ -1408,13 +1318,6 @@ window.RebelInuX = {
   showNotification,
   scrollToElement: window.scrollToElement
 };
-// 🔥 ADD THIS RIGHT HERE 🔥
-// Make sure addToWallet is available globally
-window.addToWallet = addToWallet;
-
-// Debug helper
-console.log('✅ Wallet functions loaded. addToWallet is:', typeof window.addToWallet);
-// 🔥 END OF ADDITION 🔥
 
 // Initialize when page is fully loaded
 window.addEventListener('load', function() {
