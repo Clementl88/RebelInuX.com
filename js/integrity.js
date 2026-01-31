@@ -1,4 +1,4 @@
-// integrity.js - Integrity page functionality
+/// integrity.js - Integrity page functionality
 
 // Initialize after page loads
 document.addEventListener('DOMContentLoaded', function() {
