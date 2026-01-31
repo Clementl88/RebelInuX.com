@@ -1403,7 +1403,6 @@ function activateAnimations() {
   
   console.log(`✅ ${pulseElements.length} pulse animations activated`);
 }
-// Contract View Toggle Function
 function toggleContractView(button) {
   const contractAddress = button.closest('.contract-address');
   const codeElement = contractAddress?.querySelector('code');
@@ -1414,22 +1413,22 @@ function toggleContractView(button) {
     
     if (isExpanded) {
       // Show full address
-      codeElement.textContent = codeElement.getAttribute('data-full') || codeElement.textContent;
+      const fullAddress = codeElement.getAttribute('data-full') || codeElement.textContent;
+      codeElement.textContent = fullAddress;
       icon.className = 'fas fa-compress-alt';
       button.setAttribute('title', 'Collapse address');
       button.setAttribute('aria-label', 'Collapse contract address view');
     } else {
       // Show shortened address
       const fullAddress = codeElement.getAttribute('data-full') || codeElement.textContent;
-      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
+      const shortAddress = fullAddress.length > 20 
+        ? `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`
+        : fullAddress;
       codeElement.textContent = shortAddress;
       icon.className = 'fas fa-expand-alt';
       button.setAttribute('title', 'Expand address');
       button.setAttribute('aria-label', 'Expand contract address view');
     }
-    
-    // Add smooth transition
-    codeElement.style.transition = 'all 0.3s ease';
   }
 }
 
