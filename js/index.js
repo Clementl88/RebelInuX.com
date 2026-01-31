@@ -1,4 +1,4 @@
-/// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
+//// ===== INDEX PAGE ENHANCED JAVASCRIPT =====
 // Professional Crypto Project - Mobile Optimized
 
 // Wait for DOM to be fully loaded
@@ -225,7 +225,6 @@ function animateCounter(element, target, prefix = '', suffix = '') {
 }
 
 // Enhanced Copy to Clipboard with Feedback
-// In your copyToClipboard handlers, add this for Solana-specific handling
 function handleCopyClick(e) {
   e.preventDefault();
   
@@ -487,39 +486,67 @@ function initBackToTop() {
     });
   });
 }
-// Enhanced mobile optimizations for token ecosystem - FIXED
-// Update the optimizeTokenEcosystemForMobile function
+
+// Enhanced mobile optimizations for token ecosystem
 function optimizeTokenEcosystemForMobile() {
   if (!isMobile()) return;
   
   const ecosystemFlow = document.querySelector('.ecosystem-flow');
   if (!ecosystemFlow) return;
   
-  // Simply restructure the flow for mobile
-  ecosystemFlow.style.cssText = `
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-  `;
+  // Get all elements
+  const basePlatform = ecosystemFlow.querySelector('.base-platform');
+  const solanaPlatform = ecosystemFlow.querySelector('.solana-platform');
+  const bridgeAnimation = ecosystemFlow.querySelector('.bridge-animation');
   
-  // Make platforms full width
-  const platforms = ecosystemFlow.querySelectorAll('.chain-platform');
-  platforms.forEach(platform => {
-    platform.style.cssText = `
+  if (basePlatform && solanaPlatform && bridgeAnimation) {
+    // Clear current order
+    ecosystemFlow.innerHTML = '';
+    
+    // Create a proper mobile layout
+    const mobileLayout = document.createElement('div');
+    mobileLayout.className = 'ecosystem-mobile-layout';
+    mobileLayout.style.cssText = `
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
       width: 100%;
-      max-width: 100%;
-      margin: 0;
     `;
-  });
-  
-  // Position bridge properly
-  const bridge = ecosystemFlow.querySelector('.bridge-animation');
-  if (bridge) {
-    bridge.style.order = '2';
-    bridge.style.margin = '0.5rem 0';
+    
+    // Add base platform
+    const baseWrapper = document.createElement('div');
+    baseWrapper.className = 'mobile-platform-wrapper';
+    baseWrapper.appendChild(basePlatform);
+    mobileLayout.appendChild(baseWrapper);
+    
+    // Add bridge (positioned between platforms)
+    const bridgeWrapper = document.createElement('div');
+    bridgeWrapper.className = 'mobile-bridge-wrapper';
+    bridgeWrapper.style.cssText = `
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 1rem 0;
+    `;
+    
+    // Transform bridge for mobile
+    bridgeAnimation.classList.add('mobile-bridge');
+    bridgeWrapper.appendChild(bridgeAnimation);
+    mobileLayout.appendChild(bridgeWrapper);
+    
+    // Add solana platform
+    const solanaWrapper = document.createElement('div');
+    solanaWrapper.className = 'mobile-platform-wrapper';
+    solanaWrapper.appendChild(solanaPlatform);
+    mobileLayout.appendChild(solanaWrapper);
+    
+    // Add to ecosystem flow
+    ecosystemFlow.appendChild(mobileLayout);
+    
+    // Update bridge styling for mobile
+    updateBridgeForMobile(bridgeAnimation);
   }
-}
   
   // Optimize contract addresses for mobile
   const contractCodes = document.querySelectorAll('.contract-short');
@@ -574,50 +601,6 @@ function updateBridgeForMobile(bridgeElement) {
   }
 }
 
-// Add swipe hint for horizontal scrolling sections
-function addSwipeHint() {
-  const tokenSection = document.getElementById('token-ecosystem');
-  if (!tokenSection || !isMobile()) return;
-  
-  // Check if content might overflow
-  const checkOverflow = () => {
-    const cards = tokenSection.querySelectorAll('.token-card, .nft-card');
-    let totalWidth = 0;
-    cards.forEach(card => {
-      totalWidth += card.offsetWidth;
-    });
-    
-    if (totalWidth > window.innerWidth - 40) {
-      // Add swipe hint
-      const hint = document.createElement('div');
-      hint.className = 'swipe-hint';
-      hint.innerHTML = '<i class="fas fa-arrows-alt-h"></i> <span>Swipe to view</span>';
-      hint.style.cssText = `
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(212, 167, 106, 0.1);
-        border-radius: 20px;
-        color: var(--rebel-gold);
-        font-size: 0.8rem;
-        margin: 1rem auto;
-        width: fit-content;
-        border: 1px solid rgba(212, 167, 106, 0.2);
-        animation: pulse 2s infinite;
-      `;
-      
-      const platformHeaders = tokenSection.querySelectorAll('.platform-header');
-      if (platformHeaders.length > 0) {
-        platformHeaders[0].parentNode.insertBefore(hint, platformHeaders[0].nextSibling);
-      }
-    }
-  };
-  
-  // Run after images load
-  setTimeout(checkOverflow, 500);
-}
-
 // Mobile Optimizations
 function initMobileOptimizations() {
   if (!isMobile()) return;
@@ -644,11 +627,9 @@ function initMobileOptimizations() {
   
   // Mobile-specific optimizations
   optimizeForMobile();
-    optimizeTokenEcosystemForMobile();
-
+  optimizeTokenEcosystemForMobile();
 }
 
-// Add new optimization function AFTER initMobileOptimizations
 function optimizeForMobile() {
   // Disable heavy animations on mobile
   if (isMobile()) {
@@ -675,7 +656,7 @@ function optimizeForMobile() {
   adjustTouchTargets();
 }
 
-// Adjust touch targets for better mobile UX - ADD this new function
+// Adjust touch targets for better mobile UX
 function adjustTouchTargets() {
   const touchElements = document.querySelectorAll('.action-btn, .copy-btn, .view-btn, .wallet-btn, .cta-button');
   
@@ -708,7 +689,7 @@ function adjustTouchTargets() {
   });
 }
 
-// Find and UPDATE the initTouchInteractions function (around line 370-400):
+// Touch Interactions
 function initTouchInteractions() {
   // Add long-press to copy on mobile
   if (isMobile()) {
@@ -755,6 +736,7 @@ function initTouchInteractions() {
     }, { passive: true });
   });
 }
+
 // Lazy Loading Enhancement
 function initLazyLoading() {
   if ('IntersectionObserver' in window) {
@@ -788,19 +770,6 @@ function initPerformanceObservers() {
     });
     
     observer.observe({ entryTypes: ['longtask'] });
-  }
-  
-  // Observe layout shifts
-  if ('LayoutShiftObserver' in window) {
-    let cls = 0;
-    new LayoutShiftObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.hadRecentInput) {
-          cls += entry.value;
-          console.log(`⚠️ Layout shift detected: ${entry.value.toFixed(3)}`);
-        }
-      });
-    });
   }
 }
 
@@ -894,7 +863,6 @@ function showNotification(message, type = 'info') {
     setTimeout(() => notification.remove(), 300);
   }, 5000);
 }
-
 
 function addTokenToWallet(contractAddress, symbol, decimals, network) {
   console.log(`Adding ${symbol} to wallet (${network} network)`);
@@ -1039,7 +1007,6 @@ function switchToBaseChain(contractAddress, symbol, decimals) {
   }
 }
 
-
 // Generic function to add tokens via Ethereum wallet_watchAsset
 function addTokenViaEthereum(contractAddress, symbol, decimals, network) {
   const tokenImages = {
@@ -1129,6 +1096,7 @@ function showSolanaInstructionsModal(contractAddress, symbol) {
       showNotification('Failed to copy address', 'error');
     });
 }
+
 // Detect wallet type and add appropriate styling
 function detectWallet() {
   if (window.phantom || window.solana) {
@@ -1142,6 +1110,7 @@ function detectWallet() {
     return 'none';
   }
 }
+
 // Fallback function for old buttons (backward compatibility)
 function addToWallet(contractAddress) {
   // Detect token type by address length
@@ -1153,6 +1122,7 @@ function addToWallet(contractAddress) {
     addTokenToWallet(contractAddress, 'rebelinux', 18, 'Base');
   }
 }
+
 // Initialize wallet detection on page load
 function initWalletDetection() {
   const walletType = detectWallet();
@@ -1183,59 +1153,6 @@ function initWalletDetection() {
       }, 3000);
     });
   });
-}
-
-// Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Check if wallet is connected
-    solana.connect({ onlyIfTrusted: true })
-      .then(() => {
-        // Wallet is connected, show instruction
-        showNotification('Please add $REBL manually using the contract address', 'info');
-        
-        // Copy address to clipboard
-        copyToClipboard(contractAddress)
-          .then(() => {
-            showNotification('Contract address copied! Paste it in your wallet', 'success');
-            
-            // Show more detailed instructions
-            setTimeout(() => {
-              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
-            }, 1500);
-          })
-          .catch(() => {
-            showNotification('Failed to copy address', 'error');
-          });
-      })
-      .catch(() => {
-        // Wallet not connected or user rejected
-        showNotification('Please connect your Phantom wallet first', 'warning');
-        
-        // Try to connect
-        solana.connect()
-          .then(() => {
-            showNotification('Wallet connected! Now try adding the token again', 'success');
-          })
-          .catch((error) => {
-            console.error('Connection error:', error);
-            showNotification('Failed to connect wallet', 'error');
-          });
-      });
-  } else {
-    // Phantom not installed
-    showNotification('Please install Phantom wallet for Solana', 'warning');
-    
-    // Offer to redirect to Phantom
-    setTimeout(() => {
-      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
-  }
 }
 
 // Function for adding Ethereum tokens (for $rebelinux)
@@ -1318,10 +1235,8 @@ window.addEventListener('error', function(e) {
     });
   }
 });
-// Add at the beginning of initIndexPage() function
-console.log('🎬 Initializing animations...');
 
-// Add animation classes to elements
+// Animation activation
 function activateAnimations() {
   console.log('🎯 Activating animations...');
   
@@ -1364,378 +1279,14 @@ function activateAnimations() {
   
   console.log(`✅ ${pulseElements.length} pulse animations activated`);
 }
-// Mobile bridge positioning - Add this function
-function optimizeBridgesForMobile() {
-  if (!isMobile()) return;
-  
-  // Fix hero bridge
-  const heroBridge = document.querySelector('.bridge-animation');
-  if (heroBridge) {
-    heroBridge.style.cssText = `
-      position: relative;
-      padding: 1rem 0;
-      width: 100%;
-      height: 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    `;
-    
-    const bridgeLine = heroBridge.querySelector('.bridge-line');
-    if (bridgeLine) {
-      bridgeLine.style.cssText = `
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(to right, var(--rebel-red), var(--rebel-gold));
-        margin: 0;
-      `;
-    }
-    
-    const bridgeTokens = heroBridge.querySelector('.bridge-tokens');
-    if (bridgeTokens) {
-      bridgeTokens.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 20px;
-        padding: 0.5rem 1rem;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(212, 167, 106, 0.3);
-      `;
-    }
-  }
-  
-  // Fix token ecosystem bridge
-  const tokenBridge = document.querySelector('.token-ecosystem .bridge-animation');
-  if (tokenBridge) {
-    tokenBridge.style.cssText = `
-      order: 2;
-      padding: 1rem 0;
-      height: 80px;
-      margin: 0.5rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    `;
-    
-    const tokenBridgeLine = tokenBridge.querySelector('.bridge-line');
-    if (tokenBridgeLine) {
-      tokenBridgeLine.style.cssText = `
-        width: 2px;
-        height: 50px;
-        background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
-        margin: 0 auto;
-      `;
-    }
-    
-    const tokenBridgeContent = tokenBridge.querySelector('.bridge-content');
-    if (tokenBridgeContent) {
-      tokenBridgeContent.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.75rem;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 16px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(212, 167, 106, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      `;
-    }
-  }
-  
-  // Add mobile bridge particles if needed
-  addMobileBridgeParticles();
-}
 
-function addMobileBridgeParticles() {
-  const bridges = document.querySelectorAll('.bridge-animation');
-  bridges.forEach(bridge => {
-    // Remove existing particles
-    const existingParticles = bridge.querySelectorAll('.bridge-particles');
-    existingParticles.forEach(p => p.remove());
-    
-    // Add mobile-optimized particles
-    const particlesContainer = document.createElement('div');
-    particlesContainer.className = 'bridge-particles mobile-particles';
-    particlesContainer.style.cssText = `
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-      z-index: 1;
-    `;
-    
-    // Add fewer particles for mobile
-    const particleCount = 3;
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.cssText = `
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: var(--rebel-gold);
-        border-radius: 50%;
-        opacity: 0;
-        animation: mobile-particle-float 3s ease-in-out infinite;
-        animation-delay: ${i * 0.5}s;
-      `;
-      
-      // Position particles along the bridge
-      if (bridge.closest('.token-ecosystem')) {
-        particle.style.top = `${Math.random() * 100}%`;
-        particle.style.left = '50%';
-        particle.style.transform = 'translateX(-50%)';
-      } else {
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = '50%';
-        particle.style.transform = 'translateY(-50%)';
-      }
-      
-      particlesContainer.appendChild(particle);
-    }
-    
-    bridge.appendChild(particlesContainer);
-  });
-  
-  // Add mobile particle animation
-  if (!document.querySelector('#mobile-particle-animations')) {
-    const style = document.createElement('style');
-    style.id = 'mobile-particle-animations';
-    style.textContent = `
-      @keyframes mobile-particle-float {
-        0%, 100% {
-          opacity: 0;
-          transform: ${isMobile() ? 'translateY(0)' : 'translateX(0)'};
-        }
-        50% {
-          opacity: 0.7;
-        }
-        100% {
-          opacity: 0;
-          transform: ${isMobile() ? 'translateY(-40px)' : 'translateX(40px)'};
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-}
-
-// Update the initMobileOptimizations function to include bridge optimization
-function initMobileOptimizations() {
-  if (!isMobile()) return;
-  
-  // Optimize animations for mobile
-  document.documentElement.style.setProperty('--animation-medium', '0.4s');
-  document.documentElement.style.setProperty('--animation-slow', '0.6s');
-  
-  // Reduce particle count
-  const particles = document.querySelectorAll('.particle');
-  if (particles.length > 10) {
-    for (let i = 10; i < particles.length; i++) {
-      particles[i].remove();
-    }
-  }
-  
-  // Optimize image loading
-  const images = document.querySelectorAll('img[loading="lazy"]');
-  images.forEach(img => {
-    if (isInViewport(img)) {
-      img.loading = 'eager';
-    }
-  });
-  // Mobile layout switcher
-function setupMobileChainLayout() {
-  const isMobileView = isMobile();
-  
-  // Hero section chain visualization
-  const chainVisualization = document.querySelector('.chain-visualization');
-  if (chainVisualization) {
-    if (isMobileView) {
-      // Hide desktop, show mobile
-      chainVisualization.style.display = 'none';
-      const mobileWrapper = chainVisualization.querySelector('.chain-visualization-mobile');
-      if (mobileWrapper) {
-        mobileWrapper.style.display = 'flex';
-      }
-    } else {
-      // Show desktop, hide mobile
-      chainVisualization.style.display = 'flex';
-      const mobileWrapper = chainVisualization.querySelector('.chain-visualization-mobile');
-      if (mobileWrapper) {
-        mobileWrapper.style.display = 'none';
-      }
-    }
-  }
-  
-  // Token ecosystem flow
-  const ecosystemFlow = document.querySelector('.ecosystem-flow.desktop-flow');
-  const ecosystemFlowMobile = document.querySelector('.ecosystem-flow-mobile');
-  
-  if (ecosystemFlow && ecosystemFlowMobile) {
-    if (isMobileView) {
-      ecosystemFlow.style.display = 'none';
-      ecosystemFlowMobile.style.display = 'flex';
-    } else {
-      ecosystemFlow.style.display = 'flex';
-      ecosystemFlowMobile.style.display = 'none';
-    }
-  }
-  
-  // Update bridge animation for mobile
-  if (isMobileView) {
-    updateBridgesForMobile();
-  }
-}
-
-function updateBridgesForMobile() {
-  // Update hero bridge
-  const heroBridge = document.querySelector('.mobile-bridge-item');
-  if (heroBridge) {
-    const bridgeLine = heroBridge.querySelector('.bridge-line');
-    const bridgeTokens = heroBridge.querySelector('.bridge-tokens');
-    
-    if (bridgeLine) {
-      bridgeLine.style.cssText = `
-        width: 2px;
-        height: 40px;
-        background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold), var(--rebel-blue));
-        margin: 0 auto;
-        border-radius: 1px;
-      `;
-    }
-    
-    if (bridgeTokens) {
-      bridgeTokens.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.7);
-        padding: 0.5rem 0.75rem;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.25rem;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(212, 167, 106, 0.3);
-      `;
-    }
-  }
-  
-  // Update ecosystem bridge
-  const ecoBridge = document.querySelector('.mobile-ecosystem-bridge');
-  if (ecoBridge) {
-    const ecoBridgeLine = ecoBridge.querySelector('.bridge-line');
-    const ecoBridgeContent = ecoBridge.querySelector('.bridge-content');
-    
-    if (ecoBridgeLine) {
-      ecoBridgeLine.style.cssText = `
-        width: 2px;
-        height: 50px;
-        background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
-        margin: 0 auto;
-      `;
-    }
-    
-    if (ecoBridgeContent) {
-      ecoBridgeContent.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.5rem 0.75rem;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 16px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(212, 167, 106, 0.3);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      `;
-    }
-  }
-}
-
-// Update your initMobileOptimizations function
-function initMobileOptimizations() {
-  if (!isMobile()) return;
-  
-  // Set up mobile layout
-  setupMobileChainLayout();
-  
-  // Optimize animations for mobile
-  document.documentElement.style.setProperty('--animation-medium', '0.4s');
-  document.documentElement.style.setProperty('--animation-slow', '0.6s');
-  
-  // Reduce particle count
-  const particles = document.querySelectorAll('.particle');
-  if (particles.length > 5) {
-    for (let i = 5; i < particles.length; i++) {
-      particles[i].remove();
-    }
-  }
-  
-  // Handle window resize
-  window.addEventListener('resize', debounce(() => {
-    setupMobileChainLayout();
-  }, 250));
-}
-  // Mobile-specific optimizations
-  optimizeForMobile();
-  optimizeTokenEcosystemForMobile();
-  optimizeBridgesForMobile(); // ADD THIS LINE
-  
-  // Add swipe hint for horizontal content
-  setTimeout(() => {
-    addSwipeHint();
-  }, 1000);
-}
+// Add this to your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
-  // All initialization components in order:
-  const initQueue = [
-    initLoader,                    // Loader with progress bar
-    activateAnimations,           // Animation activations (NEW - added by you)
-    initScrollAnimations,         // Scroll-triggered animations
-    initStatsCounters,           // Animated number counters
-    initCopyButtons,             // Copy-to-clipboard functionality
-    initContractViews,           // Contract address view toggles
-    initSmoothScroll,            // Smooth scrolling for anchor links
-    initParticles,               // Particle background effects
-    initLogoAnimations,          // Logo animations and transitions
-    initBackToTop,               // Back-to-top button
-    initMobileOptimizations,     // Mobile-specific optimizations
-    initTouchInteractions,       // Touch and mobile interactions
-    initLazyLoading,             // Lazy loading for images
-    initPerformanceObservers,    // Performance monitoring
-    initWalletDetection          // Wallet detection and setup
-  ];
+  // Initialize components
+  initLoader();
+  activateAnimations();
   
-  // Execute initialization queue
-  initQueue.forEach((initFn, index) => {
-    setTimeout(() => {
-      try {
-        initFn();
-      } catch (error) {
-        console.warn(`⚠️ Failed to initialize ${initFn.name}:`, error);
-      }
-    }, index * 100);
-  });
+  // Rest of your initialization code...
 }
