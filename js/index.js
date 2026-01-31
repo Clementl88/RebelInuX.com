@@ -1454,27 +1454,166 @@ function initContractViews() {
     }
   });
 }
+
+// Enhanced Scroll Animations with Parallax
+function initParallaxEffects() {
+  const heroBackground = document.querySelector('.hero-background-pattern');
+  if (!heroBackground) return;
+  
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.5;
+    heroBackground.style.transform = `translate3d(0, ${rate}px, 0)`;
+  });
+}
+
+// Enhanced Logo Interaction
+function initLogoInteractions() {
+  const logos = document.querySelectorAll('.logo-3d, .token-logo-img');
+  
+  logos.forEach(logo => {
+    logo.addEventListener('mouseenter', () => {
+      logo.style.filter = 'drop-shadow(0 0 30px rgba(212, 167, 106, 0.8)) brightness(1.2)';
+    });
+    
+    logo.addEventListener('mouseleave', () => {
+      logo.style.filter = 'drop-shadow(0 0 20px rgba(212, 167, 106, 0.5))';
+    });
+  });
+}
+
+// Enhanced Counter Animations
+function initEnhancedCounters() {
+  const counters = document.querySelectorAll('.stat-value[data-target]');
+  
+  counters.forEach(counter => {
+    const updateCounter = () => {
+      const target = +counter.getAttribute('data-target');
+      const count = +counter.innerText.replace(/[^0-9.]/g, '');
+      const increment = target / 100;
+      
+      if (count < target) {
+        counter.innerText = Math.ceil(count + increment).toLocaleString();
+        setTimeout(updateCounter, 20);
+      } else {
+        counter.innerText = target.toLocaleString();
+      }
+    };
+    
+    // Start counter when in viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          updateCounter();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    observer.observe(counter);
+  });
+}
+
+// Enhanced Chain Visualization Animation
+function initChainAnimation() {
+  const bridgeTokens = document.querySelector('.bridge-tokens');
+  if (!bridgeTokens) return;
+  
+  // Create additional moving elements
+  for (let i = 0; i < 3; i++) {
+    const coin = document.createElement('div');
+    coin.className = 'moving-coin';
+    coin.style.animationDelay = `${i * 0.5}s`;
+    coin.style.opacity = '0.6';
+    bridgeTokens.appendChild(coin);
+  }
+}
+
+// Enhanced Value Cards Hover Effect
+function initValueCardEffects() {
+  const valueCards = document.querySelectorAll('.value-card');
+  
+  valueCards.forEach(card => {
+    card.addEventListener('mouseenter', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+}
+
+
 // Call this in your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
  // Initialize components in order of priority
   const initQueue = [
-    initLoader,
+initLoader,
     initScrollAnimations,
+    initParallaxEffects, // Add this
     initStatsCounters,
+    initEnhancedCounters, // Add this
     initCopyButtons,
-    initContractViews, // <-- ADD THIS LINE
+    initContractViews,
     initSmoothScroll,
     initParticles,
     initLogoAnimations,
+    initLogoInteractions, // Add this
     initBackToTop,
     initMobileOptimizations,
     initTouchInteractions,
     initLazyLoading,
     initPerformanceObservers,
-    initWalletDetection
+    initWalletDetection,
+    initChainAnimation, // Add this
+    initValueCardEffects // Add this
   ];
   
-  // Rest of your initialization code...
+  
+  // Execute initialization queue
+  initQueue.forEach((initFn, index) => {
+    setTimeout(() => {
+      try {
+        initFn();
+      } catch (error) {
+        console.warn(`⚠️ Failed to initialize ${initFn.name}:`, error);
+      }
+    }, index * 100);
+  });
 }
+
+// Add this CSS for the value card mouse effect
+const valueCardStyles = `
+  .value-card {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+  }
+  
+  .value-card:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      600px circle at var(--mouse-x) var(--mouse-y),
+      rgba(212, 167, 106, 0.1),
+      transparent 40%
+    );
+    pointer-events: none;
+    border-radius: 20px;
+  }
+`;
+
+// Add the styles to the document
+if (!document.querySelector('#value-card-styles')) {
+  const style = document.createElement('style');
+  style.id = 'value-card-styles';
+  style.textContent = valueCardStyles;
+  document.head.appendChild(style);
+}}
