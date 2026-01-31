@@ -402,6 +402,7 @@ function createParticle(container) {
   `;
   
   container.appendChild(particle);
+  return particle; // ← ADD THIS LINE
 }
 
 // Add CSS for particles if not already present
@@ -824,11 +825,6 @@ function initPerformanceObservers() {
   }
 }
 
-// Utility Functions
-function isMobile() {
-  return window.innerWidth <= 768 || 
-         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
 
 function isInViewport(element) {
   const rect = element.getBoundingClientRect();
@@ -1475,18 +1471,7 @@ function initContractAddresses() {
     }
   });
 }
-function initContractAddresses() {
-  const contractCodes = document.querySelectorAll('.contract-short');
   
-  contractCodes.forEach(code => {
-    const fullAddress = code.getAttribute('data-full') || code.textContent;
-    if (fullAddress.length > 20) {
-      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
-      code.textContent = shortAddress;
-    }
-  });
-}
-
 // Enhanced Scroll Animations with Parallax
 function initParallaxEffects() {
   const heroBackground = document.querySelector('.hero-background-pattern');
