@@ -813,19 +813,7 @@ function initPerformanceObservers() {
     
     observer.observe({ entryTypes: ['longtask'] });
   }
-  
-  // Observe layout shifts
-if ('PerformanceObserver' in window && 'LayoutShiftObserver' in window.PerformanceObserver) {
-    let cls = 0;
-    new LayoutShiftObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.hadRecentInput) {
-          cls += entry.value;
-          console.log(`⚠️ Layout shift detected: ${entry.value.toFixed(3)}`);
-        }
-      });
-    });
-  }
+
 }
 
 
