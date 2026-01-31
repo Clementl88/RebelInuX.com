@@ -207,15 +207,23 @@ function handleCopyClick(e) {
   const button = e.currentTarget;
   
   if (button.classList.contains('copy-contract-btn')) {
-    // This is the $REBL (Solana) contract
     contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
-  } else if (button.closest('.contract-address')) {
-    // Check if it's a Solana or Ethereum address
+    copyToClipboard(contractText.trim())
+      .then(() => {
+        showNotification('Solana ($REBL) address copied!', 'success');
+        showCopyFeedback(button, true);
+      })
+      .catch(() => {
+        showNotification('Failed to copy address', 'error');
+        showCopyFeedback(button, false);
+      });
+    return;
+  }
+  
+  if (button.closest('.contract-address')) {
     const codeElement = button.closest('.contract-address')?.querySelector('code');
     if (codeElement) {
       contractText = codeElement.getAttribute('data-full') || codeElement.textContent;
-      
-      // Add token type info to notification
       const isSolana = contractText.length > 32;
       const tokenType = isSolana ? 'Solana ($REBL)' : 'Base ($rebelinux)';
       
@@ -228,15 +236,7 @@ function handleCopyClick(e) {
           showNotification('Failed to copy address', 'error');
           showCopyFeedback(button, false);
         });
-      return;
     }
-  }
-  
-  // Fallback for other cases
-  if (contractText) {
-    copyToClipboard(contractText.trim())
-      .then(() => showCopyFeedback(button, true))
-      .catch(() => showCopyFeedback(button, false));
   }
 }
 
@@ -1275,6 +1275,20 @@ function addEthereumTokenToWallet(contractAddress) {
     }
   } else {
     showNotification('Please install MetaMask or another Web3 wallet', 'warning');
+  }
+}
+
+function copyContractAddress() {
+  const contractCode = document.querySelector('.contract-code code');
+  if (contractCode) {
+    const address = contractCode.textContent.trim();
+    copyToClipboard(address)
+      .then(() => {
+        showNotification('Contract address copied to clipboard!', 'success');
+      })
+      .catch(() => {
+        showNotification('Failed to copy address', 'error');
+      });
   }
 }
 
