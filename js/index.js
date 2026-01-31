@@ -1617,3 +1617,284 @@ if (!document.querySelector('#value-card-styles')) {
   style.textContent = valueCardStyles;
   document.head.appendChild(style);
 }}
+// ===== PAGE TRANSITIONS =====
+// Smooth slide transitions for RebelInuX
+
+class PageTransitions {
+  constructor() {
+    this.overlay = document.getElementById('pageTransition');
+    this.transitionText = document.getElementById('transitionText');
+    this.transitionProgress = document.getElementById('transitionProgress');
+    this.mainContent = document.getElementById('main-content');
+    this.isTransitioning = false;
+    this.transitionDuration = 600; // ms
+    this.sections = [];
+    
+    this.init();
+  }
+  
+  init() {
+    console.log('🚀 Initializing page transitions...');
+    
+    // Cache all sections
+    this.cacheSections();
+    
+    // Setup intersection observer for section transitions
+    this.setupSectionObserver();
+    
+    // Handle navigation
+    this.setupNavigation();
+    
+    // Handle smooth scroll
+    this.setupSmoothScroll();
+    
+    // Handle browser back/forward
+    window.addEventListener('popstate', (e) => {
+      if (e.state && e.state.section) {
+        this.navigateToSection(e.state.section, false);
+      }
+    });
+  }
+  
+  cacheSections() {
+    this.sections = Array.from(document.querySelectorAll('main > section')).map(section => ({
+      id: section.id || `section-${Math.random().toString(36).substr(2, 9)}`,
+      element: section,
+      title: section.querySelector('h2')?.textContent || 'Section',
+      isVisible: false
+    }));
+    
+    // Assign IDs if missing
+    this.sections.forEach((section, index) => {
+      if (!section.element.id) {
+        section.element.id = `section-${index}`;
+        section.id = section.element.id;
+      }
+    });
+    
+    console.log(`📋 Cached ${this.sections.length} sections`);
+  }
+  
+  setupSectionObserver() {
+    const options = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const section = this.sections.find(s => s.element === entry.target);
+        if (section) {
+          section.isVisible = entry.isIntersecting;
+          
+          if (entry.isIntersecting) {
+            // Add active class with delay for staggered entrance
+            setTimeout(() => {
+              entry.target.classList.add('section-active');
+            }, 100);
+            
+            // Update URL without page reload
+            if (history.replaceState) {
+              history.replaceState({ section: section.id }, '', `#${section.id}`);
+            }
+          }
+        }
+      });
+    }, options);
+    
+    this.sections.forEach(section => {
+      observer.observe(section.element);
+      section.element.classList.add('section-transition');
+    });
+  }
+  
+  setupNavigation() {
+    // Handle all anchor links
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (link && link.getAttribute('href') !== '#') {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        this.navigateToSection(targetId);
+      }
+    });
+    
+    // Handle CTA buttons
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.hero-cta[href^="#"]')) {
+        e.preventDefault();
+        const targetId = e.target.closest('.hero-cta').getAttribute('href').substring(1);
+        this.navigateToSection(targetId);
+      }
+    });
+  }
+  
+  setupSmoothScroll() {
+    // Override default smooth scroll
+    const originalScrollTo = window.scrollTo;
+    
+    window.scrollTo = function(options) {
+      if (options.behavior === 'smooth') {
+        const currentPosition = window.pageYOffset;
+        const targetPosition = typeof options === 'object' ? options.top : options;
+        
+        if (Math.abs(currentPosition - targetPosition) < 100) {
+          return originalScrollTo.call(window, options);
+        }
+        
+        // Use our custom smooth scroll
+        window.RebelTransitions?.smoothScrollTo(targetPosition, 800);
+        return;
+      }
+      
+      originalScrollTo.call(window, options);
+    };
+  }
+  
+  async navigateToSection(sectionId, animate = true) {
+    if (this.isTransitioning) return;
+    
+    const targetSection = this.sections.find(s => s.id === sectionId);
+    if (!targetSection) {
+      console.warn(`Section ${sectionId} not found`);
+      return;
+    }
+    
+    // Don't animate if we're already at the section
+    const currentScroll = window.pageYOffset;
+    const targetScroll = targetSection.element.offsetTop - 100;
+    
+    if (Math.abs(currentScroll - targetScroll) < 50) {
+      return;
+    }
+    
+    this.isTransitioning = true;
+    
+    if (animate) {
+      await this.showTransition(targetSection.title);
+    }
+    
+    // Smooth scroll to section
+    await this.smoothScrollTo(targetScroll, animate ? 600 : 400);
+    
+    if (animate) {
+      await this.hideTransition();
+    }
+    
+    // Push to history
+    if (history.pushState) {
+      history.pushState({ section: sectionId }, '', `#${sectionId}`);
+    }
+    
+    // Focus the section for accessibility
+    targetSection.element.setAttribute('tabindex', '-1');
+    targetSection.element.focus();
+    
+    setTimeout(() => {
+      targetSection.element.removeAttribute('tabindex');
+      this.isTransitioning = false;
+    }, 100);
+  }
+  
+  async showTransition(sectionName = 'Section') {
+    return new Promise((resolve) => {
+      this.overlay.classList.add('active');
+      
+      // Update transition text
+      const transitionMessages = [
+        `Navigating to ${sectionName}...`,
+        'Cross-chain bridge active...',
+        'Loading ecosystem data...',
+        'Syncing rewards...'
+      ];
+      
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 5;
+        this.transitionProgress.style.width = `${progress}%`;
+        
+        // Change text at intervals
+        if (progress === 25) {
+          this.transitionText.textContent = transitionMessages[1];
+        } else if (progress === 50) {
+          this.transitionText.textContent = transitionMessages[2];
+        } else if (progress === 75) {
+          this.transitionText.textContent = transitionMessages[3];
+        }
+        
+        if (progress >= 100) {
+          clearInterval(interval);
+          setTimeout(resolve, 100);
+        }
+      }, 20);
+    });
+  }
+  
+  async hideTransition() {
+    return new Promise((resolve) => {
+      this.overlay.classList.remove('active');
+      setTimeout(() => {
+        this.transitionProgress.style.width = '0%';
+        this.transitionText.textContent = 'Loading...';
+        resolve();
+      }, 300);
+    });
+  }
+  
+  smoothScrollTo(targetPosition, duration = 600) {
+    return new Promise((resolve) => {
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const startTime = performance.now();
+      
+      function easeInOutCubic(t) {
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+      
+      function animation(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = easeInOutCubic(progress);
+        
+        window.scrollTo(0, startPosition + (distance * easeProgress));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animation);
+        } else {
+          resolve();
+        }
+      }
+      
+      requestAnimationFrame(animation);
+    });
+  }
+  
+  // Section entrance animations
+  animateSectionEntrance(section) {
+    const elements = section.querySelectorAll(
+      '.value-card, .token-card, .stat-card, .comparison-card, .step-card, .feature-card'
+    );
+    
+    elements.forEach((element, index) => {
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(30px)';
+      element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      
+      setTimeout(() => {
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+      }, 100 + (index * 100));
+    });
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  window.RebelTransitions = new PageTransitions();
+});
+
+// Export for global access
+window.PageTransitions = PageTransitions;
