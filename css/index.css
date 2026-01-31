@@ -5108,3 +5108,115 @@ body {
     white-space: nowrap !important;
   }
 }
+/* ===== MOBILE CHAIN VISUALIZATION FIX ===== */
+
+/* Mobile wrapper for vertical stacking */
+.chain-visualization-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+/* Hide the desktop layout on mobile */
+@media (min-width: 769px) {
+  .chain-visualization-mobile {
+    display: none;
+  }
+  
+  .chain-visualization .chain-node,
+  .chain-visualization .bridge-animation {
+    display: block;
+  }
+}
+
+/* Mobile-only styles */
+@media (max-width: 768px) {
+  /* Hide desktop layout */
+  .chain-visualization {
+    display: none;
+  }
+  
+  /* Show mobile layout */
+  .chain-visualization-mobile {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+  
+  .mobile-chain-item {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+  
+  /* Mobile bridge styling */
+  .mobile-bridge-item {
+    order: 2;
+    padding: 1rem 0;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mobile-bridge-item .bridge-line {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold), var(--rebel-blue));
+    margin: 0 auto;
+  }
+  
+  .mobile-bridge-item .bridge-tokens {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+  }
+  
+  .mobile-bridge-item .bridge-tokens i {
+    color: var(--rebel-gold);
+  }
+  
+  .mobile-bridge-item .moving-coin {
+    width: 12px;
+    height: 12px;
+    animation: mobile-coin-move 2s ease-in-out infinite;
+  }
+  
+  @keyframes mobile-coin-move {
+    0% { transform: translateY(-10px); opacity: 0; }
+    50% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(10px); opacity: 0; }
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .mobile-chain-item {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .mobile-bridge-item {
+    height: 50px;
+  }
+  
+  .mobile-bridge-item .bridge-line {
+    height: 30px;
+  }
+}
