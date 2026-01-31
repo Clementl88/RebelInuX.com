@@ -66,7 +66,7 @@ function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
     '.value-card, .comparison-card, .step-card, .stat-card, ' +
     '.token-card, .logo-card, .key-takeaway, .contract-emphasis, ' +
-    '.feature-card, .process-step, .chain-node'
+    '.feature-card, .process-step'
   );
   
   // Create observer with performance optimization
