@@ -298,31 +298,7 @@ function initCopyButtons() {
     button.addEventListener('click', handleCopyClick);
   });
 }
-// Contract View Toggle
-function initContractViews() {
-  const viewButtons = document.querySelectorAll('.view-btn');
-  
-  viewButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      const contractAddress = this.closest('.contract-address');
-      const codeElement = contractAddress?.querySelector('code');
-      
-      if (codeElement) {
-        const isExpanded = codeElement.classList.toggle('expanded');
-        const icon = this.querySelector('i');
-        
-        if (isExpanded) {
-          icon.className = 'fas fa-compress-alt';
-          this.setAttribute('title', 'Collapse address');
-        } else {
-          icon.className = 'fas fa-expand-alt';
-          this.setAttribute('title', 'Expand address');
-        }
-      }
-    });
-  });
-}
+
 
 // Enhanced Smooth Scroll with offset
 function initSmoothScroll() {
@@ -1584,7 +1560,6 @@ function initIndexPage() {
     initContractAddresses,      // From first version (important!)
     initEnhancedCounters,       // From second version
     initCopyButtons,
-    initContractViews,
     initSmoothScroll,
     initParticles,
     initLogoAnimations,
