@@ -672,7 +672,19 @@ function initMobileOptimizations() {
   // Mobile-specific optimizations
   optimizeForMobile();
     optimizeTokenEcosystemForMobile();
-
+  const bridgeTokens = document.querySelector('.bridge-tokens');
+  const movingCoin = document.querySelector('.moving-coin');
+  
+  if (bridgeTokens && movingCoin && isMobile()) {
+    // Change arrow direction
+    const arrow = bridgeTokens.querySelector('.fa-arrow-right');
+    if (arrow) {
+      arrow.style.transform = 'rotate(90deg)';
+    }
+    
+    // Update moving coin animation
+    movingCoin.style.animation = 'move-down 2.5s ease-in-out infinite';
+  }
 }
 
 // Add new optimization function AFTER initMobileOptimizations
