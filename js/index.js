@@ -1556,7 +1556,146 @@ function initMobileOptimizations() {
       img.loading = 'eager';
     }
   });
+  // Mobile layout switcher
+function setupMobileChainLayout() {
+  const isMobileView = isMobile();
   
+  // Hero section chain visualization
+  const chainVisualization = document.querySelector('.chain-visualization');
+  if (chainVisualization) {
+    if (isMobileView) {
+      // Hide desktop, show mobile
+      chainVisualization.style.display = 'none';
+      const mobileWrapper = chainVisualization.querySelector('.chain-visualization-mobile');
+      if (mobileWrapper) {
+        mobileWrapper.style.display = 'flex';
+      }
+    } else {
+      // Show desktop, hide mobile
+      chainVisualization.style.display = 'flex';
+      const mobileWrapper = chainVisualization.querySelector('.chain-visualization-mobile');
+      if (mobileWrapper) {
+        mobileWrapper.style.display = 'none';
+      }
+    }
+  }
+  
+  // Token ecosystem flow
+  const ecosystemFlow = document.querySelector('.ecosystem-flow.desktop-flow');
+  const ecosystemFlowMobile = document.querySelector('.ecosystem-flow-mobile');
+  
+  if (ecosystemFlow && ecosystemFlowMobile) {
+    if (isMobileView) {
+      ecosystemFlow.style.display = 'none';
+      ecosystemFlowMobile.style.display = 'flex';
+    } else {
+      ecosystemFlow.style.display = 'flex';
+      ecosystemFlowMobile.style.display = 'none';
+    }
+  }
+  
+  // Update bridge animation for mobile
+  if (isMobileView) {
+    updateBridgesForMobile();
+  }
+}
+
+function updateBridgesForMobile() {
+  // Update hero bridge
+  const heroBridge = document.querySelector('.mobile-bridge-item');
+  if (heroBridge) {
+    const bridgeLine = heroBridge.querySelector('.bridge-line');
+    const bridgeTokens = heroBridge.querySelector('.bridge-tokens');
+    
+    if (bridgeLine) {
+      bridgeLine.style.cssText = `
+        width: 2px;
+        height: 40px;
+        background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold), var(--rebel-blue));
+        margin: 0 auto;
+        border-radius: 1px;
+      `;
+    }
+    
+    if (bridgeTokens) {
+      bridgeTokens.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        padding: 0.5rem 0.75rem;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+      `;
+    }
+  }
+  
+  // Update ecosystem bridge
+  const ecoBridge = document.querySelector('.mobile-ecosystem-bridge');
+  if (ecoBridge) {
+    const ecoBridgeLine = ecoBridge.querySelector('.bridge-line');
+    const ecoBridgeContent = ecoBridge.querySelector('.bridge-content');
+    
+    if (ecoBridgeLine) {
+      ecoBridgeLine.style.cssText = `
+        width: 2px;
+        height: 50px;
+        background: linear-gradient(to bottom, var(--rebel-gold), var(--rebel-blue));
+        margin: 0 auto;
+      `;
+    }
+    
+    if (ecoBridgeContent) {
+      ecoBridgeContent.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem 0.75rem;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(212, 167, 106, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      `;
+    }
+  }
+}
+
+// Update your initMobileOptimizations function
+function initMobileOptimizations() {
+  if (!isMobile()) return;
+  
+  // Set up mobile layout
+  setupMobileChainLayout();
+  
+  // Optimize animations for mobile
+  document.documentElement.style.setProperty('--animation-medium', '0.4s');
+  document.documentElement.style.setProperty('--animation-slow', '0.6s');
+  
+  // Reduce particle count
+  const particles = document.querySelectorAll('.particle');
+  if (particles.length > 5) {
+    for (let i = 5; i < particles.length; i++) {
+      particles[i].remove();
+    }
+  }
+  
+  // Handle window resize
+  window.addEventListener('resize', debounce(() => {
+    setupMobileChainLayout();
+  }, 250));
+}
   // Mobile-specific optimizations
   optimizeForMobile();
   optimizeTokenEcosystemForMobile();
