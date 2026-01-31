@@ -5114,3 +5114,132 @@ body {
     transform: translateY(-40px) translateX(var(--tx, 20px));
   }
 }
+/* ===== MOBILE CHAIN VISUALIZATION FIX ===== */
+@media (max-width: 767px) {
+  .chain-visualization {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .chain-node {
+    order: 0; /* Reset order */
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  .base-node {
+    order: 1; /* First item */
+  }
+  
+  .bridge-animation {
+    order: 2; /* Middle item */
+    padding: 1rem 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 0;
+  }
+  
+  .solana-node {
+    order: 3; /* Last item */
+  }
+  
+  /* Mobile bridge animation adjustments */
+  .bridge-line {
+    width: 3px !important;
+    height: 60px !important;
+    background: linear-gradient(to bottom, var(--rebel-red), var(--rebel-gold), var(--rebel-red)) !important;
+    margin: 0 auto;
+    border-radius: 3px;
+  }
+  
+  .bridge-tokens {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    color: white;
+  }
+  
+  /* Fix arrow direction for vertical layout */
+  .bridge-tokens .fa-arrow-right {
+    transform: rotate(90deg);
+  }
+  
+  /* Adjust moving coin animation for vertical */
+  .moving-coin {
+    animation: move-down 2.5s ease-in-out infinite !important;
+  }
+  
+  @keyframes move-down {
+    0% { transform: translateY(-30px); opacity: 0; }
+    50% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(30px); opacity: 0; }
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .chain-visualization {
+    gap: 1rem;
+  }
+  
+  .chain-node {
+    padding: 1rem;
+    max-width: 250px;
+  }
+  
+  .bridge-animation {
+    height: 60px;
+  }
+  
+  .bridge-line {
+    height: 50px !important;
+  }
+}
+
+/* Ensure proper display on desktop */
+@media (min-width: 768px) {
+  .chain-visualization {
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .bridge-animation {
+    padding: 0 1.5rem !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  
+  .bridge-line {
+    width: 150px !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold), var(--rebel-red)) !important;
+  }
+  
+  .bridge-tokens .fa-arrow-right {
+    transform: none !important;
+  }
+  
+  .moving-coin {
+    animation: move-right 2.5s ease-in-out infinite !important;
+  }
+}
