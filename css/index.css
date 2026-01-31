@@ -1002,23 +1002,93 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Consider this alternative mobile layout */
+/* Mobile Horizontal Chain Visualization */
 @media (max-width: 767px) {
   .chain-visualization {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 1rem 0;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 1rem auto 2rem !important;
+    padding: 0 0.5rem !important;
+    overflow: visible !important;
   }
   
   .chain-node {
-    flex: 0 0 45%;
-    max-width: 45%;
+    flex: 1 !important;
+    max-width: 40% !important; /* 40% for each node */
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 1rem 0.75rem !important;
+    text-align: center !important;
   }
   
   .bridge-animation {
-    flex: 0 0 10%;
-    position: relative;
+    flex: 0 0 auto !important;
+    width: 60px !important; /* Fixed width for bridge */
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+  }
+  
+  /* Bridge line - make it horizontal */
+  .bridge-line {
+    width: 100% !important; /* Full width of bridge container */
+    height: 3px !important;
+    background: linear-gradient(90deg, var(--rebel-gold), var(--rebel-blue), var(--rebel-gold)) !important;
+    margin: 0 auto !important;
+  }
+  
+  /* Bridge tokens positioning */
+  .bridge-tokens {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 50px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    z-index: 2 !important;
+  }
+  
+  /* Update moving coin animation for horizontal movement */
+  .moving-coin {
+    width: 15px !important;
+    height: 15px !important;
+    animation: move-right 2.5s ease-in-out infinite !important;
+  }
+  
+  @keyframes move-right {
+    0% { transform: translateX(-20px); opacity: 0; }
+    50% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(20px); opacity: 0; }
+  }
+  
+  /* Adjust node icon size for mobile */
+  .node-icon {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 1.2rem !important;
+    margin: 0 auto 0.75rem !important;
+  }
+  
+  .node-label {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .token-badge {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.6rem !important;
+    margin: 0.15rem !important;
   }
 }
 
