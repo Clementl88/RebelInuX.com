@@ -35,6 +35,7 @@ function initIndexPage() {
     initLoader,
     initScrollAnimations,
     initStatsCounters,
+    initContractAddresses, // Add this
     initCopyButtons,
     initContractViews,
     initSmoothScroll,
@@ -1431,7 +1432,18 @@ function toggleContractView(button) {
     }
   }
 }
-
+// Initialize all contract addresses on page load
+function initContractAddresses() {
+  const contractCodes = document.querySelectorAll('.contract-short');
+  
+  contractCodes.forEach(code => {
+    const fullAddress = code.getAttribute('data-full') || code.textContent;
+    if (fullAddress.length > 20) {
+      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
+      code.textContent = shortAddress;
+    }
+  });
+}
 // Initialize contract views on page load
 function initContractViews() {
   const viewButtons = document.querySelectorAll('.view-btn');
