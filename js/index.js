@@ -123,11 +123,13 @@ function initScrollAnimations() {
       floatingLogo.style.transform = 
         `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
       
-      requestAnimationFrame(animateLogo);
+      // Store animation frame ID for cleanup
+      window.logoAnimationId = requestAnimationFrame(animateLogo);
     }
     
-    animateLogo();
+    window.logoAnimationId = requestAnimationFrame(animateLogo);
   }
+    window.scrollAnimationObserver = observer;
 }
 
 // Advanced Stats Counters with Number Formatting
@@ -367,8 +369,12 @@ function initParticles() {
   
   const particleCount = Math.min(30, Math.floor(window.innerWidth / 30));
   
+  // Store particle references for cleanup
+  window.particles = [];
+  
   for (let i = 0; i < particleCount; i++) {
-    createParticle(particleContainer);
+    const particle = createParticle(particleContainer);
+    window.particles.push(particle);
   }
 }
 
@@ -1330,6 +1336,57 @@ window.addEventListener('error', function(e) {
     });
   }
 });
+// Cleanup function for animations
+function cleanupAnimations() {
+  console.log('🧹 Cleaning up animations...');
+  
+  // Cleanup Intersection Observer
+  if (window.scrollAnimationObserver) {
+    window.scrollAnimationObserver.disconnect();
+    delete window.scrollAnimationObserver;
+  }
+  
+  // Cancel any animation frames
+  if (window.logoAnimationId) {
+    cancelAnimationFrame(window.logoAnimationId);
+    delete window.logoAnimationId;
+  }
+  
+  // Cleanup other animation frames if they exist
+  if (window.animationFrameId) {
+    cancelAnimationFrame(window.animationFrameId);
+    delete window.animationFrameId;
+  }
+  
+  // Cleanup particles
+  if (window.particles && window.particles.length > 0) {
+    window.particles.forEach(particle => {
+      if (particle && particle.parentNode) {
+        particle.parentNode.removeChild(particle);
+      }
+    });
+    delete window.particles;
+  }
+  
+  // Remove event listeners if you stored them
+  if (window.mousemoveListener) {
+    window.removeEventListener('mousemove', window.mousemoveListener);
+    delete window.mousemoveListener;
+  }
+}
+
+// ===== ADD EVENT LISTENERS HERE =====
+// Call cleanup on page unload
+window.addEventListener('beforeunload', cleanupAnimations);
+window.addEventListener('pagehide', cleanupAnimations); // For better mobile support
+
+// Also cleanup when navigating away in SPA-like environments
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') {
+    cleanupAnimations();
+  }
+});
+
 // Add at the beginning of initIndexPage() function
 console.log('🎬 Initializing animations...');
 
@@ -1517,7 +1574,11 @@ function initValueCardEffects() {
     });
   });
 }
-
+function isMobile() {
+  // Check both viewport width and user agent
+  return window.innerWidth <= 768 || 
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
