@@ -1181,7 +1181,7 @@ function detectWallet() {
     return 'none';
   }
 }
-function addToWallet(contractAddress) {
+function addToWallet(contractAddress, event) {
   console.log('🔄 Add to Wallet clicked:', contractAddress);
   
   // Show loading state
