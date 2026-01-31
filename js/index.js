@@ -102,34 +102,36 @@ function initScrollAnimations() {
     observer.observe(el);
   });
   
-  // Floating logo mouse interaction
-  const floatingLogo = document.querySelector('.logo-3d');
-  if (floatingLogo && !isMobile()) {
-    let mouseX = 0;
-    let mouseY = 0;
-    let logoX = 0;
-    let logoY = 0;
+// Floating logo mouse interaction
+const floatingLogo = document.querySelector('.logo-3d');
+if (floatingLogo && !isMobile()) {
+  let mouseX = 0;
+  let mouseY = 0;
+  let logoX = 0;
+  let logoY = 0;
+  
+  // Store the mousemove listener for cleanup
+  const mousemoveHandler = (e) => {
+    mouseX = (e.clientX - window.innerWidth / 2) / 25;
+    mouseY = (e.clientY - window.innerHeight / 2) / 25;
+  };
+  
+  window.addEventListener('mousemove', mousemoveHandler);
+  window.mousemoveListener = mousemoveHandler; // Store for cleanup
+  
+  function animateLogo() {
+    // Smooth interpolation for better performance
+    logoX += (mouseX - logoX) * 0.1;
+    logoY += (mouseY - logoY) * 0.1;
     
-    window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX - window.innerWidth / 2) / 25;
-      mouseY = (e.clientY - window.innerHeight / 2) / 25;
-    });
+    floatingLogo.style.transform = 
+      `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
     
-    function animateLogo() {
-      // Smooth interpolation for better performance
-      logoX += (mouseX - logoX) * 0.1;
-      logoY += (mouseY - logoY) * 0.1;
-      
-      floatingLogo.style.transform = 
-        `translateY(-20px) rotateY(${logoX}deg) rotateX(${logoY}deg)`;
-      
-      // Store animation frame ID for cleanup
-      window.logoAnimationId = requestAnimationFrame(animateLogo);
-    }
-    
+    // Store animation frame ID for cleanup
     window.logoAnimationId = requestAnimationFrame(animateLogo);
   }
-    window.scrollAnimationObserver = observer;
+  
+  window.logoAnimationId = requestAnimationFrame(animateLogo);
 }
 
 // Advanced Stats Counters with Number Formatting
