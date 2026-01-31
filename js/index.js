@@ -488,65 +488,38 @@ function initBackToTop() {
   });
 }
 // Enhanced mobile optimizations for token ecosystem - FIXED
+// Update the optimizeTokenEcosystemForMobile function
 function optimizeTokenEcosystemForMobile() {
   if (!isMobile()) return;
   
   const ecosystemFlow = document.querySelector('.ecosystem-flow');
   if (!ecosystemFlow) return;
   
-  // Get all elements
-  const basePlatform = ecosystemFlow.querySelector('.base-platform');
-  const solanaPlatform = ecosystemFlow.querySelector('.solana-platform');
-  const bridgeAnimation = ecosystemFlow.querySelector('.bridge-animation');
+  // Simply restructure the flow for mobile
+  ecosystemFlow.style.cssText = `
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  `;
   
-  if (basePlatform && solanaPlatform && bridgeAnimation) {
-    // Clear current order
-    ecosystemFlow.innerHTML = '';
-    
-    // Create a proper mobile layout
-    const mobileLayout = document.createElement('div');
-    mobileLayout.className = 'ecosystem-mobile-layout';
-    mobileLayout.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
+  // Make platforms full width
+  const platforms = ecosystemFlow.querySelectorAll('.chain-platform');
+  platforms.forEach(platform => {
+    platform.style.cssText = `
       width: 100%;
+      max-width: 100%;
+      margin: 0;
     `;
-    
-    // Add base platform
-    const baseWrapper = document.createElement('div');
-    baseWrapper.className = 'mobile-platform-wrapper';
-    baseWrapper.appendChild(basePlatform);
-    mobileLayout.appendChild(baseWrapper);
-    
-    // Add bridge (positioned between platforms)
-    const bridgeWrapper = document.createElement('div');
-    bridgeWrapper.className = 'mobile-bridge-wrapper';
-    bridgeWrapper.style.cssText = `
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      padding: 1rem 0;
-    `;
-    
-    // Transform bridge for mobile
-    bridgeAnimation.classList.add('mobile-bridge');
-    bridgeWrapper.appendChild(bridgeAnimation);
-    mobileLayout.appendChild(bridgeWrapper);
-    
-    // Add solana platform
-    const solanaWrapper = document.createElement('div');
-    solanaWrapper.className = 'mobile-platform-wrapper';
-    solanaWrapper.appendChild(solanaPlatform);
-    mobileLayout.appendChild(solanaWrapper);
-    
-    // Add to ecosystem flow
-    ecosystemFlow.appendChild(mobileLayout);
-    
-    // Update bridge styling for mobile
-    updateBridgeForMobile(bridgeAnimation);
+  });
+  
+  // Position bridge properly
+  const bridge = ecosystemFlow.querySelector('.bridge-animation');
+  if (bridge) {
+    bridge.style.order = '2';
+    bridge.style.margin = '0.5rem 0';
   }
+}
   
   // Optimize contract addresses for mobile
   const contractCodes = document.querySelectorAll('.contract-short');
