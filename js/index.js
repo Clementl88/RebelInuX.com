@@ -26,6 +26,39 @@ function initPerformanceMonitoring() {
   }
 }
 
+// Main initialization
+function initIndexPage() {
+  console.log('✨ Initializing enhanced Index page features');
+  
+  // Initialize components in order of priority
+  const initQueue = [
+    initLoader,
+    initScrollAnimations,
+    initStatsCounters,
+    initCopyButtons,
+    initContractViews,
+    initSmoothScroll,
+    initParticles,
+    initLogoAnimations,
+    initBackToTop,
+    initMobileOptimizations,
+    initTouchInteractions,
+    initLazyLoading,
+    initPerformanceObservers,
+    initWalletDetection
+  ];
+  
+  // Execute initialization queue
+  initQueue.forEach((initFn, index) => {
+    setTimeout(() => {
+      try {
+        initFn();
+      } catch (error) {
+        console.warn(`⚠️ Failed to initialize ${initFn.name}:`, error);
+      }
+    }, index * 100);
+  });
+}
 
 // Enhanced Loader with Progress
 function initLoader() {
@@ -1398,18 +1431,7 @@ function toggleContractView(button) {
     }
   }
 }
-// Initialize all contract addresses on page load
-function initContractAddresses() {
-  const contractCodes = document.querySelectorAll('.contract-short');
-  
-  contractCodes.forEach(code => {
-    const fullAddress = code.getAttribute('data-full') || code.textContent;
-    if (fullAddress.length > 20) {
-      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
-      code.textContent = shortAddress;
-    }
-  });
-}
+
 // Initialize contract views on page load
 function initContractViews() {
   const viewButtons = document.querySelectorAll('.view-btn');
@@ -1523,32 +1545,33 @@ function initValueCardEffects() {
 }
 
 
+// Call this in your initIndexPage() function
 function initIndexPage() {
   console.log('✨ Initializing enhanced Index page features');
   
-  // Initialize components in order of priority
+ // Initialize components in order of priority
   const initQueue = [
-    initLoader,
+initLoader,
     initScrollAnimations,
-    initParallaxEffects,        // From second version
+    initParallaxEffects, // Add this
     initStatsCounters,
-    initContractAddresses,      // From first version (important!)
-    initEnhancedCounters,       // From second version
+    initEnhancedCounters, // Add this
     initCopyButtons,
     initContractViews,
     initSmoothScroll,
     initParticles,
     initLogoAnimations,
-    initLogoInteractions,       // From second version
+    initLogoInteractions, // Add this
     initBackToTop,
     initMobileOptimizations,
     initTouchInteractions,
     initLazyLoading,
     initPerformanceObservers,
     initWalletDetection,
-    initChainAnimation,         // From second version
-    initValueCardEffects        // From second version
+    initChainAnimation, // Add this
+    initValueCardEffects // Add this
   ];
+  
   
   // Execute initialization queue
   initQueue.forEach((initFn, index) => {
@@ -1592,4 +1615,4 @@ if (!document.querySelector('#value-card-styles')) {
   style.id = 'value-card-styles';
   style.textContent = valueCardStyles;
   document.head.appendChild(style);
-}
+}}
