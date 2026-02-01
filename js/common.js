@@ -8,7 +8,7 @@ let lastClickedDropdown = null;
 // ========== DYNAMIC PAGE SUBTITLES ==========
 const PAGE_SUBTITLES = {
     // Main pages
-    'index.html': '$REBL Epoch Rewards',
+    'index.html': 'Multi-Chain Passive Income',
     'trade.html': 'Trade & Exchange Guide',
     'epoch-rewards.html': 'Reward System Dashboard',
     'tokenomics.html': 'Tokenomics & Distribution',
@@ -21,9 +21,9 @@ const PAGE_SUBTITLES = {
     'artwork.html': 'Art & Media Gallery',
     
     // Handle root/index pages
-    'index': '$REBL Epoch Rewards',
-    '/': '$REBL Epoch Rewards',
-    '': '$REBL Epoch Rewards',
+    'index': 'Multi-Chain Passive Income',
+    '/': 'Multi-Chain Passive Income',
+    '': 'Multi-Chain Passive Income',
     
     // Default fallback
     'default': 'Multi-Chain Passive Income'
