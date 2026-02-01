@@ -1,4 +1,4 @@
-// integrity.js - Integrity page functionality matching epoch-rewards structure
+/// integrity.js - Integrity page functionality matching epoch-rewards structure
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
