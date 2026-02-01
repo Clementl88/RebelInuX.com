@@ -13,12 +13,11 @@ const PAGE_SUBTITLES = {
     'epoch-rewards.html': 'Reward System Dashboard',
     'tokenomics.html': 'Tokenomics & Distribution',
     'community.html': 'Community Hub & Links',
-    'security.html': 'Security & Safety Protocols',
+    'security.html': 'Security & Integrity Protocols',  
     'whitepaper.html': 'Project Documentation',
     'rebl-calculator.html': 'Reward Calculator Tool',
     'governance.html': 'Governance & Voting',
     'roadmap.html': 'Development Roadmap',
-    'integrity.html': 'Project Integrity & Values',
     'artwork.html': 'Art & Media Gallery',
     
     // Handle root/index pages
@@ -27,7 +26,7 @@ const PAGE_SUBTITLES = {
     '': '$REBL Epoch Rewards',
     
     // Default fallback
-    'default': '$REBL Epoch Rewards'
+    'default': 'Multi-Chain Passive Income'
 };
 
 function getCurrentPage() {
@@ -646,11 +645,10 @@ function setActiveNavItem() {
         'trade.html': 'a.nav-trade',
         'epoch-rewards.html': 'a.nav-rewards',
         'tokenomics.html': 'a.nav-tokenomics',
-        'security.html': 'a.nav-security',
+        'security-integrity.html': 'a.nav-security', // CHANGE 3: Map new page to security nav
         'community.html': 'a.nav-community',
         'governance.html': 'a.nav-governance',
         'roadmap.html': 'a.nav-roadmap',
-        'integrity.html': 'a.nav-integrity',
         'artwork.html': 'a.nav-artwork',
         'REBL-calculator.html': 'a.nav-calculator',
         'whitepaper.html': 'a.nav-whitepaper'
