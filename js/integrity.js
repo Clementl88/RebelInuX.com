@@ -1,6 +1,6 @@
-/// integrity.js - Integrity page functionality
+// integrity.js - Integrity page functionality matching epoch-rewards structure
 
-// Initialize after page loads
+// Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(initIntegrityPage, 300);
 });
@@ -8,125 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function initIntegrityPage() {
   console.log('Initializing Integrity page');
   
-  // Initialize animations
-  initAnimations();
-  
-  // Initialize interactive elements
-  initInteractiveElements();
-  
-  // Initialize scroll effects
-  initScrollEffects();
-  
   // Initialize mobile dropdown
   initializeMobileDropdown();
+  
+  // Initialize security data
+  initSecurityData();
+  
+  // Initialize animations
+  initScrollAnimations();
 }
 
-// ========== ANIMATIONS ==========
-function initAnimations() {
-  console.log('Initializing integrity page animations');
-  
-  // Add staggered animation to principle cards
-  const cards = document.querySelectorAll('.principle-card');
-  cards.forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    
-    setTimeout(() => {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    }, 300 + (index * 200));
-  });
-  
-  // Add hover glow effect to cards
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      if (this.classList.contains('prohibit')) {
-        this.style.boxShadow = '0 20px 40px rgba(255, 51, 102, 0.25)';
-      } else {
-        this.style.boxShadow = '0 20px 40px rgba(255, 204, 0, 0.25)';
-      }
-    });
-    
-    card.addEventListener('mouseleave', function() {
-      this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
-    });
-  });
-}
-
-// ========== INTERACTIVE ELEMENTS ==========
-function initInteractiveElements() {
-  console.log('Initializing interactive elements');
-  
-  // Add click effect to verification items
-  const verificationItems = document.querySelectorAll('.verification-item');
-  verificationItems.forEach(item => {
-    item.addEventListener('click', function() {
-      // Create ripple effect
-      createRippleEffect(this, 'rgba(255, 255, 255, 0.1)');
-      
-      // Temporary scale effect
-      this.style.transform = 'scale(0.98)';
-      setTimeout(() => {
-        this.style.transform = '';
-      }, 150);
-    });
-  });
-  
-  // Add pulse animation to security badge
-  const securityBadge = document.querySelector('.security-badge');
-  if (securityBadge) {
-    setInterval(() => {
-      securityBadge.style.boxShadow = '0 0 30px rgba(255, 51, 102, 0.5)';
-      setTimeout(() => {
-        securityBadge.style.boxShadow = '0 0 30px rgba(255, 51, 102, 0.3)';
-      }, 1000);
-    }, 3000);
-  }
-}
-
-// ========== SCROLL EFFECTS ==========
-function initScrollEffects() {
-  console.log('Initializing scroll effects');
-  
-  // Parallax effect for hero section
-  const hero = document.querySelector('.page-hero--integrity');
-  if (hero) {
-    window.addEventListener('scroll', function() {
-      const scrolled = window.pageYOffset;
-      const rate = scrolled * -0.5;
-      hero.style.transform = 'translate3d(0, ' + rate + 'px, 0)';
-    });
-  }
-  
-  // Reveal animations on scroll
-  const revealElements = document.querySelectorAll('.value-indicator, .commitment-highlight');
-  
-  function revealOnScroll() {
-    revealElements.forEach(element => {
-      const elementTop = element.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-      
-      if (elementTop < windowHeight - 100) {
-        element.style.opacity = '1';
-        element.style.transform = 'translateY(0)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      }
-    });
-  }
-  
-  // Set initial state
-  revealElements.forEach(element => {
-    element.style.opacity = '0';
-    element.style.transform = 'translateY(20px)';
-  });
-  
-  // Check on load and scroll
-  revealOnScroll();
-  window.addEventListener('scroll', revealOnScroll);
-}
-
-// ========== MOBILE DROPDOWN ==========
+// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
 function initializeMobileDropdown() {
   const dropbtn = document.querySelector('.dropbtn');
   const navDesktop = document.getElementById('nav-desktop');
@@ -144,12 +36,6 @@ function initializeMobileDropdown() {
       const isActive = dropdownContent.style.display === 'block' || 
                       dropdownContent.classList.contains('active');
       
-      // Close all other dropdowns first
-      document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.style.display = 'none';
-        content.classList.remove('active');
-      });
-      
       // Toggle this dropdown
       if (!isActive) {
         dropdownContent.style.display = 'block';
@@ -164,127 +50,205 @@ function initializeMobileDropdown() {
   });
 }
 
-// ========== UTILITY FUNCTIONS ==========
-function createRippleEffect(element, color = 'rgba(255, 255, 255, 0.3)') {
-  const ripple = document.createElement('span');
-  const rect = element.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  const x = event.clientX - rect.left - size / 2;
-  const y = event.clientY - rect.top - size / 2;
+// ========== SECURITY DATA FUNCTIONS ==========
+function initSecurityData() {
+  console.log('Initializing security data');
   
-  ripple.style.cssText = `
-    position: absolute;
-    border-radius: 50%;
-    background: ${color};
-    transform: scale(0);
-    animation: ripple 0.6s linear;
-    width: ${size}px;
-    height: ${size}px;
-    top: ${y}px;
-    left: ${x}px;
-    pointer-events: none;
-  `;
+  // Fetch and update holder count
+  updateHolderCount();
   
-  element.style.position = 'relative';
-  element.style.overflow = 'hidden';
-  element.appendChild(ripple);
+  // Update verification timestamps
+  updateVerificationTimestamps();
   
-  // Add ripple animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-  
-  setTimeout(() => {
-    ripple.remove();
-    style.remove();
-  }, 600);
+  // Initialize copy contract functionality
+  initCopyContract();
 }
 
-// ========== CTA BUTTON EFFECTS ==========
-function enhanceCTAButtons() {
-  const ctaButtons = document.querySelectorAll('.cta-button');
+async function updateHolderCount() {
+  try {
+    // In a real implementation, you would fetch this from an API
+    const holderCount = 67; // Static for now
+    
+    // Update all holder count elements
+    document.querySelectorAll('.metric-item .metric-value').forEach(el => {
+      if (el.textContent.includes('67')) {
+        el.textContent = holderCount.toLocaleString();
+      }
+    });
+    
+  } catch (error) {
+    console.error('Error updating holder count:', error);
+  }
+}
+
+function updateVerificationTimestamps() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  const dateString = now.toLocaleDateString();
   
-  ctaButtons.forEach(button => {
-    // Add hover effect
-    button.addEventListener('mouseenter', function() {
-      if (this.classList.contains('gold')) {
-        this.style.background = 'linear-gradient(135deg, #e6b800, var(--rebel-gold))';
-      } else {
-        this.style.background = 'linear-gradient(135deg, #d62828, var(--rebel-red))';
-      }
+  // You can add timestamp elements to your HTML if needed
+  const timestampElements = document.querySelectorAll('.update-time');
+  if (timestampElements.length > 0) {
+    timestampElements.forEach(el => {
+      el.textContent = `Updated: ${timeString}`;
     });
+  }
+}
+
+// ========== CONTRACT FUNCTIONS ==========
+function initCopyContract() {
+  console.log('Contract copy functionality initialized');
+}
+
+function copyContract() {
+  const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+  const button = event.target.closest('button') || event.target;
+  const originalHTML = button.innerHTML;
+  
+  navigator.clipboard.writeText(contractAddress).then(() => {
+    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    button.style.background = '#4CAF50';
     
-    button.addEventListener('mouseleave', function() {
-      if (this.classList.contains('gold')) {
-        this.style.background = 'var(--rebel-gold)';
-      } else {
-        this.style.background = 'var(--rebel-red)';
-      }
-    });
+    showToast('Contract address copied to clipboard!', 'success');
     
-    // Add click effect
-    button.addEventListener('click', function() {
-      createRippleEffect(this, 'rgba(255, 255, 255, 0.5)');
-    });
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.style.background = '';
+    }, 2000);
+    
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+    button.innerHTML = '<i class="fas fa-times"></i> Failed';
+    button.style.background = '#f44336';
+    showToast('Failed to copy. Please try again.', 'error');
+    
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.style.background = '';
+    }, 2000);
   });
 }
 
-// ========== LOADER ==========
-function initLoader() {
-  const loader = document.getElementById('loader');
-  if (loader) {
-    // Simulate content loading
-    setTimeout(() => {
-      loader.style.opacity = '0';
-      loader.style.visibility = 'hidden';
-      
-      // Initialize other features after loader hides
-      setTimeout(() => {
-        enhanceCTAButtons();
-      }, 300);
-    }, 1000);
-  }
+function addToWallet() {
+  const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
+  const button = event.target.closest('button') || event.target;
+  const originalHTML = button.innerHTML;
+  
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+  
+  // Show instructions for adding to wallet
+  showToast('Check your wallet for token addition prompt', 'info');
+  
+  // Provide instructions
+  const instructions = `To add $REBL to your wallet:
+1. Open your wallet (Phantom, Solflare, etc.)
+2. Click "Add Token" or "Import Token"
+3. Paste this address: ${contractAddress}
+4. Confirm addition`;
+
+  alert(instructions);
+  
+  setTimeout(() => {
+    button.innerHTML = originalHTML;
+  }, 2000);
 }
 
-// ========== BACK TO TOP ==========
-function initBackToTop() {
-  const backToTop = document.getElementById('backToTop');
+// ========== ANIMATION FUNCTIONS ==========
+function initScrollAnimations() {
+  const cards = document.querySelectorAll('.takeaway-item, .security-card, .checklist-item, .audit-card, .faq-item, .related-card');
   
-  if (backToTop) {
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  });
+  
+  function animateCards() {
+    cards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 50);
       }
     });
-    
-    backToTop.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
   }
+  
+  window.addEventListener('scroll', animateCards);
+  animateCards(); // Initial check
 }
 
-// ========== INITIALIZE EVERYTHING ==========
-function initializeAll() {
-  initLoader();
-  initBackToTop();
-  initIntegrityPage();
+// ========== TOAST NOTIFICATION ==========
+function showToast(message, type = 'info') {
+  // Remove existing toasts
+  const existingToast = document.querySelector('.toast-notification');
+  if (existingToast) existingToast.remove();
+  
+  // Create toast
+  const toast = document.createElement('div');
+  toast.className = `toast-notification toast-${type}`;
+  toast.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+    <span>${message}</span>
+  `;
+  
+  // Style toast
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  `;
+  
+  document.body.appendChild(toast);
+  
+  // Remove toast after 3 seconds
+  setTimeout(() => {
+    toast.style.animation = 'slideDown 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
-// Export functions if needed
-window.initIntegrityPage = initIntegrityPage;
+// Add toast animation styles
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+  @keyframes slideUp {
+    from {
+      transform: translateX(-50%) translateY(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-50%) translateY(100px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(toastStyle);
+
+// ========== GLOBAL EXPORTS ==========
+window.copyContract = copyContract;
+window.addToWallet = addToWallet;
 window.initializeMobileDropdown = initializeMobileDropdown;
-
-// Initialize on load
-initializeAll();
