@@ -1,4 +1,4 @@
-/// security-integrity.js - Combined Security & Integrity page functionality
+//// security-integrity.js - Combined Security & Integrity page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
