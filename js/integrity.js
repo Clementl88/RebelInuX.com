@@ -1,12 +1,12 @@
-// integrity.js - Enhanced Integrity page functionality
+// security-integrity.js - Combined Security & Integrity page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initIntegrityPage, 300);
+  setTimeout(initSecurityIntegrityPage, 300);
 });
 
-function initIntegrityPage() {
-  console.log('Initializing enhanced Integrity page');
+function initSecurityIntegrityPage() {
+  console.log('Initializing Security & Integrity page');
   
   // Initialize mobile dropdown
   initializeMobileDropdown();
@@ -25,6 +25,9 @@ function initIntegrityPage() {
   
   // Initialize principle card interactions
   initPrincipleCards();
+  
+  // Initialize copy contract functionality
+  initCopyContract();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -85,9 +88,6 @@ function initSecurityData() {
   
   // Update verification timestamps
   updateVerificationTimestamps();
-  
-  // Initialize copy contract functionality
-  initCopyContract();
   
   // Initialize real-time data
   initRealTimeData();
@@ -271,7 +271,7 @@ function showManualInstructions(contractAddress) {
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.takeaway-item, .security-card, .checklist-item, .audit-card, .faq-item, .related-card, .principle-card, .verification-stat'
+    '.takeaway-item, .security-card, .practice-item, .audit-card, .faq-item, .related-card, .principle-card, .verification-stat, .tool-card'
   );
   
   // Set initial state
