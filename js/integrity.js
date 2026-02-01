@@ -1,4 +1,4 @@
-// integrity.js - Integrity page functionality matching epoch-rewards structure
+// integrity.js - Enhanced Integrity page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initIntegrityPage() {
-  console.log('Initializing Integrity page');
+  console.log('Initializing enhanced Integrity page');
   
   // Initialize mobile dropdown
   initializeMobileDropdown();
@@ -16,6 +16,32 @@ function initIntegrityPage() {
   
   // Initialize animations
   initScrollAnimations();
+  
+  // Initialize AOS animations
+  initAOS();
+  
+  // Initialize touch events
+  initTouchEvents();
+  
+  // Initialize principle card interactions
+  initPrincipleCards();
+}
+
+// ========== AOS ANIMATIONS ==========
+function initAOS() {
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+      disable: window.innerWidth < 768 ? 'mobile' : false
+    });
+    
+    // Refresh AOS on window resize
+    window.addEventListener('resize', function() {
+      AOS.refresh();
+    });
+  }
 }
 
 // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
@@ -62,6 +88,9 @@ function initSecurityData() {
   
   // Initialize copy contract functionality
   initCopyContract();
+  
+  // Initialize real-time data
+  initRealTimeData();
 }
 
 async function updateHolderCount() {
@@ -76,6 +105,14 @@ async function updateHolderCount() {
       }
     });
     
+    // Animate the update
+    const elements = document.querySelectorAll('.takeaway-value');
+    elements.forEach(el => {
+      if (el.textContent.includes('67')) {
+        animateCounter(el, holderCount);
+      }
+    });
+    
   } catch (error) {
     console.error('Error updating holder count:', error);
   }
@@ -86,34 +123,74 @@ function updateVerificationTimestamps() {
   const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   const dateString = now.toLocaleDateString();
   
-  // You can add timestamp elements to your HTML if needed
-  const timestampElements = document.querySelectorAll('.update-time');
-  if (timestampElements.length > 0) {
-    timestampElements.forEach(el => {
-      el.textContent = `Updated: ${timeString}`;
-    });
+  // Update timestamp in commitment section
+  const timestampElement = document.querySelector('.update-time');
+  if (timestampElement) {
+    timestampElement.textContent = `Last Updated: ${dateString} ${timeString}`;
   }
+}
+
+// ========== PRINCIPLE CARD INTERACTIONS ==========
+function initPrincipleCards() {
+  const principleCards = document.querySelectorAll('.principle-card');
+  
+  principleCards.forEach(card => {
+    // Add click handler for mobile
+    card.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        this.classList.toggle('expanded');
+      }
+    });
+    
+    // Add hover effects
+    card.addEventListener('mouseenter', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.card-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1.1) rotate(5deg)';
+        }
+      }
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.card-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1) rotate(0deg)';
+        }
+      }
+    });
+  });
 }
 
 // ========== CONTRACT FUNCTIONS ==========
 function initCopyContract() {
   console.log('Contract copy functionality initialized');
+  
+  // Add copy event to all copy buttons
+  const copyButtons = document.querySelectorAll('.copy-button');
+  copyButtons.forEach(button => {
+    button.addEventListener('click', copyContract);
+  });
 }
 
-function copyContract() {
+function copyContract(event) {
   const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
   const button = event.target.closest('button') || event.target;
   const originalHTML = button.innerHTML;
+  const originalText = button.textContent;
   
   navigator.clipboard.writeText(contractAddress).then(() => {
     button.innerHTML = '<i class="fas fa-check"></i> Copied!';
     button.style.background = '#4CAF50';
+    button.style.transform = 'scale(0.95)';
     
     showToast('Contract address copied to clipboard!', 'success');
     
     setTimeout(() => {
       button.innerHTML = originalHTML;
       button.style.background = '';
+      button.style.transform = '';
     }, 2000);
     
   }).catch(err => {
@@ -139,44 +216,170 @@ function addToWallet() {
   // Show instructions for adding to wallet
   showToast('Check your wallet for token addition prompt', 'info');
   
-  // Provide instructions
+  // Try to add token automatically
+  try {
+    if (typeof window.solana !== 'undefined') {
+      // For Phantom wallet
+      window.solana.request({
+        method: 'addToken',
+        params: {
+          address: contractAddress,
+          symbol: 'REBL',
+          decimals: 9,
+          image: 'https://i.imgur.com/gEuSg1Y.webp'
+        }
+      }).then(() => {
+        showToast('$REBL added to wallet successfully!', 'success');
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to add token:', err);
+        showManualInstructions(contractAddress);
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+        }, 2000);
+      });
+    } else {
+      showManualInstructions(contractAddress);
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+      }, 2000);
+    }
+  } catch (error) {
+    console.error('Error adding to wallet:', error);
+    showManualInstructions(contractAddress);
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+    }, 2000);
+  }
+}
+
+function showManualInstructions(contractAddress) {
   const instructions = `To add $REBL to your wallet:
 1. Open your wallet (Phantom, Solflare, etc.)
 2. Click "Add Token" or "Import Token"
 3. Paste this address: ${contractAddress}
 4. Confirm addition`;
 
-  alert(instructions);
-  
+  showToast('Instructions shown in alert', 'info');
   setTimeout(() => {
-    button.innerHTML = originalHTML;
-  }, 2000);
+    alert(instructions);
+  }, 100);
 }
 
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
-  const cards = document.querySelectorAll('.takeaway-item, .security-card, .checklist-item, .audit-card, .faq-item, .related-card');
+  const animatedElements = document.querySelectorAll(
+    '.takeaway-item, .security-card, .checklist-item, .audit-card, .faq-item, .related-card, .principle-card, .verification-stat'
+  );
   
-  cards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  // Set initial state
+  animatedElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   });
   
-  function animateCards() {
-    cards.forEach((card, index) => {
-      const rect = card.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
+  function animateElements() {
+    animatedElements.forEach((el, index) => {
+      const rect = el.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
+      
+      if (isVisible) {
         setTimeout(() => {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
         }, index * 50);
       }
     });
   }
   
-  window.addEventListener('scroll', animateCards);
-  animateCards(); // Initial check
+  // Use Intersection Observer for better performance
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+    
+    animatedElements.forEach(el => observer.observe(el));
+  } else {
+    // Fallback for older browsers
+    window.addEventListener('scroll', animateElements);
+    animateElements(); // Initial check
+  }
+}
+
+function animateCounter(element, target) {
+  const duration = 1000; // 1 second
+  const start = 0;
+  const increment = target / (duration / 16); // 60fps
+  
+  let current = start;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      element.textContent = target.toLocaleString();
+      clearInterval(timer);
+    } else {
+      element.textContent = Math.floor(current).toLocaleString();
+    }
+  }, 16);
+}
+
+// ========== TOUCH EVENTS ==========
+function initTouchEvents() {
+  // Prevent zoom on double-tap
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event) {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+  
+  // Add touch feedback for buttons
+  document.querySelectorAll('a, button').forEach(element => {
+    element.addEventListener('touchstart', function() {
+      this.classList.add('touch-active');
+    });
+    
+    element.addEventListener('touchend', function() {
+      this.classList.remove('touch-active');
+    });
+  });
+}
+
+// ========== REAL-TIME DATA ==========
+function initRealTimeData() {
+  // This would connect to your API or blockchain to get real-time data
+  // For now, we'll simulate with static data
+  
+  // Update verification status
+  updateVerificationStatus();
+  
+  // Start periodic updates
+  setInterval(updateVerificationStatus, 30000); // Update every 30 seconds
+}
+
+function updateVerificationStatus() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  
+  // Update status indicators
+  const statusElements = document.querySelectorAll('.status-indicator');
+  statusElements.forEach(el => {
+    el.innerHTML = `<i class="fas fa-circle" style="color: #4CAF50; font-size: 0.8em;"></i> Verified ${timeString}`;
+  });
 }
 
 // ========== TOAST NOTIFICATION ==========
@@ -189,7 +392,7 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = `toast-notification toast-${type}`;
   toast.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
     <span>${message}</span>
   `;
   
@@ -210,45 +413,77 @@ function showToast(message, type = 'info') {
     z-index: 9999;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     animation: slideUp 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   `;
   
   document.body.appendChild(toast);
   
+  // Add animation styles if not already present
+  if (!document.querySelector('#toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'toast-styles';
+    style.textContent = `
+      @keyframes slideUp {
+        from {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideDown {
+        from {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   // Remove toast after 3 seconds
   setTimeout(() => {
     toast.style.animation = 'slideDown 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
   }, 3000);
 }
-
-// Add toast animation styles
-const toastStyle = document.createElement('style');
-toastStyle.textContent = `
-  @keyframes slideUp {
-    from {
-      transform: translateX(-50%) translateY(100px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes slideDown {
-    from {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(-50%) translateY(100px);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(toastStyle);
 
 // ========== GLOBAL EXPORTS ==========
 window.copyContract = copyContract;
 window.addToWallet = addToWallet;
 window.initializeMobileDropdown = initializeMobileDropdown;
+window.showToast = showToast;
+
+// Add touch-active class styles
+document.addEventListener('DOMContentLoaded', function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .touch-active {
+      opacity: 0.7 !important;
+      transform: scale(0.98) !important;
+      transition: all 0.1s ease !important;
+    }
+    
+    .principle-card.expanded {
+      transform: scale(1.02) !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+    }
+  `;
+  document.head.appendChild(style);
+});
