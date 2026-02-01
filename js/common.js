@@ -13,7 +13,7 @@ const PAGE_SUBTITLES = {
     'epoch-rewards.html': 'Reward System Dashboard',
     'tokenomics.html': 'Tokenomics & Distribution',
     'community.html': 'Community Hub & Links',
-    'security.html': 'Security & Integrity Protocols',  
+    'security-integrity.html': 'Security & Integrity Protocols',  
     'whitepaper.html': 'Project Documentation',
     'rebl-calculator.html': 'Reward Calculator Tool',
     'governance.html': 'Governance & Voting',
