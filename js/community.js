@@ -2,303 +2,379 @@
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initCommunityPage, 300);
+  setTimeout(initCommunityPage, 300);
 });
 
 function initCommunityPage() {
-    console.log('👥 Initializing Community Hub page');
-    
-    try {
-        // Wait for common.js components
-        if (typeof initializeCommon === 'function') {
-            console.log('✅ Common.js detected - using shared functionality');
-        }
-        
-        // Initialize page-specific functionality
-        initAOS();
-        initScrollAnimations();
-        initTouchEvents();
-        initSocialCardAnimations();
-        initDiscordPreview();
-        
-        console.log('✅ Community Hub page initialized');
-    } catch (error) {
-        console.error('❌ Error initializing Community Hub page:', error);
-    }
+  console.log('Initializing Community Hub page');
+  
+  // Initialize mobile dropdown
+  initializeMobileDropdown();
+  
+  // Initialize community data
+  initCommunityData();
+  
+  // Initialize animations
+  initScrollAnimations();
+  
+  // Initialize AOS animations
+  initAOS();
+  
+  // Initialize chat interactions
+  initChatInteractions();
+  
+  // Initialize social cards
+  initSocialCards();
 }
 
-// ========== PAGE-SPECIFIC AOS ANIMATIONS ==========
+// ========== AOS ANIMATIONS ==========
 function initAOS() {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            disable: window.innerWidth < 768 ? 'mobile' : false
-        });
-        
-        // Refresh AOS on window resize
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                AOS.refresh();
-            }, 250);
-        });
-    }
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+      disable: window.innerWidth < 768 ? 'mobile' : false
+    });
+    
+    // Refresh AOS on window resize
+    window.addEventListener('resize', function() {
+      AOS.refresh();
+    });
+  }
 }
 
-// ========== SCROLL ANIMATIONS ==========
-function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll(
-        '.social-card, .resource-card, .guideline-card, .related-card, ' +
-        '.takeaway-item, .feature-highlight, .channel'
-    );
+// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
+function initializeMobileDropdown() {
+  const dropbtn = document.querySelector('.dropbtn');
+  const navDesktop = document.getElementById('nav-desktop');
+  
+  if (!dropbtn) return;
+  
+  // Mobile dropdown toggle
+  dropbtn.addEventListener('click', function(e) {
+    // Only handle on mobile
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const dropdownContent = this.nextElementSibling;
+      const isActive = dropdownContent.style.display === 'block' || 
+                      dropdownContent.classList.contains('active');
+      
+      // Toggle this dropdown
+      if (!isActive) {
+        dropdownContent.style.display = 'block';
+        dropdownContent.classList.add('active');
+        this.classList.add('active');
+      } else {
+        dropdownContent.style.display = 'none';
+        dropdownContent.classList.remove('active');
+        this.classList.remove('active');
+      }
+    }
+  });
+}
+
+// ========== COMMUNITY DATA FUNCTIONS ==========
+function initCommunityData() {
+  console.log('Initializing community data');
+  
+  // Fetch and update community stats
+  updateCommunityStats();
+  
+  // Initialize chat messages
+  initChatMessages();
+  
+  // Start periodic updates
+  setInterval(updateCommunityStats, 60000); // Update every minute
+}
+
+async function updateCommunityStats() {
+  try {
+    // In a real implementation, you would fetch these from APIs
+    const stats = {
+      holders: 67,
+      telegram: 500,
+      twitter: 1000
+    };
     
-    // Use Intersection Observer for better performance
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        });
-        
-        animatedElements.forEach(el => observer.observe(el));
+    // Update stat counters with animation
+    animateCounter('holderCount', stats.holders);
+    animateCounter('telegramMembers', stats.telegram);
+    animateCounter('xFollowers', stats.twitter);
+    
+    // Update last updated time
+    updateLastUpdated();
+    
+  } catch (error) {
+    console.error('Error updating community stats:', error);
+  }
+}
+
+function animateCounter(elementId, target) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  
+  const current = parseInt(element.textContent.replace('+', '')) || 0;
+  if (current === target) return;
+  
+  const duration = 1000; // 1 second
+  const increment = (target - current) / (duration / 16);
+  
+  let currentValue = current;
+  const timer = setInterval(() => {
+    currentValue += increment;
+    if ((increment > 0 && currentValue >= target) || (increment < 0 && currentValue <= target)) {
+      element.textContent = target + '+';
+      clearInterval(timer);
     } else {
-        // Fallback for older browsers
-        function animateElements() {
-            animatedElements.forEach((el, index) => {
-                const rect = el.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
-                
-                if (isVisible) {
-                    setTimeout(() => {
-                        el.classList.add('animated');
-                    }, index * 50);
-                }
-            });
-        }
-        
-        window.addEventListener('scroll', animateElements);
-        animateElements(); // Initial check
+      element.textContent = Math.floor(currentValue) + '+';
     }
+  }, 16);
 }
 
-// ========== SOCIAL CARD ANIMATIONS ==========
-function initSocialCardAnimations() {
-    const socialCards = document.querySelectorAll('.social-card');
+function updateLastUpdated() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  
+  const timestampElement = document.querySelector('.update-time');
+  if (timestampElement) {
+    timestampElement.textContent = `Last Updated: ${timeString}`;
+  }
+}
+
+// ========== CHAT INTERACTIONS ==========
+function initChatInteractions() {
+  const chatPreview = document.querySelector('.chat-preview');
+  if (!chatPreview) return;
+  
+  // Auto-scroll to bottom
+  chatPreview.scrollTop = chatPreview.scrollHeight;
+  
+  // Add click handler for chat rules
+  const chatRules = document.querySelector('.chat-rules');
+  if (chatRules) {
+    chatRules.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        this.classList.toggle('expanded');
+      }
+    });
+  }
+}
+
+function initChatMessages() {
+  // In a real implementation, you would fetch chat messages from an API
+  const messages = [
+    { author: "Rebel_Bot", text: "Welcome new rebels! 🎉", time: "1 min ago" },
+    { author: "CryptoMax", text: "Just bought more $REBL! 🚀", time: "3 min ago" },
+    { author: "DeFiQueen", text: "Love the transparency in this project!", time: "5 min ago" },
+    { author: "MoonWalker", text: "When's the next AMA?", time: "8 min ago" }
+  ];
+  
+  // You could use this to dynamically update chat messages
+  return messages;
+}
+
+// ========== SOCIAL CARDS ==========
+function initSocialCards() {
+  const socialCards = document.querySelectorAll('.social-card');
+  
+  socialCards.forEach(card => {
+    // Add click handler for mobile
+    card.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        this.classList.toggle('expanded');
+      }
+    });
     
-    socialCards.forEach(card => {
-        // Add click feedback
-        card.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A') return; // Don't interfere with link clicks
-            
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        });
-        
-        // Add hover effects
-        if (window.innerWidth > 768) {
-            card.addEventListener('mouseenter', function() {
-                const icon = this.querySelector('.social-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1.1)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                const icon = this.querySelector('.social-icon');
-                if (icon) {
-                    icon.style.transform = '';
-                }
-            });
+    // Add hover effects
+    card.addEventListener('mouseenter', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.social-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1.1) rotate(5deg)';
         }
+      }
     });
+    
+    card.addEventListener('mouseleave', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.social-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1) rotate(0deg)';
+        }
+      }
+    });
+  });
 }
 
-// ========== DISCORD PREVIEW INTERACTIVITY ==========
-function initDiscordPreview() {
-    const previewChannels = document.querySelectorAll('.preview-channels .channel');
-    const discordCta = document.querySelector('.discord-large-btn');
-    
-    if (!previewChannels.length) return;
-    
-    // Add click animation to preview channels
-    previewChannels.forEach(channel => {
-        channel.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Remove active from all channels
-            previewChannels.forEach(c => c.classList.remove('active'));
-            
-            // Add active to clicked channel
-            this.classList.add('active');
-            
-            // Animate click
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        });
+// ========== ANIMATION FUNCTIONS ==========
+function initScrollAnimations() {
+  const animatedElements = document.querySelectorAll(
+    '.social-card, .feature-card, .benefit-card, .update-card, .process-step, .step-item, .faq-item, .related-card'
+  );
+  
+  // Use Intersection Observer for better performance
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
     });
     
-    // Add pulse animation to Discord CTA
-    if (discordCta) {
-        setInterval(() => {
-            discordCta.style.boxShadow = '0 0 0 0 rgba(88, 101, 242, 0.7)';
-            setTimeout(() => {
-                discordCta.style.boxShadow = '0 0 0 10px rgba(88, 101, 242, 0)';
-            }, 10);
-        }, 3000);
+    animatedElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  } else {
+    // Fallback for older browsers
+    window.addEventListener('scroll', animateElements);
+    animateElements(); // Initial check
+  }
+}
+
+function animateElements() {
+  const animatedElements = document.querySelectorAll(
+    '.social-card, .feature-card, .benefit-card, .update-card, .process-step, .step-item, .faq-item, .related-card'
+  );
+  
+  animatedElements.forEach((el, index) => {
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
+    
+    if (isVisible) {
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, index * 50);
     }
+  });
 }
 
-// ========== TOUCH EVENTS ==========
-function initTouchEvents() {
-    // Add touch feedback for interactive elements
-    document.querySelectorAll('.social-card, .resource-card, .guideline-card, .related-card').forEach(element => {
-        element.addEventListener('touchstart', function() {
-            this.classList.add('touch-active');
-        });
-        
-        element.addEventListener('touchend', function() {
-            this.classList.remove('touch-active');
-        });
-    });
-}
-
-// ========== MEMBER COUNT ANIMATION ==========
-function animateMemberCounts() {
-    const memberCounts = document.querySelectorAll('.member-count');
-    
-    memberCounts.forEach(countElement => {
-        const countSpan = countElement.querySelector('span');
-        if (!countSpan) return;
-        
-        const originalText = countSpan.textContent;
-        const match = originalText.match(/(\d+)(.+)/);
-        
-        if (match) {
-            const number = parseInt(match[1]);
-            const text = match[2];
-            
-            // Animate the number
-            let current = 0;
-            const increment = number / 50; // 50 steps
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= number) {
-                    countSpan.textContent = number.toLocaleString() + text;
-                    clearInterval(timer);
-                } else {
-                    countSpan.textContent = Math.floor(current).toLocaleString() + text;
-                }
-            }, 30);
-        }
-    });
-}
-
-// ========== SOCIAL SHARE FUNCTIONALITY ==========
-function initSocialShare() {
-    // Add share buttons functionality
-    const shareButtons = document.querySelectorAll('.share-button');
-    
-    shareButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const platform = this.getAttribute('data-platform');
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent('Join the RebelInuX community!');
-            
-            let shareUrl = '';
-            
-            switch(platform) {
-                case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-                    break;
-                case 'telegram':
-                    shareUrl = `https://t.me/share/url?url=${url}&text=${text}`;
-                    break;
-                case 'discord':
-                    // Discord doesn't have a direct share URL
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        alert('Community link copied to clipboard! Share it in Discord.');
-                    });
-                    return;
-            }
-            
-            if (shareUrl) {
-                window.open(shareUrl, '_blank', 'width=600,height=400');
-            }
-        });
-    });
-}
-
-// ========== ADD TOUCH-ACTIVE CLASS STYLES ==========
-document.addEventListener('DOMContentLoaded', function() {
+// ========== TOAST NOTIFICATION ==========
+function showToast(message, type = 'info') {
+  // Remove existing toasts
+  const existingToast = document.querySelector('.toast-notification');
+  if (existingToast) existingToast.remove();
+  
+  // Create toast
+  const toast = document.createElement('div');
+  toast.className = `toast-notification toast-${type}`;
+  toast.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+    <span>${message}</span>
+  `;
+  
+  // Style toast
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `;
+  
+  document.body.appendChild(toast);
+  
+  // Add animation styles if not already present
+  if (!document.querySelector('#toast-styles')) {
     const style = document.createElement('style');
+    style.id = 'toast-styles';
     style.textContent = `
-        .touch-active {
-            opacity: 0.7 !important;
-            transform: scale(0.98) !important;
-            transition: all 0.1s ease !important;
+      @keyframes slideUp {
+        from {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
         }
-        
-        .animated {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        to {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
         }
-        
-        /* Initial state for scroll animations */
-        .social-card, .resource-card, .guideline-card, .related-card,
-        .takeaway-item, .feature-highlight, .channel {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      
+      @keyframes slideDown {
+        from {
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
         }
-        
-        /* Discord CTA pulse animation */
-        @keyframes discordPulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(88, 101, 242, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(88, 101, 242, 0);
-            }
+        to {
+          transform: translateX(-50%) translateY(100px);
+          opacity: 0;
         }
-        
-        .discord-large-btn {
-            animation: discordPulse 2s infinite;
-        }
+      }
     `;
     document.head.appendChild(style);
-});
-
-// ========== INITIALIZE ON LOAD ==========
-// Start member count animation after page loads
-setTimeout(animateMemberCounts, 1000);
-
-// Initialize social share buttons
-setTimeout(initSocialShare, 500);
-
-// Export functions for global use
-window.initCommunityPage = initCommunityPage;
-window.animateMemberCounts = animateMemberCounts;
-window.initSocialShare = initSocialShare;
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCommunityPage);
-} else {
-    initCommunityPage();
+  }
+  
+  // Remove toast after 3 seconds
+  setTimeout(() => {
+    toast.style.animation = 'slideDown 0.3s ease';
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 3000);
 }
+
+// ========== EVENT HANDLERS ==========
+function joinTelegram() {
+  window.open('https://t.me/RebelInuX', '_blank');
+  showToast('Opening Telegram...', 'info');
+}
+
+function followTwitter() {
+  window.open('https://x.com/RebelInuX', '_blank');
+  showToast('Opening X (Twitter)...', 'info');
+}
+
+// ========== GLOBAL EXPORTS ==========
+window.joinTelegram = joinTelegram;
+window.followTwitter = followTwitter;
+window.initializeMobileDropdown = initializeMobileDropdown;
+window.showToast = showToast;
+
+// Add touch-active class styles
+document.addEventListener('DOMContentLoaded', function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .touch-active {
+      opacity: 0.7 !important;
+      transform: scale(0.98) !important;
+      transition: all 0.1s ease !important;
+    }
+    
+    .social-card.expanded,
+    .chat-rules.expanded {
+      transform: scale(1.02) !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+    }
+  `;
+  document.head.appendChild(style);
+});
