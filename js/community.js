@@ -850,4 +850,17 @@
   <script src="js/community.js"></script>
   
   <!-- AOS Animation -->
-  <script src="https://cdn.jsdeliv
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  
+  <script>
+    // Initialize AOS
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+    });
+  </script>
+</body>
+</html>
