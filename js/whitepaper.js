@@ -25,20 +25,18 @@ function initWhitepaperPage() {
 
 function initDownloadFunctionality() {
   // Add click handlers to all download buttons
-  const downloadButtons = document.querySelectorAll('.download-btn, .doc-btn');
+  const downloadButtons = document.querySelectorAll('.download-btn');
   downloadButtons.forEach(button => {
     button.addEventListener('click', function(e) {
-      if (!this.classList.contains('download-btn')) return;
-      
       // Add loading state
       const originalText = this.innerHTML;
       this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-      this.disabled = true;
+      this.classList.add('downloading');
       
-      // Simulate download delay
+      // Simulate download delay for better UX
       setTimeout(() => {
         this.innerHTML = originalText;
-        this.disabled = false;
+        this.classList.remove('downloading');
         trackDownload('whitepaper_pdf');
         showDownloadSuccess();
       }, 1500);
@@ -51,16 +49,62 @@ function updateFileSizeDisplay() {
   const fileSizeElements = document.querySelectorAll('.info-value');
   fileSizeElements.forEach(el => {
     if (el.textContent.includes('MB') || el.textContent.includes('KB')) {
-      // You could fetch actual file size here
-      el.textContent = '2.4 MB';
+      el.textContent = '5.8 MB';
+    }
+    if (el.textContent.includes('Pages')) {
+      el.textContent = '32 Pages';
+    }
+    if (el.textContent.includes('Published')) {
+      el.textContent = 'October 23, 2025';
     }
   });
 }
 
 // Global functions for HTML onclick handlers
-function downloadWhitepaper() {
-  const button = document.querySelector('.download-btn');
-  if (button) button.click();
+function verifyDocumentHash() {
+  const hash = "SHA-256: [File hash will be provided when available]";
+  const message = `📄 Document Verification\n\nTo verify document authenticity:\n\n1. File Name: RebelInuX_White_Paper.pdf\n2. File Size: 5.8 MB\n3. Page Count: 32 pages\n4. Published: October 23, 2025\n5. Version: 1.5\n\nOfficial cryptographic hash will be provided when available for complete verification.`;
+  
+  showToast('Verification information shown', 'info');
+  setTimeout(() => {
+    alert(message);
+  }, 100);
+  
+  trackDownload('whitepaper_verify_hash');
+}
+
+function showDocumentInfo() {
+  const info = `📄 RebelInuX Whitepaper Information\n\n• Version: 1.5\n• Pages: 32\n• File Size: 5.8 MB\n• Format: PDF\n• Published: October 23, 2025\n• Language: English\n\n📋 Key Sections:\n1. Abstract & Executive Summary\n2. Triple-Asset Ecosystem\n3. Token Economics\n4. DAO Governance Model\n5. Security & Decentralization\n6. Roadmap 2025-2026\n7. Risk Assessment & Legal Disclaimers\n\n🎯 Core Topics:\n• Multi-chain architecture (Solana + ZORA/Base)\n• Dual-governance system\n• Contract renouncement details\n• Vesting schedules\n• Restricted jurisdictions`;
+  
+  showToast('Document information shown', 'info');
+  setTimeout(() => {
+    alert(info);
+  }, 100);
+  
+  trackDownload('whitepaper_info');
+}
+
+function printDocument() {
+  showToast('Opening print dialog...', 'info');
+  
+  // Create print iframe
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = 'https://rebelinux.fun/RebelInuX_White_Paper.pdf';
+  document.body.appendChild(iframe);
+  
+  // Wait for iframe to load, then print
+  iframe.onload = function() {
+    setTimeout(() => {
+      iframe.contentWindow.print();
+      // Remove iframe after print dialog closes
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 1000);
+    }, 1000);
+  };
+  
+  trackDownload('whitepaper_print');
 }
 
 function viewWhitepaperOnline() {
@@ -72,72 +116,19 @@ function viewWhitepaperOnline() {
   showToast('Opening whitepaper in new tab...', 'info');
 }
 
-function downloadFormat(format) {
-  let message = '';
-  switch(format) {
-    case 'epub':
-      message = 'EPUB format will be available soon. For now, please use the PDF version.';
-      break;
-    case 'txt':
-      message = 'Text format will be available soon. For now, please use the PDF version.';
-      break;
-    case 'mobi':
-      message = 'MOBI format will be available soon. For now, please use the PDF version.';
-      break;
-    default:
-      message = 'Alternative format coming soon. Please use the PDF version.';
-  }
-  
-  showToast(message, 'warning');
-  trackDownload(`whitepaper_${format}_request`);
-}
-
-function downloadDocument(type) {
-  let message = '';
-  let fileName = '';
-  
-  switch(type) {
-    case 'tokenomics':
-      message = 'Tokenomics document download will be available soon.';
-      fileName = 'RebelInuX_Tokenomics.pdf';
-      break;
-    case 'audit':
-      message = 'Security audit report download will be available soon.';
-      fileName = 'RebelInuX_Security_Audit.pdf';
-      break;
-    case 'roadmap':
-      message = 'Technical roadmap download will be available soon.';
-      fileName = 'RebelInuX_Roadmap.pdf';
-      break;
-    default:
-      message = 'Document download will be available soon.';
-      fileName = 'RebelInuX_Document.pdf';
-  }
-  
-  // Create a temporary download simulation
-  const link = document.createElement('a');
-  link.style.display = 'none';
-  link.href = 'data:application/pdf;base64,'; // Empty PDF
-  link.download = fileName;
-  document.body.appendChild(link);
-  
-  showToast(`${message} Simulating download...`, 'info');
-  
-  setTimeout(() => {
-    link.click();
-    document.body.removeChild(link);
-    trackDownload(`document_${type}`);
-  }, 500);
-}
-
 function trackDownload(type) {
   // In a real implementation, you would send this to analytics
   console.log(`Download tracked: ${type} - ${new Date().toISOString()}`);
+  console.log(`File: RebelInuX_White_Paper.pdf (5.8 MB, 32 pages, v1.5)`);
   
   // Store in localStorage for session tracking
   const downloads = JSON.parse(localStorage.getItem('rebelinux_downloads') || '[]');
   downloads.push({
     type: type,
+    file: 'RebelInuX_White_Paper.pdf',
+    size: '5.8 MB',
+    pages: 32,
+    version: '1.5',
     timestamp: new Date().toISOString(),
     userAgent: navigator.userAgent
   });
@@ -149,17 +140,15 @@ function showDownloadSuccess() {
   
   // Show additional info after download
   setTimeout(() => {
-    const info = `📄 Download Tips:
-• Save the PDF to your preferred location
-• Open with Adobe Reader or any PDF viewer
-• Recommended: Create a backup copy
-• Share with interested community members`;
+    const info = `📥 Download Tips:\n\n• Save the PDF to your preferred location\n• File size: 5.8 MB (32 pages)\n• Open with Adobe Reader or any PDF viewer\n• Recommended: Create a backup copy\n• Share with interested community members\n\n⚠️ Remember legal restrictions apply to certain jurisdictions.`;
     
     showToast('Check your downloads folder', 'info');
     
     // Show more detailed info in console
     console.info('%c📥 Whitepaper Download Complete!', 'color: #4CAF50; font-weight: bold;');
-    console.info(info);
+    console.info('File: RebelInuX_White_Paper.pdf');
+    console.info('Size: 5.8 MB | Pages: 32 | Version: 1.5');
+    console.info('Published: October 23, 2025');
   }, 1000);
 }
 
@@ -289,10 +278,10 @@ function showToast(message, type = 'info') {
 }
 
 // Global exports
-window.downloadWhitepaper = downloadWhitepaper;
+window.verifyDocumentHash = verifyDocumentHash;
+window.showDocumentInfo = showDocumentInfo;
+window.printDocument = printDocument;
 window.viewWhitepaperOnline = viewWhitepaperOnline;
-window.downloadFormat = downloadFormat;
-window.downloadDocument = downloadDocument;
 window.showToast = showToast;
 
 // Add touch-active class styles
@@ -305,21 +294,14 @@ document.addEventListener('DOMContentLoaded', function() {
       transition: all 0.1s ease !important;
     }
     
-    .download-btn:disabled,
-    .doc-btn:disabled {
+    .download-btn.downloading {
       opacity: 0.7;
       cursor: not-allowed;
+      animation: none !important;
+    }
+    
+    .download-btn.downloading:hover {
       transform: none !important;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .download-card {
-      animation: pulse 2s ease-in-out infinite;
     }
   `;
   document.head.appendChild(style);
