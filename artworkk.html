@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="RebelInuX Artwork Gallery - Official NFTs, digital art, community creations, and RebelInuX visual identity." />
-  <meta name="keywords" content="$REBL NFTs, RebelInuX artwork, crypto art, NFT collection, community art, digital collectibles" />
+  <meta name="description" content="RebelInuX Artwork Gallery - Official NFTs, community creations, meme contest winners, and digital collectibles." />
+  <meta name="keywords" content="$REBL NFTs, RebelInuX artwork, crypto art, NFT collection, meme contest, digital collectibles, community art" />
   <meta property="og:title" content="RebelInuX Artwork Gallery - Official NFTs & Community Creations" />
-  <meta property="og:description" content="Explore the RebelInuX artwork gallery featuring official NFTs, community creations, and digital collectibles." />
-  <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
+  <meta property="og:description" content="Explore award-winning RebelInuX artwork, official NFTs, community creations, and meme contest winners." />
+  <meta property="og:image" content="https://i.imgur.com/WOXZaSg.webp" />
   <meta property="og:url" content="https://rebelinux.fun/artwork.html" />
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="RebelInuX">
-  <meta name="twitter:title" content="RebelInuX Artwork Gallery - Official NFTs & Community Creations">
-  <meta name="twitter:description" content="Explore the RebelInuX artwork gallery featuring official NFTs, community creations, and digital collectibles.">
+  <meta name="twitter:title" content="RebelInuX Artwork Gallery - Official NFTs & Community Creativity">
+  <meta name="twitter:description" content="Explore award-winning RebelInuX artwork, official NFTs, community creations, and meme contest winners.">
   <meta name="twitter:card" content="summary_large_image" />
   
   <!-- Mobile Meta Tags -->
@@ -24,7 +24,7 @@
   <!-- Favicon -->
   <link rel="icon" href="https://i.imgur.com/gEuSg1Y.webp" type="image/webp">
   <link rel="apple-touch-icon" href="https://i.imgur.com/gEuSg1Y.webp">
-  <title>Artwork Gallery - RebelInuX</title>
+  <title>Artwork Gallery - RebelInuX | Community Creativity & NFTs</title>
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet" />
@@ -57,6 +57,26 @@
     <i class="fas fa-arrow-up"></i>
   </div>
   
+  <!-- Artwork Modal -->
+  <div class="modal" id="artworkModal">
+    <div class="modal-content">
+      <div class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </div>
+      <div class="modal-image">
+        <img id="modalImage" src="" alt="Artwork Preview" loading="lazy">
+      </div>
+      <div class="modal-info">
+        <h3 id="modalTitle" style="color: var(--rebel-gold); margin-bottom: var(--spacing-sm);"></h3>
+        <div class="artist-info" id="modalArtist"></div>
+        <p id="modalDescription" style="margin-bottom: var(--spacing-md);"></p>
+        <a href="#" id="modalLink" target="_blank" rel="noopener noreferrer" class="cta-button">
+          <i class="fas fa-external-link-alt"></i> View Details
+        </a>
+      </div>
+    </div>
+  </div>
+  
   <!-- Header will be inserted here by JavaScript -->
   <div id="header-container"></div>
   
@@ -64,37 +84,38 @@
     <!-- Hero Section -->
     <section class="page-hero page-hero--artwork">
       <div class="container">
-        <h1 data-aos="fade-up">ARTWORK GALLERY</h1>
+        <h1 data-aos="fade-up">COMMUNITY ARTWORK GALLERY</h1>
         <p class="text-lead" data-aos="fade-up" data-aos-delay="100">
-          Where creativity meets rebellion. Explore official NFTs, community creations, and the visual soul of RebelInuX.
+          Explore award-winning RebelInuX artwork created by our talented community. 
+          From meme contest winners to featured NFT collections and community creations.
         </p>
         <div class="hero-buttons" data-aos="fade-up" data-aos-delay="200">
-          <a href="#official-nfts" class="cta-button">
-            <i class="fas fa-gem"></i> Official NFTs
+          <a href="#featured-art" class="cta-button">
+            <i class="fas fa-star"></i> Featured Art
           </a>
-          <a href="#community-gallery" class="cta-button gold">
-            <i class="fas fa-users"></i> Community Gallery
+          <a href="#meme-contests" class="cta-button gold">
+            <i class="fas fa-trophy"></i> Contest Winners
           </a>
-          <a href="#minting" class="cta-button">
-            <i class="fas fa-plus-circle"></i> Mint NFTs
+          <a href="#submit-art" class="cta-button">
+            <i class="fas fa-paint-brush"></i> Submit Art
           </a>
         </div>
         <div class="artwork-stats" data-aos="fade-up" data-aos-delay="300">
           <div class="stat-item">
-            <div class="stat-number" id="totalNfts">1,000</div>
-            <div class="stat-label">Total NFTs</div>
+            <div class="stat-number" id="totalArtworks">50+</div>
+            <div class="stat-label">Artworks Created</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="nftOwners">423</div>
-            <div class="stat-label">NFT Owners</div>
+            <div class="stat-number" id="contestWinners">12</div>
+            <div class="stat-label">Contest Winners</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="communityArt">78</div>
-            <div class="stat-label">Community Pieces</div>
+            <div class="stat-number" id="totalArtists">20+</div>
+            <div class="stat-label">Artists</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="volumeTraded">250</div>
-            <div class="stat-label">SOL Volume Traded</div>
+            <div class="stat-number" id="nftCollections">3</div>
+            <div class="stat-label">Collections</div>
           </div>
         </div>
       </div>
@@ -104,23 +125,482 @@
     <section id="gallery-nav">
       <div class="container">
         <nav class="gallery-categories" data-aos="fade-up">
-          <a href="#official-nfts" class="category-btn active" data-category="official">
+          <a href="#featured-art" class="category-btn active" data-category="featured">
+            <i class="fas fa-star"></i>
+            <span>Featured Art</span>
+          </a>
+          <a href="#meme-contests" class="category-btn" data-category="meme">
+            <i class="fas fa-trophy"></i>
+            <span>Contest Winners</span>
+          </a>
+          <a href="#official-nfts" class="category-btn" data-category="official">
             <i class="fas fa-gem"></i>
             <span>Official NFTs</span>
           </a>
           <a href="#community-gallery" class="category-btn" data-category="community">
             <i class="fas fa-users"></i>
-            <span>Community Gallery</span>
-          </a>
-          <a href="#brand-assets" class="category-btn" data-category="brand">
-            <i class="fas fa-palette"></i>
-            <span>Brand Assets</span>
-          </a>
-          <a href="#minting" class="category-btn" data-category="minting">
-            <i class="fas fa-plus-circle"></i>
-            <span>Mint NFTs</span>
+            <span>Community Art</span>
           </a>
         </nav>
+      </div>
+    </section>
+
+    <!-- Featured Art Gallery -->
+    <section id="featured-art">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-star"></i> Featured Artwork</h2>
+          <p class="section-subtitle">
+            Award-winning artwork showcasing RebelInuX's foundation and growth by talented community artists.
+          </p>
+        </div>
+        
+        <div class="filter-buttons" data-aos="fade-up">
+          <button class="filter-btn active" data-filter="all">All Artwork</button>
+          <button class="filter-btn" data-filter="winner">Contest Winners</button>
+          <button class="filter-btn" data-filter="featured">Featured Pieces</button>
+          <button class="filter-btn" data-filter="community">Community Favorites</button>
+        </div>
+        
+        <div class="gallery-grid" id="artworkGallery">
+          <!-- Artwork 1 - REBEL BUILD -->
+          <div class="artwork-card" data-category="winner" data-aos="fade-up">
+            <div class="artwork-image">
+              <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD by @DefiMaven5" loading="lazy">
+              <div class="artwork-overlay">
+                <div class="overlay-text">Click to View</div>
+              </div>
+            </div>
+            <div class="artwork-info">
+              <span class="artwork-status status-winner">
+                <i class="fas fa-trophy"></i> Grand Prize Winner
+              </span>
+              <h3 class="artwork-title">REBEL BUILD</h3>
+              <div class="artist-info">
+                <div class="artist-avatar">DM</div>
+                <span>by <a href="https://x.com/DefiMaven5" class="artist-link">@DefiMaven5</a></span>
+              </div>
+              <p class="artwork-description">
+                Award-winning artwork showcasing RebelInuX's foundation and growth.
+              </p>
+              <div class="artwork-actions">
+                <button class="cta-button view-artwork" 
+                        data-image="https://i.imgur.com/WOXZaSg.webp" 
+                        data-title="REBEL BUILD" 
+                        data-artist="@DefiMaven5" 
+                        data-description="Award-winning artwork showcasing RebelInuX's foundation and growth." 
+                        data-link="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a">
+                  <i class="fas fa-expand"></i> View Details
+                </button>
+                <a href="https://zora.co/coin/base:0x2de4c9ab495d105bc51fd1bae759acb6409c567a" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="cta-button gold">
+                  <i class="fas fa-shopping-cart"></i> Buy NFT
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Artwork 2 - SHIBA ENERGY -->
+          <div class="artwork-card" data-category="winner" data-aos="fade-up" data-aos-delay="100">
+            <div class="artwork-image">
+              <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY by @DefiMaven5" loading="lazy">
+              <div class="artwork-overlay">
+                <div class="overlay-text">Click to View</div>
+              </div>
+            </div>
+            <div class="artwork-info">
+              <span class="artwork-status status-winner">
+                <i class="fas fa-trophy"></i> Grand Prize Winner
+              </span>
+              <h3 class="artwork-title">SHIBA ENERGY</h3>
+              <div class="artist-info">
+                <div class="artist-avatar">DM</div>
+                <span>by <a href="https://x.com/DefiMaven5" class="artist-link">@DefiMaven5</a></span>
+              </div>
+              <p class="artwork-description">
+                Capturing the explosive energy of the RebelInuX community.
+              </p>
+              <div class="artwork-actions">
+                <button class="cta-button view-artwork" 
+                        data-image="https://i.imgur.com/x1kfWUs.webp" 
+                        data-title="SHIBA ENERGY" 
+                        data-artist="@DefiMaven5" 
+                        data-description="Capturing the explosive energy of the RebelInuX community." 
+                        data-link="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c">
+                  <i class="fas fa-expand"></i> View Details
+                </button>
+                <a href="https://zora.co/coin/base:0xedba7bcef2ed941084b9bf78c4568f5a719f785c" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="cta-button gold">
+                  <i class="fas fa-shopping-cart"></i> Buy NFT
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Artwork 3 - TO THE MOON -->
+          <div class="artwork-card" data-category="featured" data-aos="fade-up" data-aos-delay="200">
+            <div class="artwork-image">
+              <img src="https://i.imgur.com/IyP5045.webp" alt="TO THE MOON by @DefiMaven5" loading="lazy">
+              <div class="artwork-overlay">
+                <div class="overlay-text">Click to View</div>
+              </div>
+            </div>
+            <div class="artwork-info">
+              <span class="artwork-status status-featured">
+                <i class="fas fa-star"></i> Featured Art
+              </span>
+              <h3 class="artwork-title">TO THE MOON</h3>
+              <div class="artist-info">
+                <div class="artist-avatar">DM</div>
+                <span>by <a href="https://x.com/DefiMaven5" class="artist-link">@DefiMaven5</a></span>
+              </div>
+              <p class="artwork-description">
+                RebelInuX's journey to new heights in the crypto space.
+              </p>
+              <div class="artwork-actions">
+                <button class="cta-button view-artwork" 
+                        data-image="https://i.imgur.com/IyP5045.webp" 
+                        data-title="TO THE MOON" 
+                        data-artist="@DefiMaven5" 
+                        data-description="RebelInuX's journey to new heights in the crypto space." 
+                        data-link="https://zora.co/coin/base:0xfbef2c9843f9a0fa10812ec03884aa1e609c9f0d?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
+                  <i class="fas fa-expand"></i> View Details
+                </button>
+                <a href="https://zora.co/coin/base:0xfbef2c9843f9a0fa10812ec03884aa1e609c9f0d?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="cta-button gold">
+                  <i class="fas fa-shopping-cart"></i> Buy NFT
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Artwork 4 - BREAKS CHAINS -->
+          <div class="artwork-card" data-category="winner" data-aos="fade-up" data-aos-delay="300">
+            <div class="artwork-image">
+              <img src="https://i.imgur.com/jXnS27o.webp" alt="BREAKS CHAINS by @PeterGriff9178" loading="lazy">
+              <div class="artwork-overlay">
+                <div class="overlay-text">Click to View</div>
+              </div>
+            </div>
+            <div class="artwork-info">
+              <span class="artwork-status status-winner">
+                <i class="fas fa-trophy"></i> Award Winner
+              </span>
+              <h3 class="artwork-title">BREAKS CHAINS</h3>
+              <div class="artist-info">
+                <div class="artist-avatar">PG</div>
+                <span>by <a href="https://x.com/PeterGriff9178" class="artist-link">@PeterGriff9178</a></span>
+              </div>
+              <p class="artwork-description">
+                RebelInuX breaking the chains of traditional finance.
+              </p>
+              <div class="artwork-actions">
+                <button class="cta-button view-artwork" 
+                        data-image="https://i.imgur.com/jXnS27o.webp" 
+                        data-title="BREAKS CHAINS" 
+                        data-artist="@PeterGriff9178" 
+                        data-description="RebelInuX breaking the chains of traditional finance." 
+                        data-link="https://zora.co/coin/base:0xf480b4b9ab2a45021c435b30a8fee42ba5119ecf?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee">
+                  <i class="fas fa-expand"></i> View Details
+                </button>
+                <a href="https://zora.co/coin/base:0xf480b4b9ab2a45021c435b30a8fee42ba5119ecf?referrer=0xfcc14f45b6fb8a847bed4cd535fe08d075f64bee" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="cta-button gold">
+                  <i class="fas fa-shopping-cart"></i> Buy NFT
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="view-more" data-aos="fade-up">
+          <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button gold">
+            <i class="fas fa-external-link-alt"></i> View All Artworks on ZORA
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Artwork Slider -->
+    <section id="artwork-slider-section">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-images"></i> Artwork Showcase</h2>
+          <p class="section-subtitle">
+            Scroll through our collection of award-winning RebelInuX artwork
+          </p>
+        </div>
+        
+        <div class="artwork-slider" data-aos="fade-up">
+          <div class="slider-container">
+            <div class="slider-item">
+              <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/IyP5045.webp" alt="TO THE MOON" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/RgzP2CA.webp" alt="TRIPLE-ASSET ECOSYSTEM" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/NVIBbOo.webp" alt="THE MEME REVOLUTION" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/yMLGNmZ.webp" alt="THE COUNCIL" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/jXnS27o.webp" alt="BREAKS CHAINS" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/tU8KDxf.webp" alt="NO HYPE" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/6ECioCX.webp" alt="THE COUNCIL" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/cb5pTtS.webp" alt="BUY THE DIP" loading="lazy">
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="slider-item">
+              <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meme Contest Winners -->
+    <section id="meme-contests">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-trophy"></i> Meme Contest Winners</h2>
+          <p class="section-subtitle">
+            Weekly meme contests with $REBL prizes for the funniest and most creative entries
+          </p>
+        </div>
+        
+        <div class="contest-highlight" data-aos="fade-up">
+          <div class="contest-header">
+            <i class="fas fa-crown"></i>
+            <h3>🏆 WEEKLY MEME CONTESTS</h3>
+          </div>
+          <p class="contest-description">
+            Our community hosts weekly meme contests with $REBL prizes for the funniest and most creative entries.
+            Join our Telegram to participate!
+          </p>
+          
+          <div class="contest-grid">
+            <!-- Meme Contest Winner 1 -->
+            <div class="contest-card" data-aos="fade-right">
+              <div class="contest-image">
+                <img src="https://i.imgur.com/aBcDeFg.webp" alt="Diamond Hands Meme" loading="lazy">
+                <div class="contest-overlay">
+                  <div class="contest-place">1st Place</div>
+                </div>
+              </div>
+              <div class="contest-info">
+                <h4>DIAMOND HANDS</h4>
+                <div class="artist-info">
+                  <div class="artist-avatar">MM</div>
+                  <span>by <a href="https://x.com/MemeMasterX" class="artist-link">@MemeMasterX</a></span>
+                </div>
+                <p class="contest-desc">Winning meme from Week #5 - "Diamond Hands Edition"</p>
+                <div class="contest-details">
+                  <span class="prize">
+                    <i class="fas fa-gift"></i> Prize: 500K $REBL
+                  </span>
+                  <span class="week">
+                    <i class="fas fa-calendar"></i> Week 5
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Meme Contest Winner 2 -->
+            <div class="contest-card" data-aos="fade-up">
+              <div class="contest-image">
+                <img src="https://i.imgur.com/GhIjKlM.webp" alt="When Lambo Meme" loading="lazy">
+                <div class="contest-overlay">
+                  <div class="contest-place">2nd Place</div>
+                </div>
+              </div>
+              <div class="contest-info">
+                <h4>WHEN LAMBO?</h4>
+                <div class="artist-info">
+                  <div class="artist-avatar">CM</div>
+                  <span>by <a href="https://x.com/CryptoMemeLord" class="artist-link">@CryptoMemeLord</a></span>
+                </div>
+                <p class="contest-desc">Runner-up from Week #4 - Classic crypto meme with Rebel twist</p>
+                <div class="contest-details">
+                  <span class="prize">
+                    <i class="fas fa-gift"></i> Prize: 250K $REBL
+                  </span>
+                  <span class="week">
+                    <i class="fas fa-calendar"></i> Week 4
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Meme Contest Winner 3 -->
+            <div class="contest-card" data-aos="fade-left">
+              <div class="contest-image">
+                <img src="https://i.imgur.com/JkLmNoP.webp" alt="Rug Pull Survivor Meme" loading="lazy">
+                <div class="contest-overlay">
+                  <div class="contest-place">3rd Place</div>
+                </div>
+              </div>
+              <div class="contest-info">
+                <h4>RUG PULL SURVIVOR</h4>
+                <div class="artist-info">
+                  <div class="artist-avatar">SR</div>
+                  <span>by <a href="https://x.com/SurvivorRebel" class="artist-link">@SurvivorRebel</a></span>
+                </div>
+                <p class="contest-desc">3rd place winner from Week #3 - Survivor meme</p>
+                <div class="contest-details">
+                  <span class="prize">
+                    <i class="fas fa-gift"></i> Prize: 100K $REBL
+                  </span>
+                  <span class="week">
+                    <i class="fas fa-calendar"></i> Week 3
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contest-actions" data-aos="fade-up">
+            <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button">
+              <i class="fas fa-camera"></i> Join Next Contest
+            </a>
+            <a href="#submit-art" class="cta-button gold">
+              <i class="fas fa-upload"></i> Submit Your Meme
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NFT Collections -->
+    <section id="nft-collections">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-cube"></i> NFT Collections</h2>
+          <p class="section-subtitle">
+            Exclusive collections for early supporters and talented community artists
+          </p>
+        </div>
+        
+        <div class="collection-cards">
+          <div class="collection-card" data-aos="fade-right">
+            <div class="collection-icon">
+              <i class="fas fa-crown"></i>
+            </div>
+            <h3>REBEL ELITE</h3>
+            <p class="collection-description">
+              Exclusive collection for early supporters and top contributors. Limited to 100 pieces.
+            </p>
+            <div class="collection-stats">
+              <span class="minted-count">100/100</span>
+              <span class="minted-label">Minted</span>
+            </div>
+            <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button">
+              <i class="fas fa-eye"></i> View Collection
+            </a>
+          </div>
+          
+          <div class="collection-card" data-aos="fade-up">
+            <div class="collection-icon">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3>COMMUNITY CREATIONS</h3>
+            <p class="collection-description">
+              Curated artwork from talented community artists. New pieces added weekly.
+            </p>
+            <div class="collection-stats">
+              <span class="minted-count">50+</span>
+              <span class="minted-label">Artworks</span>
+            </div>
+            <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button gold">
+              <i class="fas fa-shopping-cart"></i> Browse Art
+            </a>
+          </div>
+          
+          <div class="collection-card" data-aos="fade-left">
+            <div class="collection-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h3>CONTEST WINNERS</h3>
+            <p class="collection-description">
+              Award-winning pieces from our weekly meme and art contests.
+            </p>
+            <div class="collection-stats">
+              <span class="minted-count">12</span>
+              <span class="minted-label">Winners</span>
+            </div>
+            <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button">
+              <i class="fas fa-award"></i> View Winners
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Artist Spotlight -->
+    <section id="artist-spotlight">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-user-astronaut"></i> Featured Artist</h2>
+          <p class="section-subtitle">
+            Meet the talented artists behind RebelInuX's most iconic artwork
+          </p>
+        </div>
+        
+        <div class="artist-spotlight-card" data-aos="fade-up">
+          <div class="artist-profile">
+            <div class="artist-avatar-large">
+              <img src="https://i.imgur.com/gEuSg1Y.webp" alt="@DefiMaven5" loading="lazy">
+            </div>
+            <div class="artist-details">
+              <h3>@DefiMaven5</h3>
+              <p class="artist-quote">
+                "Creating art for RebelInuX has been an incredible journey. The community's energy and support inspire me to push creative boundaries every day. My goal is to capture the rebellious spirit and revolutionary vision of this project through digital art."
+              </p>
+              <div class="artist-tags">
+                <span class="artist-tag">
+                  <i class="fas fa-trophy"></i> 3x Contest Winner
+                </span>
+                <span class="artist-tag">
+                  <i class="fas fa-star"></i> Featured Artist
+                </span>
+                <span class="artist-tag">
+                  <i class="fas fa-palette"></i> 8+ Artworks
+                </span>
+              </div>
+              <div class="artist-actions">
+                <a href="https://x.com/DefiMaven5" target="_blank" rel="noopener noreferrer" class="cta-button">
+                  <i class="fab fa-twitter"></i> Follow Artist
+                </a>
+                <a href="https://zora.co/@rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button gold">
+                  <i class="fas fa-cube"></i> View Collection
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -149,27 +629,6 @@
                 <span class="tag rarity-common">Common: 600</span>
               </div>
             </div>
-          </div>
-        </div>
-        
-        <div class="gallery-filters" data-aos="fade-up">
-          <div class="filter-group">
-            <span class="filter-label">Filter by:</span>
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="legendary">Legendary</button>
-            <button class="filter-btn" data-filter="epic">Epic</button>
-            <button class="filter-btn" data-filter="rare">Rare</button>
-            <button class="filter-btn" data-filter="common">Common</button>
-          </div>
-          
-          <div class="sort-group">
-            <span class="filter-label">Sort by:</span>
-            <select class="sort-select" id="sortNfts">
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="rarity">Rarity (High to Low)</option>
-              <option value="price">Price (Low to High)</option>
-            </select>
           </div>
         </div>
         
@@ -249,517 +708,76 @@
               </button>
             </div>
           </div>
-          
-          <!-- NFT 3 - Rare -->
-          <div class="nft-card" data-category="rare" data-aos="fade-up" data-aos-delay="200">
-            <div class="nft-badge rare">RARE</div>
-            <div class="nft-image">
-              <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX Rare NFT" loading="lazy">
-              <div class="nft-overlay">
-                <button class="view-btn" onclick="viewNftDetails(3)">
-                  <i class="fas fa-expand"></i>
-                </button>
-                <button class="like-btn" onclick="toggleLike(this)">
-                  <i class="far fa-heart"></i>
-                  <span class="like-count">19</span>
-                </button>
-              </div>
-            </div>
-            <div class="nft-info">
-              <h3>Desert Warrior #128</h3>
-              <p class="nft-description">Survivor of the digital desert with tactical gear.</p>
-              <div class="nft-meta">
-                <div class="meta-item">
-                  <i class="fas fa-layer-group"></i>
-                  <span>128 of 300</span>
-                </div>
-                <div class="meta-item">
-                  <i class="fas fa-sun"></i>
-                  <span>Desert</span>
-                </div>
-              </div>
-              <div class="nft-price">
-                <span class="price-label">Current Price:</span>
-                <span class="price-value">1.2 SOL</span>
-              </div>
-              <button class="buy-btn" onclick="buyNft(3)">
-                <i class="fas fa-shopping-cart"></i> Buy Now
-              </button>
-            </div>
-          </div>
-          
-          <!-- NFT 4 - Common -->
-          <div class="nft-card" data-category="common" data-aos="fade-up" data-aos-delay="300">
-            <div class="nft-badge common">COMMON</div>
-            <div class="nft-image">
-              <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX Common NFT" loading="lazy">
-              <div class="nft-overlay">
-                <button class="view-btn" onclick="viewNftDetails(4)">
-                  <i class="fas fa-expand"></i>
-                </button>
-                <button class="like-btn" onclick="toggleLike(this)">
-                  <i class="far fa-heart"></i>
-                  <span class="like-count">8</span>
-                </button>
-              </div>
-            </div>
-            <div class="nft-info">
-              <h3>Street Rebel #512</h3>
-              <p class="nft-description">Urban fighter with basic gear and raw determination.</p>
-              <div class="nft-meta">
-                <div class="meta-item">
-                  <i class="fas fa-layer-group"></i>
-                  <span>512 of 600</span>
-                </div>
-                <div class="meta-item">
-                  <i class="fas fa-city"></i>
-                  <span>Urban</span>
-                </div>
-              </div>
-              <div class="nft-price">
-                <span class="price-label">Current Price:</span>
-                <span class="price-value">0.5 SOL</span>
-              </div>
-              <button class="buy-btn" onclick="buyNft(4)">
-                <i class="fas fa-shopping-cart"></i> Buy Now
-              </button>
-            </div>
-          </div>
         </div>
         
         <div class="view-more" data-aos="fade-up">
-          <a href="https://magiceden.io/marketplace/rebelinux" target="_blank" class="cta-button gold">
+          <a href="https://magiceden.io/marketplace/rebelinux" target="_blank" rel="noopener noreferrer" class="cta-button gold">
             <i class="fas fa-external-link-alt"></i> View Full Collection on Magic Eden
           </a>
         </div>
       </div>
     </section>
 
-    <!-- NFT Utility & Benefits -->
-    <section id="nft-utility">
+    <!-- Submit Your Art -->
+    <section id="submit-art">
       <div class="container">
         <div class="section-header" data-aos="fade-up">
-          <h2><i class="fas fa-bolt"></i> NFT Utility & Benefits</h2>
+          <h2><i class="fas fa-paint-brush"></i> Submit Your Artwork</h2>
           <p class="section-subtitle">
-            Owning RebelInuX NFTs comes with exclusive perks and real utility.
+            Share your creativity with the RebelInuX community
           </p>
         </div>
         
-        <div class="utility-grid">
-          <div class="utility-card" data-aos="fade-right">
-            <div class="utility-icon">
-              <i class="fas fa-vote-yea"></i>
-            </div>
-            <h3>Enhanced Governance</h3>
-            <p>NFT holders get additional voting power in community governance decisions.</p>
-            <div class="utility-badge">2x Voting Power</div>
+        <div class="submit-artwork-card" data-aos="fade-up">
+          <div class="submit-icon">
+            <i class="fas fa-paint-brush"></i>
           </div>
-          
-          <div class="utility-card" data-aos="fade-up">
-            <div class="utility-icon">
-              <i class="fas fa-gift"></i>
-            </div>
-            <h3>Exclusive Airdrops</h3>
-            <p>Receive special airdrops of $REBL tokens and future NFT collections.</p>
-            <div class="utility-badge">Monthly Rewards</div>
-          </div>
-          
-          <div class="utility-card" data-aos="fade-left">
-            <div class="utility-icon">
-              <i class="fas fa-ticket-alt"></i>
-            </div>
-            <h3>Event Access</h3>
-            <p>Get VIP access to community events, AMAs, and exclusive giveaways.</p>
-            <div class="utility-badge">VIP Access</div>
-          </div>
-          
-          <div class="utility-card" data-aos="fade-right">
-            <div class="utility-icon">
-              <i class="fas fa-chart-line"></i>
-            </div>
-            <h3>Staking Rewards</h3>
-            <p>Stake your NFTs to earn additional $REBL token rewards over time.</p>
-            <div class="utility-badge">APR: 15-25%</div>
-          </div>
-          
-          <div class="utility-card" data-aos="fade-up">
-            <div class="utility-icon">
-              <i class="fas fa-gamepad"></i>
-            </div>
-            <h3>Game Integration</h3>
-            <p>Use NFTs in future RebelInuX games and interactive experiences.</p>
-            <div class="utility-badge">Coming Soon</div>
-          </div>
-          
-          <div class="utility-card" data-aos="fade-left">
-            <div class="utility-icon">
-              <i class="fas fa-crown"></i>
-            </div>
-            <h3>Rarity Rewards</h3>
-            <p>Higher rarity NFTs receive proportionally higher rewards and benefits.</p>
-            <div class="utility-badge">Multiplier: 1-10x</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Community Gallery -->
-    <section id="community-gallery">
-      <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <h2><i class="fas fa-users"></i> Community Art Gallery</h2>
-          <p class="section-subtitle">
-            Amazing artwork created by our talented community members.
+          <h3>Share Your Creativity</h3>
+          <p class="submit-description">
+            We're always looking for talented artists to contribute to the RebelInuX ecosystem. Submit your artwork for a chance to be featured in our gallery, win contest prizes, or even become part of our official NFT collections.
           </p>
-        </div>
-        
-        <div class="community-intro" data-aos="fade-up">
-          <div class="intro-content">
-            <i class="fas fa-hand-sparkles"></i>
-            <h3>Community-Driven Creativity</h3>
-            <p>
-              We celebrate and showcase the incredible talent within our community. 
-              Submit your RebelInuX-inspired artwork for a chance to be featured here!
-            </p>
-            <button class="cta-button" onclick="openSubmissionForm()">
-              <i class="fas fa-upload"></i> Submit Your Art
-            </button>
-          </div>
-        </div>
-        
-        <div class="community-grid">
-          <!-- Community Art 1 -->
-          <div class="community-art" data-aos="fade-up">
-            <div class="art-image">
-              <img src="https://i.imgur.com/placeholder.webp" alt="Community Art 1" loading="lazy">
-              <div class="art-overlay">
-                <button class="view-btn" onclick="viewArtDetails(1)">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-            </div>
-            <div class="art-info">
-              <div class="artist-info">
-                <div class="artist-avatar">RJ</div>
-                <div class="artist-details">
-                  <span class="artist-name">RebelJames</span>
-                  <span class="art-date">Feb 15, 2024</span>
-                </div>
-              </div>
-              <h3>Digital Warrior</h3>
-              <p class="art-description">Fan art inspired by the RebelInuX lore.</p>
-              <div class="art-stats">
-                <span class="stat"><i class="fas fa-heart"></i> 24</span>
-                <span class="stat"><i class="fas fa-comment"></i> 8</span>
-              </div>
-            </div>
-          </div>
           
-          <!-- Community Art 2 -->
-          <div class="community-art" data-aos="fade-up" data-aos-delay="100">
-            <div class="art-image">
-              <img src="https://i.imgur.com/placeholder.webp" alt="Community Art 2" loading="lazy">
-              <div class="art-overlay">
-                <button class="view-btn" onclick="viewArtDetails(2)">
-                  <i class="fas fa-expand"></i>
-                </button>
+          <div class="submit-benefits">
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-trophy"></i>
               </div>
-            </div>
-            <div class="art-info">
-              <div class="artist-info">
-                <div class="artist-avatar">CI</div>
-                <div class="artist-details">
-                  <span class="artist-name">CryptoInu</span>
-                  <span class="art-date">Feb 12, 2024</span>
-                </div>
-              </div>
-              <h3>Rebel Landscape</h3>
-              <p class="art-description">Digital painting of the RebelInuX universe.</p>
-              <div class="art-stats">
-                <span class="stat"><i class="fas fa-heart"></i> 18</span>
-                <span class="stat"><i class="fas fa-comment"></i> 5</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Community Art 3 -->
-          <div class="community-art" data-aos="fade-up" data-aos-delay="200">
-            <div class="art-image">
-              <img src="https://i.imgur.com/placeholder.webp" alt="Community Art 3" loading="lazy">
-              <div class="art-overlay">
-                <button class="view-btn" onclick="viewArtDetails(3)">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-            </div>
-            <div class="art-info">
-              <div class="artist-info">
-                <div class="artist-avatar">AN</div>
-                <div class="artist-details">
-                  <span class="artist-name">ArtNinja</span>
-                  <span class="art-date">Feb 10, 2024</span>
-                </div>
-              </div>
-              <h3>3D Render</h3>
-              <p class="art-description">3D modeled RebelInuX character concept.</p>
-              <div class="art-stats">
-                <span class="stat"><i class="fas fa-heart"></i> 32</span>
-                <span class="stat"><i class="fas fa-comment"></i> 12</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Community Art 4 -->
-          <div class="community-art" data-aos="fade-up" data-aos-delay="300">
-            <div class="art-image">
-              <img src="https://i.imgur.com/placeholder.webp" alt="Community Art 4" loading="lazy">
-              <div class="art-overlay">
-                <button class="view-btn" onclick="viewArtDetails(4)">
-                  <i class="fas fa-expand"></i>
-                </button>
-              </div>
-            </div>
-            <div class="art-info">
-              <div class="artist-info">
-                <div class="artist-avatar">DR</div>
-                <div class="artist-details">
-                  <span class="artist-name">DigitalRebel</span>
-                  <span class="art-date">Feb 8, 2024</span>
-                </div>
-              </div>
-              <h3>Pixel Art</h3>
-              <p class="art-description">Retro pixel art style RebelInuX character.</p>
-              <div class="art-stats">
-                <span class="stat"><i class="fas fa-heart"></i> 15</span>
-                <span class="stat"><i class="fas fa-comment"></i> 3</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="community-rules" data-aos="fade-up">
-          <h3><i class="fas fa-clipboard-check"></i> Submission Guidelines</h3>
-          <ul>
-            <li>Artwork must be original and RebelInuX-themed</li>
-            <li>No offensive or inappropriate content</li>
-            <li>Include your community username for credit</li>
-            <li>By submitting, you grant display rights to RebelInuX</li>
-            <li>Selected artwork may receive $REBL token rewards</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Brand Assets -->
-    <section id="brand-assets">
-      <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <h2><i class="fas fa-palette"></i> Brand Assets & Resources</h2>
-          <p class="section-subtitle">
-            Official logos, colors, and design resources for the RebelInuX brand.
-          </p>
-        </div>
-        
-        <div class="brand-info" data-aos="fade-up">
-          <div class="brand-card">
-            <div class="brand-colors">
-              <h3>Brand Colors</h3>
-              <div class="color-grid">
-                <div class="color-item">
-                  <div class="color-swatch" style="background: #FFCC00;"></div>
-                  <div class="color-details">
-                    <span class="color-name">Rebel Gold</span>
-                    <span class="color-code">#FFCC00</span>
-                  </div>
-                </div>
-                <div class="color-item">
-                  <div class="color-swatch" style="background: #FF3366;"></div>
-                  <div class="color-details">
-                    <span class="color-name">Rebel Red</span>
-                    <span class="color-code">#FF3366</span>
-                  </div>
-                </div>
-                <div class="color-item">
-                  <div class="color-swatch" style="background: #1a1a1a;"></div>
-                  <div class="color-details">
-                    <span class="color-name">Dark Background</span>
-                    <span class="color-code">#1a1a1a</span>
-                  </div>
-                </div>
-                <div class="color-item">
-                  <div class="color-swatch" style="background: #00AAFF;"></div>
-                  <div class="color-details">
-                    <span class="color-name">Rebel Blue</span>
-                    <span class="color-code">#00AAFF</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="brand-card" data-aos="fade-up">
-            <div class="brand-logos">
-              <h3>Official Logos</h3>
-              <div class="logo-grid">
-                <div class="logo-item">
-                  <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX Logo" loading="lazy">
-                  <div class="logo-actions">
-                    <button class="download-btn" onclick="downloadAsset('logo-primary')">
-                      <i class="fas fa-download"></i> PNG
-                    </button>
-                    <button class="download-btn" onclick="downloadAsset('logo-primary-svg')">
-                      <i class="fas fa-download"></i> SVG
-                    </button>
-                  </div>
-                </div>
-                <div class="logo-item">
-                  <img src="https://i.imgur.com/gEuSg1Y.webp" alt="RebelInuX Symbol" loading="lazy" style="background: #FFCC00; padding: 20px;">
-                  <div class="logo-actions">
-                    <button class="download-btn" onclick="downloadAsset('logo-symbol')">
-                      <i class="fas fa-download"></i> PNG
-                    </button>
-                    <button class="download-btn" onclick="downloadAsset('logo-symbol-svg')">
-                      <i class="fas fa-download"></i> SVG
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="brand-guidelines" data-aos="fade-up">
-          <h3><i class="fas fa-book"></i> Brand Guidelines</h3>
-          <div class="guidelines-content">
-            <div class="guideline">
-              <h4>Usage Rights</h4>
-              <p>Community members may use RebelInuX branding for fan art, community projects, and non-commercial purposes.</p>
-            </div>
-            <div class="guideline">
-              <h4>Prohibited Uses</h4>
-              <p>Do not use branding for scam projects, misleading promotions, or unauthorized commercial activities.</p>
-            </div>
-            <div class="guideline">
-              <h4>Attribution</h4>
-              <p>When using RebelInuX assets, please credit the project and link to our official channels.</p>
-            </div>
-            <div class="guideline">
-              <h4>Modifications</h4>
-              <p>You may modify colors and layouts for creative purposes, but maintain recognizable brand elements.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- NFT Minting -->
-    <section id="minting">
-      <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <h2><i class="fas fa-plus-circle"></i> Mint NFTs</h2>
-          <p class="section-subtitle">
-            Create and mint your own RebelInuX-inspired NFTs directly through our platform.
-          </p>
-        </div>
-        
-        <div class="mint-info" data-aos="fade-up">
-          <div class="mint-card">
-            <div class="mint-header">
-              <div class="mint-icon">
-                <i class="fas fa-magic"></i>
-              </div>
-              <div>
-                <h3>Create & Mint NFTs</h3>
-                <p class="mint-subtitle">Turn your creativity into collectible NFTs</p>
-              </div>
+              <h4>Weekly Contests</h4>
+              <p>Participate in weekly meme/art contests with $REBL prizes for winners.</p>
             </div>
             
-            <div class="mint-steps">
-              <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                  <h4>Connect Wallet</h4>
-                  <p>Connect your Solana wallet (Phantom, Solflare, etc.)</p>
-                </div>
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-star"></i>
               </div>
-              
-              <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                  <h4>Upload Artwork</h4>
-                  <p>Upload your image, GIF, or video file (max 50MB)</p>
-                </div>
-              </div>
-              
-              <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                  <h4>Set Details</h4>
-                  <p>Add title, description, and attributes for your NFT</p>
-                </div>
-              </div>
-              
-              <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                  <h4>Mint & List</h4>
-                  <p>Pay minting fee and list your NFT on marketplaces</p>
-                </div>
-              </div>
+              <h4>Gallery Feature</h4>
+              <p>Get your artwork featured on our official website and social media.</p>
             </div>
             
-            <div class="mint-fees">
-              <h4><i class="fas fa-coins"></i> Minting Fees</h4>
-              <div class="fee-grid">
-                <div class="fee-item">
-                  <span class="fee-label">Platform Fee</span>
-                  <span class="fee-value">0.5 SOL</span>
-                </div>
-                <div class="fee-item">
-                  <span class="fee-label">Royalties</span>
-                  <span class="fee-value">5% (Optional)</span>
-                </div>
-                <div class="fee-item">
-                  <span class="fee-label">Gas Fees</span>
-                  <span class="fee-value">~0.01 SOL</span>
-                </div>
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <i class="fas fa-cube"></i>
               </div>
-            </div>
-            
-            <div class="mint-actions">
-              <button class="cta-button gold" onclick="startMinting()">
-                <i class="fas fa-plus-circle"></i> Start Minting
-              </button>
-              <button class="cta-button" onclick="viewMarketplace()">
-                <i class="fas fa-store"></i> View Marketplace
-              </button>
+              <h4>NFT Collection</h4>
+              <p>Selected artwork may be minted as official RebelInuX NFTs with revenue sharing.</p>
             </div>
           </div>
-        </div>
-        
-        <div class="mint-features" data-aos="fade-up">
-          <h3><i class="fas fa-star"></i> Why Mint With Us?</h3>
-          <div class="features-grid">
-            <div class="feature">
-              <i class="fas fa-shield-alt"></i>
-              <h4>Secure Platform</h4>
-              <p>Built on Solana with secure smart contracts and wallet integration</p>
-            </div>
-            <div class="feature">
-              <i class="fas fa-bolt"></i>
-              <h4>Instant Listing</h4>
-              <p>Auto-listing on major marketplaces like Magic Eden and Tensor</p>
-            </div>
-            <div class="feature">
-              <i class="fas fa-users"></i>
-              <h4>Community Exposure</h4>
-              <p>Featured promotion in our community gallery and social media</p>
-            </div>
-            <div class="feature">
-              <i class="fas fa-sync-alt"></i>
-              <h4>Easy Management</h4>
-              <p>Manage all your NFTs in one dashboard with analytics</p>
-            </div>
+          
+          <div class="submit-channels">
+            <a href="https://t.me/RebelInuX_Official" target="_blank" rel="noopener noreferrer" class="cta-button submit-btn">
+              <i class="fab fa-telegram"></i> Submit via Telegram
+            </a>
+            <a href="https://x.com/RebelInuX" target="_blank" rel="noopener noreferrer" class="cta-button gold submit-btn">
+              <i class="fab fa-twitter"></i> Tag us on X
+            </a>
+            <a href="https://discord.gg/s8dkuyD3cZ" target="_blank" rel="noopener noreferrer" class="cta-button submit-btn discord-btn">
+              <i class="fab fa-discord"></i> Share on Discord
+            </a>
+          </div>
+          
+          <div class="submit-tip">
+            <i class="fas fa-lightbulb"></i>
+            <p>Tip: Include your X/Twitter handle and wallet address when submitting for proper credit and potential prizes!</p>
           </div>
         </div>
       </div>
@@ -773,56 +791,36 @@
         <div class="content-card" data-aos="fade-up">
           <div class="faq-grid">
             <div class="faq-item" data-aos="fade-right">
-              <h4><i class="fas fa-question-circle"></i> What blockchain are NFTs on?</h4>
-              <p>All RebelInuX NFTs are on the Solana blockchain for fast, low-cost transactions.</p>
+              <h4><i class="fas fa-question-circle"></i> How can I submit my artwork?</h4>
+              <p>Share your artwork on Telegram, Twitter/X, or Discord using the links above. Include your social handle and wallet address for credit and prizes.</p>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-left">
+              <h4><i class="fas fa-question-circle"></i> What are the contest prizes?</h4>
+              <p>Weekly meme contests offer $REBL token prizes: 1st place 500K $REBL, 2nd place 250K $REBL, 3rd place 100K $REBL.</p>
             </div>
             
             <div class="faq-item" data-aos="fade-right" data-aos-delay="100">
               <h4><i class="fas fa-question-circle"></i> Where can I buy/sell NFTs?</h4>
-              <p>On Magic Eden, Tensor, and other Solana NFT marketplaces.</p>
+              <p>On Magic Eden, Tensor, and other Solana NFT marketplaces. Also check ZORA for community artwork collections.</p>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-left" data-aos-delay="100">
+              <h4><i class="fas fa-question-circle"></i> Can I submit community art?</h4>
+              <p>Yes! Use the submission channels above to share your RebelInuX creations for a chance to be featured.</p>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-right" data-aos-delay="200">
+              <h4><i class="fas fa-question-circle"></i> What are NFT utilities?</h4>
+              <p>Governance power, airdrops, staking rewards, and exclusive access to events and future collections.</p>
             </div>
             
             <div class="faq-item" data-aos="fade-left" data-aos-delay="200">
-              <h4><i class="fas fa-question-circle"></i> What wallet do I need?</h4>
-              <p>Any Solana wallet like Phantom, Solflare, or Backpack works.</p>
-            </div>
-            
-            <div class="faq-item" data-aos="fade-left" data-aos-delay="300">
-              <h4><i class="fas fa-question-circle"></i> Can I submit community art?</h4>
-              <p>Yes! Use the submission form above to share your RebelInuX creations.</p>
-            </div>
-            
-            <div class="faq-item" data-aos="fade-right" data-aos-delay="400">
-              <h4><i class="fas fa-question-circle"></i> What are NFT utilities?</h4>
-              <p>Governance power, airdrops, staking rewards, and exclusive access.</p>
-            </div>
-            
-            <div class="faq-item" data-aos="fade-left" data-aos-delay="500">
               <h4><i class="fas fa-question-circle"></i> How do I mint NFTs?</h4>
-              <p>Connect wallet, upload artwork, set details, and pay the minting fee.</p>
+              <p>Connect wallet, upload artwork, set details, and pay the minting fee. Use our platform or ZORA for easy minting.</p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section style="text-align: center; padding: var(--spacing-xl) var(--spacing-md); margin: var(--spacing-xl) auto; max-width: 800px;" data-aos="fade-up">
-      <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg);">JOIN THE ART REBELLION</h2>
-      <p style="font-size: 1.2em; margin-bottom: var(--spacing-lg); max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Whether you're collecting, creating, or just appreciating art - join our vibrant creative community.
-      </p>
-      
-      <div style="display: flex; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap;">
-        <a href="https://magiceden.io/marketplace/rebelinux" target="_blank" class="cta-button">
-          <i class="fas fa-gem"></i> BUY NFTS
-        </a>
-        <a href="#minting" class="cta-button gold">
-          <i class="fas fa-plus-circle"></i> MINT NFTS
-        </a>
-        <a href="community.html" class="cta-button" style="background: var(--rebel-red);">
-          <i class="fas fa-users"></i> JOIN COMMUNITY
-        </a>
       </div>
     </section>
 
