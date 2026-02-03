@@ -1,4 +1,4 @@
-// whitepaper.js - Whitepaper page functionality
+/// whitepaper.js - Whitepaper page functionality
 
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(initWhitepaperPage, 300);
