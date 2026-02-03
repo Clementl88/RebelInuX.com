@@ -1,4 +1,4 @@
-// artwork.js - Enhanced Artwork Gallery functionality
+/// artwork.js - Enhanced Artwork Gallery functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
