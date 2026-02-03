@@ -1,4 +1,4 @@
-// artwork.js - Artwork Gallery page functionality
+// artwork.js - Enhanced Artwork Gallery functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initArtworkPage() {
-  console.log('Initializing Artwork Gallery page');
+  console.log('Initializing Enhanced Artwork Gallery page');
   
   // Initialize mobile dropdown
   initializeMobileDropdown();
@@ -26,8 +26,14 @@ function initArtworkPage() {
   // Initialize NFT interactions
   initNFTInteractions();
   
-  // Initialize lightbox
-  initLightbox();
+  // Initialize artwork modal
+  initArtworkModal();
+  
+  // Initialize slider animation
+  initArtworkSlider();
+  
+  // Start periodic updates
+  setInterval(updateArtworkStats, 60000);
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -86,31 +92,23 @@ function initArtworkData() {
   // Fetch and update artwork stats
   updateArtworkStats();
   
-  // Initialize NFT data
-  initNFTData();
-  
   // Initialize filter functionality
   initFiltering();
   
-  // Start periodic updates
-  setInterval(updateArtworkStats, 60000); // Update every minute
+  // Initialize artwork likes
+  initArtworkLikes();
+  
+  // Track page visit
+  trackPageVisit();
 }
 
 async function updateArtworkStats() {
   try {
-    // In a real implementation, you would fetch these from APIs
-    const stats = {
-      totalNfts: 1000,
-      nftOwners: 423,
-      communityArt: 78,
-      volumeTraded: 250
-    };
-    
-    // Update stat counters with animation
-    animateCounter('totalNfts', stats.totalNfts);
-    animateCounter('nftOwners', stats.nftOwners);
-    animateCounter('communityArt', stats.communityArt);
-    document.getElementById('volumeTraded').textContent = stats.volumeTraded;
+    // Update stat counters
+    animateCounter('totalArtworks', 58);
+    animateCounter('contestWinners', 12);
+    animateCounter('totalArtists', 23);
+    document.getElementById('nftCollections').textContent = '3';
     
     // Update last updated time
     updateLastUpdated();
@@ -120,11 +118,11 @@ async function updateArtworkStats() {
   }
 }
 
-function initNFTData() {
+function initArtworkLikes() {
   // Initialize like counts from localStorage
   document.querySelectorAll('.like-btn').forEach(btn => {
-    const nftId = btn.closest('.nft-card').dataset.category;
-    const savedLikes = localStorage.getItem(`nft_likes_${nftId}`);
+    const artworkId = btn.closest('.artwork-card, .contest-card').getAttribute('data-id');
+    const savedLikes = localStorage.getItem(`artwork_likes_${artworkId}`);
     if (savedLikes) {
       const likeCount = btn.querySelector('.like-count');
       if (likeCount) {
@@ -132,20 +130,11 @@ function initNFTData() {
       }
       
       // Check if liked
-      const isLiked = localStorage.getItem(`nft_liked_${nftId}`) === 'true';
+      const isLiked = localStorage.getItem(`artwork_liked_${artworkId}`) === 'true';
       if (isLiked) {
         btn.classList.add('liked');
         btn.querySelector('i').className = 'fas fa-heart';
       }
-    }
-  });
-  
-  // Initialize community art likes
-  document.querySelectorAll('.community-art .stat').forEach(stat => {
-    const artId = stat.closest('.community-art').querySelector('h3').textContent;
-    const savedLikes = localStorage.getItem(`art_likes_${artId}`);
-    if (savedLikes && stat.querySelector('.fa-heart')) {
-      stat.textContent = stat.textContent.replace(/\d+/, savedLikes);
     }
   });
 }
@@ -154,20 +143,20 @@ function animateCounter(elementId, target) {
   const element = document.getElementById(elementId);
   if (!element) return;
   
-  const current = parseInt(element.textContent.replace(/,/g, '')) || 0;
+  const current = parseInt(element.textContent.replace(/[^\d]/g, '')) || 0;
   if (current === target) return;
   
-  const duration = 1000; // 1 second
+  const duration = 1000;
   const increment = (target - current) / (duration / 16);
   
   let currentValue = current;
   const timer = setInterval(() => {
     currentValue += increment;
     if ((increment > 0 && currentValue >= target) || (increment < 0 && currentValue <= target)) {
-      element.textContent = target.toLocaleString();
+      element.textContent = target + '+';
       clearInterval(timer);
     } else {
-      element.textContent = Math.floor(currentValue).toLocaleString();
+      element.textContent = Math.floor(currentValue) + '+';
     }
   }, 16);
 }
@@ -179,6 +168,17 @@ function updateLastUpdated() {
   const timestampElement = document.querySelector('.update-time');
   if (timestampElement) {
     timestampElement.textContent = `Last Updated: ${timeString}`;
+  }
+}
+
+function trackPageVisit() {
+  const visitCount = parseInt(localStorage.getItem('artwork_visits') || '0');
+  localStorage.setItem('artwork_visits', (visitCount + 1).toString());
+  
+  if (visitCount === 0) {
+    setTimeout(() => {
+      showToast('🎨 Welcome to the RebelInuX Art Gallery! Explore NFTs and community art.', 'info', 5000);
+    }, 2000);
   }
 }
 
@@ -208,19 +208,11 @@ function initGalleryInteractions() {
   
   // Filter functionality
   initFiltering();
-  
-  // Sort functionality
-  const sortSelect = document.getElementById('sortNfts');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', function() {
-      sortNFTs(this.value);
-    });
-  }
 }
 
 function initFiltering() {
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const nftCards = document.querySelectorAll('.nft-card');
+  const artworkCards = document.querySelectorAll('.artwork-card');
   
   filterBtns.forEach(btn => {
     btn.addEventListener('click', function() {
@@ -228,11 +220,12 @@ function initFiltering() {
       filterBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       
-      // Filter NFTs
+      // Filter artworks
       const filter = this.dataset.filter;
       
-      nftCards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
+      artworkCards.forEach(card => {
+        const category = card.dataset.category;
+        if (filter === 'all' || category === filter) {
           card.style.display = 'block';
           setTimeout(() => {
             card.style.opacity = '1';
@@ -250,34 +243,105 @@ function initFiltering() {
   });
 }
 
-function sortNFTs(sortBy) {
-  const nftContainer = document.querySelector('.nft-grid');
-  const nftCards = Array.from(document.querySelectorAll('.nft-card'));
+// ========== ARTWORK MODAL ==========
+function initArtworkModal() {
+  const modal = document.getElementById('artworkModal');
+  const modalClose = document.getElementById('modalClose');
+  const viewButtons = document.querySelectorAll('.view-artwork');
   
-  nftCards.sort((a, b) => {
-    switch (sortBy) {
-      case 'newest':
-        return 0; // In real implementation, sort by mint date
-      case 'oldest':
-        return 0; // In real implementation, sort by mint date
-      case 'rarity':
-        const rarityOrder = { legendary: 0, epic: 1, rare: 2, common: 3 };
-        return rarityOrder[a.dataset.category] - rarityOrder[b.dataset.category];
-      case 'price':
-        const priceA = parseFloat(a.querySelector('.price-value').textContent);
-        const priceB = parseFloat(b.querySelector('.price-value').textContent);
-        return priceA - priceB;
-      default:
-        return 0;
+  if (!modal || !modalClose) return;
+  
+  // View artwork buttons
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const image = this.getAttribute('data-image');
+      const title = this.getAttribute('data-title');
+      const artist = this.getAttribute('data-artist');
+      const description = this.getAttribute('data-description');
+      const link = this.getAttribute('data-link');
+      
+      // Set modal content
+      document.getElementById('modalImage').src = image;
+      document.getElementById('modalImage').alt = title;
+      document.getElementById('modalTitle').textContent = title;
+      
+      const artistInitial = artist.charAt(0);
+      document.getElementById('modalArtist').innerHTML = `
+        <div class="artist-info">
+          <div class="artist-avatar">${artistInitial}</div>
+          <span>by <a href="https://x.com/${artist.replace('@', '')}" class="artist-link">${artist}</a></span>
+        </div>
+      `;
+      
+      document.getElementById('modalDescription').textContent = description;
+      document.getElementById('modalLink').href = link;
+      
+      // Show modal
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Track modal view
+      trackArtworkView(title);
+    });
+  });
+  
+  // Close modal
+  modalClose.addEventListener('click', function() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
     }
   });
   
-  // Reorder cards
-  nftCards.forEach(card => {
-    nftContainer.appendChild(card);
+  // Close modal with escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
   });
+}
+
+function trackArtworkView(title) {
+  const views = parseInt(localStorage.getItem(`artwork_views_${title}`) || '0');
+  localStorage.setItem(`artwork_views_${title}`, (views + 1).toString());
   
-  showToast(`NFTs sorted by: ${sortBy.replace('_', ' ')}`, 'info');
+  // Send analytics event (in production)
+  console.log(`Artwork viewed: ${title}`);
+}
+
+// ========== ARTWORK SLIDER ==========
+function initArtworkSlider() {
+  const sliderContainer = document.querySelector('.slider-container');
+  if (!sliderContainer) return;
+  
+  // Pause animation on hover
+  const slider = document.querySelector('.artwork-slider');
+  if (slider) {
+    slider.addEventListener('mouseenter', function() {
+      sliderContainer.style.animationPlayState = 'paused';
+    });
+    
+    slider.addEventListener('mouseleave', function() {
+      sliderContainer.style.animationPlayState = 'running';
+    });
+  }
+  
+  // Reset animation periodically to create infinite loop effect
+  setInterval(() => {
+    sliderContainer.style.animation = 'none';
+    setTimeout(() => {
+      sliderContainer.style.animation = 'slide 30s linear infinite';
+    }, 10);
+  }, 30000);
 }
 
 // ========== NFT INTERACTIONS ==========
@@ -310,22 +374,11 @@ function initNFTInteractions() {
       viewNftDetails(nftId);
     });
   });
-  
-  // Community art view buttons
-  document.querySelectorAll('.community-art .view-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const artCard = this.closest('.community-art');
-      const artId = Array.from(artCard.parentElement.children).indexOf(artCard) + 1;
-      viewArtDetails(artId);
-    });
-  });
 }
 
 function toggleLike(button) {
-  const nftCard = button.closest('.nft-card, .community-art');
-  const isNFT = nftCard.classList.contains('nft-card');
-  const itemId = isNFT ? nftCard.dataset.category : nftCard.querySelector('h3').textContent;
+  const itemCard = button.closest('.nft-card, .artwork-card, .contest-card');
+  const itemId = itemCard.getAttribute('data-id') || itemCard.querySelector('h3').textContent;
   
   const likeCount = button.querySelector('.like-count');
   const likeIcon = button.querySelector('i');
@@ -335,28 +388,22 @@ function toggleLike(button) {
     // Unlike
     button.classList.remove('liked');
     likeIcon.className = 'far fa-heart';
-    likeCount.textContent = parseInt(likeCount.textContent) - 1;
-    
-    // Save to localStorage
-    if (isNFT) {
-      localStorage.setItem(`nft_likes_${itemId}`, likeCount.textContent);
-      localStorage.setItem(`nft_liked_${itemId}`, 'false');
+    if (likeCount) {
+      likeCount.textContent = parseInt(likeCount.textContent) - 1;
     }
     
+    localStorage.setItem(`artwork_liked_${itemId}`, 'false');
     showToast('Removed from favorites', 'info');
   } else {
     // Like
     button.classList.add('liked');
     likeIcon.className = 'fas fa-heart';
-    likeCount.textContent = parseInt(likeCount.textContent) + 1;
-    
-    // Save to localStorage
-    if (isNFT) {
-      localStorage.setItem(`nft_likes_${itemId}`, likeCount.textContent);
-      localStorage.setItem(`nft_liked_${itemId}`, 'true');
+    if (likeCount) {
+      likeCount.textContent = parseInt(likeCount.textContent) + 1;
     }
     
-    showToast('Added to favorites!', 'success');
+    localStorage.setItem(`artwork_liked_${itemId}`, 'true');
+    showToast('Added to favorites! ❤️', 'success');
   }
   
   // Animate the like
@@ -364,6 +411,11 @@ function toggleLike(button) {
   setTimeout(() => {
     button.style.transform = 'scale(1)';
   }, 300);
+  
+  // Save like count
+  if (likeCount) {
+    localStorage.setItem(`artwork_likes_${itemId}`, likeCount.textContent);
+  }
 }
 
 function buyNFT(nftName, nftPrice) {
@@ -372,11 +424,6 @@ function buyNFT(nftName, nftPrice) {
     
     // Simulate wallet connection and purchase
     setTimeout(() => {
-      // In a real implementation, you would:
-      // 1. Connect wallet
-      // 2. Show purchase confirmation
-      // 3. Execute transaction
-      
       showToast(`Successfully purchased ${nftName}!`, 'success');
       
       // Update UI
@@ -388,7 +435,6 @@ function buyNFT(nftName, nftPrice) {
 }
 
 function viewNftDetails(nftId) {
-  // In a real implementation, you would show a modal with detailed NFT information
   const nftData = {
     1: {
       name: "Rebel King #001",
@@ -405,303 +451,55 @@ function viewNftDetails(nftId) {
       attributes: ["45 of 90", "Electric", "Royalty: 5%", "Blockchain: Solana"],
       price: "2.5 SOL",
       owner: "Not available"
-    },
-    3: {
-      name: "Desert Warrior #128",
-      rarity: "Rare",
-      description: "Survivor of the digital desert with tactical gear.",
-      attributes: ["128 of 300", "Desert", "Royalty: 5%", "Blockchain: Solana"],
-      price: "1.2 SOL",
-      owner: "Not available"
-    },
-    4: {
-      name: "Street Rebel #512",
-      rarity: "Common",
-      description: "Urban fighter with basic gear and raw determination.",
-      attributes: ["512 of 600", "Urban", "Royalty: 5%", "Blockchain: Solana"],
-      price: "0.5 SOL",
-      owner: "Not available"
     }
   };
   
   const nft = nftData[nftId] || nftData[1];
   
-  // Show NFT details (in production, this would be a modal)
-  const details = `
-    NFT Details:
-    
-    Name: ${nft.name}
-    Rarity: ${nft.rarity}
-    Price: ${nft.price}
-    
-    Description:
-    ${nft.description}
-    
-    Attributes:
-    ${nft.attributes.join('\n')}
-  `;
-  
+  // In production, this would open a modal
+  console.log('NFT details:', nft);
   showToast(`Viewing details for: ${nft.name}`, 'info');
-  
-  setTimeout(() => {
-    // This would open a modal in production
-    console.log('NFT details:', details);
-    
-    if (window.innerWidth > 768) {
-      alert(details + '\n\n(In production, this would open a detailed modal)');
-    }
-  }, 100);
-}
-
-function viewArtDetails(artId) {
-  // In a real implementation, you would show a modal with detailed art information
-  const artData = {
-    1: {
-      title: "Digital Warrior",
-      artist: "RebelJames",
-      date: "Feb 15, 2024",
-      description: "Fan art inspired by the RebelInuX lore.",
-      medium: "Digital Painting",
-      likes: 24,
-      comments: 8
-    },
-    2: {
-      title: "Rebel Landscape",
-      artist: "CryptoInu",
-      date: "Feb 12, 2024",
-      description: "Digital painting of the RebelInuX universe.",
-      medium: "Digital Painting",
-      likes: 18,
-      comments: 5
-    },
-    3: {
-      title: "3D Render",
-      artist: "ArtNinja",
-      date: "Feb 10, 2024",
-      description: "3D modeled RebelInuX character concept.",
-      medium: "3D Modeling",
-      likes: 32,
-      comments: 12
-    },
-    4: {
-      title: "Pixel Art",
-      artist: "DigitalRebel",
-      date: "Feb 8, 2024",
-      description: "Retro pixel art style RebelInuX character.",
-      medium: "Pixel Art",
-      likes: 15,
-      comments: 3
-    }
-  };
-  
-  const art = artData[artId] || artData[1];
-  
-  // Show art details (in production, this would be a modal)
-  const details = `
-    Artwork Details:
-    
-    Title: ${art.title}
-    Artist: ${art.artist}
-    Date: ${art.date}
-    Medium: ${art.medium}
-    
-    Description:
-    ${art.description}
-    
-    Stats:
-    ❤️ ${art.likes} Likes | 💬 ${art.comments} Comments
-  `;
-  
-  showToast(`Viewing details for: ${art.title}`, 'info');
-  
-  setTimeout(() => {
-    // This would open a modal in production
-    console.log('Art details:', details);
-    
-    if (window.innerWidth > 768) {
-      alert(details + '\n\n(In production, this would open a detailed modal)');
-    }
-  }, 100);
-}
-
-// ========== LIGHTBOX ==========
-function initLightbox() {
-  // Lightbox is already initialized in the HTML head
-  // We just need to handle custom lightbox behavior
-  
-  // Set up lightbox for all images
-  document.querySelectorAll('a[data-lightbox]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        // On mobile, use full screen view
-        e.preventDefault();
-        const imgSrc = this.getAttribute('href');
-        viewFullscreenImage(imgSrc, this.getAttribute('data-title') || 'Image');
-      }
-    });
-  });
-}
-
-function viewFullscreenImage(src, title) {
-  // Create fullscreen viewer
-  const viewer = document.createElement('div');
-  viewer.className = 'fullscreen-viewer';
-  viewer.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  `;
-  
-  viewer.innerHTML = `
-    <div style="position: absolute; top: 20px; right: 20px;">
-      <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 2rem; cursor: pointer;">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <img src="${src}" alt="${title}" style="max-width: 100%; max-height: 80%; object-fit: contain; border-radius: 8px;">
-    <div style="color: white; margin-top: 20px; font-size: 1.2rem; font-weight: 600;">${title}</div>
-  `;
-  
-  document.body.appendChild(viewer);
-  
-  // Close on escape key
-  viewer.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      viewer.remove();
-    }
-  });
-  
-  // Close on click outside image
-  viewer.addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.remove();
-    }
-  });
-  
-  // Focus for keyboard navigation
-  viewer.focus();
-}
-
-// ========== MINTING FUNCTIONALITY ==========
-function startMinting() {
-  showToast('Opening NFT minting interface...', 'info');
-  
-  // In a real implementation, you would:
-  // 1. Connect wallet
-  // 2. Open minting modal
-  // 3. Handle file upload and metadata
-  
-  setTimeout(() => {
-    // Show minting instructions
-    const instructions = `
-      NFT Minting Instructions:
-      
-      1. Connect your Solana wallet
-      2. Upload your artwork (JPG, PNG, GIF, or MP4)
-      3. Add title, description, and attributes
-      4. Set your royalty percentage (recommended: 5%)
-      5. Pay the minting fee (0.5 SOL + gas)
-      6. Confirm transaction in your wallet
-      
-      Your NFT will be minted and listed automatically!
-    `;
-    
-    if (confirm('Ready to mint NFTs?\n\n' + instructions)) {
-      // Simulate minting process
-      simulateMintingProcess();
-    }
-  }, 500);
-}
-
-function simulateMintingProcess() {
-  showToast('Simulating NFT minting process...', 'info');
-  
-  // Show progress steps
-  const steps = ['Connecting wallet...', 'Uploading artwork...', 'Setting metadata...', 'Minting NFT...', 'Listing on marketplaces...'];
-  let currentStep = 0;
-  
-  const interval = setInterval(() => {
-    if (currentStep < steps.length) {
-      showToast(steps[currentStep], 'info');
-      currentStep++;
-    } else {
-      clearInterval(interval);
-      showToast('NFT minted successfully!', 'success');
-      
-      setTimeout(() => {
-        showToast('Your NFT is now available on Magic Eden and other marketplaces!', 'info', 5000);
-      }, 1000);
-    }
-  }, 1500);
-}
-
-function viewMarketplace() {
-  window.open('https://magiceden.io/marketplace/rebelinux', '_blank');
-  showToast('Opening Magic Eden marketplace...', 'info');
 }
 
 // ========== SUBMISSION FUNCTIONALITY ==========
-function openSubmissionForm() {
-  showToast('Opening community art submission form...', 'info');
+function submitArtwork(channel) {
+  const channels = {
+    telegram: 'https://t.me/RebelInuX_Official',
+    twitter: 'https://x.com/RebelInuX',
+    discord: 'https://discord.gg/s8dkuyD3cZ'
+  };
   
-  // In a real implementation, you would open a modal or redirect to a form
+  const messages = {
+    telegram: 'Opening Telegram to submit your artwork...',
+    twitter: 'Opening Twitter/X to submit your artwork...',
+    discord: 'Opening Discord to submit your artwork...'
+  };
+  
+  showToast(messages[channel], 'info');
+  
+  // Open the submission channel
   setTimeout(() => {
-    const submissionInfo = `
-      Community Art Submission:
+    window.open(channels[channel], '_blank');
+    
+    // Show submission tips
+    const tips = `
+      Submission Tips:
       
-      To submit your RebelInuX artwork:
-      
-      1. Join our Telegram community
-      2. Post your artwork in the community chat
+      1. Include your X/Twitter handle
+      2. Add your wallet address for prizes
       3. Use hashtag #RebelArt
-      4. Include your Solana wallet address for potential rewards
-      5. Selected artwork will be featured here!
-      
-      Requirements:
-      - Must be original RebelInuX-themed art
-      - No offensive or inappropriate content
-      - Include your community username
-      - By submitting, you grant display rights to RebelInuX
-      
-      Rewards for selected artwork:
-      - 100,000 $REBL tokens
-      - Featured in community gallery
-      - Special role in community
+      4. Describe your artwork
+      5. Mention if it's for a contest
     `;
     
-    if (confirm('Submit your RebelInuX artwork?\n\n' + submissionInfo)) {
-      window.open('https://t.me/RebelInuX', '_blank');
-      showToast('Opening Telegram community...', 'info');
-    }
+    showToast('Remember to include your details for credit and prizes!', 'info', 5000);
   }, 500);
-}
-
-function downloadAsset(assetType) {
-  showToast(`Downloading ${assetType}...`, 'info');
-  
-  // In a real implementation, you would trigger a file download
-  setTimeout(() => {
-    showToast('Asset downloaded successfully!', 'success');
-    
-    // Track downloads
-    const downloads = parseInt(localStorage.getItem('asset_downloads') || '0');
-    localStorage.setItem('asset_downloads', (downloads + 1).toString());
-  }, 1000);
 }
 
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.nft-card, .utility-card, .community-art, .feature, .faq-item, .related-card, .info-card, .brand-card, .guideline'
+    '.artwork-card, .contest-card, .collection-card, .nft-card, .faq-item, .related-card, .benefit-card'
   );
   
   // Use Intersection Observer for better performance
@@ -734,7 +532,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.nft-card, .utility-card, .community-art, .feature, .faq-item, .related-card, .info-card, .brand-card, .guideline'
+    '.artwork-card, .contest-card, .collection-card, .nft-card, .faq-item, .related-card, .benefit-card'
   );
   
   animatedElements.forEach((el, index) => {
@@ -836,15 +634,10 @@ function showToast(message, type = 'info', duration = 3000) {
 window.toggleLike = toggleLike;
 window.buyNft = buyNFT;
 window.viewNftDetails = viewNftDetails;
-window.viewArtDetails = viewArtDetails;
-window.startMinting = startMinting;
-window.viewMarketplace = viewMarketplace;
-window.openSubmissionForm = openSubmissionForm;
-window.downloadAsset = downloadAsset;
-window.initializeMobileDropdown = initializeMobileDropdown;
+window.submitArtwork = submitArtwork;
 window.showToast = showToast;
 
-// Add touch-active class styles
+// Add mobile touch optimizations
 document.addEventListener('DOMContentLoaded', function() {
   const style = document.createElement('style');
   style.textContent = `
@@ -854,55 +647,50 @@ document.addEventListener('DOMContentLoaded', function() {
       transition: all 0.1s ease !important;
     }
     
-    /* Fullscreen viewer mobile styles */
-    .fullscreen-viewer img {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    
-    /* Improved mobile interactions */
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-      .nft-card, .community-art {
+      .artwork-card, .contest-card, .nft-card {
         cursor: pointer;
       }
       
-      .nft-overlay, .art-overlay {
-        opacity: 0;
+      .artwork-overlay, .contest-overlay {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.5);
       }
       
-      .nft-card:active .nft-overlay,
-      .community-art:active .art-overlay {
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.7);
+      .overlay-text {
+        font-size: 1rem;
       }
     }
   `;
   document.head.appendChild(style);
+  
+  // Add touch event listeners for mobile
+  if ('ontouchstart' in window) {
+    document.querySelectorAll('.artwork-card, .contest-card, .nft-card').forEach(card => {
+      card.addEventListener('touchstart', function() {
+        this.classList.add('touch-active');
+      });
+      
+      card.addEventListener('touchend', function() {
+        this.classList.remove('touch-active');
+      });
+    });
+  }
 });
 
 // Load user preferences
 window.addEventListener('load', function() {
-  // Load liked NFTs
-  const likedNFTs = [];
-  document.querySelectorAll('.nft-card').forEach(card => {
-    const nftId = card.dataset.category;
-    if (localStorage.getItem(`nft_liked_${nftId}`) === 'true') {
-      likedNFTs.push(card.querySelector('h3').textContent);
+  // Load liked artwork
+  const likedArtwork = [];
+  document.querySelectorAll('.artwork-card, .contest-card, .nft-card').forEach(card => {
+    const itemId = card.getAttribute('data-id') || card.querySelector('h3').textContent;
+    if (localStorage.getItem(`artwork_liked_${itemId}`) === 'true') {
+      likedArtwork.push(itemId);
     }
   });
   
-  if (likedNFTs.length > 0) {
-    console.log('Liked NFTs:', likedNFTs);
-  }
-  
-  // Track page visit
-  const visitCount = parseInt(localStorage.getItem('artwork_visits') || '0');
-  localStorage.setItem('artwork_visits', (visitCount + 1).toString());
-  
-  if (visitCount === 0) {
-    setTimeout(() => {
-      showToast('Welcome to the RebelInuX Art Gallery! Explore NFTs and community art.', 'info', 5000);
-    }, 2000);
+  if (likedArtwork.length > 0) {
+    console.log('Liked artwork:', likedArtwork);
   }
 });
