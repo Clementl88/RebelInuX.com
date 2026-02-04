@@ -25,6 +25,15 @@ function initRoadmapPage() {
   
   // Initialize progress animations
   initProgressAnimations();
+  
+  // Initialize timeline sections
+  initTimelineSections();
+  
+  // Start periodic updates
+  setInterval(updateRoadmapStats, 60000); // Update every minute
+  
+  // Save visit to localStorage
+  saveRoadmapVisit();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -85,26 +94,23 @@ function initRoadmapData() {
   
   // Initialize timeline animations
   initTimelineAnimations();
-  
-  // Start periodic updates
-  setInterval(updateRoadmapStats, 60000); // Update every minute
 }
 
 async function updateRoadmapStats() {
   try {
     // In a real implementation, you would fetch these from APIs
     const stats = {
-      milestonesCompleted: 8,
-      activeMilestones: 4,
-      upcomingFeatures: 12,
-      communityProposals: 6
+      milestonesCompleted: 12,
+      activeProjects: 3,
+      daoLaunchYear: 2026,
+      phase2Progress: 80
     };
     
     // Update stat counters with animation
     animateCounter('milestonesCompleted', stats.milestonesCompleted);
-    animateCounter('activeMilestones', stats.activeMilestones);
-    animateCounter('upcomingFeatures', stats.upcomingFeatures);
-    animateCounter('communityProposals', stats.communityProposals);
+    animateCounter('activeProjects', stats.activeProjects);
+    animateCounter('daoLaunchYear', stats.daoLaunchYear);
+    animateCounter('phase2Progress', stats.phase2Progress);
     
     // Update last updated time
     updateLastUpdated();
@@ -115,32 +121,22 @@ async function updateRoadmapStats() {
 }
 
 function initTimelineAnimations() {
-  // Animate timeline line
-  const timelineLine = document.querySelector('.timeline-line');
-  if (timelineLine) {
-    timelineLine.style.height = '0%';
-    
-    setTimeout(() => {
-      timelineLine.style.transition = 'height 2s ease-in-out';
-      timelineLine.style.height = '100%';
-    }, 500);
-  }
-  
-  // Animate progress bars
-  document.querySelectorAll('.progress-fill').forEach(fill => {
-    const width = fill.style.width;
-    fill.style.width = '0%';
-    
-    setTimeout(() => {
-      fill.style.transition = 'width 1.5s ease-in-out';
-      fill.style.width = width;
-    }, 800);
-  });
+  // Animate progress bars on page load
+  setTimeout(() => {
+    animateAllProgressBars();
+  }, 500);
 }
 
 function animateCounter(elementId, target) {
   const element = document.getElementById(elementId);
-  if (!element) return;
+  if (!element) {
+    // Try to find by class if ID doesn't exist
+    const elements = document.querySelectorAll('.stat-value');
+    if (elements.length > 0) {
+      // This is a simplified version - in real implementation, you'd need to map IDs properly
+      return;
+    }
+  }
   
   const current = parseInt(element.textContent) || 0;
   if (current === target) return;
@@ -172,15 +168,16 @@ function updateLastUpdated() {
 
 // ========== MILESTONE INTERACTIONS ==========
 function initMilestoneInteractions() {
-  const milestones = document.querySelectorAll('.timeline-milestone');
+  const milestones = document.querySelectorAll('.timeline-item');
   
   milestones.forEach(milestone => {
-    const content = milestone.querySelector('.milestone-content');
+    const content = milestone;
     
     // Add click handler for mobile
     content.addEventListener('click', function(e) {
       if (window.innerWidth <= 768) {
         this.classList.toggle('expanded');
+        showToast('Tap to expand/collapse milestone details', 'info', 2000);
       } else {
         showMilestoneDetails(milestone);
       }
@@ -199,9 +196,9 @@ function initMilestoneInteractions() {
     content.setAttribute('aria-label', 'View milestone details');
   });
   
-  // Add click handlers for phase cards
-  const phaseCards = document.querySelectorAll('.phase-card');
-  phaseCards.forEach(card => {
+  // Add click handlers for principle cards
+  const principleCards = document.querySelectorAll('.principle-card');
+  principleCards.forEach(card => {
     card.addEventListener('click', function() {
       if (window.innerWidth <= 768) {
         this.classList.toggle('expanded');
@@ -211,22 +208,21 @@ function initMilestoneInteractions() {
 }
 
 function showMilestoneDetails(milestone) {
-  const date = milestone.querySelector('.milestone-date').textContent;
-  const title = milestone.querySelector('h3').textContent;
-  const description = milestone.querySelector('p').textContent;
-  const tags = Array.from(milestone.querySelectorAll('.tag')).map(tag => tag.textContent);
+  const quarterBadge = milestone.querySelector('.quarter-badge');
+  const title = milestone.querySelector('h4')?.textContent || '';
+  const description = Array.from(milestone.querySelectorAll('.milestone-list li'))
+    .map(li => li.textContent.trim())
+    .join('\n• ');
   
   // In a real implementation, you would show a modal with detailed information
   const details = `
     Milestone Details:
     
-    Date: ${date}
+    Quarter: ${quarterBadge?.textContent || 'N/A'}
     Title: ${title}
     
-    Description:
-    ${description}
-    
-    Tags: ${tags.join(', ')}
+    Achievements:
+    • ${description}
   `;
   
   showToast(`Viewing details for: ${title}`, 'info');
@@ -245,8 +241,8 @@ function showMilestoneDetails(milestone) {
 
 // ========== PROGRESS ANIMATIONS ==========
 function initProgressAnimations() {
-  // Animate phase progress bars
-  const progressBars = document.querySelectorAll('.progress-bar .progress-fill');
+  // Animate progress bars
+  const progressBars = document.querySelectorAll('.progress-fill');
   
   progressBars.forEach(bar => {
     const observer = new IntersectionObserver((entries) => {
@@ -269,10 +265,47 @@ function initProgressAnimations() {
   });
 }
 
+function animateAllProgressBars() {
+  const progressBars = document.querySelectorAll('.progress-fill');
+  
+  progressBars.forEach((bar, index) => {
+    const width = bar.style.width;
+    bar.style.width = '0%';
+    
+    setTimeout(() => {
+      bar.style.transition = 'width 1.5s ease-in-out';
+      bar.style.width = width;
+    }, index * 200);
+  });
+}
+
+// ========== TIMELINE SECTIONS ==========
+function initTimelineSections() {
+  const timelineSections = document.querySelectorAll('.timeline-section');
+  
+  timelineSections.forEach((section, index) => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 200);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(20px)';
+    section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(section);
+  });
+}
+
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.phase-card, .timeline-milestone, .focus-card, .vision-phase, .process-step, .update-card, .faq-item, .related-card'
+    '.timeline-section, .principle-card, .milestone-highlight, .related-page-card, .takeaway-item'
   );
   
   // Use Intersection Observer for better performance
@@ -305,7 +338,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.phase-card, .timeline-milestone, .focus-card, .vision-phase, .process-step, .update-card, .faq-item, .related-card'
+    '.timeline-section, .principle-card, .milestone-highlight, .related-page-card, .takeaway-item'
   );
   
   animatedElements.forEach((el, index) => {
@@ -403,76 +436,8 @@ function showToast(message, type = 'info', duration = 3000) {
   }, duration);
 }
 
-// ========== EXPORTED FUNCTIONS ==========
-function viewCurrentPhase() {
-  document.getElementById('current-phase').scrollIntoView({ 
-    behavior: 'smooth',
-    block: 'center'
-  });
-  showToast('Scrolling to current phase', 'info');
-}
-
-function viewTimeline() {
-  document.getElementById('timeline').scrollIntoView({ 
-    behavior: 'smooth'
-  });
-  showToast('Scrolling to timeline', 'info');
-}
-
-function viewFutureVision() {
-  document.getElementById('future-vision').scrollIntoView({ 
-    behavior: 'smooth'
-  });
-  showToast('Scrolling to future vision', 'info');
-}
-
-// ========== GLOBAL EXPORTS ==========
-window.viewCurrentPhase = viewCurrentPhase;
-window.viewTimeline = viewTimeline;
-window.viewFutureVision = viewFutureVision;
-window.initializeMobileDropdown = initializeMobileDropdown;
-window.showToast = showToast;
-
-// Add touch-active class styles
-document.addEventListener('DOMContentLoaded', function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .touch-active {
-      opacity: 0.7 !important;
-      transform: scale(0.98) !important;
-      transition: all 0.1s ease !important;
-    }
-    
-    .milestone-content.expanded,
-    .phase-card.expanded {
-      transform: scale(1.02) !important;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
-    }
-    
-    /* Timeline mobile adjustments */
-    @media (max-width: 768px) {
-      .timeline-milestone {
-        cursor: pointer;
-      }
-      
-      .milestone-content.expanded {
-        margin-bottom: var(--spacing-lg);
-      }
-      
-      .milestone-content.expanded p {
-        display: block !important;
-      }
-      
-      .milestone-content:not(.expanded) p {
-        display: none !important;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-});
-
-// Load roadmap progress from localStorage if available
-window.addEventListener('load', function() {
+// ========== SAVE ROADMAP VISIT ==========
+function saveRoadmapVisit() {
   const savedProgress = localStorage.getItem('roadmapLastViewed');
   if (savedProgress) {
     try {
@@ -494,4 +459,86 @@ window.addEventListener('load', function() {
     lastVisit: new Date().toISOString(),
     page: 'roadmap'
   }));
+}
+
+// ========== EXPORTED FUNCTIONS ==========
+function viewCompletedMilestones() {
+  document.getElementById('completed').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
+  showToast('Scrolling to completed milestones', 'info');
+}
+
+function viewCurrentProgress() {
+  document.getElementById('current').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
+  showToast('Scrolling to current progress', 'info');
+}
+
+function viewFutureVision() {
+  document.getElementById('future').scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'start'
+  });
+  showToast('Scrolling to future vision', 'info');
+}
+
+// ========== GLOBAL EXPORTS ==========
+window.viewCompletedMilestones = viewCompletedMilestones;
+window.viewCurrentProgress = viewCurrentProgress;
+window.viewFutureVision = viewFutureVision;
+window.initializeMobileDropdown = initializeMobileDropdown;
+window.showToast = showToast;
+
+// Add touch-active class styles
+document.addEventListener('DOMContentLoaded', function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .touch-active {
+      opacity: 0.7 !important;
+      transform: scale(0.98) !important;
+      transition: all 0.1s ease !important;
+    }
+    
+    .timeline-item.expanded,
+    .principle-card.expanded {
+      transform: scale(1.02) !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .timeline-item {
+        cursor: pointer;
+      }
+      
+      .timeline-item.expanded {
+        margin-bottom: var(--spacing-lg);
+      }
+      
+      .timeline-item:not(.expanded) .milestone-list {
+        max-height: 150px;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .timeline-item:not(.expanded) .milestone-list::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+      }
+      
+      .principle-card {
+        cursor: pointer;
+      }
+    }
+  `;
+  document.head.appendChild(style);
 });
