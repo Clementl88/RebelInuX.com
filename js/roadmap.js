@@ -1,4 +1,4 @@
-/// roadmap.js - Roadmap page functionality for 2026
+// roadmap.js - Roadmap page functionality for 2026
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
