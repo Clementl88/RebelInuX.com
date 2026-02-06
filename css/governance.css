@@ -470,7 +470,7 @@
 .faq-grid {
   display: grid;
   gap: var(--spacing-xl);
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Increased from 300px */
 }
 
 .faq-item {
@@ -479,6 +479,10 @@
   border-radius: var(--border-radius);
   border-left: 4px solid var(--rebel-gold);
   transition: var(--transition);
+  min-height: 120px; /* Added minimum height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .faq-item:hover {
@@ -496,31 +500,166 @@
   gap: var(--spacing-md);
   font-size: 1.1rem;
   cursor: pointer;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .faq-item h4 i.fa-chevron-down {
   transition: transform 0.3s ease;
   font-size: 0.9em;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  margin-left: 10px;
 }
 
 .faq-item p {
   color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  line-height: 1.7; /* Increased from 1.6 for better readability */
   margin: 0;
-  font-size: 0.95rem;
-  overflow: hidden;
+  font-size: 0.98rem; /* Slightly larger font */
+  overflow: visible; /* Changed from hidden */
   max-height: 0;
   opacity: 0;
   padding-top: 0;
   padding-bottom: 0;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease; /* Slower transition for smoother expansion */
+  flex-grow: 1; /* Allow paragraph to expand */
 }
 
 .faq-item.active p {
-  max-height: 500px;
+  max-height: 1000px; /* Increased from 500px to allow more content */
   opacity: 1;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 15px; /* Increased padding */
+  padding-bottom: 5px;
+  overflow: visible;
+}
+
+/* FAQ Item Expanded State */
+.faq-item.expanded {
+  min-height: 200px; /* Minimum height when expanded */
+  transition: min-height 0.3s ease;
+}
+
+/* Make sure FAQ items in grid can expand properly */
+.faq-grid .faq-item {
+  height: auto; /* Allow height to adjust based on content */
+  min-height: 120px; /* Minimum collapsed height */
+}
+
+/* FAQ Content Wrapper for better spacing */
+.faq-content-wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Responsive adjustments for FAQ */
+@media (max-width: 1024px) {
+  .faq-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjusted for tablets */
+  }
+  
+  .faq-item {
+    padding: var(--spacing-lg);
+  }
+  
+  .faq-item h4 {
+    font-size: 1.05rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .faq-item {
+    padding: var(--spacing-lg);
+    min-height: 110px;
+  }
+  
+  .faq-item h4 {
+    font-size: 1rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+  
+  .faq-item.active p {
+    padding-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-item {
+    padding: var(--spacing-md);
+    min-height: 100px;
+  }
+  
+  .faq-item h4 {
+    font-size: 0.95rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  
+  .faq-item.active p {
+    padding-top: 10px;
+  }
+}
+
+/* FAQ Header with improved spacing */
+.faq-item h4 .faq-question-text {
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* FAQ Chevron with better positioning */
+.faq-item h4 .fa-chevron-down {
+  margin-top: 2px; /* Better vertical alignment */
+}
+
+/* Smooth height transition for FAQ items */
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item.active {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure FAQ items don't overflow container */
+.faq-container {
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* FAQ Section spacing improvements */
+#faq .content-card {
+  padding: var(--spacing-xl);
+}
+
+/* Make sure all text is visible in FAQ */
+.faq-item p strong {
+  color: var(--rebel-gold);
+  font-weight: 700;
+}
+
+.faq-item p a {
+  color: #0088cc;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.faq-item p a:hover {
+  color: #00ace6;
 }
 
 /* ===== Related Pages ===== */
