@@ -1,4 +1,4 @@
-//* governance.css - Governance Portal specific styles */
+/* governance.css - Governance Portal specific styles */
 
 /* ===== Hero Section ===== */
 .page-hero--governance {
@@ -81,6 +81,7 @@
   color: var(--rebel-gold);
   margin-bottom: var(--spacing-xs);
   text-shadow: 0 2px 10px rgba(255, 204, 0, 0.3);
+  transition: color 0.3s ease;
 }
 
 .stat-label {
@@ -90,6 +91,91 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.4;
+}
+
+/* ===== REBL Governance Hub ===== */
+.governance-hub-section {
+  background: linear-gradient(135deg, rgba(0, 136, 204, 0.1), rgba(0, 170, 255, 0.1));
+  border: 2px solid #0088cc;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.governance-hub-icon {
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 136, 204, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-lg);
+  border: 3px solid #0088cc;
+}
+
+.governance-hub-icon i {
+  color: #0088cc;
+  font-size: 3rem;
+}
+
+.governance-hub-card {
+  border-color: #0088cc !important;
+  background: rgba(0, 136, 204, 0.1) !important;
+}
+
+.governance-hub-card .principle-icon {
+  color: #0088cc !important;
+}
+
+.governance-hub-card h4 {
+  color: #0088cc !important;
+}
+
+/* Verification Steps */
+.verification-steps {
+  background: rgba(37, 211, 102, 0.1);
+  border: 1px solid #25D366;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+.verification-steps ol {
+  color: white;
+  padding-left: var(--spacing-lg);
+  margin: 0;
+}
+
+.verification-steps li {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+.verification-steps strong {
+  color: #25D366;
+}
+
+/* Collab.Land Safety Notice */
+.collabland-safety {
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  margin-top: var(--spacing-md);
+  border-left: 3px solid #25D366;
+}
+
+.collabland-safety p {
+  font-size: 0.9em;
+  color: #25D366;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.collabland-safety i {
+  margin-top: 2px;
 }
 
 /* ===== Governance Overview ===== */
@@ -414,10 +500,7 @@
 
 .faq-item h4 i.fa-chevron-down {
   transition: transform 0.3s ease;
-}
-
-.faq-item h4 i.fa-chevron-down.fa-rotate-180 {
-  transform: rotate(180deg);
+  font-size: 0.9em;
 }
 
 .faq-item p {
@@ -566,4 +649,153 @@
 
 .security-card {
   border-color: #9C27B0 !important;
-  background: rgba(156, 39, 176, 0.1)
+  background: rgba(156, 39, 176, 0.1) !important;
+}
+
+.security-card .related-icon,
+.security-card h3,
+.security-card .related-arrow {
+  color: #9C27B0 !important;
+}
+
+.security-card::before {
+  background: #9C27B0 !important;
+}
+
+.security-card:hover {
+  background: rgba(156, 39, 176, 0.15) !important;
+}
+
+/* Trade Card Special */
+.trade-card {
+  border-color: var(--rebel-red) !important;
+  background: rgba(255, 51, 102, 0.1) !important;
+}
+
+.trade-card .related-icon,
+.trade-card h3,
+.trade-card .related-arrow {
+  color: var(--rebel-red) !important;
+}
+
+.trade-card::before {
+  background: var(--rebel-red) !important;
+}
+
+.trade-card:hover {
+  background: rgba(255, 51, 102, 0.15) !important;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .principles-grid,
+  .faq-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .governance-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .principles-grid,
+  .faq-grid,
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .process-timeline::before {
+    left: 30px;
+  }
+  
+  .process-step {
+    gap: var(--spacing-md);
+  }
+  
+  .step-number {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .faq-item {
+    padding: var(--spacing-lg);
+  }
+  
+  .faq-item h4 {
+    font-size: 1rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.9rem;
+  }
+  
+  /* Hide floating reminder on mobile */
+  .cta-button[style*="position: fixed"] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .governance-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-item {
+    padding: var(--spacing-md);
+  }
+  
+  .related-card {
+    min-height: 180px;
+    padding: var(--spacing-md);
+  }
+  
+  .related-icon {
+    font-size: 2rem;
+  }
+  
+  .related-card h3 {
+    font-size: 1rem;
+  }
+  
+  .related-card p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Update Time Styling */
+.update-time {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.update-time small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--rebel-gold);
+}
+
+/* Telegram Button Pulse Animation */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 136, 204, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+  }
+}
+
+.telegram-pulse {
+  animation: pulse 2s infinite;
+}
