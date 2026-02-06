@@ -1,4 +1,4 @@
-// governance.js - Governance Portal page functionality
+/// governance.js - Governance Portal page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
