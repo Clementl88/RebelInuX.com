@@ -20,14 +20,11 @@ function initGovernancePage() {
   // Initialize AOS animations
   initAOS();
   
-  // Initialize voting functionality
-  initVoting();
+  // Initialize accordion functionality
+  initAccordion();
   
-  // Initialize proposal form
-  initProposalForm();
-  
-  // Initialize file upload
-  initFileUpload();
+  // Initialize stats animation
+  initStatsAnimation();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -86,9 +83,6 @@ function initGovernanceData() {
   // Fetch and update governance stats
   updateGovernanceStats();
   
-  // Initialize voting data
-  initVotingData();
-  
   // Start periodic updates
   setInterval(updateGovernanceStats, 60000); // Update every minute
 }
@@ -97,17 +91,11 @@ async function updateGovernanceStats() {
   try {
     // In a real implementation, you would fetch these from APIs
     const stats = {
-      totalProposals: 12,
-      activeVotes: 3,
-      totalVoters: 245,
-      votingPower: 2.5
+      dualModel: "Dual",
+      activeVoting: "2 Systems",
+      participants: 67,
+      daoLaunch: "2026"
     };
-    
-    // Update stat counters with animation
-    animateCounter('totalProposals', stats.totalProposals);
-    animateCounter('activeVotes', stats.activeVotes);
-    animateCounter('totalVoters', stats.totalVoters);
-    document.getElementById('votingPower').textContent = stats.votingPower + 'M';
     
     // Update last updated time
     updateLastUpdated();
@@ -117,38 +105,19 @@ async function updateGovernanceStats() {
   }
 }
 
-function initVotingData() {
-  // Initialize vote progress animations
-  document.querySelectorAll('.stat-fill').forEach(fill => {
-    const width = fill.style.width;
-    fill.style.width = '0%';
+function initStatsAnimation() {
+  // Animate stat numbers
+  document.querySelectorAll('.stat-number').forEach((stat, index) => {
+    const originalValue = stat.textContent;
+    stat.style.opacity = '0';
+    stat.style.transform = 'translateY(20px)';
     
     setTimeout(() => {
-      fill.style.width = width;
-    }, 500);
+      stat.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      stat.style.opacity = '1';
+      stat.style.transform = 'translateY(0)';
+    }, 100 + (index * 100));
   });
-}
-
-function animateCounter(elementId, target) {
-  const element = document.getElementById(elementId);
-  if (!element) return;
-  
-  const current = parseInt(element.textContent) || 0;
-  if (current === target) return;
-  
-  const duration = 1000; // 1 second
-  const increment = (target - current) / (duration / 16);
-  
-  let currentValue = current;
-  const timer = setInterval(() => {
-    currentValue += increment;
-    if ((increment > 0 && currentValue >= target) || (increment < 0 && currentValue <= target)) {
-      element.textContent = target;
-      clearInterval(timer);
-    } else {
-      element.textContent = Math.floor(currentValue);
-    }
-  }, 16);
 }
 
 function updateLastUpdated() {
@@ -161,318 +130,64 @@ function updateLastUpdated() {
   }
 }
 
-// ========== VOTING FUNCTIONALITY ==========
-function initVoting() {
-  const voteButtons = document.querySelectorAll('.vote-button');
+// ========== ACCORDION FUNCTIONALITY ==========
+function initAccordion() {
+  const accordionItems = document.querySelectorAll('.faq-item');
   
-  voteButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
-  });
-}
-
-function voteFor(button) {
-  showVoteConfirmation('For', button);
-}
-
-function voteAgainst(button) {
-  showVoteConfirmation('Against', button);
-}
-
-function voteAbstain(button) {
-  showVoteConfirmation('Abstain', button);
-}
-
-function showVoteConfirmation(voteType, button) {
-  const voteCard = button.closest('.vote-card');
-  const proposalTitle = voteCard.querySelector('h3').textContent;
-  const proposalId = proposalTitle.split('#')[1]?.split(':')[0] || 'Unknown';
-  
-  if (confirm(`Are you sure you want to vote ${voteType} on Proposal #${proposalId}?\n\nThis action will connect your wallet and submit an on-chain transaction.`)) {
-    simulateVote(button, voteType);
-  }
-}
-
-function simulateVote(button, voteType) {
-  const originalHTML = button.innerHTML;
-  const originalText = button.textContent;
-  
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Voting...';
-  button.disabled = true;
-  
-  // Simulate wallet connection and transaction
-  setTimeout(() => {
-    // In a real implementation, you would:
-    // 1. Connect wallet
-    // 2. Sign transaction
-    // 3. Submit vote on-chain
+  accordionItems.forEach(item => {
+    const header = item.querySelector('h4');
+    const content = item.querySelector('p');
     
-    showToast(`Successfully voted ${voteType} on proposal!`, 'success');
-    
-    // Reset button after delay
-    setTimeout(() => {
-      button.innerHTML = originalHTML;
-      button.textContent = originalText;
-      button.disabled = false;
-      
-      // Update UI to show user voted
-      button.innerHTML = `<i class="fas fa-check-circle"></i> Voted ${voteType}`;
-      button.style.background = voteType === 'For' ? 'rgba(76, 175, 80, 0.3)' : 
-                               voteType === 'Against' ? 'rgba(255, 51, 102, 0.3)' : 
-                               'rgba(158, 158, 158, 0.3)';
-      
-    }, 2000);
-    
-  }, 1500);
-}
-
-// ========== PROPOSAL FORM FUNCTIONALITY ==========
-function initProposalForm() {
-  const form = document.querySelector('.proposal-form');
-  if (!form) return;
-  
-  // Character counters
-  const titleInput = document.getElementById('proposalTitle');
-  const descriptionTextarea = document.getElementById('proposalDescription');
-  
-  if (titleInput) {
-    titleInput.addEventListener('input', function() {
-      const count = this.value.length;
-      const hint = this.nextElementSibling;
-      if (hint && hint.classList.contains('form-hint')) {
-        hint.textContent = `${count}/100 characters`;
-      }
-    });
-  }
-  
-  if (descriptionTextarea) {
-    descriptionTextarea.addEventListener('input', function() {
-      const count = this.value.length;
-      const hint = this.nextElementSibling;
-      if (hint && hint.classList.contains('form-hint')) {
-        const min = 500;
-        if (count < min) {
-          hint.textContent = `${count}/${min} characters (minimum ${min})`;
-          hint.style.color = '#f44336';
-        } else {
-          hint.textContent = `${count} characters ✓`;
-          hint.style.color = '#4CAF50';
+    if (header && content) {
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', () => {
+        const isActive = content.style.maxHeight && content.style.maxHeight !== '0px';
+        
+        // Close all other items
+        document.querySelectorAll('.faq-item p').forEach(p => {
+          p.style.maxHeight = '0';
+          p.style.opacity = '0';
+          p.style.paddingTop = '0';
+          p.style.paddingBottom = '0';
+          p.style.overflow = 'hidden';
+          p.style.transition = 'all 0.3s ease';
+        });
+        
+        // Reset all icons
+        document.querySelectorAll('.faq-item h4 i.fa-chevron-down').forEach(icon => {
+          icon.classList.remove('fa-rotate-180');
+        });
+        
+        if (!isActive) {
+          // Open this item
+          content.style.maxHeight = content.scrollHeight + 'px';
+          content.style.opacity = '1';
+          content.style.paddingTop = '10px';
+          content.style.paddingBottom = '10px';
+          
+          // Rotate icon
+          const icon = header.querySelector('i.fa-chevron-down');
+          if (icon) {
+            icon.classList.add('fa-rotate-180');
+          }
         }
-      }
-    });
-  }
-  
-  // Form validation
-  const submitButton = form.querySelector('button[onclick="submitProposal()"]');
-  if (submitButton) {
-    submitButton.addEventListener('click', validateProposalForm);
-  }
-}
-
-function initFileUpload() {
-  const fileInput = document.getElementById('proposalFiles');
-  const fileList = document.getElementById('fileList');
-  
-  if (!fileInput || !fileList) return;
-  
-  fileInput.addEventListener('change', function() {
-    fileList.innerHTML = '';
-    
-    if (this.files.length > 0) {
-      Array.from(this.files).forEach((file, index) => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-        fileItem.innerHTML = `
-          <span>${file.name} (${formatFileSize(file.size)})</span>
-          <button type="button" onclick="removeFile(${index})">
-            <i class="fas fa-times"></i>
-          </button>
-        `;
-        fileList.appendChild(fileItem);
       });
+      
+      // Initialize all as closed
+      content.style.maxHeight = '0';
+      content.style.opacity = '0';
+      content.style.paddingTop = '0';
+      content.style.paddingBottom = '0';
+      content.style.overflow = 'hidden';
+      content.style.transition = 'all 0.3s ease';
     }
   });
-}
-
-function removeFile(index) {
-  const fileInput = document.getElementById('proposalFiles');
-  const files = Array.from(fileInput.files);
-  files.splice(index, 1);
-  
-  // Create new FileList (simulated)
-  const dataTransfer = new DataTransfer();
-  files.forEach(file => dataTransfer.items.add(file));
-  fileInput.files = dataTransfer.files;
-  
-  // Refresh file list display
-  fileInput.dispatchEvent(new Event('change'));
-}
-
-function formatFileSize(bytes) {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-function saveDraft() {
-  const formData = getFormData();
-  localStorage.setItem('proposalDraft', JSON.stringify(formData));
-  showToast('Proposal draft saved locally', 'info');
-}
-
-function previewProposal() {
-  const formData = getFormData();
-  
-  // Basic validation
-  if (!formData.title || formData.title.length < 10) {
-    showToast('Please enter a valid proposal title (minimum 10 characters)', 'error');
-    return;
-  }
-  
-  if (!formData.category) {
-    showToast('Please select a proposal category', 'error');
-    return;
-  }
-  
-  if (!formData.description || formData.description.length < 500) {
-    showToast('Please provide a detailed description (minimum 500 characters)', 'error');
-    return;
-  }
-  
-  // Show preview (in real implementation, open modal or new page)
-  showToast('Opening proposal preview...', 'info');
-  
-  // Simulate preview
-  setTimeout(() => {
-    const preview = `
-      Proposal Preview:
-      
-      Title: ${formData.title}
-      Category: ${formData.category}
-      $REBL Requested: ${formData.amount || 'None'}
-      
-      Description:
-      ${formData.description.substring(0, 200)}...
-      
-      Files: ${formData.files?.length || 0} attached
-    `;
-    
-    alert(preview + '\n\n(Full preview would be shown in a modal)');
-  }, 500);
-}
-
-function submitProposal() {
-  const formData = getFormData();
-  
-  // Validate form
-  if (!validateProposalForm()) {
-    return;
-  }
-  
-  // Simulate proposal submission
-  showToast('Submitting proposal to governance system...', 'info');
-  
-  const submitButton = document.querySelector('button[onclick="submitProposal()"]');
-  const originalHTML = submitButton.innerHTML;
-  
-  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-  submitButton.disabled = true;
-  
-  setTimeout(() => {
-    // In a real implementation, you would:
-    // 1. Connect wallet
-    // 2. Check token balance (minimum 10,000 $REBL)
-    // 3. Sign and submit transaction
-    // 4. Get proposal ID
-    
-    showToast('Proposal submitted successfully!', 'success');
-    
-    // Reset form
-    resetProposalForm();
-    
-    // Reset button
-    submitButton.innerHTML = originalHTML;
-    submitButton.disabled = false;
-    
-    // Show proposal ID
-    const proposalId = Math.floor(Math.random() * 1000) + 13;
-    setTimeout(() => {
-      showToast(`Your proposal has been submitted with ID #${proposalId}. It will now enter the 7-day discussion period.`, 'info', 5000);
-    }, 1000);
-    
-  }, 2000);
-}
-
-function getFormData() {
-  return {
-    title: document.getElementById('proposalTitle')?.value || '',
-    category: document.getElementById('proposalCategory')?.value || '',
-    description: document.getElementById('proposalDescription')?.value || '',
-    amount: document.getElementById('proposalAmount')?.value || '',
-    files: document.getElementById('proposalFiles')?.files || []
-  };
-}
-
-function validateProposalForm() {
-  const formData = getFormData();
-  let isValid = true;
-  
-  // Validate title
-  if (!formData.title || formData.title.length < 10) {
-    showToast('Title must be at least 10 characters long', 'error');
-    isValid = false;
-  }
-  
-  // Validate category
-  if (!formData.category) {
-    showToast('Please select a proposal category', 'error');
-    isValid = false;
-  }
-  
-  // Validate description
-  if (!formData.description || formData.description.length < 500) {
-    showToast('Description must be at least 500 characters long', 'error');
-    isValid = false;
-  }
-  
-  // Validate amount if provided
-  if (formData.amount && (isNaN(formData.amount) || parseFloat(formData.amount) < 0)) {
-    showToast('Please enter a valid $REBL amount', 'error');
-    isValid = false;
-  }
-  
-  return isValid;
-}
-
-function resetProposalForm() {
-  document.getElementById('proposalTitle').value = '';
-  document.getElementById('proposalCategory').selectedIndex = 0;
-  document.getElementById('proposalDescription').value = '';
-  document.getElementById('proposalAmount').value = '';
-  document.getElementById('proposalFiles').value = '';
-  document.getElementById('fileList').innerHTML = '';
-  
-  // Reset character counters
-  const hints = document.querySelectorAll('.form-hint');
-  hints.forEach(hint => {
-    if (hint.previousElementSibling.id === 'proposalTitle') {
-      hint.textContent = 'Maximum 100 characters';
-    } else if (hint.previousElementSibling.id === 'proposalDescription') {
-      hint.textContent = 'Minimum 500 characters required';
-      hint.style.color = '';
-    }
-  });
-  
-  localStorage.removeItem('proposalDraft');
 }
 
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.principle-item, .vote-card, .guide-card, .faq-item, .related-card, .process-step'
+    '.principle-item, .process-step, .related-card, .faq-item, .content-card'
   );
   
   // Use Intersection Observer for better performance
@@ -505,7 +220,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.principle-item, .vote-card, .guide-card, .faq-item, .related-card, .process-step'
+    '.principle-item, .process-step, .related-card, .faq-item, .content-card'
   );
   
   animatedElements.forEach((el, index) => {
@@ -604,13 +319,6 @@ function showToast(message, type = 'info', duration = 3000) {
 }
 
 // ========== GLOBAL EXPORTS ==========
-window.voteFor = voteFor;
-window.voteAgainst = voteAgainst;
-window.voteAbstain = voteAbstain;
-window.saveDraft = saveDraft;
-window.previewProposal = previewProposal;
-window.submitProposal = submitProposal;
-window.removeFile = removeFile;
 window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
 
@@ -624,38 +332,24 @@ document.addEventListener('DOMContentLoaded', function() {
       transition: all 0.1s ease !important;
     }
     
-    .file-upload:active {
-      border-color: var(--rebel-gold) !important;
-      background: rgba(255, 204, 0, 0.1) !important;
+    .faq-item h4 {
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    
+    .faq-item h4:hover {
+      color: var(--rebel-gold);
+    }
+    
+    .faq-item h4 i.fa-chevron-down {
+      transition: transform 0.3s ease;
+      float: right;
+      margin-left: 10px;
+    }
+    
+    .faq-item h4 i.fa-chevron-down.fa-rotate-180 {
+      transform: rotate(180deg);
     }
   `;
   document.head.appendChild(style);
 });
-
-// Load draft if exists
-window.addEventListener('load', function() {
-  const draft = localStorage.getItem('proposalDraft');
-  if (draft) {
-    try {
-      const formData = JSON.parse(draft);
-      if (confirm('You have a saved proposal draft. Would you like to load it?')) {
-        loadDraft(formData);
-      }
-    } catch (e) {
-      console.error('Error loading draft:', e);
-    }
-  }
-});
-
-function loadDraft(formData) {
-  document.getElementById('proposalTitle').value = formData.title || '';
-  document.getElementById('proposalCategory').value = formData.category || '';
-  document.getElementById('proposalDescription').value = formData.description || '';
-  document.getElementById('proposalAmount').value = formData.amount || '';
-  
-  // Trigger input events to update character counters
-  document.getElementById('proposalTitle').dispatchEvent(new Event('input'));
-  document.getElementById('proposalDescription').dispatchEvent(new Event('input'));
-  
-  showToast('Proposal draft loaded', 'info');
-}
