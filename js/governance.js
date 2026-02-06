@@ -1,4 +1,4 @@
-/// governance.js - Governance Portal page functionality
+// governance.js - Governance Portal page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -25,6 +25,9 @@ function initGovernancePage() {
   
   // Initialize stats animation
   initStatsAnimation();
+  
+  // Initialize governance hub verification reminder
+  initGovernanceHubReminder();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -97,13 +100,29 @@ async function updateGovernanceStats() {
     const timeDiff = daoLaunchDate.getTime() - currentDate.getTime();
     const daysUntilLaunch = Math.ceil(timeDiff / (1000 * 3600 * 24));
     
-    // Update participant count
-    const participantElement = document.querySelector('.stat-item:nth-child(3) .stat-number');
-    if (participantElement) {
-      // Simulate potential growth
-      const currentParticipants = 6;
-      const potentialGrowth = Math.floor(Math.random() * 3); // 0-2 potential new participants
-      participantElement.textContent = currentParticipants + potentialGrowth;
+    // Update stats display
+    const statsContainer = document.querySelector('.governance-stats');
+    if (statsContainer) {
+      const statItems = statsContainer.querySelectorAll('.stat-item');
+      
+      // Update participant stat to show "Growing"
+      const participantStat = statItems[2];
+      if (participantStat) {
+        const numberElement = participantStat.querySelector('.stat-number');
+        if (numberElement) {
+          // Animate between "6+" and "Growing"
+          if (numberElement.textContent === '6') {
+            numberElement.textContent = 'Growing';
+            numberElement.style.color = '#4CAF50'; // Green for growth
+          } else if (numberElement.textContent === 'Growing') {
+            numberElement.textContent = '6+';
+            numberElement.style.color = 'var(--rebel-gold)';
+          } else {
+            numberElement.textContent = 'Growing';
+            numberElement.style.color = '#4CAF50';
+          }
+        }
+      }
     }
     
     // Update last updated time
@@ -112,6 +131,57 @@ async function updateGovernanceStats() {
   } catch (error) {
     console.error('Error updating governance stats:', error);
   }
+}
+
+function initGovernanceHubReminder() {
+  // Show reminder about governance hub access
+  const reminderBtn = document.createElement('button');
+  reminderBtn.className = 'cta-button';
+  reminderBtn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 998;
+    background: linear-gradient(135deg, #0088cc, #00ace6);
+    padding: 12px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+    animation: pulse 2s infinite;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `;
+  
+  reminderBtn.innerHTML = `
+    <i class="fab fa-telegram"></i>
+    <span>Join Governance Hub</span>
+  `;
+  
+  reminderBtn.addEventListener('click', function() {
+    window.location.hash = '#rebl-governance-hub';
+    showToast('Scroll to Governance Hub section', 'info');
+  });
+  
+  // Add to body after a delay
+  setTimeout(() => {
+    if (document.querySelector('#rebl-governance-hub')) {
+      document.body.appendChild(reminderBtn);
+      
+      // Remove after 30 seconds
+      setTimeout(() => {
+        if (reminderBtn.parentNode) {
+          reminderBtn.style.transition = 'opacity 0.5s ease';
+          reminderBtn.style.opacity = '0';
+          setTimeout(() => {
+            if (reminderBtn.parentNode) {
+              reminderBtn.parentNode.removeChild(reminderBtn);
+            }
+          }, 500);
+        }
+      }, 30000);
+    }
+  }, 3000);
 }
 
 function initStatsAnimation() {
@@ -164,7 +234,7 @@ function updateLastUpdated() {
   }
   
   timestampElement.textContent = `Last Updated: ${dateString} at ${timeString}`;
-  timestampElement.innerHTML += `<br><small>DAO Launch: Q3 2026 (${calculateDaysUntilLaunch()} days remaining)</small>`;
+  timestampElement.innerHTML += `<br><small>DAO Launch: Q3 2026 • Governance Hub: ACTIVE NOW</small>`;
 }
 
 function calculateDaysUntilLaunch() {
@@ -357,6 +427,18 @@ function showToast(message, type = 'info', duration = 3000) {
           opacity: 0;
         }
       }
+      
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+        }
+        50% {
+          box-shadow: 0 4px 20px rgba(0, 136, 204, 0.6);
+        }
+        100% {
+          box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -420,6 +502,20 @@ document.addEventListener('DOMContentLoaded', function() {
       margin-top: 0.25rem;
       font-size: 0.8rem;
       color: var(--rebel-gold);
+    }
+    
+    /* Governance Hub specific styles */
+    .governance-hub-card {
+      border-color: #0088cc !important;
+      background: linear-gradient(135deg, rgba(0, 136, 204, 0.1), rgba(0, 170, 255, 0.1)) !important;
+    }
+    
+    .governance-hub-card .principle-icon {
+      color: #0088cc !important;
+    }
+    
+    .governance-hub-card h4 {
+      color: #0088cc !important;
     }
   `;
   document.head.appendChild(style);
