@@ -244,75 +244,47 @@ function calculateDaysUntilLaunch() {
   return Math.ceil(timeDiff / (1000 * 3600 * 24));
 }
 
-// ========== IMPROVED ACCORDION FUNCTIONALITY ==========
+// ========== FIXED ACCORDION FUNCTIONALITY ==========
 function initAccordion() {
   const accordionItems = document.querySelectorAll('.faq-item');
   
-  accordionItems.forEach(item => {
-    const header = item.querySelector('h4');
-    const content = item.querySelector('p');
+  accordionItems.forEach((item, index) => {
+    const header = item.querySelector('.faq-header');
+    const content = item.querySelector('.faq-content');
+    const chevron = item.querySelector('.faq-chevron');
     
     if (header && content) {
-      // Wrap the question text in a span for better styling
-      const questionText = header.childNodes[0].textContent;
-      const icon = header.querySelector('i');
-      header.innerHTML = '';
-      
-      const textSpan = document.createElement('span');
-      textSpan.className = 'faq-question-text';
-      textSpan.textContent = questionText;
-      header.appendChild(textSpan);
-      
-      if (icon) {
-        header.appendChild(icon);
-      } else {
-        const chevron = document.createElement('i');
-        chevron.className = 'fas fa-chevron-down';
-        chevron.style.transition = 'transform 0.3s ease';
-        header.appendChild(chevron);
-      }
-      
       header.style.cursor = 'pointer';
       
       header.addEventListener('click', () => {
-        const isActive = content.style.maxHeight && content.style.maxHeight !== '0px';
+        const isActive = item.classList.contains('active');
         
-        // Close all other items
+        // Close all other items except this one
         document.querySelectorAll('.faq-item').forEach(otherItem => {
-          if (otherItem !== item) {
-            const otherContent = otherItem.querySelector('p');
-            const otherIcon = otherItem.querySelector('h4 i');
+          if (otherItem !== item && otherItem.classList.contains('active')) {
+            otherItem.classList.remove('active');
+            const otherContent = otherItem.querySelector('.faq-content');
+            const otherChevron = otherItem.querySelector('.faq-chevron');
             if (otherContent) {
               otherContent.style.maxHeight = '0';
               otherContent.style.opacity = '0';
               otherContent.style.paddingTop = '0';
-              otherContent.style.paddingBottom = '0';
-              otherItem.classList.remove('active', 'expanded');
             }
-            if (otherIcon) {
-              otherIcon.style.transform = 'rotate(0deg)';
+            if (otherChevron) {
+              otherChevron.style.transform = 'rotate(0deg)';
             }
           }
         });
         
-        // Rotate icon
-        const icon = header.querySelector('i');
-        if (icon) {
-          if (!isActive) {
-            icon.style.transform = 'rotate(180deg)';
-          } else {
-            icon.style.transform = 'rotate(0deg)';
-          }
-        }
-        
         if (!isActive) {
           // Open this item
-          const contentHeight = content.scrollHeight;
-          content.style.maxHeight = contentHeight + 30 + 'px'; // Add extra padding
+          item.classList.add('active');
+          content.style.maxHeight = '500px';
           content.style.opacity = '1';
-          content.style.paddingTop = '15px';
-          content.style.paddingBottom = '10px';
-          item.classList.add('active', 'expanded');
+          content.style.paddingTop = 'var(--spacing-md)';
+          if (chevron) {
+            chevron.style.transform = 'rotate(180deg)';
+          }
           
           // Smooth scroll to ensure the expanded content is visible
           setTimeout(() => {
@@ -328,39 +300,28 @@ function initAccordion() {
           }, 100);
         } else {
           // Close this item
+          item.classList.remove('active');
           content.style.maxHeight = '0';
           content.style.opacity = '0';
           content.style.paddingTop = '0';
-          content.style.paddingBottom = '0';
-          item.classList.remove('active', 'expanded');
+          if (chevron) {
+            chevron.style.transform = 'rotate(0deg)';
+          }
         }
       });
       
-      // Initialize all as closed
+      // Initialize as closed (except first one)
       content.style.maxHeight = '0';
       content.style.opacity = '0';
       content.style.paddingTop = '0';
-      content.style.paddingBottom = '0';
-      content.style.overflow = 'visible';
+      content.style.overflow = 'hidden';
       content.style.transition = 'all 0.5s ease';
       
-      // Ensure content is visible when printed
-      const printStyle = document.createElement('style');
-      printStyle.textContent = `
-        @media print {
-          .faq-item p {
-            max-height: none !important;
-            opacity: 1 !important;
-            padding-top: 10px !important;
-            padding-bottom: 10px !important;
-            display: block !important;
-          }
-          .faq-item h4 i {
-            display: none !important;
-          }
-        }
-      `;
-      document.head.appendChild(printStyle);
+      // Initialize chevron
+      if (chevron) {
+        chevron.style.transition = 'transform 0.3s ease';
+        chevron.style.transform = 'rotate(0deg)';
+      }
     }
   });
   
@@ -368,7 +329,7 @@ function initAccordion() {
   setTimeout(() => {
     const firstFaqItem = document.querySelector('.faq-item');
     if (firstFaqItem) {
-      const firstHeader = firstFaqItem.querySelector('h4');
+      const firstHeader = firstFaqItem.querySelector('.faq-header');
       if (firstHeader) {
         firstHeader.click();
       }
@@ -536,77 +497,10 @@ document.addEventListener('DOMContentLoaded', function() {
       transition: all 0.1s ease !important;
     }
     
-    .faq-item h4 {
-      cursor: pointer;
-      transition: color 0.3s ease;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      text-align: left;
-    }
-    
-    .faq-item h4:hover {
-      color: var(--rebel-gold);
-    }
-    
-    .faq-item h4 i.fa-chevron-down {
-      transition: transform 0.3s ease;
-      margin-left: 10px;
-      font-size: 0.9em;
-      flex-shrink: 0;
-      margin-top: 3px;
-    }
-    
-    .update-time {
-      text-align: center;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: var(--spacing-md);
-      padding: var(--spacing-sm);
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: var(--border-radius);
-      border: 1px solid rgba(255, 204, 0, 0.2);
-    }
-    
-    .update-time small {
-      display: block;
-      margin-top: 0.25rem;
-      font-size: 0.8rem;
-      color: var(--rebel-gold);
-    }
-    
-    /* FAQ specific improvements */
+    /* FAQ improvements - these supplement the main CSS */
     .faq-question-text {
       flex: 1;
-      margin-right: 15px;
-      line-height: 1.4;
-    }
-    
-    .faq-item p {
-      line-height: 1.7 !important;
       text-align: left;
-    }
-    
-    .faq-item.active {
-      min-height: 200px;
-      transition: min-height 0.5s ease;
-    }
-    
-    /* Ensure FAQ items expand properly */
-    .faq-item p br {
-      display: block;
-      content: "";
-      margin-bottom: 8px;
-    }
-    
-    /* Better spacing for FAQ content */
-    #faq .content-card {
-      overflow: visible;
-    }
-    
-    /* Fix FAQ grid layout */
-    .faq-grid {
-      align-items: stretch;
     }
     
     /* Print styles for FAQ */
@@ -616,26 +510,16 @@ document.addEventListener('DOMContentLoaded', function() {
         page-break-inside: avoid;
       }
       
-      .faq-item p {
+      .faq-content {
         max-height: none !important;
         opacity: 1 !important;
         padding: 10px 0 !important;
         display: block !important;
       }
-    }
-    
-    /* Governance Hub specific styles */
-    .governance-hub-card {
-      border-color: #0088cc !important;
-      background: rgba(0, 136, 204, 0.1) !important;
-    }
-    
-    .governance-hub-card .principle-icon {
-      color: #0088cc !important;
-    }
-    
-    .governance-hub-card h4 {
-      color: #0088cc !important;
+      
+      .faq-chevron {
+        display: none !important;
+      }
     }
   `;
   document.head.appendChild(style);
