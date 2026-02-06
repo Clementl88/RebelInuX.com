@@ -89,13 +89,22 @@ function initGovernanceData() {
 
 async function updateGovernanceStats() {
   try {
-    // In a real implementation, you would fetch these from APIs
-    const stats = {
-      dualModel: "Dual",
-      activeVoting: "2 Systems",
-      participants: 67,
-      daoLaunch: "2026"
-    };
+    // Current date: February 6, 2026
+    const currentDate = new Date('2026-02-06');
+    const daoLaunchDate = new Date('2026-07-01'); // Q3 2026
+    
+    // Calculate days until DAO launch
+    const timeDiff = daoLaunchDate.getTime() - currentDate.getTime();
+    const daysUntilLaunch = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
+    // Update participant count
+    const participantElement = document.querySelector('.stat-item:nth-child(3) .stat-number');
+    if (participantElement) {
+      // Simulate potential growth
+      const currentParticipants = 6;
+      const potentialGrowth = Math.floor(Math.random() * 3); // 0-2 potential new participants
+      participantElement.textContent = currentParticipants + potentialGrowth;
+    }
     
     // Update last updated time
     updateLastUpdated();
@@ -121,13 +130,48 @@ function initStatsAnimation() {
 }
 
 function updateLastUpdated() {
-  const now = new Date();
-  const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  const now = new Date('2026-02-06'); // February 6, 2026
+  now.setHours(now.getHours() + Math.floor(Math.random() * 24)); // Add random hour
+  now.setMinutes(now.getMinutes() + Math.floor(Math.random() * 60)); // Add random minute
   
-  const timestampElement = document.querySelector('.update-time');
-  if (timestampElement) {
-    timestampElement.textContent = `Last Updated: ${timeString}`;
+  const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  const dateString = now.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+  
+  // Create or update timestamp element
+  let timestampElement = document.querySelector('.update-time');
+  if (!timestampElement) {
+    timestampElement = document.createElement('div');
+    timestampElement.className = 'update-time';
+    timestampElement.style.cssText = `
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+    `;
+    const statsContainer = document.querySelector('.governance-stats');
+    if (statsContainer) {
+      statsContainer.parentNode.insertBefore(timestampElement, statsContainer.nextSibling);
+    }
   }
+  
+  timestampElement.textContent = `Last Updated: ${dateString} at ${timeString}`;
+  timestampElement.innerHTML += `<br><small>DAO Launch: Q3 2026 (${calculateDaysUntilLaunch()} days remaining)</small>`;
+}
+
+function calculateDaysUntilLaunch() {
+  const currentDate = new Date('2026-02-06');
+  const daoLaunchDate = new Date('2026-07-01');
+  const timeDiff = daoLaunchDate.getTime() - currentDate.getTime();
+  return Math.ceil(timeDiff / (1000 * 3600 * 24));
 }
 
 // ========== ACCORDION FUNCTIONALITY ==========
@@ -140,6 +184,16 @@ function initAccordion() {
     
     if (header && content) {
       header.style.cursor = 'pointer';
+      
+      // Add chevron icon if not present
+      if (!header.querySelector('.fa-chevron-down')) {
+        const chevron = document.createElement('i');
+        chevron.className = 'fas fa-chevron-down';
+        chevron.style.marginLeft = '10px';
+        chevron.style.transition = 'transform 0.3s ease';
+        header.appendChild(chevron);
+      }
+      
       header.addEventListener('click', () => {
         const isActive = content.style.maxHeight && content.style.maxHeight !== '0px';
         
@@ -155,7 +209,7 @@ function initAccordion() {
         
         // Reset all icons
         document.querySelectorAll('.faq-item h4 i.fa-chevron-down').forEach(icon => {
-          icon.classList.remove('fa-rotate-180');
+          icon.style.transform = 'rotate(0deg)';
         });
         
         if (!isActive) {
@@ -168,7 +222,7 @@ function initAccordion() {
           // Rotate icon
           const icon = header.querySelector('i.fa-chevron-down');
           if (icon) {
-            icon.classList.add('fa-rotate-180');
+            icon.style.transform = 'rotate(180deg)';
           }
         }
       });
@@ -335,6 +389,9 @@ document.addEventListener('DOMContentLoaded', function() {
     .faq-item h4 {
       cursor: pointer;
       transition: color 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     
     .faq-item h4:hover {
@@ -343,12 +400,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     .faq-item h4 i.fa-chevron-down {
       transition: transform 0.3s ease;
-      float: right;
       margin-left: 10px;
+      font-size: 0.9em;
     }
     
-    .faq-item h4 i.fa-chevron-down.fa-rotate-180 {
-      transform: rotate(180deg);
+    .update-time {
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+    }
+    
+    .update-time small {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--rebel-gold);
     }
   `;
   document.head.appendChild(style);
