@@ -172,12 +172,6 @@ async function updateArtworkStats() {
     animateCounter('totalArtists', 23);
     document.getElementById('nftCollections').textContent = '3';
     
-    // Update NFT stats
-    document.getElementById('totalNfts').textContent = '1,000';
-    document.getElementById('nftOwners').textContent = '423';
-    document.getElementById('communityArt').textContent = '78';
-    document.getElementById('volumeTraded').textContent = '250';
-    
     // Update last updated time
     updateLastUpdated();
     
@@ -209,11 +203,11 @@ function initArtworkLikes() {
 
 function initNFTData() {
   // Initialize like counts from localStorage for NFTs
-  document.querySelectorAll('.nft-card .like-btn').forEach(btn => {
-    const nftId = btn.closest('.nft-card').dataset.category;
+  document.querySelectorAll('.nft-card').forEach(card => {
+    const nftId = card.dataset.category;
     const savedLikes = localStorage.getItem(`nft_likes_${nftId}`);
     if (savedLikes) {
-      const likeCount = btn.querySelector('.like-count');
+      const likeCount = card.querySelector('.like-count');
       if (likeCount) {
         likeCount.textContent = savedLikes;
       }
@@ -221,8 +215,11 @@ function initNFTData() {
       // Check if liked
       const isLiked = localStorage.getItem(`nft_liked_${nftId}`) === 'true';
       if (isLiked) {
-        btn.classList.add('liked');
-        btn.querySelector('i').className = 'fas fa-heart';
+        const likeBtn = card.querySelector('.like-btn');
+        if (likeBtn) {
+          likeBtn.classList.add('liked');
+          likeBtn.querySelector('i').className = 'fas fa-heart';
+        }
       }
     }
   });
@@ -266,7 +263,7 @@ function trackPageVisit() {
   
   if (visitCount === 0) {
     setTimeout(() => {
-      showToast('🎨 Welcome to the RebelInuX Art Gallery! Explore NFTs and community art.', 'info', 5000);
+      showToast('🎨 Welcome to the RebelInuX Art Gallery! Explore NFTs exclusively on ZORA.', 'info', 5000);
     }, 2000);
   }
 }
@@ -297,14 +294,6 @@ function initGalleryInteractions() {
   
   // Filter functionality
   initFiltering();
-  
-  // Sort functionality for NFTs
-  const sortSelect = document.getElementById('sortNfts');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', function() {
-      sortNFTs(this.value);
-    });
-  }
 }
 
 function initFiltering() {
@@ -369,36 +358,6 @@ function initFiltering() {
       });
     });
   });
-}
-
-function sortNFTs(sortBy) {
-  const nftContainer = document.querySelector('.nft-grid');
-  const nftCards = Array.from(document.querySelectorAll('.nft-card'));
-  
-  nftCards.sort((a, b) => {
-    switch (sortBy) {
-      case 'newest':
-        return 0;
-      case 'oldest':
-        return 0;
-      case 'rarity':
-        const rarityOrder = { legendary: 0, epic: 1, rare: 2, common: 3 };
-        return rarityOrder[a.dataset.category] - rarityOrder[b.dataset.category];
-      case 'price':
-        const priceA = parseFloat(a.querySelector('.price-value').textContent);
-        const priceB = parseFloat(b.querySelector('.price-value').textContent);
-        return priceA - priceB;
-      default:
-        return 0;
-    }
-  });
-  
-  // Reorder cards
-  nftCards.forEach(card => {
-    nftContainer.appendChild(card);
-  });
-  
-  showToast(`NFTs sorted by: ${sortBy.replace('_', ' ')}`, 'info');
 }
 
 // ========== ARTWORK MODAL ==========
@@ -504,25 +463,6 @@ function initArtworkSlider() {
 
 // ========== NFT INTERACTIONS ==========
 function initNFTInteractions() {
-  // Like button functionality
-  document.querySelectorAll('.like-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      toggleLike(this);
-    });
-  });
-  
-  // Buy button functionality
-  document.querySelectorAll('.buy-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const nftCard = this.closest('.nft-card');
-      const nftName = nftCard.querySelector('h3').textContent;
-      const nftPrice = nftCard.querySelector('.price-value').textContent;
-      buyNFT(nftName, nftPrice);
-    });
-  });
-  
   // View button functionality for NFTs
   document.querySelectorAll('.nft-card .view-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -544,112 +484,39 @@ function initNFTInteractions() {
   });
 }
 
-function toggleLike(button) {
-  const itemCard = button.closest('.nft-card, .artwork-card, .contest-card, .community-art');
-  const isNFT = itemCard.classList.contains('nft-card');
-  const itemId = isNFT ? itemCard.dataset.category : itemCard.getAttribute('data-id') || itemCard.querySelector('h3').textContent;
-  
-  const likeCount = button.querySelector('.like-count');
-  const likeIcon = button.querySelector('i');
-  const isLiked = button.classList.contains('liked');
-  
-  if (isLiked) {
-    // Unlike
-    button.classList.remove('liked');
-    likeIcon.className = 'far fa-heart';
-    if (likeCount) {
-      likeCount.textContent = parseInt(likeCount.textContent) - 1;
-    }
-    
-    if (isNFT) {
-      localStorage.setItem(`nft_liked_${itemId}`, 'false');
-    } else {
-      localStorage.setItem(`artwork_liked_${itemId}`, 'false');
-    }
-    
-    showToast('Removed from favorites', 'info');
-  } else {
-    // Like
-    button.classList.add('liked');
-    likeIcon.className = 'fas fa-heart';
-    if (likeCount) {
-      likeCount.textContent = parseInt(likeCount.textContent) + 1;
-    }
-    
-    if (isNFT) {
-      localStorage.setItem(`nft_liked_${itemId}`, 'true');
-    } else {
-      localStorage.setItem(`artwork_liked_${itemId}`, 'true');
-    }
-    
-    showToast('Added to favorites! ❤️', 'success');
-  }
-  
-  // Animate the like
-  button.style.transform = 'scale(1.2)';
-  setTimeout(() => {
-    button.style.transform = 'scale(1)';
-  }, 300);
-  
-  // Save like count
-  if (likeCount) {
-    if (isNFT) {
-      localStorage.setItem(`nft_likes_${itemId}`, likeCount.textContent);
-    } else {
-      localStorage.setItem(`artwork_likes_${itemId}`, likeCount.textContent);
-    }
-  }
-}
-
-function buyNFT(nftName, nftPrice) {
-  if (confirm(`Buy ${nftName} for ${nftPrice}?\n\nThis will connect your wallet and complete the purchase.`)) {
-    showToast('Connecting wallet...', 'info');
-    
-    // Simulate wallet connection and purchase
-    setTimeout(() => {
-      showToast(`Successfully purchased ${nftName}!`, 'success');
-      
-      // Update UI
-      setTimeout(() => {
-        showToast('NFT transferred to your wallet. Check your collection!', 'info', 4000);
-      }, 1000);
-    }, 1500);
-  }
-}
-
 function viewNftDetails(nftId) {
   const nftData = {
     1: {
       name: "Rebel King #001",
       rarity: "Legendary",
       description: "The first and most powerful RebelInuX character in the collection.",
-      attributes: ["1 of 10", "98% burned", "Royalty: 5%", "Blockchain: Solana"],
-      price: "10 SOL",
-      owner: "Not available"
+      attributes: ["1 of 10", "98% burned", "Royalty: 5%", "Blockchain: Base"],
+      platform: "ZORA",
+      link: "https://zora.co/@rebelinux"
     },
     2: {
       name: "Cyber Rebel #045",
       rarity: "Epic",
       description: "Futuristic warrior with enhanced cybernetic upgrades.",
-      attributes: ["45 of 90", "Electric", "Royalty: 5%", "Blockchain: Solana"],
-      price: "2.5 SOL",
-      owner: "Not available"
+      attributes: ["45 of 90", "Electric", "Royalty: 5%", "Blockchain: Base"],
+      platform: "ZORA",
+      link: "https://zora.co/@rebelinux"
     },
     3: {
       name: "Desert Warrior #128",
       rarity: "Rare",
       description: "Survivor of the digital desert with tactical gear.",
-      attributes: ["128 of 300", "Desert", "Royalty: 5%", "Blockchain: Solana"],
-      price: "1.2 SOL",
-      owner: "Not available"
+      attributes: ["128 of 300", "Desert", "Royalty: 5%", "Blockchain: Base"],
+      platform: "ZORA",
+      link: "https://zora.co/@rebelinux"
     },
     4: {
       name: "Street Rebel #512",
       rarity: "Common",
       description: "Urban fighter with basic gear and raw determination.",
-      attributes: ["512 of 600", "Urban", "Royalty: 5%", "Blockchain: Solana"],
-      price: "0.5 SOL",
-      owner: "Not available"
+      attributes: ["512 of 600", "Urban", "Royalty: 5%", "Blockchain: Base"],
+      platform: "ZORA",
+      link: "https://zora.co/@rebelinux"
     }
   };
   
@@ -661,13 +528,15 @@ function viewNftDetails(nftId) {
     
     Name: ${nft.name}
     Rarity: ${nft.rarity}
-    Price: ${nft.price}
+    Platform: ${nft.platform}
     
     Description:
     ${nft.description}
     
     Attributes:
     ${nft.attributes.join('\n')}
+    
+    View on ZORA: ${nft.link}
   `;
   
   showToast(`Viewing details for: ${nft.name}`, 'info');
@@ -751,56 +620,6 @@ function viewArtDetails(artId) {
   }, 100);
 }
 
-// ========== MINTING FUNCTIONALITY ==========
-function startMinting() {
-  showToast('Opening NFT minting interface...', 'info');
-  
-  setTimeout(() => {
-    const instructions = `
-      NFT Minting Instructions:
-      
-      1. Connect your Solana wallet
-      2. Upload your artwork (JPG, PNG, GIF, or MP4)
-      3. Add title, description, and attributes
-      4. Set your royalty percentage (recommended: 5%)
-      5. Pay the minting fee (0.5 SOL + gas)
-      6. Confirm transaction in your wallet
-      
-      Your NFT will be minted and listed automatically!
-    `;
-    
-    if (confirm('Ready to mint NFTs?\n\n' + instructions)) {
-      simulateMintingProcess();
-    }
-  }, 500);
-}
-
-function simulateMintingProcess() {
-  showToast('Simulating NFT minting process...', 'info');
-  
-  const steps = ['Connecting wallet...', 'Uploading artwork...', 'Setting metadata...', 'Minting NFT...', 'Listing on marketplaces...'];
-  let currentStep = 0;
-  
-  const interval = setInterval(() => {
-    if (currentStep < steps.length) {
-      showToast(steps[currentStep], 'info');
-      currentStep++;
-    } else {
-      clearInterval(interval);
-      showToast('NFT minted successfully!', 'success');
-      
-      setTimeout(() => {
-        showToast('Your NFT is now available on Magic Eden and other marketplaces!', 'info', 5000);
-      }, 1000);
-    }
-  }, 1500);
-}
-
-function viewMarketplace() {
-  window.open('https://magiceden.io/marketplace/rebelinux', '_blank');
-  showToast('Opening Magic Eden marketplace...', 'info');
-}
-
 // ========== SUBMISSION FUNCTIONALITY ==========
 function openSubmissionForm() {
   showToast('Opening community art submission form...', 'info');
@@ -814,7 +633,7 @@ function openSubmissionForm() {
       1. Join our Telegram community
       2. Post your artwork in the community chat
       3. Use hashtag #RebelArt
-      4. Include your Solana wallet address for potential rewards
+      4. Include your wallet address for potential rewards
       5. Selected artwork will be featured here!
       
       Requirements:
@@ -827,10 +646,11 @@ function openSubmissionForm() {
       - 100,000 $REBL tokens
       - Featured in community gallery
       - Special role in community
+      - May be minted as official NFT on ZORA
     `;
     
     if (confirm('Submit your RebelInuX artwork?\n\n' + submissionInfo)) {
-      window.open('https://t.me/RebelInuX', '_blank');
+      window.open('https://t.me/RebelInuX_Official', '_blank');
       showToast('Opening Telegram community...', 'info');
     }
   }, 500);
@@ -851,7 +671,7 @@ function downloadAsset(assetType) {
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.artwork-card, .contest-card, .collection-card, .nft-card, .utility-card, .community-art, .feature, .faq-item, .related-card, .info-card, .brand-card, .guideline, .benefit-card'
+    '.artwork-card, .contest-card, .collection-card, .nft-card, .utility-card, .community-art, .faq-item, .related-card, .info-card, .brand-card, .guideline, .benefit-card'
   );
   
   // Use Intersection Observer for better performance
@@ -884,7 +704,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.artwork-card, .contest-card, .collection-card, .nft-card, .utility-card, .community-art, .feature, .faq-item, .related-card, .info-card, .brand-card, .guideline, .benefit-card'
+    '.artwork-card, .contest-card, .collection-card, .nft-card, .utility-card, .community-art, .faq-item, .related-card, .info-card, .brand-card, .guideline, .benefit-card'
   );
   
   animatedElements.forEach((el, index) => {
@@ -983,12 +803,8 @@ function showToast(message, type = 'info', duration = 3000) {
 }
 
 // ========== GLOBAL EXPORTS ==========
-window.toggleLike = toggleLike;
-window.buyNft = buyNFT;
 window.viewNftDetails = viewNftDetails;
 window.viewArtDetails = viewArtDetails;
-window.startMinting = startMinting;
-window.viewMarketplace = viewMarketplace;
 window.openSubmissionForm = openSubmissionForm;
 window.downloadAsset = downloadAsset;
 window.initializeMobileDropdown = initializeMobileDropdown;
@@ -1038,19 +854,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load user preferences
 window.addEventListener('load', function() {
-  // Load liked artwork
-  const likedArtwork = [];
-  document.querySelectorAll('.artwork-card, .contest-card, .nft-card, .community-art').forEach(card => {
-    const itemId = card.getAttribute('data-id') || card.querySelector('h3').textContent;
-    if (localStorage.getItem(`artwork_liked_${itemId}`) === 'true' || localStorage.getItem(`nft_liked_${itemId}`) === 'true') {
-      likedArtwork.push(itemId);
-    }
-  });
-  
-  if (likedArtwork.length > 0) {
-    console.log('Liked artwork:', likedArtwork);
-  }
-  
   // Handle window resize for mobile dropdown
   window.addEventListener('resize', function() {
     const dropdownContent = document.querySelector('.dropdown-content');
