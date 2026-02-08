@@ -20,9 +20,6 @@ function initCommunityPage() {
   // Initialize AOS animations
   initAOS();
   
-  // Initialize chat interactions
-  initChatInteractions();
-  
   // Initialize social cards
   initSocialCards();
 }
@@ -80,11 +77,8 @@ function initializeMobileDropdown() {
 function initCommunityData() {
   console.log('Initializing community data');
   
-  // Fetch and update community stats
+  // Update community stats with real numbers
   updateCommunityStats();
-  
-  // Initialize chat messages
-  initChatMessages();
   
   // Start periodic updates
   setInterval(updateCommunityStats, 60000); // Update every minute
@@ -92,17 +86,19 @@ function initCommunityData() {
 
 async function updateCommunityStats() {
   try {
-    // In a real implementation, you would fetch these from APIs
+    // Real community statistics
     const stats = {
-      holders: 67,
-      telegram: 500,
-      twitter: 1000
+      telegram: 278,
+      twitter: 440,
+      discord: 65,
+      zora: 432
     };
     
     // Update stat counters with animation
-    animateCounter('holderCount', stats.holders);
     animateCounter('telegramMembers', stats.telegram);
     animateCounter('xFollowers', stats.twitter);
+    animateCounter('discordMembers', stats.discord);
+    animateCounter('zoraFollowers', stats.zora);
     
     // Update last updated time
     updateLastUpdated();
@@ -144,38 +140,6 @@ function updateLastUpdated() {
   }
 }
 
-// ========== CHAT INTERACTIONS ==========
-function initChatInteractions() {
-  const chatPreview = document.querySelector('.chat-preview');
-  if (!chatPreview) return;
-  
-  // Auto-scroll to bottom
-  chatPreview.scrollTop = chatPreview.scrollHeight;
-  
-  // Add click handler for chat rules
-  const chatRules = document.querySelector('.chat-rules');
-  if (chatRules) {
-    chatRules.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
-        this.classList.toggle('expanded');
-      }
-    });
-  }
-}
-
-function initChatMessages() {
-  // In a real implementation, you would fetch chat messages from an API
-  const messages = [
-    { author: "Rebel_Bot", text: "Welcome new rebels! 🎉", time: "1 min ago" },
-    { author: "CryptoMax", text: "Just bought more $REBL! 🚀", time: "3 min ago" },
-    { author: "DeFiQueen", text: "Love the transparency in this project!", time: "5 min ago" },
-    { author: "MoonWalker", text: "When's the next AMA?", time: "8 min ago" }
-  ];
-  
-  // You could use this to dynamically update chat messages
-  return messages;
-}
-
 // ========== SOCIAL CARDS ==========
 function initSocialCards() {
   const socialCards = document.querySelectorAll('.social-card');
@@ -212,7 +176,7 @@ function initSocialCards() {
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.social-card, .feature-card, .benefit-card, .update-card, .process-step, .step-item, .faq-item, .related-card'
+    '.social-card, .benefit-card, .step-item, .faq-item, .related-card'
   );
   
   // Use Intersection Observer for better performance
@@ -245,7 +209,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.social-card, .feature-card, .benefit-card, .update-card, .process-step, .step-item, .faq-item, .related-card'
+    '.social-card, .benefit-card, .step-item, .faq-item, .related-card'
   );
   
   animatedElements.forEach((el, index) => {
@@ -354,9 +318,21 @@ function followTwitter() {
   showToast('Opening X (Twitter)...', 'info');
 }
 
+function joinDiscord() {
+  window.open('https://discord.com/invite/s8dkuyD3cZ', '_blank');
+  showToast('Opening Discord...', 'info');
+}
+
+function followZora() {
+  window.open('https://zora.co/@rebelinux', '_blank');
+  showToast('Opening ZORA...', 'info');
+}
+
 // ========== GLOBAL EXPORTS ==========
 window.joinTelegram = joinTelegram;
 window.followTwitter = followTwitter;
+window.joinDiscord = joinDiscord;
+window.followZora = followZora;
 window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
 
@@ -370,8 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
       transition: all 0.1s ease !important;
     }
     
-    .social-card.expanded,
-    .chat-rules.expanded {
+    .social-card.expanded {
       transform: scale(1.02) !important;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
     }
