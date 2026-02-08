@@ -126,7 +126,7 @@ function initCommunityStats() {
 
 async function updateCommunityStats() {
   try {
-    // Simulate fetching real data - in production, these would be API calls
+    // Current community statistics
     const stats = {
       telegram: 278,
       twitter: 440,
@@ -140,14 +140,10 @@ async function updateCommunityStats() {
     animateCounter('discordMembers', stats.discord, '+');
     animateCounter('zoraFollowers', stats.zora, '+');
     
-    // Update timestamp
-    updateLastUpdated();
-    
     console.log('Community stats updated:', stats);
     
   } catch (error) {
     console.error('Error updating community stats:', error);
-    showToast('Error updating community stats', 'error');
   }
 }
 
@@ -185,32 +181,6 @@ function animateCounter(elementId, target, suffix = '') {
       element.textContent = newValue + suffix;
     }
   }, duration / steps);
-}
-
-function updateLastUpdated() {
-  const now = new Date();
-  const timeString = now.toLocaleTimeString([], { 
-    hour: '2-digit', 
-    minute: '2-digit',
-    hour12: true 
-  });
-  
-  // Create or update timestamp element
-  let timestampElement = document.getElementById('last-updated-timestamp');
-  if (!timestampElement) {
-    timestampElement = document.createElement('div');
-    timestampElement.id = 'last-updated-timestamp';
-    timestampElement.className = 'update-timestamp';
-    timestampElement.style.cssText = `
-      text-align: center;
-      margin-top: 10px;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.6);
-    `;
-    document.querySelector('.community-stats').appendChild(timestampElement);
-  }
-  
-  timestampElement.textContent = `Last updated: ${timeString}`;
 }
 
 // ========== SOCIAL CARDS ==========
@@ -328,7 +298,6 @@ function initVotingCards() {
 function trackVotingClick(platform) {
   console.log(`Voting clicked for: ${platform}`);
   // In production, you would send this to analytics
-  showToast(`Opening ${platform} voting page`, 'info');
   
   // Store in localStorage for daily reminder
   const today = new Date().toDateString();
@@ -718,10 +687,10 @@ function showToast(message, type = 'info') {
     hideToast(toast);
   });
   
-  // Auto-remove after 5 seconds
+  // Auto-remove after 4 seconds
   const autoRemove = setTimeout(() => {
     hideToast(toast);
-  }, 5000);
+  }, 4000);
   
   // Function to hide toast
   function hideToast(toastElement) {
@@ -853,8 +822,7 @@ window.addEventListener('error', function(e) {
 
 // ========== OFFLINE SUPPORT ==========
 window.addEventListener('online', function() {
-  showToast('Back online! Updating community stats...', 'success');
-  updateCommunityStats();
+  showToast('Back online!', 'success');
 });
 
 window.addEventListener('offline', function() {
