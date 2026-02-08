@@ -1,4 +1,4 @@
-// community.js - Community Hub page functionality
+/// community.js - Community Hub page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
