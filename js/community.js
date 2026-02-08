@@ -1,4 +1,4 @@
-/// community.js - Community Hub page functionality
+// community.js - Community Hub page functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -22,6 +22,9 @@ function initCommunityPage() {
   
   // Initialize social cards
   initSocialCards();
+  
+  // Initialize voting cards
+  initVotingCards();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -173,10 +176,38 @@ function initSocialCards() {
   });
 }
 
+// ========== VOTING CARDS ==========
+function initVotingCards() {
+  const votingCards = document.querySelectorAll('.voting-card');
+  
+  votingCards.forEach(card => {
+    // Add hover effects
+    card.addEventListener('mouseenter', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.voting-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1.15) rotate(10deg)';
+          icon.style.boxShadow = '0 8px 25px rgba(255, 51, 102, 0.5)';
+        }
+      }
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      if (window.innerWidth > 768) {
+        const icon = this.querySelector('.voting-icon');
+        if (icon) {
+          icon.style.transform = 'scale(1) rotate(0deg)';
+          icon.style.boxShadow = '0 4px 15px rgba(255, 51, 102, 0.3)';
+        }
+      }
+    });
+  });
+}
+
 // ========== ANIMATION FUNCTIONS ==========
 function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
-    '.social-card, .benefit-card, .step-item, .faq-item, .related-card'
+    '.social-card, .benefit-card, .voting-card, .guideline-item, .step-item, .faq-item, .related-card'
   );
   
   // Use Intersection Observer for better performance
@@ -209,7 +240,7 @@ function initScrollAnimations() {
 
 function animateElements() {
   const animatedElements = document.querySelectorAll(
-    '.social-card, .benefit-card, .step-item, .faq-item, .related-card'
+    '.social-card, .benefit-card, .voting-card, .guideline-item, .step-item, .faq-item, .related-card'
   );
   
   animatedElements.forEach((el, index) => {
@@ -328,11 +359,17 @@ function followZora() {
   showToast('Opening ZORA...', 'info');
 }
 
+function subscribeYouTube() {
+  window.open('https://www.youtube.com/@RebelInuX_REBL', '_blank');
+  showToast('Opening YouTube...', 'info');
+}
+
 // ========== GLOBAL EXPORTS ==========
 window.joinTelegram = joinTelegram;
 window.followTwitter = followTwitter;
 window.joinDiscord = joinDiscord;
 window.followZora = followZora;
+window.subscribeYouTube = subscribeYouTube;
 window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
 
