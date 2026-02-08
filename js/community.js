@@ -17,7 +17,7 @@ function initCommunityPage() {
   initCommunityStats();
   initSocialCards();
   initVotingCards();
-  initFAQAccordion(); 
+  initFAQAccordion();
   initCommunityBenefits();
   initGetInvolvedSteps();
   initRelatedCards();
@@ -333,73 +333,56 @@ function checkDailyVotingProgress(votedPlatforms) {
 function initFAQAccordion() {
   const faqItems = document.querySelectorAll('.faq-item');
   
-  faqItems.forEach((item) => {
-    // Add click handler
-    item.addEventListener('click', (e) => {
-      toggleFAQItem(item);
-    });
+  faqItems.forEach((item, index) => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    const toggle = item.querySelector('.faq-toggle');
     
-    // Add keyboard support
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('role', 'button');
-    item.setAttribute('aria-expanded', 'false');
-    
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleFAQItem(item);
-      }
-    });
-    
-    // Add hover effects
-    item.addEventListener('mouseenter', function() {
-      if (window.innerWidth > 768) {
-        this.style.transform = 'translateY(-5px)';
-      }
-    });
-    
-    item.addEventListener('mouseleave', function() {
-      if (window.innerWidth > 768 && !this.classList.contains('active')) {
-        this.style.transform = 'translateY(0)';
-      }
-    });
+    if (question && answer && toggle) {
+      // Add click handler
+      question.addEventListener('click', () => {
+        toggleFAQItem(item, answer);
+      });
+      
+      // Add keyboard support
+      question.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleFAQItem(item, answer);
+        }
+        
+        // Arrow key navigation
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const nextItem = faqItems[index + 1];
+          if (nextItem) {
+            nextItem.querySelector('.faq-question').focus();
+          }
+        }
+        
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prevItem = faqItems[index - 1];
+          if (prevItem) {
+            prevItem.querySelector('.faq-question').focus();
+          }
+        }
+      });
+      
+      // Make question focusable
+      question.setAttribute('tabindex', '0');
+      question.setAttribute('role', 'button');
+      question.setAttribute('aria-expanded', 'false');
+      question.setAttribute('aria-controls', `faq-answer-${index}`);
+      answer.id = `faq-answer-${index}`;
+    }
   });
   
-  // Open first FAQ by default on load
+  // Open first FAQ by default
   if (faqItems.length > 0) {
     setTimeout(() => {
-      toggleFAQItem(faqItems[0], true);
-    }, 1500);
-  }
-}
-
-function toggleFAQItem(item, initial = false) {
-  const isActive = item.classList.contains('active');
-  
-  // Close all other items (except when initializing first item)
-  if (!initial) {
-    document.querySelectorAll('.faq-item.active').forEach(activeItem => {
-      if (activeItem !== item) {
-        activeItem.classList.remove('active');
-        activeItem.setAttribute('aria-expanded', 'false');
-        activeItem.style.transform = 'translateY(0)';
-      }
-    });
-  }
-  
-  // Toggle current item
-  if (!isActive) {
-    item.classList.add('active');
-    item.setAttribute('aria-expanded', 'true');
-    if (window.innerWidth > 768) {
-      item.style.transform = 'translateY(-5px)';
-    }
-  } else {
-    item.classList.remove('active');
-    item.setAttribute('aria-expanded', 'false');
-    if (window.innerWidth > 768) {
-      item.style.transform = 'translateY(0)';
-    }
+      toggleFAQItem(faqItems[0], faqItems[0].querySelector('.faq-answer'));
+    }, 1000);
   }
 }
 
