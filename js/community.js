@@ -1,4 +1,4 @@
-/// community.js - Community Hub page functionality
+//// community.js - Community Hub page functionality
 // RebelInuX Community Hub - Complete functionality
 
 // ========== INITIALIZATION ==========
