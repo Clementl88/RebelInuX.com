@@ -1,4 +1,4 @@
-//* community.css - Community Hub specific styles *//
+//* community.css - Community Hub specific styles */
 
 /* ===== Hero Section ===== ***/
 .page-hero--community {
@@ -616,98 +616,78 @@
   font-size: 1.2em;
 }
 
-/* ===== FAQ Grid (Same as Security Page) ===== */
-.faq-grid {
-  display: grid;
-  gap: var(--spacing-xl);
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin: var(--spacing-xl) 0;
+/* ===== Interactive FAQ ===== */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .faq-item {
-  background: rgba(0, 0, 0, 0.4);
-  padding: var(--spacing-xl);
-  border-radius: var(--border-radius-md, 12px);
-  border-left: 4px solid var(--rebel-gold);
-  transition: var(--transition);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.faq-item:hover {
-  transform: translateY(-3px);
-  background: rgba(0, 0, 0, 0.6);
-  box-shadow: var(--shadow-md);
-}
-
-.faq-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.faq-item:hover::before {
-  opacity: 1;
-}
-
-.faq-item h4 {
-  color: var(--rebel-gold);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
   margin-bottom: var(--spacing-md);
+  border: 1px solid rgba(255, 204, 0, 0.2);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.faq-item.active {
+  border-color: var(--rebel-gold);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.faq-question {
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--rebel-gold);
+  transition: var(--transition);
+}
+
+.faq-question:hover {
+  background: rgba(255, 204, 0, 0.05);
+}
+
+.faq-question h4 {
+  margin: 0;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  font-size: 1.1rem;
 }
 
-.faq-item p {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin: 0;
-  font-size: 0.95rem;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.4s ease, margin 0.4s ease, opacity 0.3s ease;
-}
-
-.faq-item.active p {
-  max-height: 500px;
-  margin-top: var(--spacing-md);
-  opacity: 1;
-}
-
-.faq-item .faq-toggle {
-  position: absolute;
-  top: var(--spacing-xl);
-  right: var(--spacing-xl);
-  color: var(--rebel-gold);
-  font-size: 0.9rem;
+.faq-toggle {
+  font-size: 1.2rem;
   transition: transform 0.3s ease;
+  color: var(--rebel-gold);
 }
 
 .faq-item.active .faq-toggle {
   transform: rotate(180deg);
 }
 
-.faq-item h4 i {
-  font-size: 1.2rem;
-  color: var(--rebel-gold);
-  min-width: 24px;
+.faq-answer {
+  padding: 0 var(--spacing-lg);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
 }
 
-/* Remove old FAQ styles if they exist */
-.faq-container,
-.faq-question,
-.faq-answer {
-  display: none;
+.faq-item.active .faq-answer {
+  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  max-height: 500px;
 }
+
+.faq-answer p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
 /* ===== Community Benefits ===== */
 .benefits-grid {
   display: grid;
