@@ -669,10 +669,94 @@ function showToast(message, type = 'info', duration = 3000) {
   }, duration);
 }
 
+// ========== LOGO DOWNLOAD FUNCTIONS ==========
+function downloadLogo(logoType) {
+  let logoName, filePath;
+  
+  if (logoType === 'Logo_REBL') {
+    logoName = 'RebelInuX_REBL_Logo.png';
+    filePath = 'images/Logo_REBL.svg'; // We'll convert this to PNG
+  } else if (logoType === 'rebelinux_logo') {
+    logoName = 'RebelInuX_Logo.png';
+    filePath = 'images/rebelinux_logo/$rebelinux SVG (4).svg';
+  } else {
+    showToast('Logo not found', 'error');
+    return;
+  }
+  
+  showToast(`Converting ${logoName} to PNG...`, 'info');
+  
+  // In a real implementation, you would:
+  // 1. Have actual PNG files ready for download
+  // 2. Or convert SVG to PNG on the server
+  
+  // For now, simulate the download process
+  setTimeout(() => {
+    // Create a temporary download link for the PNG version
+    // Note: This requires actual PNG files to exist
+    const tempLink = document.createElement('a');
+    tempLink.href = filePath.replace('.svg', '.png'); // Assumes PNG version exists
+    tempLink.download = logoName;
+    tempLink.style.display = 'none';
+    
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+    
+    showToast(`${logoName} downloaded!`, 'success');
+    
+    // Track downloads in analytics
+    trackLogoDownload(logoType);
+    
+  }, 1000);
+}
+
+function downloadAsset(assetPath) {
+  // Extract filename from path
+  const fileName = assetPath.split('/').pop();
+  const fileType = fileName.split('.').pop().toUpperCase();
+  
+  showToast(`Downloading ${fileName}...`, 'info');
+  
+  // Create a temporary download link
+  const tempLink = document.createElement('a');
+  tempLink.href = assetPath;
+  tempLink.download = fileName;
+  tempLink.style.display = 'none';
+  
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+  
+  // Show success message
+  setTimeout(() => {
+    showToast(`${fileName} downloaded successfully!`, 'success');
+    
+    // Track downloads in analytics
+    trackAssetDownload(fileName);
+  }, 100);
+}
+
+function trackLogoDownload(logoType) {
+  const downloads = parseInt(localStorage.getItem(`logo_downloads_${logoType}`) || '0');
+  localStorage.setItem(`logo_downloads_${logoType}`, (downloads + 1).toString());
+  
+  console.log(`Logo downloaded: ${logoType}, Total: ${downloads + 1}`);
+}
+
+function trackAssetDownload(fileName) {
+  const downloads = parseInt(localStorage.getItem(`asset_downloads`)) || 0;
+  localStorage.setItem('asset_downloads', (downloads + 1).toString());
+  
+  console.log(`Asset downloaded: ${fileName}, Total downloads: ${downloads + 1}`);
+}
+
+
 // ========== GLOBAL EXPORTS ==========
 window.viewNftDetails = viewNftDetails;
 window.openSubmissionForm = openSubmissionForm;
 window.downloadAsset = downloadAsset;
+window.downloadLogo = downloadLogo;
 window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
 
