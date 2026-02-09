@@ -749,6 +749,15 @@ function trackAssetDownload(fileName) {
   localStorage.setItem('asset_downloads', (downloads + 1).toString());
   
   console.log(`Asset downloaded: ${fileName}, Total downloads: ${downloads + 1}`);
+  
+  // Show designer credit toast on first download
+  const hasSeenCredit = localStorage.getItem('seen_designer_credit');
+  if (!hasSeenCredit && (fileName.includes('Logo') || fileName.includes('logo'))) {
+    setTimeout(() => {
+      showToast('🎨 Logo designed by Masum B - Professional Graphic Designer', 'info', 5000);
+      localStorage.setItem('seen_designer_credit', 'true');
+    }, 1500);
+  }
 }
 
 
@@ -757,6 +766,7 @@ window.viewNftDetails = viewNftDetails;
 window.openSubmissionForm = openSubmissionForm;
 window.downloadAsset = downloadAsset;
 window.downloadLogo = downloadLogo;
+window.trackAssetDownload = trackAssetDownload;
 window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
 
