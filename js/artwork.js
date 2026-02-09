@@ -1,4 +1,4 @@
-/// artwork.js - Enhanced Artwork Gallery functionality
+// artwork.js - Enhanced Artwork Gallery functionality
 
 // Initialize after common components are loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -299,7 +299,6 @@ function initGalleryInteractions() {
 function initFiltering() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const artworkCards = document.querySelectorAll('.artwork-card');
-  const contestCards = document.querySelectorAll('.contest-card');
   
   // Artwork filtering
   filterBtns.forEach(btn => {
@@ -312,23 +311,6 @@ function initFiltering() {
       const filter = this.dataset.filter;
       
       artworkCards.forEach(card => {
-        const category = card.dataset.category;
-        if (filter === 'all' || category === filter) {
-          card.style.display = 'block';
-          setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, 10);
-        } else {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          setTimeout(() => {
-            card.style.display = 'none';
-          }, 300);
-        }
-      });
-      
-      contestCards.forEach(card => {
         const category = card.dataset.category;
         if (filter === 'all' || category === filter) {
           card.style.display = 'block';
