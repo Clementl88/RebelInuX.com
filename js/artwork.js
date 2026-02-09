@@ -167,10 +167,10 @@ function initArtworkData() {
 async function updateArtworkStats() {
   try {
     // Update stat counters with corrected values
-    animateCounter('totalArtworks', 58);
-    animateCounter('contestWinners', 12);
-    animateCounter('totalArtists', 23);
-    document.getElementById('nftCollections').textContent = '3';
+    animateCounter('totalArtworks', 78);
+    animateCounter('contestWinners', 18);
+    animateCounter('totalArtists', 32);
+    document.getElementById('nftCollections').textContent = '15+';
     
     // Update last updated time
     updateLastUpdated();
@@ -299,7 +299,7 @@ function initGalleryInteractions() {
 function initFiltering() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const artworkCards = document.querySelectorAll('.artwork-card');
-  const nftCards = document.querySelectorAll('.nft-card');
+  const contestCards = document.querySelectorAll('.contest-card');
   
   // Artwork filtering
   filterBtns.forEach(btn => {
@@ -327,22 +327,10 @@ function initFiltering() {
           }, 300);
         }
       });
-    });
-  });
-  
-  // NFT filtering
-  const nftFilterBtns = document.querySelectorAll('.gallery-filters .filter-btn');
-  nftFilterBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      // Update active state
-      nftFilterBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
       
-      // Filter NFTs
-      const filter = this.dataset.filter;
-      
-      nftCards.forEach(card => {
-        if (filter === 'all' || card.dataset.category === filter) {
+      contestCards.forEach(card => {
+        const category = card.dataset.category;
+        if (filter === 'all' || category === filter) {
           card.style.display = 'block';
           setTimeout(() => {
             card.style.opacity = '1';
@@ -388,7 +376,7 @@ function initArtworkModal() {
       document.getElementById('modalArtist').innerHTML = `
         <div class="artist-info">
           <div class="artist-avatar">${artistInitial}</div>
-          <span>by <a href="https://x.com/${artist.replace('@', '')}" class="artist-link">${artist}</a></span>
+          <span>by <a href="https://x.com/${artist.replace('@', '').split(' ')[0]}" class="artist-link">${artist}</a></span>
         </div>
       `;
       
