@@ -20,7 +20,7 @@ class RebelAnalytics {
     
     initGoogleAnalytics() {
         // Replace with your GA4 measurement ID
-        const measurementId = 'G-XXXXXXXXXX';
+        const measurementId = 'G-PL0GBXNTMD';
         
         // Load gtag.js if not already loaded
         if (!window.gtag) {
