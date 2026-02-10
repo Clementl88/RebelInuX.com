@@ -28,6 +28,9 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <!-- AOS Animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
   <!-- External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/tippy.js@6" crossorigin="anonymous"></script>
@@ -36,6 +39,137 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/header-footer.css">
   <link rel="stylesheet" href="css/epoch-rewards.css">
+  
+  <!-- Artwork Slider CSS -->
+  <style>
+    /* Artwork Slider Styles from artwork.html */
+    #artwork-slider-section {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      padding: var(--spacing-xl) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #artwork-slider-section .section-header {
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    #artwork-slider-section h2 {
+      color: var(--rebel-gold);
+      font-size: 2.5em;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    #artwork-slider-section .section-subtitle {
+      color: #aaa;
+      font-size: 1.1em;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .artwork-slider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      margin: var(--spacing-xl) 0;
+    }
+
+    .slider-container {
+      display: flex;
+      animation: scrollArtwork 30s linear infinite;
+      width: calc(250px * 20);
+      gap: 20px;
+    }
+
+    .slider-item {
+      flex: 0 0 250px;
+      height: 250px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 2px solid rgba(212, 167, 106, 0.2);
+    }
+
+    .slider-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(212, 167, 106, 0.3);
+      border-color: var(--rebel-gold);
+    }
+
+    .slider-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .slider-item:hover img {
+      transform: scale(1.05);
+    }
+
+    @keyframes scrollArtwork {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-250px * 10));
+      }
+    }
+
+    /* Pause animation on hover */
+    .artwork-slider:hover .slider-container {
+      animation-play-state: paused;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .slider-item {
+        flex: 0 0 200px;
+        height: 200px;
+      }
+      
+      .slider-container {
+        width: calc(200px * 20);
+        animation: scrollArtwork 25s linear infinite;
+      }
+      
+      @keyframes scrollArtwork {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-200px * 10));
+        }
+      }
+      
+      #artwork-slider-section h2 {
+        font-size: 2em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slider-item {
+        flex: 0 0 150px;
+        height: 150px;
+      }
+      
+      .slider-container {
+        width: calc(150px * 20);
+        animation: scrollArtwork 20s linear infinite;
+      }
+      
+      @keyframes scrollArtwork {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-150px * 10));
+        }
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Loading Animation -->
@@ -53,11 +187,11 @@
   
   <main>
     <!-- Hero Section -->
-    <section class="page-hero page-hero--epoch">
+    <section class="page-hero page-hero--epoch" data-aos="fade-up">
       <div class="container">
         <h1>EPOCH REWARDS SYSTEM</h1>
-        <p class="text-lead">Claim $REBL tokens by holding Creator Coin and the active Rebel Key NFT during weekly epochs. Rewards distributed every 7 days to loyal rebels!</p>
-        <div class="hero-buttons">
+        <p class="text-lead" data-aos="fade-up" data-aos-delay="100">Claim $REBL tokens by holding Creator Coin and the active Rebel Key NFT during weekly epochs. Rewards distributed every 7 days to loyal rebels!</p>
+        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="200">
           <a href="#how-to-claim" class="cta-button">
             <i class="fas fa-gift"></i> How to Claim
           </a>
@@ -72,7 +206,7 @@
     </section>
 
     <!-- Key Takeaways Box -->
-    <section class="key-takeaways">
+    <section class="key-takeaways" data-aos="fade-up">
       <div class="takeaways-container">
         <div class="takeaways-box">
           <div class="takeaways-header">
@@ -83,7 +217,7 @@
           </div>
           
           <div class="takeaways-grid">
-            <div class="takeaway-item takeaway-purple">
+            <div class="takeaway-item takeaway-purple" data-aos="fade-right">
               <div class="takeaway-icon">
                 <i class="fas fa-calendar-week"></i>
               </div>
@@ -94,7 +228,7 @@
               </div>
             </div>
             
-            <div class="takeaway-item takeaway-red">
+            <div class="takeaway-item takeaway-red" data-aos="fade-up">
               <div class="takeaway-icon">
                 <i class="fas fa-layer-group"></i>
               </div>
@@ -105,7 +239,7 @@
               </div>
             </div>
             
-            <div class="takeaway-item takeaway-gold">
+            <div class="takeaway-item takeaway-gold" data-aos="fade-up">
               <div class="takeaway-icon">
                 <i class="fas fa-chart-line"></i>
               </div>
@@ -116,7 +250,7 @@
               </div>
             </div>
             
-            <div class="takeaway-item takeaway-blue">
+            <div class="takeaway-item takeaway-blue" data-aos="fade-left">
               <div class="takeaway-icon">
                 <i class="fas fa-piggy-bank"></i>
               </div>
@@ -137,10 +271,109 @@
       </div>
     </section>
 
-  
+    <!-- Artwork Slider Section - Added from artwork.html -->
+    <section id="artwork-slider-section">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <h2><i class="fas fa-images"></i> Featured $REBL Artwork</h2>
+          <p class="section-subtitle">
+            Scroll through our collection of award-winning RebelInuX artwork from contest winners
+          </p>
+        </div>
+        
+        <div class="artwork-slider" data-aos="fade-up">
+          <div class="slider-container">
+            <!-- Contest Winner Artworks -->
+            <div class="slider-item">
+              <img src="images/RebelJudgesVotingKey.svg" alt="REBEL JUDGES VOTING KEY" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="images/REBELKEY2.svg" alt="REBEL KEY #2" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/6ECioCX.jpeg" alt="RULES THEM ALL" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/cb5pTtS.jpeg" alt="BUY THE DIP" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/PY3GeCm.png" alt="THE REBEL BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/lzL0Tt2.png" alt="THE GENESIS BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/2ClOtx3.png" alt="74-SECOND BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/IyP5045.webp" alt="TO THE MOON" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/RgzP2CA.webp" alt="TRIPLE-ASSET ECOSYSTEM" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/NVIBbOo.webp" alt="THE MEME REVOLUTION" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/yMLGNmZ.webp" alt="THE COUNCIL" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/jXnS27o.webp" alt="BREAKS CHAINS" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/tU8KDxf.webp" alt="NO HYPE" loading="lazy">
+            </div>
+            
+            <!-- Duplicate for seamless loop -->
+            <div class="slider-item">
+              <img src="images/RebelJudgesVotingKey.svg" alt="REBEL JUDGES VOTING KEY" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="images/REBELKEY2.svg" alt="REBEL KEY #2" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/6ECioCX.jpeg" alt="RULES THEM ALL" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/cb5pTtS.jpeg" alt="BUY THE DIP" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/PY3GeCm.png" alt="THE REBEL BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/lzL0Tt2.png" alt="THE GENESIS BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/2ClOtx3.png" alt="74-SECOND BLUEPRINT" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/WOXZaSg.webp" alt="REBEL BUILD" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/x1kfWUs.webp" alt="SHIBA ENERGY" loading="lazy">
+            </div>
+            <div class="slider-item">
+              <img src="https://i.imgur.com/IyP5045.webp" alt="TO THE MOON" loading="lazy">
+            </div>
+          </div>
+        </div>
+        
+        <div class="view-more" data-aos="fade-up">
+          <a href="artwork.html" class="cta-button gold">
+            <i class="fas fa-images"></i> View Full Artwork Gallery
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- How to Claim $REBL Rewards -->
-    <section id="how-to-claim">
+    <section id="how-to-claim" data-aos="fade-up">
       <div class="container">
         <h2><i class="fas fa-gift"></i> How to Claim $REBL Rewards</h2>
         
@@ -151,28 +384,28 @@
 
           <!-- 4-Step Visual Guide -->
           <div class="steps-guide">
-            <div class="step-card">
+            <div class="step-card" data-aos="fade-right">
               <div class="step-number"> 1</div>
               <div class="step-icon"><i class="fas fa-coins"></i></div>
               <h4>Hold Creator Coin</h4>
               <p>Purchase $rebelinux tokens</p>
             </div>
             
-            <div class="step-card">
+            <div class="step-card" data-aos="fade-up">
               <div class="step-number">2</div>
               <div class="step-icon"><i class="fas fa-key"></i></div>
               <h4>Own Rebel Key NFT</h4>
               <p>Buy the active Rebel Key</p>
             </div>
             
-            <div class="step-card">
+            <div class="step-card" data-aos="fade-up">
               <div class="step-number">3</div>
               <div class="step-icon"><i class="fas fa-wallet"></i></div>
               <h4>Submit Solana Address</h4>
               <p>Comment on ZORA page</p>
             </div>
             
-            <div class="step-card">
+            <div class="step-card" data-aos="fade-left">
               <div class="step-number">4</div>
               <div class="step-icon"><i class="fas fa-gift"></i></div>
               <h4>Receive $REBL</h4>
@@ -186,7 +419,7 @@
             
             <div class="action-grid">
               <!-- Creator Coin Purchase -->
-              <div class="action-item">
+              <div class="action-item" data-aos="fade-right">
                 <div class="action-icon"><i class="fas fa-coins"></i></div>
                 <h5>Step 1: Creator Coin</h5>
                 <a href="https://pancakeswap.finance/swap?outputCurrency=0xf95BEeF6439ec38fA757238Cdec8417ABDA536bd&chain=sol&inputCurrency=SOL&chainOut=base" 
@@ -197,7 +430,7 @@
               </div>
               
               <!-- Rebel Keys -->
-              <div class="action-item">
+              <div class="action-item" data-aos="fade-up">
                 <div class="action-icon"><i class="fas fa-key"></i></div>
                 <h5>Step 2: Rebel Key</h5>
                 <div class="action-buttons">
@@ -215,7 +448,7 @@
               </div>
               
               <!-- Submit Claim -->
-              <div class="action-item">
+              <div class="action-item" data-aos="fade-left">
                 <div class="action-icon"><i class="fas fa-comment"></i></div>
                 <h5>Step 3: Submit Claim</h5>
                 <div class="action-buttons">
@@ -245,15 +478,14 @@
       </div>
     </section>
 
-
-      <!-- Current Epochs -->
-    <section id="current-epochs">
+    <!-- Current Epochs -->
+    <section id="current-epochs" data-aos="fade-up">
       <div class="container">
         <h2>Current Epoch Countdowns</h2>
         
         <div class="countdown-grid">
           <!-- Epoch 12 -->
-          <div class="countdown-box">
+          <div class="countdown-box" data-aos="fade-right">
             <div class="epoch-number">Epoch 12</div>
             <div class="epoch-key">Rebel Key #2</div>
             <p>Ends: December 28, 2025 at 22:00 UTC</p>
@@ -287,7 +519,7 @@
           </div>
           
           <!-- Epoch 13 -->
-          <div class="countdown-box">
+          <div class="countdown-box" data-aos="fade-left">
             <div class="epoch-number">Epoch 13</div>
             <div class="epoch-key">Rebel Key #1</div>
             <p>Starts: December 28, 2025 at 22:00 UTC</p>
@@ -324,7 +556,7 @@
     </section>
 
     <!-- Rebel Key Rotation -->
-    <section id="key-rotation">
+    <section id="key-rotation" data-aos="fade-up">
       <div class="container">
         <h2>Rebel Key Rotation</h2>
         <div class="content-card">
@@ -335,7 +567,7 @@
           </p>
           
           <div class="key-display">
-            <div class="key-card">
+            <div class="key-card" data-aos="fade-right">
               <div class="key-image">
                 <img src="images/REBELKEY1.svg" alt="Rebel Key #1" loading="lazy">
               </div>
@@ -348,12 +580,12 @@
               </a>
             </div>
             
-            <div class="key-rotation-icon">
+            <div class="key-rotation-icon" data-aos="fade-up">
               <i class="fas fa-exchange-alt"></i>
               <div>Rotates Weekly</div>
             </div>
             
-            <div class="key-card">
+            <div class="key-card" data-aos="fade-left">
               <div class="key-image">
                 <img src="images/REBELKEY2.svg" alt="Rebel Key #2" loading="lazy">
               </div>
@@ -376,8 +608,8 @@
       </div>
     </section>
 
-     <!-- Epoch Reward Formula & Calculator -->
-    <section id="epoch-reward-formula">
+    <!-- Epoch Reward Formula & Calculator -->
+    <section id="epoch-reward-formula" data-aos="fade-up">
       <div class="container">
         <h2><i class="fas fa-calculator"></i> Epoch Reward Formula & Calculator</h2>
         
@@ -402,28 +634,28 @@
             <!-- Formula Breakdown -->
             <div class="formula-breakdown">
               <!-- WSᵢ Component -->
-              <div class="formula-component" style="border-left-color: var(--rebel-red);">
+              <div class="formula-component" style="border-left-color: var(--rebel-red);" data-aos="fade-right">
                 <h5><i class="fas fa-user"></i> WSᵢ (Your Weighted Share)</h5>
                 <p><strong>WSᵢ = Σ[Token Batch × (1 + 0.07 × min(Epoch Age, 20))]</strong></p>
                 <p>Your loyalty metric: 7% weight boost per epoch, up to 2.4x at Epoch 20.</p>
               </div>
               
               <!-- ∑WS Component -->
-              <div class="formula-component" style="border-left-color: var(--rebel-gold);">
+              <div class="formula-component" style="border-left-color: var(--rebel-gold);" data-aos="fade-up">
                 <h5><i class="fas fa-users"></i> ∑WS (Total Active Weighted Shares)</h5>
                 <p>Sum of weighted shares from <strong>ALL CURRENT PARTICIPANTS</strong> in that epoch.</p>
                 <p>Focuses rewards on the active community, not idle holders.</p>
               </div>
               
               <!-- WERP Component -->
-              <div class="formula-component" style="border-left-color: var(--rebel-green);">
+              <div class="formula-component" style="border-left-color: var(--rebel-green);" data-aos="fade-up">
                 <h5><i class="fas fa-piggy-bank"></i> WERP (Weekly Reward Pool)</h5>
                 <p><strong>3.2M $REBL</strong> per epoch</p>
                 <p>Fixed weekly distribution from the treasury allocation.</p>
               </div>
               
               <!-- γ Component -->
-              <div class="formula-component" style="border-left-color: var(--rebel-blue);">
+              <div class="formula-component" style="border-left-color: var(--rebel-blue);" data-aos="fade-left">
                 <h5><i class="fas fa-shield-alt"></i> γ (Gamma Scale Factor)</h5>
                 <p><strong>γ = MAX(0.4, MIN(1, P/(0.5 × CS), CS × 1.5/∑WS))</strong></p>
                 <p>Our sustainability engine with three layers of protection.</p>
@@ -437,25 +669,25 @@
             <p class="calculator-description">Use our interactive calculator to simulate how different factors affect your rewards:</p>
             
             <div class="calculator-features-grid">
-              <div class="calc-feature">
+              <div class="calc-feature" data-aos="fade-right">
                 <div class="calc-feature-icon"><i class="fas fa-calculator"></i></div>
                 <div class="calc-feature-title">Full Formula Implementation</div>
                 <div class="calc-feature-desc">Live calculation of Rewardᵢ = (WSᵢ / ∑WS) × WERP × γ</div>
               </div>
               
-              <div class="calc-feature">
+              <div class="calc-feature" data-aos="fade-up">
                 <div class="calc-feature-icon"><i class="fas fa-chart-line"></i></div>
                 <div class="calc-feature-title">Gamma Factor Simulation</div>
                 <div class="calc-feature-desc">Adjust γ = MAX(0.4, MIN(1, P/(0.5×CS), CS×1.5/∑WS)) in real-time</div>
               </div>
               
-              <div class="calc-feature">
+              <div class="calc-feature" data-aos="fade-up">
                 <div class="calc-feature-icon"><i class="fas fa-sliders-h"></i></div>
                 <div class="calc-feature-title">Interactive Adjustments</div>
                 <div class="calc-feature-desc">Modify token amount, age, and participation</div>
               </div>
               
-              <div class="calc-feature">
+              <div class="calc-feature" data-aos="fade-left">
                 <div class="calc-feature-icon"><i class="fas fa-eye"></i></div>
                 <div class="calc-feature-title">Visual Breakdown</div>
                 <div class="calc-feature-desc">See exactly how each component affects your rewards</div>
@@ -474,22 +706,22 @@
             <h4><i class="fas fa-star"></i> System Benefits</h4>
             
             <div class="benefits-grid">
-              <div class="benefit-item" style="border-left-color: var(--rebel-red);">
+              <div class="benefit-item" style="border-left-color: var(--rebel-red);" data-aos="fade-right">
                 <h5><i class="fas fa-piggy-bank"></i> Treasury Security</h5>
                 <p>Fixed WERP (3.2M $REBL weekly) prevents unsustainable drain, securing rewards for years.</p>
               </div>
               
-              <div class="benefit-item" style="border-left-color: var(--rebel-gold);">
+              <div class="benefit-item" style="border-left-color: var(--rebel-gold);" data-aos="fade-up">
                 <h5><i class="fas fa-balance-scale"></i> Enhanced Fairness</h5>
                 <p>Your reward is tied to your stake within the active community, not diluted by idle tokens.</p>
               </div>
               
-              <div class="benefit-item" style="border-left-color: var(--rebel-green);">
+              <div class="benefit-item" style="border-left-color: var(--rebel-green);" data-aos="fade-up">
                 <h5><i class="fas fa-chart-line"></i> Growth Incentive</h5>
                 <p>The γ factor creates shared goals: grow participation to unlock higher rewards for everyone.</p>
               </div>
               
-              <div class="benefit-item" style="border-left-color: var(--rebel-purple);">
+              <div class="benefit-item" style="border-left-color: var(--rebel-purple);" data-aos="fade-left">
                 <h5><i class="fas fa-shield-alt"></i> Whale Resistance</h5>
                 <p>Limits disproportionate influence by tying large rewards to active participation within the epoch.</p>
               </div>
@@ -500,22 +732,22 @@
           <div class="core-pillars">
             <h4><i class="fas fa-check-circle"></i> Core Pillars</h4>
             <div class="pillars-grid">
-              <div class="pillar-item">
+              <div class="pillar-item" data-aos="fade-right">
                 <div class="pillar-icon"><i class="fas fa-percentage"></i></div>
                 <div class="pillar-title">7% Age Bonus</div>
                 <div class="pillar-desc">Per epoch up to 20</div>
               </div>
-              <div class="pillar-item">
+              <div class="pillar-item" data-aos="fade-up">
                 <div class="pillar-icon"><i class="fas fa-calendar-week"></i></div>
                 <div class="pillar-title">Weekly Epochs</div>
                 <div class="pillar-desc">7-day cycles</div>
               </div>
-              <div class="pillar-item">
+              <div class="pillar-item" data-aos="fade-up">
                 <div class="pillar-icon"><i class="fas fa-key"></i></div>
                 <div class="pillar-title">Dual Assets</div>
                 <div class="pillar-desc">Creator Coin + Rebel Key</div>
               </div>
-              <div class="pillar-item">
+              <div class="pillar-item" data-aos="fade-left">
                 <div class="pillar-icon"><i class="fas fa-exchange-alt"></i></div>
                 <div class="pillar-title">Cross-Chain</div>
                 <div class="pillar-desc">Multi-chain claims</div>
@@ -546,7 +778,7 @@
     </section>
 
     <!-- Epoch Stats with Tabs -->
-    <section id="epoch-stats">
+    <section id="epoch-stats" data-aos="fade-up">
       <div class="container">
         <h2>Epoch Statistics</h2>
         
@@ -566,28 +798,28 @@
         <!-- General Stats Tab -->
         <div id="general-stats" class="stat-tab-content active">
           <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-right">
               <div class="stat-icon"><i class="fas fa-calendar-week"></i></div>
               <div class="stat-value">11</div>
               <div class="stat-label">Epochs Completed</div>
               <div class="stat-note">Since October 2025</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-coins"></i></div>
               <div class="stat-value">3.2M</div>
               <div class="stat-label">Weekly Reward Pool</div>
               <div class="stat-note">Fixed $REBL distribution</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-users"></i></div>
               <div class="stat-value">3</div>
               <div class="stat-label">Claim Participants</div>
               <div class="stat-note">Active reward claimants</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-left">
               <div class="stat-icon"><i class="fas fa-key"></i></div>
               <div class="stat-value">2</div>
               <div class="stat-label">Rebel Keys</div>
@@ -599,28 +831,28 @@
         <!-- Holder Stats Tab -->
         <div id="holders-stats" class="stat-tab-content">
           <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-right">
               <div class="stat-icon"><i class="fas fa-wallet"></i></div>
               <div class="stat-value">10</div>
               <div class="stat-label">$rebelinux Holders</div>
               <div class="stat-note">Creator Coin holders</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-key"></i></div>
               <div class="stat-value">67</div>
               <div class="stat-label">Rebel Key #1</div>
               <div class="stat-note">Active holders</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-key"></i></div>
               <div class="stat-value">24</div>
               <div class="stat-label">Rebel Key #2</div>
               <div class="stat-note">Active holders</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-left">
               <div class="stat-icon"><i class="fas fa-user-check"></i></div>
               <div class="stat-value">14</div>
               <div class="stat-label">Unique Claimers</div>
@@ -632,28 +864,28 @@
         <!-- Rewards Stats Tab -->
         <div id="rewards-stats" class="stat-tab-content">
           <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-right">
               <div class="stat-icon"><i class="fas fa-fire"></i></div>
               <div class="stat-value">4.97M</div>
               <div class="stat-label">$REBL Burned</div>
               <div class="stat-note">By $rebelinux_burn account</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
               <div class="stat-value">1.03M</div>
               <div class="stat-label">$REBL Claimed</div>
               <div class="stat-note">By participants overall</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-up">
               <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
               <div class="stat-value">6M</div>
               <div class="stat-label">Total Processed</div>
               <div class="stat-note">$REBL distributed + burned</div>
             </div>
             
-            <div class="stat-card">
+            <div class="stat-card" data-aos="fade-left">
               <div class="stat-icon"><i class="fas fa-percentage"></i></div>
               <div class="stat-value">81.5%</div>
               <div class="stat-label">Burned Rate</div>
@@ -665,7 +897,7 @@
     </section>
 
     <!-- Reward Funding Source -->
-    <section id="reward-funding">
+    <section id="reward-funding" data-aos="fade-up">
       <div class="container">
         <h2><i class="fas fa-money-check-alt"></i> Reward Funding Source</h2>
         <div class="content-card">
@@ -674,13 +906,13 @@
           </p>
           
           <div class="funding-display">
-            <div class="funding-item">
+            <div class="funding-item" data-aos="fade-right">
               <div class="funding-icon"><i class="fas fa-piggy-bank"></i></div>
               <h4>128M $REBL</h4>
               <p>Allocated to weekly epoch rewards</p>
             </div>
             
-            <div class="funding-item">
+            <div class="funding-item" data-aos="fade-left">
               <div class="funding-icon"><i class="fas fa-trophy"></i></div>
               <h4>32M $REBL</h4>
               <p>For contests & community initiatives</p>
@@ -699,210 +931,207 @@
       </div>
     </section>
 
-<!-- Connected Systems & Supply -->
-<section id="connected-ecosystem">
-  <div class="container">
-    <div class="ecosystem-header">
-      <h2><i class="fas fa-network-wired"></i> Ecosystem Connections</h2>
-      <p class="ecosystem-subtitle">The rewards system integrates with RebelInuX's core infrastructure</p>
-    </div>
-    
-    <div class="ecosystem-wrapper">
-      <!-- Interactive Systems Panel -->
-      <div class="systems-panel">
-        <div class="panel-header">
-          <h3><i class="fas fa-cogs"></i> Connected Systems</h3>
-          <div class="status-badge">
-            <span class="status-dot active"></span>
-            All Operational
-          </div>
+    <!-- Connected Systems & Supply -->
+    <section id="connected-ecosystem" data-aos="fade-up">
+      <div class="container">
+        <div class="ecosystem-header">
+          <h2><i class="fas fa-network-wired"></i> Ecosystem Connections</h2>
+          <p class="ecosystem-subtitle">The rewards system integrates with RebelInuX's core infrastructure</p>
         </div>
         
-        <div class="systems-grid">
-          <a href="tokenomics.html#cross-chain" class="system-card">
-            <div class="card-icon-wrapper">
-              <i class="fas fa-sync-alt"></i>
-              <div class="connection-animation"></div>
-            </div>
-            <div class="card-content">
-              <h4>Cross-Chain Engine</h4>
-              <p>Multi-chain reward distribution from unified treasury</p>
-              <div class="card-stats">
-                <span class="stat"><i class="fas fa-link"></i> 3 Chains</span>
-                <span class="stat"><i class="fas fa-bolt"></i> Instant</span>
-              </div>
-            </div>
-            <div class="card-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </a>
-          
-          <a href="governance.html" class="system-card">
-            <div class="card-icon-wrapper">
-              <i class="fas fa-vote-yea"></i>
-            </div>
-            <div class="card-content">
-              <h4>Community Governance</h4>
-              <p>Reward parameters controlled by DAO proposals</p>
-              <div class="card-stats">
-                <span class="stat active-proposal">
-                  <i class="fas fa-star"></i> Active Proposal
-                </span>
-              </div>
-            </div>
-            <div class="card-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </a>
-          
-          <a href="community.html" class="system-card">
-            <div class="card-icon-wrapper">
-              <i class="fas fa-users"></i>
-            </div>
-            <div class="card-content">
-              <h4>Community Hub</h4>
-              <p>Live discussions, support, and real-time updates</p>
-              <div class="card-stats">
-                <span class="stat"><i class="fas fa-comments"></i> Chat</span>
-                <span class="stat"><i class="fas fa-trophy"></i> Contests</span>
-              </div>
-            </div>
-            <div class="card-arrow">
-              <i class="fas fa-arrow-right"></i>
-            </div>
-          </a>
-        </div>
-        
-        <div class="systems-note">
-          <i class="fas fa-lightbulb"></i>
-          <span>These systems work together to power the epoch rewards</span>
-        </div>
-      </div>
-      
-      <!-- Live Supply Dashboard -->
-      <div class="supply-dashboard">
-        <div class="dashboard-header">
-          <h3><i class="fas fa-chart-line"></i> Live Supply Data</h3>
-          <div class="update-indicator">
-            <i class="fas fa-sync-alt"></i>
-            Real-time
-          </div>
-        </div>
-        
-        <div class="dashboard-content">
-          <div class="supply-visual">
-            <div class="supply-icon">
-              <i class="fas fa-coins"></i>
-              <div class="pulse-effect"></div>
-            </div>
-            <div class="supply-main">
-              <div class="supply-value">499.2M</div>
-              <div class="supply-label">Active $rebelinux</div>
-            </div>
-          </div>
-          
-          <div class="supply-details">
-            <div class="detail-item">
-              <div class="detail-label">
-                <i class="fas fa-calculator"></i>
-                Used in Calculations
-              </div>
-              <div class="detail-value">Epoch Rewards</div>
-            </div>
-            
-            <div class="detail-item">
-              <div class="detail-label">
-                <i class="fas fa-exchange-alt"></i>
-                Circulation Status
-              </div>
-              <div class="detail-value">
-                <span class="status-badge active">
-                  <i class="fas fa-check-circle"></i> Active
-                </span>
+        <div class="ecosystem-wrapper">
+          <!-- Interactive Systems Panel -->
+          <div class="systems-panel">
+            <div class="panel-header">
+              <h3><i class="fas fa-cogs"></i> Connected Systems</h3>
+              <div class="status-badge">
+                <span class="status-dot active"></span>
+                All Operational
               </div>
             </div>
             
-            <div class="detail-item">
-              <div class="detail-label">
-                <i class="fas fa-percentage"></i>
-                Reward Allocation
+            <div class="systems-grid">
+              <a href="tokenomics.html#cross-chain" class="system-card" data-aos="fade-right">
+                <div class="card-icon-wrapper">
+                  <i class="fas fa-sync-alt"></i>
+                  <div class="connection-animation"></div>
+                </div>
+                <div class="card-content">
+                  <h4>Cross-Chain Engine</h4>
+                  <p>Multi-chain reward distribution from unified treasury</p>
+                  <div class="card-stats">
+                    <span class="stat"><i class="fas fa-link"></i> 3 Chains</span>
+                    <span class="stat"><i class="fas fa-bolt"></i> Instant</span>
+                  </div>
+                </div>
+                <div class="card-arrow">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </a>
+              
+              <a href="governance.html" class="system-card" data-aos="fade-up">
+                <div class="card-icon-wrapper">
+                  <i class="fas fa-vote-yea"></i>
+                </div>
+                <div class="card-content">
+                  <h4>Community Governance</h4>
+                  <p>Reward parameters controlled by DAO proposals</p>
+                  <div class="card-stats">
+                    <span class="stat active-proposal">
+                      <i class="fas fa-star"></i> Active Proposal
+                    </span>
+                  </div>
+                </div>
+                <div class="card-arrow">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </a>
+              
+              <a href="community.html" class="system-card" data-aos="fade-left">
+                <div class="card-icon-wrapper">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="card-content">
+                  <h4>Community Hub</h4>
+                  <p>Live discussions, support, and real-time updates</p>
+                  <div class="card-stats">
+                    <span class="stat"><i class="fas fa-comments"></i> Chat</span>
+                    <span class="stat"><i class="fas fa-trophy"></i> Contests</span>
+                  </div>
+                </div>
+                <div class="card-arrow">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+              </a>
+            </div>
+            
+            <div class="systems-note">
+              <i class="fas fa-lightbulb"></i>
+              <span>These systems work together to power the epoch rewards</span>
+            </div>
+          </div>
+          
+          <!-- Live Supply Dashboard -->
+          <div class="supply-dashboard">
+            <div class="dashboard-header">
+              <h3><i class="fas fa-chart-line"></i> Live Supply Data</h3>
+              <div class="update-indicator">
+                <i class="fas fa-sync-alt"></i>
+                Real-time
               </div>
-              <div class="detail-value">Direct Impact</div>
             </div>
-          </div>
-          
-          <div class="supply-connection">
-            <div class="connection-line"></div>
-            <div class="connection-label">
-              <i class="fas fa-random"></i>
-              Connected to Epoch Rewards
+            
+            <div class="dashboard-content">
+              <div class="supply-visual">
+                <div class="supply-icon">
+                  <i class="fas fa-coins"></i>
+                  <div class="pulse-effect"></div>
+                </div>
+                <div class="supply-main">
+                  <div class="supply-value">499.2M</div>
+                  <div class="supply-label">Active $rebelinux</div>
+                </div>
+              </div>
+              
+              <div class="supply-details">
+                <div class="detail-item">
+                  <div class="detail-label">
+                    <i class="fas fa-calculator"></i>
+                    Used in Calculations
+                  </div>
+                  <div class="detail-value">Epoch Rewards</div>
+                </div>
+                
+                <div class="detail-item">
+                  <div class="detail-label">
+                    <i class="fas fa-exchange-alt"></i>
+                    Circulation Status
+                  </div>
+                  <div class="detail-value">
+                    <span class="status-badge active">
+                      <i class="fas fa-check-circle"></i> Active
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="detail-item">
+                  <div class="detail-label">
+                    <i class="fas fa-percentage"></i>
+                    Reward Allocation
+                  </div>
+                  <div class="detail-value">Direct Impact</div>
+                </div>
+              </div>
+              
+              <div class="supply-connection">
+                <div class="connection-line"></div>
+                <div class="connection-label">
+                  <i class="fas fa-random"></i>
+                  Connected to Epoch Rewards
+                </div>
+              </div>
+              
+              <div class="dashboard-actions">
+                <a href="tokenomics.html#creator-coin-supply" class="dashboard-button primary">
+                  <i class="fas fa-chart-pie"></i>
+                  Full Supply Breakdown
+                </a>
+                <a href="#epoch-reward-formula" class="dashboard-button secondary">
+                  <i class="fas fa-calculator"></i>
+                  Formula & Calculator
+                </a>
+              </div>
             </div>
-          </div>
-          
-          <div class="dashboard-actions">
-            <a href="tokenomics.html#creator-coin-supply" class="dashboard-button primary">
-              <i class="fas fa-chart-pie"></i>
-              Full Supply Breakdown
-            </a>
-<a href="#epoch-reward-formula" class="dashboard-button secondary">
-  <i class="fas fa-calculator"></i>
-  Formula & Calculator
-</a>
+            
+            <div class="dashboard-footer">
+              <i class="fas fa-info-circle"></i>
+              <span>This supply directly influences your reward calculations</span>
+            </div>
           </div>
         </div>
         
-        <div class="dashboard-footer">
-          <i class="fas fa-info-circle"></i>
-          <span>This supply directly influences your reward calculations</span>
+        <!-- Ecosystem Connection Visualization -->
+        <div class="ecosystem-visual">
+          <div class="visual-node rewards-node">
+            <i class="fas fa-gift"></i>
+            <span>Epoch Rewards</span>
+          </div>
+          
+          <div class="visual-connector">
+            <div class="connector-line"></div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          
+          <div class="visual-node supply-node">
+            <i class="fas fa-coins"></i>
+            <span>Supply</span>
+          </div>
+          
+          <div class="visual-connector">
+            <div class="connector-line"></div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          
+          <div class="visual-node treasury-node">
+            <i class="fas fa-piggy-bank"></i>
+            <span>Treasury</span>
+          </div>
+          
+          <div class="visual-connector">
+            <div class="connector-line"></div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          
+          <div class="visual-node systems-node">
+            <i class="fas fa-cogs"></i>
+            <span>Systems</span>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <!-- Ecosystem Connection Visualization -->
-    <div class="ecosystem-visual">
-      <div class="visual-node rewards-node">
-        <i class="fas fa-gift"></i>
-        <span>Epoch Rewards</span>
-      </div>
-      
-      <div class="visual-connector">
-        <div class="connector-line"></div>
-        <i class="fas fa-arrow-right"></i>
-      </div>
-      
-      <div class="visual-node supply-node">
-        <i class="fas fa-coins"></i>
-        <span>Supply</span>
-      </div>
-      
-      <div class="visual-connector">
-        <div class="connector-line"></div>
-        <i class="fas fa-arrow-right"></i>
-      </div>
-      
-      <div class="visual-node treasury-node">
-        <i class="fas fa-piggy-bank"></i>
-        <span>Treasury</span>
-      </div>
-      
-      <div class="visual-connector">
-        <div class="connector-line"></div>
-        <i class="fas fa-arrow-right"></i>
-      </div>
-      
-      <div class="visual-node systems-node">
-        <i class="fas fa-cogs"></i>
-        <span>Systems</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
+    </section>
 
     <!-- Security Warning -->
-    <section id="security">
+    <section id="security" data-aos="fade-up">
       <div class="container">
         <div class="security-alert">
           <h3><i class="fas fa-shield-alt"></i> SECURITY WARNING</h3>
@@ -918,44 +1147,44 @@
     </section>
 
     <!-- FAQ -->
-    <section id="faq">
+    <section id="faq" data-aos="fade-up">
       <div class="container">
         <h2>Frequently Asked Questions</h2>
         <div class="content-card">
           <div class="faq-grid">
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-right">
               <h4><i class="fas fa-question-circle"></i> What are epochs?</h4>
               <p>Epochs are 7-day periods during which you can claim $REBL rewards. Each epoch uses a specific Rebel Key NFT for claims.</p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-left">
               <h4><i class="fas fa-question-circle"></i> Do I need both assets?</h4>
               <p>Yes, you need both <strong>Creator Coin ($rebelinux)</strong> and the active <strong>Rebel Key NFT</strong> to claim rewards.</p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-right" data-aos-delay="100">
               <h4><i class="fas fa-question-circle"></i> How are rewards calculated exactly?</h4>
-<p>Using our epoch reward formula: Rewardᵢ = (WSᵢ / ∑WS) × WERP × γ. 
-  <a href="#epoch-reward-formula">See detailed formula explanations →</a>
-</p>
+              <p>Using our epoch reward formula: Rewardᵢ = (WSᵢ / ∑WS) × WERP × γ. 
+                <a href="#epoch-reward-formula">See detailed formula explanations →</a>
+              </p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-left" data-aos-delay="100">
               <h4><i class="fas fa-question-circle"></i> How do I estimate my rewards?</h4>
               <p>Use our <a href="rebl-calculator.html">Reward Calculator</a> for personalized estimates based on your token holdings and age.</p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-right" data-aos-delay="200">
               <h4><i class="fas fa-question-circle"></i> When are rewards distributed?</h4>
               <p>$REBL tokens are distributed to your Solana wallet within 48 hours of the epoch ending.</p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-left" data-aos-delay="200">
               <h4><i class="fas fa-question-circle"></i> What is the gamma factor (γ)?</h4>
               <p>A sustainability engine that scales rewards based on participation (40-100% of pool), protecting the treasury.</p>
             </div>
             
-            <div class="faq-item">
+            <div class="faq-item" data-aos="fade-up">
               <h4><i class="fas fa-question-circle"></i> What happens if I miss an epoch?</h4>
               <p>You can claim in the next epoch. Your token age continues to accumulate, potentially increasing future rewards.</p>
             </div>
@@ -965,12 +1194,12 @@
     </section>
     
     <!-- Related Pages Section -->
-    <section id="related-pages">
+    <section id="related-pages" data-aos="fade-up">
       <div class="container">
         <h2>Related Pages</h2>
         <div class="related-grid">
           <!-- Tokenomics -->
-          <a href="tokenomics.html" class="related-card tokenomics-card">
+          <a href="tokenomics.html" class="related-card tokenomics-card" data-aos="fade-right">
             <div class="related-icon"><i class="fas fa-chart-pie"></i></div>
             <h3>Tokenomics</h3>
             <p>$REBL distribution & vesting details</p>
@@ -979,18 +1208,18 @@
             </div>
           </a>
           
-          <!-- Governance -->
-          <a href="governance.html" class="related-card governance-card">
-            <div class="related-icon"><i class="fas fa-vote-yea"></i></div>
-            <h3>Governance</h3>
-            <p>DAO structure & community voting</p>
+          <!-- Artwork Gallery -->
+          <a href="artwork.html" class="related-card artwork-card" data-aos="fade-up">
+            <div class="related-icon"><i class="fas fa-images"></i></div>
+            <h3>Artwork Gallery</h3>
+            <p>View Rebel Key NFTs and community artwork</p>
             <div class="related-arrow">
-              <i class="fas fa-arrow-right"></i> Start Voting
+              <i class="fas fa-arrow-right"></i> Explore Art
             </div>
           </a>
           
           <!-- Security -->
-          <a href="security.html" class="related-card security-card">
+          <a href="security.html" class="related-card security-card" data-aos="fade-left">
             <div class="related-icon"><i class="fas fa-shield-alt"></i></div>
             <h3>Security</h3>
             <p>Audits, LP burns & contract verification</p>
@@ -1011,11 +1240,39 @@
   <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
   
+  <!-- AOS Animation -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  
   <!-- Page-specific JavaScript -->
   <script>
     // Initialize after common components are loaded
     document.addEventListener('DOMContentLoaded', function() {
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+      
       setTimeout(initEpochRewardsPage, 300);
+      
+      // Smooth scrolling for internal links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
     });
     
     function initEpochRewardsPage() {
@@ -1030,13 +1287,10 @@
       // Initialize scroll animations
       initScrollAnimations();
       
-        initializeMobileDropdown();
-
+      initializeMobileDropdown();
     }
 
-
-
-        // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
+    // ========== MOBILE DROPDOWN FUNCTIONALITY ==========
     function initializeMobileDropdown() {
       const dropbtn = document.querySelector('.dropbtn');
       const navDesktop = document.getElementById('nav-desktop');
@@ -1067,7 +1321,6 @@
         }
       });
     }
-
     
     // Countdown Timer Functions
     function initCountdownTimers() {
