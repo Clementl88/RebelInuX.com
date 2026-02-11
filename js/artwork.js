@@ -118,6 +118,7 @@ function initAOSWithDelay() {
     }, 100);
   }
 }
+
 // ========== FAQ ACCORDION FUNCTIONALITY ==========
 function initFAQAccordion() {
   console.log('📋 Initializing FAQ accordion');
@@ -126,21 +127,38 @@ function initFAQAccordion() {
   
   faqItems.forEach(item => {
     // Remove any existing listeners
-    item.removeEventListener('click', toggleFAQ);
-    // Add new listener
-    item.addEventListener('click', toggleFAQ);
+    item.removeEventListener('click', handleFAQClick);
+    // Add new listener with proper event handling
+    item.addEventListener('click', handleFAQClick);
+  });
+  
+  // Prevent chevron clicks from toggling twice
+  document.querySelectorAll('.faq-chevron').forEach(chevron => {
+    chevron.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
   });
   
   console.log(`✅ FAQ accordion initialized with ${faqItems.length} items`);
 }
 
-function toggleFAQ(e) {
-  // Don't toggle if clicking on a link
-  if (e.target.tagName === 'A') return;
+function handleFAQClick(e) {
+  // Check if click is on or inside a link/button
+  const isLink = e.target.tagName === 'A' || 
+                e.target.closest('a') || 
+                e.target.tagName === 'BUTTON' ||
+                e.target.closest('.cta-button') ||
+                e.target.closest('button');
   
-  // Toggle active class
+  if (isLink) {
+    e.stopPropagation(); // Prevent FAQ from toggling
+    return; // Let the link open normally
+  }
+  
+  // Toggle FAQ for non-link clicks
   this.classList.toggle('active');
 }
+
 // ========== ARTWORK DATA FUNCTIONS ==========
 function initArtworkData() {
   console.log('📊 Initializing artwork data');
@@ -156,6 +174,9 @@ function initArtworkData() {
   
   // Initialize NFT data
   initNFTData();
+  
+  // Initialize FAQ accordion
+  initFAQAccordion();
   
   // Track page visit
   trackPageVisit();
@@ -680,7 +701,7 @@ function downloadLogo(logoType) {
   
   if (logoType === 'Logo_REBL') {
     logoName = 'RebelInuX_REBL_Logo.png';
-    filePath = 'images/Logo_REBL.svg'; // We'll convert this to PNG
+    filePath = 'images/Logo_REBL.svg';
   } else if (logoType === 'rebelinux_logo') {
     logoName = 'RebelInuX_Logo.png';
     filePath = 'images/rebelinux_logo/$rebelinux SVG (4).svg';
@@ -695,7 +716,7 @@ function downloadLogo(logoType) {
   setTimeout(() => {
     // Create a temporary download link for the PNG version
     const tempLink = document.createElement('a');
-    tempLink.href = filePath.replace('.svg', '.png'); // Assumes PNG version exists
+    tempLink.href = filePath.replace('.svg', '.png');
     tempLink.download = logoName;
     tempLink.style.display = 'none';
     
@@ -726,4 +747,3 @@ window.downloadLogo = downloadLogo;
 window.trackAssetDownload = trackAssetDownload;
 window.showToast = showToast;
 window.initArtworkPage = initArtworkPage;
-
