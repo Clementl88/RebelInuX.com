@@ -1,5 +1,90 @@
 // artwork.js - Enhanced Artwork Gallery functionality
 
+// ===== DEBUG: Check what's blocking the menu =====
+console.log('🚀 artwork.js loaded');
+console.log('Window width:', window.innerWidth);
+console.log('Header container exists:', document.getElementById('header-container') !== null);
+
+// Check if any CSS is hiding the menu
+setTimeout(function() {
+    console.log('=== DEBUG: Mobile Menu Check ===');
+    
+    // Check header
+    const header = document.querySelector('header, .site-header, .main-header, nav');
+    if (header) {
+        const styles = window.getComputedStyle(header);
+        console.log('Header styles:', {
+            display: styles.display,
+            visibility: styles.visibility,
+            opacity: styles.opacity,
+            position: styles.position,
+            zIndex: styles.zIndex,
+            overflow: styles.overflow,
+            overflowX: styles.overflowX,
+            overflowY: styles.overflowY,
+            maxHeight: styles.maxHeight,
+            height: styles.height
+        });
+    } else {
+        console.log('❌ Header not found!');
+    }
+    
+    // Check hamburger button
+    const hamburger = document.querySelector('.hamburger, .mobile-menu-toggle, [class*="hamburger"], [class*="menu-toggle"], #mobileNavToggle');
+    if (hamburger) {
+        const hamburgerStyles = window.getComputedStyle(hamburger);
+        console.log('Hamburger styles:', {
+            display: hamburgerStyles.display,
+            visibility: hamburgerStyles.visibility,
+            opacity: hamburgerStyles.opacity,
+            pointerEvents: hamburgerStyles.pointerEvents,
+            zIndex: hamburgerStyles.zIndex,
+            position: hamburgerStyles.position,
+            width: hamburgerStyles.width,
+            height: hamburgerStyles.height
+        });
+        
+        // Check if clickable
+        const rect = hamburger.getBoundingClientRect();
+        console.log('Hamburger clickable area:', {
+            width: rect.width,
+            height: rect.height,
+            top: rect.top,
+            left: rect.left,
+            isVisible: rect.width > 0 && rect.height > 0 && rect.top > 0
+        });
+    } else {
+        console.log('❌ Hamburger button not found!');
+    }
+    
+    // Check mobile menu
+    const mobileMenu = document.querySelector('.mobile-menu, #nav-desktop, [class*="mobile-menu"]');
+    if (mobileMenu) {
+        const menuStyles = window.getComputedStyle(mobileMenu);
+        console.log('Mobile menu styles:', {
+            display: menuStyles.display,
+            visibility: menuStyles.visibility,
+            opacity: menuStyles.opacity,
+            maxHeight: menuStyles.maxHeight,
+            overflow: menuStyles.overflow,
+            transform: menuStyles.transform
+        });
+    }
+    
+    // Check for any elements that might be covering the hamburger
+    const elementsAtPoint = document.elementsFromPoint(50, 50);
+    console.log('Elements at click position (50,50):', elementsAtPoint.map(el => ({
+        tag: el.tagName,
+        id: el.id,
+        class: el.className,
+        zIndex: window.getComputedStyle(el).zIndex
+    })));
+    
+    console.log('=== END DEBUG ===');
+}, 1000);
+
+// artwork.js - Enhanced Artwork Gallery functionality
+
 // ===== INITIALIZATION - Wait for components to be ready =====
 function waitForComponents(callback, maxAttempts = 20) {
   let attempts = 0;
