@@ -118,7 +118,29 @@ function initAOSWithDelay() {
     }, 100);
   }
 }
+// ========== FAQ ACCORDION FUNCTIONALITY ==========
+function initFAQAccordion() {
+  console.log('📋 Initializing FAQ accordion');
+  
+  const faqItems = document.querySelectorAll('#faq .faq-item');
+  
+  faqItems.forEach(item => {
+    // Remove any existing listeners
+    item.removeEventListener('click', toggleFAQ);
+    // Add new listener
+    item.addEventListener('click', toggleFAQ);
+  });
+  
+  console.log(`✅ FAQ accordion initialized with ${faqItems.length} items`);
+}
 
+function toggleFAQ(e) {
+  // Don't toggle if clicking on a link
+  if (e.target.tagName === 'A') return;
+  
+  // Toggle active class
+  this.classList.toggle('active');
+}
 // ========== ARTWORK DATA FUNCTIONS ==========
 function initArtworkData() {
   console.log('📊 Initializing artwork data');
