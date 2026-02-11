@@ -645,12 +645,12 @@ function setActiveNavItem() {
         'trade.html': 'a.nav-trade',
         'epoch-rewards.html': 'a.nav-rewards',
         'tokenomics.html': 'a.nav-tokenomics',
-        'security-integrity.html': 'a.nav-security-integrity', // CHANGE 3: Map new page to security nav
+        'security-integrity.html': 'a.nav-security', // CHANGE 3: Map new page to security nav
         'community.html': 'a.nav-community',
         'governance.html': 'a.nav-governance',
         'roadmap.html': 'a.nav-roadmap',
         'artwork.html': 'a.nav-artwork',
-        'REBL-calculator.html': 'a.nav-rebl-calculator',
+        'REBL-calculator.html': 'a.nav-calculator',
         'whitepaper.html': 'a.nav-whitepaper'
     };
     
