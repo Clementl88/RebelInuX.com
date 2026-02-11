@@ -1,89 +1,5 @@
 // artwork.js - Enhanced Artwork Gallery functionality
-
-// ===== DEBUG: Check what's blocking the menu =====
-console.log('🚀 artwork.js loaded');
-console.log('Window width:', window.innerWidth);
-console.log('Header container exists:', document.getElementById('header-container') !== null);
-
-// Check if any CSS is hiding the menu
-setTimeout(function() {
-    console.log('=== DEBUG: Mobile Menu Check ===');
-    
-    // Check header
-    const header = document.querySelector('header, .site-header, .main-header, nav');
-    if (header) {
-        const styles = window.getComputedStyle(header);
-        console.log('Header styles:', {
-            display: styles.display,
-            visibility: styles.visibility,
-            opacity: styles.opacity,
-            position: styles.position,
-            zIndex: styles.zIndex,
-            overflow: styles.overflow,
-            overflowX: styles.overflowX,
-            overflowY: styles.overflowY,
-            maxHeight: styles.maxHeight,
-            height: styles.height
-        });
-    } else {
-        console.log('❌ Header not found!');
-    }
-    
-    // Check hamburger button
-    const hamburger = document.querySelector('.hamburger, .mobile-menu-toggle, [class*="hamburger"], [class*="menu-toggle"], #mobileNavToggle');
-    if (hamburger) {
-        const hamburgerStyles = window.getComputedStyle(hamburger);
-        console.log('Hamburger styles:', {
-            display: hamburgerStyles.display,
-            visibility: hamburgerStyles.visibility,
-            opacity: hamburgerStyles.opacity,
-            pointerEvents: hamburgerStyles.pointerEvents,
-            zIndex: hamburgerStyles.zIndex,
-            position: hamburgerStyles.position,
-            width: hamburgerStyles.width,
-            height: hamburgerStyles.height
-        });
-        
-        // Check if clickable
-        const rect = hamburger.getBoundingClientRect();
-        console.log('Hamburger clickable area:', {
-            width: rect.width,
-            height: rect.height,
-            top: rect.top,
-            left: rect.left,
-            isVisible: rect.width > 0 && rect.height > 0 && rect.top > 0
-        });
-    } else {
-        console.log('❌ Hamburger button not found!');
-    }
-    
-    // Check mobile menu
-    const mobileMenu = document.querySelector('.mobile-menu, #nav-desktop, [class*="mobile-menu"]');
-    if (mobileMenu) {
-        const menuStyles = window.getComputedStyle(mobileMenu);
-        console.log('Mobile menu styles:', {
-            display: menuStyles.display,
-            visibility: menuStyles.visibility,
-            opacity: menuStyles.opacity,
-            maxHeight: menuStyles.maxHeight,
-            overflow: menuStyles.overflow,
-            transform: menuStyles.transform
-        });
-    }
-    
-    // Check for any elements that might be covering the hamburger
-    const elementsAtPoint = document.elementsFromPoint(50, 50);
-    console.log('Elements at click position (50,50):', elementsAtPoint.map(el => ({
-        tag: el.tagName,
-        id: el.id,
-        class: el.className,
-        zIndex: window.getComputedStyle(el).zIndex
-    })));
-    
-    console.log('=== END DEBUG ===');
-}, 1000);
-
-// artwork.js - Enhanced Artwork Gallery functionality
+// CLEANED VERSION - Uses common.js for navigation
 
 // ===== INITIALIZATION - Wait for components to be ready =====
 function waitForComponents(callback, maxAttempts = 20) {
@@ -123,7 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function initArtworkPage() {
   console.log('🚀 Initializing Enhanced Artwork Gallery page');
   
-
+  // ===== DELETED: All mobile navigation code =====
+  // REMOVED: window.setupMobileNavigation() - This is handled by common.js
+  // REMOVED: window.setupDropdowns() - This is handled by common.js
+  
   // Initialize artwork data
   initArtworkData();
   
@@ -201,10 +120,6 @@ function initAOSWithDelay() {
   }
 }
 
-// ========== REMOVED - Using common.js instead ==========
-// function initializeMobileDropdown() { ... } - DELETED - Using common.js
-// function initMobileMenu() { ... } - DELETED - Using common.js
-
 // ========== ARTWORK DATA FUNCTIONS ==========
 function initArtworkData() {
   console.log('📊 Initializing artwork data');
@@ -244,7 +159,9 @@ async function updateArtworkStats() {
 function initArtworkLikes() {
   // Initialize like counts from localStorage
   document.querySelectorAll('.like-btn').forEach(btn => {
-    const artworkId = btn.closest('.artwork-card, .contest-card, .nft-card').getAttribute('data-id');
+    const artworkId = btn.closest('.artwork-card, .contest-card, .nft-card')?.getAttribute('data-id');
+    if (!artworkId) return;
+    
     const savedLikes = localStorage.getItem(`artwork_likes_${artworkId}`);
     if (savedLikes) {
       const likeCount = btn.querySelector('.like-count');
@@ -266,6 +183,8 @@ function initNFTData() {
   // Initialize like counts from localStorage for NFTs
   document.querySelectorAll('.nft-card').forEach(card => {
     const nftId = card.dataset.category;
+    if (!nftId) return;
+    
     const savedLikes = localStorage.getItem(`nft_likes_${nftId}`);
     if (savedLikes) {
       const likeCount = card.querySelector('.like-count');
@@ -415,16 +334,16 @@ function initArtworkModal() {
       document.getElementById('modalImage').alt = title;
       document.getElementById('modalTitle').textContent = title;
       
-      const artistInitial = artist.charAt(0);
+      const artistInitial = artist ? artist.charAt(0) : 'A';
       document.getElementById('modalArtist').innerHTML = `
         <div class="artist-info">
           <div class="artist-avatar">${artistInitial}</div>
-          <span>by <a href="https://x.com/${artist.replace('@', '').split(' ')[0]}" class="artist-link">${artist}</a></span>
+          <span>by <a href="https://x.com/${artist?.replace('@', '').split(' ')[0] || 'rebelinux'}" class="artist-link">${artist || 'RebelInuX'}</a></span>
         </div>
       `;
       
-      document.getElementById('modalDescription').textContent = description;
-      document.getElementById('modalLink').href = link;
+      document.getElementById('modalDescription').textContent = description || 'Award-winning RebelInuX artwork';
+      document.getElementById('modalLink').href = link || 'https://zora.co/@rebelinux';
       
       // Show modal
       modal.classList.add('active');
@@ -499,7 +418,7 @@ function initNFTInteractions() {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
       const nftCard = this.closest('.nft-card');
-      const nftId = Array.from(nftCard.parentElement.children).indexOf(nftCard) + 1;
+      const nftId = Array.from(nftCard.parentElement?.children || []).indexOf(nftCard) + 1;
       viewNftDetails(nftId);
     });
   });
@@ -519,33 +438,7 @@ function viewNftDetails(nftId) {
   
   const nft = nftData[nftId] || nftData[1];
   
-  // Show NFT details (in production, this would be a modal)
-  const details = `
-    NFT Details:
-    
-    Name: ${nft.name}
-    Rarity: ${nft.rarity}
-    Platform: ${nft.platform}
-    
-    Description:
-    ${nft.description}
-    
-    Attributes:
-    ${nft.attributes.join('\n')}
-    
-    View on ZORA: ${nft.link}
-  `;
-  
   showToast(`Viewing details for: ${nft.name}`, 'info');
-  
-  setTimeout(() => {
-    // This would open a modal in production
-    console.log('NFT details:', details);
-    
-    if (window.innerWidth > 768) {
-      alert(details + '\n\n(In production, this would open a detailed modal)');
-    }
-  }, 100);
 }
 
 // ========== SUBMISSION FUNCTIONALITY ==========
@@ -584,16 +477,46 @@ function openSubmissionForm() {
   }, 500);
 }
 
-function downloadAsset(assetType) {
-  showToast(`Downloading ${assetType}...`, 'info');
+function downloadAsset(assetPath) {
+  // Extract filename from path
+  const fileName = assetPath.split('/').pop();
+  const fileType = fileName.split('.').pop().toUpperCase();
   
+  showToast(`Downloading ${fileName}...`, 'info');
+  
+  // Create a temporary download link
+  const tempLink = document.createElement('a');
+  tempLink.href = assetPath;
+  tempLink.download = fileName;
+  tempLink.style.display = 'none';
+  
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+  
+  // Show success message
   setTimeout(() => {
-    showToast('Asset downloaded successfully!', 'success');
+    showToast(`${fileName} downloaded successfully!`, 'success');
     
-    // Track downloads
-    const downloads = parseInt(localStorage.getItem('asset_downloads') || '0');
-    localStorage.setItem('asset_downloads', (downloads + 1).toString());
-  }, 1000);
+    // Track downloads in analytics
+    trackAssetDownload(fileName);
+  }, 100);
+}
+
+function trackAssetDownload(fileName) {
+  const downloads = parseInt(localStorage.getItem(`asset_downloads`)) || 0;
+  localStorage.setItem('asset_downloads', (downloads + 1).toString());
+  
+  console.log(`Asset downloaded: ${fileName}, Total downloads: ${downloads + 1}`);
+  
+  // Show designer credit toast on first download
+  const hasSeenCredit = localStorage.getItem('seen_designer_credit');
+  if (!hasSeenCredit && (fileName.includes('Logo') || fileName.includes('logo'))) {
+    setTimeout(() => {
+      showToast('🎨 Logo designed by Masum B - Professional Graphic Designer', 'info', 5000);
+      localStorage.setItem('seen_designer_credit', 'true');
+    }, 1500);
+  }
 }
 
 // ========== ANIMATION FUNCTIONS ==========
@@ -747,14 +670,9 @@ function downloadLogo(logoType) {
   
   showToast(`Converting ${logoName} to PNG...`, 'info');
   
-  // In a real implementation, you would:
-  // 1. Have actual PNG files ready for download
-  // 2. Or convert SVG to PNG on the server
-  
-  // For now, simulate the download process
+  // Simulate the download process
   setTimeout(() => {
     // Create a temporary download link for the PNG version
-    // Note: This requires actual PNG files to exist
     const tempLink = document.createElement('a');
     tempLink.href = filePath.replace('.svg', '.png'); // Assumes PNG version exists
     tempLink.download = logoName;
@@ -772,53 +690,11 @@ function downloadLogo(logoType) {
   }, 1000);
 }
 
-function downloadAsset(assetPath) {
-  // Extract filename from path
-  const fileName = assetPath.split('/').pop();
-  const fileType = fileName.split('.').pop().toUpperCase();
-  
-  showToast(`Downloading ${fileName}...`, 'info');
-  
-  // Create a temporary download link
-  const tempLink = document.createElement('a');
-  tempLink.href = assetPath;
-  tempLink.download = fileName;
-  tempLink.style.display = 'none';
-  
-  document.body.appendChild(tempLink);
-  tempLink.click();
-  document.body.removeChild(tempLink);
-  
-  // Show success message
-  setTimeout(() => {
-    showToast(`${fileName} downloaded successfully!`, 'success');
-    
-    // Track downloads in analytics
-    trackAssetDownload(fileName);
-  }, 100);
-}
-
 function trackLogoDownload(logoType) {
   const downloads = parseInt(localStorage.getItem(`logo_downloads_${logoType}`) || '0');
   localStorage.setItem(`logo_downloads_${logoType}`, (downloads + 1).toString());
   
   console.log(`Logo downloaded: ${logoType}, Total: ${downloads + 1}`);
-}
-
-function trackAssetDownload(fileName) {
-  const downloads = parseInt(localStorage.getItem(`asset_downloads`)) || 0;
-  localStorage.setItem('asset_downloads', (downloads + 1).toString());
-  
-  console.log(`Asset downloaded: ${fileName}, Total downloads: ${downloads + 1}`);
-  
-  // Show designer credit toast on first download
-  const hasSeenCredit = localStorage.getItem('seen_designer_credit');
-  if (!hasSeenCredit && (fileName.includes('Logo') || fileName.includes('logo'))) {
-    setTimeout(() => {
-      showToast('🎨 Logo designed by Masum B - Professional Graphic Designer', 'info', 5000);
-      localStorage.setItem('seen_designer_credit', 'true');
-    }, 1500);
-  }
 }
 
 // ========== GLOBAL EXPORTS ==========
@@ -830,54 +706,7 @@ window.trackAssetDownload = trackAssetDownload;
 window.showToast = showToast;
 window.initArtworkPage = initArtworkPage;
 
-// Add touch-active class styles
-document.addEventListener('DOMContentLoaded', function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .touch-active {
-      opacity: 0.7 !important;
-      transform: scale(0.98) !important;
-      transition: all 0.1s ease !important;
-    }
-    
-    /* Mobile optimizations */
-    @media (max-width: 768px) {
-      .artwork-card, .contest-card, .nft-card {
-        cursor: pointer;
-      }
-      
-      .artwork-overlay, .contest-overlay, .nft-overlay {
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.5);
-      }
-      
-      .overlay-text {
-        font-size: 1rem;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-  
-  // Add touch event listeners for mobile
-  if ('ontouchstart' in window) {
-    document.querySelectorAll('.artwork-card, .contest-card, .nft-card').forEach(card => {
-      card.addEventListener('touchstart', function() {
-        this.classList.add('touch-active');
-      });
-      
-      card.addEventListener('touchend', function() {
-        this.classList.remove('touch-active');
-      });
-    });
-  }
-});
-
-// Load user preferences
-window.addEventListener('load', function() {
-  // Handle window resize for mobile dropdown - REMOVED conflicting code
-  window.addEventListener('resize', function() {
-    if (typeof window.setupMobileNavigation === 'function') {
-      window.setupMobileNavigation();
-    }
-  });
-});
+// ===== REMOVED ALL MOBILE NAVIGATION CSS & EVENT LISTENERS =====
+// REMOVED: touch-active styles
+// REMOVED: resize event listener for mobile
+// REMOVED: DOMContentLoaded style injection for mobile
