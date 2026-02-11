@@ -1510,3 +1510,249 @@
     transform: scale(0.95) !important;
   }
 }
+/* ===== MOBILE-ONLY HORIZONTAL SCROLL FIXES ===== */
+/* These ONLY apply on mobile devices, preserve desktop layout */
+
+@media (max-width: 768px) {
+    /* Force body to not overflow */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        position: relative;
+    }
+    
+    /* Fix main containers */
+    .container,
+    .calculator-section,
+    .content-card,
+    .page-hero .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Fix parameter grid - prevent columns from overflowing */
+    .parameter-grid {
+        grid-template-columns: 1fr !important; /* Stack on mobile */
+        gap: 15px;
+    }
+    
+    .parameter-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Fix formula display - reduce font size and force wrap */
+    .formula-equation {
+        font-size: 1.2rem !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+        line-height: 1.3;
+    }
+    
+    .formula-component {
+        font-size: 1rem !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+    
+    /* Fix tables - keep them scrollable INSIDE container, not overflow page */
+    .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 10px 0 !important;
+        border: 1px solid rgba(212, 167, 106, 0.2);
+    }
+    
+    #token-batches-table,
+    #other-participants-table {
+        min-width: 600px; /* Keeps table readable on mobile */
+        width: 100%;
+        table-layout: auto;
+    }
+    
+    /* Fix gamma components grid */
+    .gamma-components {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px;
+    }
+    
+    /* Fix WS info grid */
+    .ws-info-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px;
+    }
+    
+    /* Fix slider containers */
+    .slider-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+        box-sizing: border-box !important;
+    }
+    
+    .slider-info {
+        flex-wrap: wrap;
+    }
+    
+    .slider-info-value {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .value-input {
+        width: 120px !important;
+    }
+    
+    /* Fix any inline styles that might have fixed widths */
+    [style*="width:"] {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Fix formula announcement header */
+    .announcement-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+    
+    .announcement-header > div {
+        width: 100% !important;
+        min-width: auto !important;
+    }
+    
+    .governance-badge {
+        align-self: flex-start !important;
+    }
+    
+    /* Fix mobile break line */
+    .mobile-break {
+        display: block !important;
+    }
+    
+    /* Fix other participants summary grid */
+    .other-participants-summary {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px;
+    }
+    
+    /* Fix quick actions buttons */
+    .quick-actions,
+    .table-actions,
+    .other-participants-actions,
+    .preset-buttons {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+    
+    .quick-action-btn,
+    .table-action-btn,
+    .other-participants-btn,
+    .example-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        margin: 2px 0 !important;
+    }
+    
+    /* Fix hero section */
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-buttons .cta-button {
+        width: 100%;
+        margin: 5px 0 !important;
+    }
+    
+    /* Fix chart container */
+    .chart-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 300px;
+        padding: 10px !important;
+    }
+    
+    /* Fix reward result */
+    .reward-result {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+    }
+    
+    /* Fix contribution grid */
+    .contribution-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Fix participant type selector */
+    .participant-type-selector {
+        flex-direction: column !important;
+    }
+    
+    .participant-type-option {
+        width: 100% !important;
+    }
+}
+
+/* Extra small devices - even more compact */
+@media (max-width: 480px) {
+    .gamma-components {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .ws-info-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .other-participants-summary {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .formula-equation {
+        font-size: 1rem !important;
+    }
+    
+    .formula-component {
+        font-size: 0.9rem !important;
+    }
+    
+    .parameter-value {
+        font-size: 1.5rem !important;
+    }
+    
+    .slider-value {
+        font-size: 1rem !important;
+    }
+    
+    .value-input {
+        width: 90px !important;
+    }
+}
+
+/* Fix for landscape mode on mobile */
+@media (max-height: 600px) and (orientation: landscape) and (max-width: 900px) {
+    .parameter-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .gamma-components {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .ws-info-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
