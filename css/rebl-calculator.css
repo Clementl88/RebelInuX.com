@@ -4186,3 +4186,108 @@ canvas[aria-label*="chart"] {
         transition: transform 0.1s ease;
     }
 }
+/* Add this at the very end of rebl-calculator.css */
+html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+}
+
+.container {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/* Fix specific overflow elements */
+.table-container {
+    max-width: 100%;
+    overflow-x: auto !important; /* Keep scrollable tables, but prevent page overflow */
+    -webkit-overflow-scrolling: touch;
+}
+
+#token-batches-table,
+#other-participants-table {
+    width: 100%;
+    table-layout: auto;
+    min-width: 600px; /* Table will scroll, not the page */
+}
+
+/* Fix parameter grid */
+.parameter-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Smaller min width */
+    max-width: 100%;
+}
+
+/* Fix formula display on mobile */
+@media (max-width: 768px) {
+    .formula-equation {
+        font-size: 1.2rem !important;
+        word-break: break-word !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+    
+    .formula-component {
+        font-size: 1rem !important;
+        word-break: break-word !important;
+        white-space: normal !important;
+    }
+    
+    /* Fix gamma components grid */
+    .gamma-components {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px;
+    }
+    
+    /* Fix WS info grid */
+    .ws-info-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    /* Fix slider containers */
+    .slider-container {
+        padding: 15px !important;
+    }
+    
+    .slider-info {
+        flex-wrap: wrap;
+    }
+    
+    .value-input {
+        width: 100px !important;
+    }
+    
+    /* Fix cards and containers */
+    .calculator-section,
+    .content-card,
+    .formula-display,
+    .parameter-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Fix any fixed widths */
+    [style*="width:"] {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gamma-components {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .ws-info-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .formula-equation {
+        font-size: 1rem !important;
+    }
+}
