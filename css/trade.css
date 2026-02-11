@@ -2471,21 +2471,25 @@
 }
 /* ===== MOBILE-ONLY HORIZONTAL SCROLL FIXES ===== */
 /* These ONLY apply on mobile devices, preserve desktop layout */
+/* UPDATED: Excludes header to allow hamburger menu to work */
 
 @media (max-width: 768px) {
-    /* Force body to not overflow */
-    html, body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        position: relative;
-    }
+    /* DO NOT target html, body, or header with overflow hidden */
     
-    /* Fix main containers */
-    .container,
+    /* Fix main containers - exclude header-related elements */
+    .container:not(.site-header .container):not(.main-header .container):not(nav .container),
     .calculator-section,
     .content-card,
-    .page-hero .container {
+    .page-hero .container,
+    .key-takeaways .container,
+    #live-trading .container,
+    #live-chart .container,
+    #buy-now .container,
+    #trading-pairs .container,
+    #contract-verify .container,
+    #faq .container,
+    #related-pages .container,
+    #logo-explanation .container {
         width: 100% !important;
         max-width: 100% !important;
         padding-left: 15px !important;
@@ -2574,8 +2578,8 @@
         width: 120px !important;
     }
     
-    /* Fix any inline styles that might have fixed widths */
-    [style*="width:"] {
+    /* Only apply width restrictions to non-header elements */
+    section [style*="width:"]:not(header *):not(nav *):not(.site-header *):not(.main-header *) {
         max-width: 100% !important;
         box-sizing: border-box !important;
     }
