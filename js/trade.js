@@ -1,40 +1,3 @@
-// ===== DEBUG: Check what's blocking the menu =====
-console.log('🚀 trade.js loaded');
-console.log('Header container exists:', document.getElementById('header-container') !== null);
-
-// Check if any CSS is hiding the menu
-setTimeout(function() {
-  const header = document.querySelector('header, .site-header, .main-header, nav');
-  if (header) {
-    const styles = window.getComputedStyle(header);
-    console.log('Header styles:', {
-      overflow: styles.overflow,
-      overflowX: styles.overflowX,
-      overflowY: styles.overflowY,
-      display: styles.display,
-      visibility: styles.visibility,
-      opacity: styles.opacity,
-      position: styles.position,
-      zIndex: styles.zIndex,
-      maxHeight: styles.maxHeight,
-      height: styles.height
-    });
-  }
-  
-  const hamburger = document.querySelector('.hamburger, .mobile-menu-toggle, [class*="hamburger"], [class*="menu-toggle"]');
-  if (hamburger) {
-    const hamburgerStyles = window.getComputedStyle(hamburger);
-    console.log('Hamburger styles:', {
-      display: hamburgerStyles.display,
-      visibility: hamburgerStyles.visibility,
-      opacity: hamburgerStyles.opacity,
-      pointerEvents: hamburgerStyles.pointerEvents,
-      zIndex: hamburgerStyles.zIndex,
-      position: hamburgerStyles.position
-    });
-  }
-}, 1000);
-
 // trade.js - Trade page specific functionality
 
 // Initialize after common components are loaded
@@ -71,8 +34,7 @@ function initTradePage() {
   // Initialize any trade-specific functionality here
   initTradeComponents();
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
+  ;
   
   // ===== ADD THIS: Initialize AOS with delay =====
   initAOSWithDelay();
@@ -117,36 +79,6 @@ function initAOSWithDelay() {
   }
 }
 
-function initializeMobileDropdown() {
-  const dropbtn = document.querySelector('.dropbtn');
-  const navDesktop = document.getElementById('nav-desktop');
-  
-  if (!dropbtn) return;
-  
-  // Mobile dropdown toggle
-  dropbtn.addEventListener('click', function(e) {
-    // Only handle on mobile
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const dropdownContent = this.nextElementSibling;
-      const isActive = dropdownContent.style.display === 'block' || 
-                      dropdownContent.classList.contains('active');
-      
-      // Toggle this dropdown
-      if (!isActive) {
-        dropdownContent.style.display = 'block';
-        dropdownContent.classList.add('active');
-        this.classList.add('active');
-      } else {
-        dropdownContent.style.display = 'none';
-        dropdownContent.classList.remove('active');
-        this.classList.remove('active');
-      }
-    }
-  });
-}
 
 function initTradeComponents() {
   console.log('Trade components initialized');
