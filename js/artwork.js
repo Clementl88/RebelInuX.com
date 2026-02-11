@@ -123,16 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initArtworkPage() {
   console.log('🚀 Initializing Enhanced Artwork Gallery page');
   
-  // Make sure mobile navigation is set up (REMOVED local dropdown)
-  if (typeof window.setupMobileNavigation === 'function') {
-    window.setupMobileNavigation();
-  }
-  
-  // Make sure dropdowns are set up
-  if (typeof window.setupDropdowns === 'function') {
-    window.setupDropdowns();
-  }
-  
+
   // Initialize artwork data
   initArtworkData();
   
