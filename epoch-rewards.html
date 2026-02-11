@@ -1197,15 +1197,66 @@
       }
     }
     
-    // Animation Functions
-    function initScrollAnimations() {
-      const cards = document.querySelectorAll('.takeaway-item, .step-card, .stat-card, .countdown-box, .key-card, .faq-item, .related-card');
-      
-      cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    // Animation Functions - OPTIMIZED FOR MOBILE
+function initScrollAnimations() {
+  // Use CSS classes instead of inline styles
+  const cards = document.querySelectorAll(
+    '.takeaway-item, .step-card, .stat-card, .countdown-box, ' +
+    '.key-card, .faq-item, .related-card, .formula-component, ' +
+    '.benefit-item, .pillar-item, .calc-feature, .system-card'
+  );
+  
+  // Add CSS class for initial hidden state
+  cards.forEach(card => {
+    card.classList.add('scroll-animate');
+  });
+  
+  // Use Intersection Observer for better mobile performance
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('scroll-visible');
+          // Optional: unobserve after animation to save resources
+          observer.unobserve(entry.target);
+        }
       });
+    }, {
+      threshold: 0.1, // Lower threshold for mobile
+      rootMargin: '50px' // Start loading slightly before visible
+    });
+    
+    cards.forEach(card => observer.observe(card));
+  } else {
+    // Fallback for older browsers
+    window.addEventListener('scroll', throttle(function() {
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 50) {
+          card.classList.add('scroll-visible');
+        }
+      });
+    }, 100));
+    
+    // Trigger once on load
+    setTimeout(() => {
+      window.dispatchEvent(new Event('scroll'));
+    }, 100);
+  }
+}
+
+// Utility: throttle function for scroll events
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
       
       function animateCards() {
         cards.forEach((card, index) => {
