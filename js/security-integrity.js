@@ -38,24 +38,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function initSecurityIntegrityPage() {
   console.log('🚀 Initializing Security & Integrity page');
   
-  // Make sure mobile navigation is set up (REMOVED local dropdown)
-  if (typeof window.setupMobileNavigation === 'function') {
-    window.setupMobileNavigation();
-  }
-  
-  // Make sure dropdowns are set up
-  if (typeof window.setupDropdowns === 'function') {
-    window.setupDropdowns();
-  }
+  // ===== REMOVED: Mobile navigation calls =====
+  // These are handled by common.js - DO NOT CALL THEM HERE
   
   // Initialize security data
   initSecurityData();
   
   // Initialize AOS animations
   initAOSWithDelay();
-  
-  // Initialize touch events
-  initTouchEvents();
   
   // Initialize principle card interactions
   initPrincipleCards();
@@ -65,6 +55,9 @@ function initSecurityIntegrityPage() {
   
   // Initialize scroll animations
   initScrollAnimations();
+  
+  // Initialize real-time data
+  initRealTimeData();
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -119,9 +112,6 @@ function initAOSWithDelay() {
   }
 }
 
-// ========== REMOVED - Using common.js instead ==========
-// function initializeMobileDropdown() { ... } - DELETED - Using common.js
-
 // ========== SECURITY DATA FUNCTIONS ==========
 function initSecurityData() {
   console.log('📊 Initializing security data');
@@ -131,9 +121,6 @@ function initSecurityData() {
   
   // Update verification timestamps
   updateVerificationTimestamps();
-  
-  // Initialize real-time data
-  initRealTimeData();
 }
 
 async function updateHolderCount() {
@@ -221,7 +208,6 @@ function copyContract(event) {
   const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
   const button = event.target.closest('button') || event.target;
   const originalHTML = button.innerHTML;
-  const originalText = button.textContent;
   
   navigator.clipboard.writeText(contractAddress).then(() => {
     button.innerHTML = '<i class="fas fa-check"></i> Copied!';
@@ -317,26 +303,14 @@ function initScrollAnimations() {
     '.takeaway-item, .security-card, .practice-item, .audit-card, .faq-item, .related-card, .principle-card, .verification-stat, .tool-card'
   );
   
+  if (animatedElements.length === 0) return;
+  
   // Set initial state
   animatedElements.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   });
-  
-  function animateElements() {
-    animatedElements.forEach((el, index) => {
-      const rect = el.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
-      
-      if (isVisible) {
-        setTimeout(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        }, index * 50);
-      }
-    });
-  }
   
   // Use Intersection Observer for better performance
   if ('IntersectionObserver' in window) {
@@ -356,12 +330,28 @@ function initScrollAnimations() {
     animatedElements.forEach(el => observer.observe(el));
   } else {
     // Fallback for older browsers
+    function animateElements() {
+      animatedElements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight - 100 && rect.bottom > 0;
+        
+        if (isVisible) {
+          setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          }, index * 50);
+        }
+      });
+    }
+    
     window.addEventListener('scroll', animateElements);
     animateElements(); // Initial check
   }
 }
 
 function animateCounter(element, target) {
+  if (!element) return;
+  
   const duration = 1000; // 1 second
   const start = 0;
   const increment = target / (duration / 16); // 60fps
@@ -376,30 +366,6 @@ function animateCounter(element, target) {
       element.textContent = Math.floor(current).toLocaleString();
     }
   }, 16);
-}
-
-// ========== TOUCH EVENTS ==========
-function initTouchEvents() {
-  // Prevent zoom on double-tap
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function(event) {
-    const now = Date.now();
-    if (now - lastTouchEnd <= 300) {
-      event.preventDefault();
-    }
-    lastTouchEnd = now;
-  }, { passive: false });
-  
-  // Add touch feedback for buttons
-  document.querySelectorAll('a, button').forEach(element => {
-    element.addEventListener('touchstart', function() {
-      this.classList.add('touch-active');
-    });
-    
-    element.addEventListener('touchend', function() {
-      this.classList.remove('touch-active');
-    });
-  });
 }
 
 // ========== REAL-TIME DATA ==========
@@ -426,7 +392,7 @@ function updateVerificationStatus() {
 }
 
 // ========== TOAST NOTIFICATION ==========
-function showToast(message, type = 'info') {
+function showToast(message, type = 'info', duration = 3000) {
   // Remove existing toasts
   const existingToast = document.querySelector('.toast-notification');
   if (existingToast) existingToast.remove();
@@ -496,7 +462,7 @@ function showToast(message, type = 'info') {
     document.head.appendChild(style);
   }
   
-  // Remove toast after 3 seconds
+  // Remove toast after duration
   setTimeout(() => {
     toast.style.animation = 'slideDown 0.3s ease';
     setTimeout(() => {
@@ -504,7 +470,7 @@ function showToast(message, type = 'info') {
         toast.parentNode.removeChild(toast);
       }
     }, 300);
-  }, 3000);
+  }, duration);
 }
 
 // ========== GLOBAL EXPORTS ==========
@@ -512,21 +478,3 @@ window.copyContract = copyContract;
 window.addToWallet = addToWallet;
 window.showToast = showToast;
 window.initSecurityIntegrityPage = initSecurityIntegrityPage;
-
-// Add touch-active class styles
-document.addEventListener('DOMContentLoaded', function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .touch-active {
-      opacity: 0.7 !important;
-      transform: scale(0.98) !important;
-      transition: all 0.1s ease !important;
-    }
-    
-    .principle-card.expanded {
-      transform: scale(1.02) !important;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
-    }
-  `;
-  document.head.appendChild(style);
-});
