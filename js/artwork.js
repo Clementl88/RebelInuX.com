@@ -1,5 +1,4 @@
 // artwork.js - Enhanced Artwork Gallery functionality
-// CLEANED VERSION - Uses common.js for navigation
 
 // ===== INITIALIZATION - Wait for components to be ready =====
 function waitForComponents(callback, maxAttempts = 20) {
@@ -706,7 +705,3 @@ window.trackAssetDownload = trackAssetDownload;
 window.showToast = showToast;
 window.initArtworkPage = initArtworkPage;
 
-// ===== REMOVED ALL MOBILE NAVIGATION CSS & EVENT LISTENERS =====
-// REMOVED: touch-active styles
-// REMOVED: resize event listener for mobile
-// REMOVED: DOMContentLoaded style injection for mobile
