@@ -1018,12 +1018,20 @@
   <script>
     // Initialize after common components are loaded
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize AOS
-      AOS.init({
-        duration: 800,
-        once: true,
-        offset: 100
-      });
+  // Remove inline styles that might conflict
+  const animatedElements = document.querySelectorAll('.takeaway-item, .step-card, .stat-card');
+  animatedElements.forEach(el => {
+    el.style.opacity = '';
+    el.style.transform = '';
+  });
+  
+  // Initialize AOS with mobile-friendly settings
+  AOS.init({
+    duration: window.innerWidth <= 768 ? 400 : 800,
+    once: true,
+    offset: window.innerWidth <= 768 ? 20 : 100,
+    disable: 'mobile' // Optional: completely disable AOS on mobile and use our custom animation instead
+  });
       
       setTimeout(initEpochRewardsPage, 300);
       
