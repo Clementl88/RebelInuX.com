@@ -40,6 +40,36 @@
   <link rel="stylesheet" href="css/header-footer.css">
   <link rel="stylesheet" href="css/trade.css">
 
+<!-- AOS JavaScript - Load AFTER menu is initialized -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  
+  <script>
+    // Delay AOS initialization to ensure menu is working
+    setTimeout(function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+    }, 200); // Small delay prevents interference with menu
+    
+    // Smooth scrolling for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+  
 </head>
 <body>
   <!-- Loading Animation -->
@@ -854,8 +884,6 @@
   <!-- Analytics -->
   <script src="js/analytics.js" defer></script>
 
-    <!-- AOS Animation -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   
 </body>
 </html>
