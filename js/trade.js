@@ -122,6 +122,8 @@ function initTradeComponents() {
   
   // Setup trading pairs
   setupTradingPairs();
+
+  initLogoExplanation();
 }
 
 // ========== LIVE TRADING DATA FUNCTIONS ==========
