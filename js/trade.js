@@ -1,8 +1,80 @@
 // trade.js - Trade page specific functionality
 
-// Add this function to trade.js
+// ===== INITIALIZATION - Wait for components to be ready =====
+function waitForComponents(callback, maxAttempts = 20) {
+  let attempts = 0;
+  
+  const checkInterval = setInterval(function() {
+    attempts++;
+    
+    // Check if components are loaded AND common.js functions are available
+    if (window.componentsLoaded && typeof window.setupMobileNavigation === 'function') {
+      clearInterval(checkInterval);
+      console.log('✅ Components ready, initializing trade page');
+      callback();
+    } else if (attempts >= maxAttempts) {
+      clearInterval(checkInterval);
+      console.warn('⚠️ Components not ready after timeout, forcing initialization');
+      // Force initialization anyway
+      if (typeof window.initializeComponents === 'function') {
+        window.initializeComponents();
+      }
+      callback();
+    } else {
+      console.log(`⏳ Waiting for components... (${attempts}/${maxAttempts})`);
+    }
+  }, 100);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📄 Trade page DOM ready');
+  waitForComponents(function() {
+    setTimeout(initTradePage, 200);
+  });
+});
+
+// ===== MAIN INITIALIZATION =====
+function initTradePage() {
+  console.log('🚀 Initializing Trade page');
+  
+  // Make sure mobile navigation is set up
+  if (typeof window.setupMobileNavigation === 'function') {
+    window.setupMobileNavigation();
+  }
+  
+  // Make sure dropdowns are set up
+  if (typeof window.setupDropdowns === 'function') {
+    window.setupDropdowns();
+  }
+  
+  // Initialize trade-specific components
+  initTradeComponents();
+  
+  // Initialize AOS with delay
+  initAOSWithDelay();
+}
+
+// ===== TRADE COMPONENTS =====
+function initTradeComponents() {
+  console.log('📊 Trade components initialized');
+  
+  // Initialize live data
+  initializeLiveData();
+  
+  // Initialize contract verification functions
+  initContractFunctions();
+  
+  // Setup trading pairs
+  setupTradingPairs();
+  
+  // Initialize logo explanation section
+  initLogoExplanation();
+}
+
+// ===== LOGO EXPLANATION =====
 function initLogoExplanation() {
-  console.log("Initializing logo explanation section");
+  console.log("🖼️ Initializing logo explanation section");
   
   // Add click handlers to show more info about each logo
   document.querySelectorAll('.logo-section').forEach(section => {
@@ -11,7 +83,6 @@ function initLogoExplanation() {
       showLogoInfo(type);
     });
   });
-  
 }
 
 function showLogoInfo(type) {
@@ -23,19 +94,7 @@ function showLogoInfo(type) {
   showToast(messages[type], 'info');
 }
 
-function initTradePage() {
-  console.log('Initializing Trade page');
-  
-  // Initialize any trade-specific functionality here
-  initTradeComponents();
-  
-  ;
-  
-  // ===== ADD THIS: Initialize AOS with delay =====
-  initAOSWithDelay();
-}
-
-// ===== NEW FUNCTION: Initialize AOS with proper delay =====
+// ===== AOS INITIALIZATION =====
 function initAOSWithDelay() {
   // Check if AOS is available
   if (typeof AOS !== 'undefined') {
@@ -72,22 +131,6 @@ function initAOSWithDelay() {
       }
     }, 100);
   }
-}
-
-
-function initTradeComponents() {
-  console.log('Trade components initialized');
-  
-  // Initialize live data
-  initializeLiveData();
-  
-  // Initialize contract verification functions
-  initContractFunctions();
-  
-  // Setup trading pairs
-  setupTradingPairs();
-
-  initLogoExplanation();
 }
 
 // ========== LIVE TRADING DATA FUNCTIONS ==========
@@ -323,7 +366,7 @@ window.refreshAllData = async function(event) {
   const isManualClick = button && event && event.type === 'click';
   
   if (isManualClick) {
-    const originalHTML = button.innerHTML;
+    var originalHTML = button.innerHTML;
     button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
     button.disabled = true;
   }
@@ -364,7 +407,7 @@ window.refreshAllData = async function(event) {
 // ========== CONTRACT VERIFICATION FUNCTIONS ==========
 
 function initContractFunctions() {
-  console.log("Initializing contract verification functions");
+  console.log("🔐 Initializing contract verification functions");
 }
 
 function copyContractFull() {
@@ -517,7 +560,7 @@ function downloadQR(url) {
 }
 
 function setupTradingPairs() {
-  console.log("Setting up trading pairs display");
+  console.log("💱 Setting up trading pairs display");
   // Additional trading pair functionality can be added here
 }
 
@@ -532,7 +575,7 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = `toast-notification toast-${type}`;
   toast.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
     <span>${message}</span>
   `;
   
@@ -600,3 +643,4 @@ window.verifyOnAll = verifyOnAll;
 window.generateQR = generateQR;
 window.downloadQR = downloadQR;
 window.refreshAllData = refreshAllData;
+window.initTradePage = initTradePage;
