@@ -811,11 +811,6 @@ window.addEventListener('scroll', animateWithRAF(function() {
   // Any scroll-based animations
 }), { passive: true });
 
-// ========== ERROR HANDLING ==========
-window.addEventListener('error', function(e) {
-  console.error('Community Hub Error:', e.error);
-  showToast('An error occurred. Please refresh the page.', 'error');
-});
 
 // ========== OFFLINE SUPPORT ==========
 window.addEventListener('online', function() {
