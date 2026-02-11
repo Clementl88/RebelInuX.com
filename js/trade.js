@@ -17,8 +17,6 @@ function initLogoExplanation() {
     });
   });
   
-  // Add to initTradeComponents()
-  initLogoExplanation();
 }
 
 function showLogoInfo(type) {
