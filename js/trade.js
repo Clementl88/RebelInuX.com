@@ -1,10 +1,5 @@
 // trade.js - Trade page specific functionality
 
-// Initialize after common components are loaded
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initTradePage, 300);
-});
-
 // Add this function to trade.js
 function initLogoExplanation() {
   console.log("Initializing logo explanation section");
