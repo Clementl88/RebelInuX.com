@@ -38,6 +38,48 @@ function initTradePage() {
   
   // Initialize mobile dropdown
   initializeMobileDropdown();
+  
+  // ===== ADD THIS: Initialize AOS with delay =====
+  initAOSWithDelay();
+}
+
+// ===== NEW FUNCTION: Initialize AOS with proper delay =====
+function initAOSWithDelay() {
+  // Check if AOS is available
+  if (typeof AOS !== 'undefined') {
+    // Delay to ensure menu is fully initialized
+    setTimeout(function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+      console.log('✅ AOS initialized with delay');
+    }, 200);
+  } else {
+    // If AOS not loaded yet, wait for it
+    console.log('⏳ Waiting for AOS to load...');
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    const checkAOS = setInterval(function() {
+      attempts++;
+      if (typeof AOS !== 'undefined') {
+        clearInterval(checkAOS);
+        setTimeout(function() {
+          AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+          });
+          console.log('✅ AOS initialized after loading');
+        }, 200);
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkAOS);
+        console.warn('⚠️ AOS failed to load');
+      }
+    }, 100);
+  }
 }
 
 function initializeMobileDropdown() {
