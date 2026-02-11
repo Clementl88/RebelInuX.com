@@ -1,24 +1,58 @@
-/// artwork.js - Enhanced Artwork Gallery functionality
+// artwork.js - Enhanced Artwork Gallery functionality
 
-// Initialize after common components are loaded
+// ===== INITIALIZATION - Wait for components to be ready =====
+function waitForComponents(callback, maxAttempts = 20) {
+  let attempts = 0;
+  
+  const checkInterval = setInterval(function() {
+    attempts++;
+    
+    // Check if components are loaded AND common.js functions are available
+    if (window.componentsLoaded && typeof window.setupMobileNavigation === 'function') {
+      clearInterval(checkInterval);
+      console.log('✅ Components ready, initializing artwork page');
+      callback();
+    } else if (attempts >= maxAttempts) {
+      clearInterval(checkInterval);
+      console.warn('⚠️ Components not ready after timeout, forcing initialization');
+      // Force initialization anyway
+      if (typeof window.initializeComponents === 'function') {
+        window.initializeComponents();
+      }
+      callback();
+    } else {
+      console.log(`⏳ Waiting for components... (${attempts}/${maxAttempts})`);
+    }
+  }, 100);
+}
+
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initArtworkPage, 300);
+  console.log('📄 Artwork page DOM ready');
+  waitForComponents(function() {
+    setTimeout(initArtworkPage, 200);
+  });
 });
 
+// ===== MAIN INITIALIZATION =====
 function initArtworkPage() {
-  console.log('Initializing Enhanced Artwork Gallery page');
+  console.log('🚀 Initializing Enhanced Artwork Gallery page');
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
+  // Make sure mobile navigation is set up (REMOVED local dropdown)
+  if (typeof window.setupMobileNavigation === 'function') {
+    window.setupMobileNavigation();
+  }
+  
+  // Make sure dropdowns are set up
+  if (typeof window.setupDropdowns === 'function') {
+    window.setupDropdowns();
+  }
   
   // Initialize artwork data
   initArtworkData();
   
-  // Initialize animations
-  initScrollAnimations();
-  
-  // Initialize AOS animations
-  initAOS();
+  // Initialize AOS animations with delay
+  initAOSWithDelay();
   
   // Initialize gallery interactions
   initGalleryInteractions();
@@ -32,121 +66,72 @@ function initArtworkPage() {
   // Initialize slider animation
   initArtworkSlider();
   
-  // Initialize mobile menu
-  initMobileMenu();
+  // Initialize scroll animations
+  initScrollAnimations();
   
   // Start periodic updates
   setInterval(updateArtworkStats, 60000);
 }
 
 // ========== AOS ANIMATIONS ==========
-function initAOS() {
+function initAOSWithDelay() {
+  // Check if AOS is available
   if (typeof AOS !== 'undefined') {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-      disable: window.innerWidth < 768 ? 'mobile' : false
-    });
-    
-    // Refresh AOS on window resize
-    window.addEventListener('resize', function() {
-      AOS.refresh();
-    });
-  }
-}
-
-// ========== MOBILE MENU ==========
-function initMobileMenu() {
-  const mobileToggle = document.getElementById('mobileNavToggle');
-  if (mobileToggle) {
-    mobileToggle.addEventListener('click', function() {
-      const nav = document.getElementById('nav-desktop');
-      const icon = this.querySelector('i');
-      const body = document.body;
-      
-      nav.classList.toggle('active');
-      if (nav.classList.contains('active')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
-        body.style.overflow = 'hidden';
-      } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
-        body.style.overflow = '';
-      }
-    });
-  }
-  
-  // Close mobile nav when clicking on a link
-  document.querySelectorAll('#nav-desktop a').forEach(link => {
-    link.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        document.getElementById('nav-desktop').classList.remove('active');
-        const toggleIcon = document.getElementById('mobileNavToggle').querySelector('i');
-        if (toggleIcon) {
-          toggleIcon.classList.remove('fa-times');
-          toggleIcon.classList.add('fa-bars');
-        }
-        document.body.style.overflow = '';
-      }
-    });
-  });
-}
-
-// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
-function initializeMobileDropdown() {
-  const dropbtn = document.querySelector('.dropbtn');
-  
-  if (!dropbtn) return;
-  
-  // Mobile dropdown toggle
-  dropbtn.addEventListener('click', function(e) {
-    // Only handle on mobile
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const dropdownContent = this.nextElementSibling;
-      const isActive = dropdownContent.style.display === 'block' || 
-                      dropdownContent.classList.contains('active');
-      
-      // Close all other dropdowns first
-      document.querySelectorAll('.dropdown-content').forEach(content => {
-        content.style.display = 'none';
-        content.classList.remove('active');
+    // Delay to ensure menu is fully initialized
+    setTimeout(function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        disable: window.innerWidth < 768 ? 'mobile' : false
       });
       
-      // Toggle this dropdown
-      if (!isActive) {
-        dropdownContent.style.display = 'block';
-        dropdownContent.classList.add('active');
-        this.classList.add('active');
-      } else {
-        dropdownContent.style.display = 'none';
-        dropdownContent.classList.remove('active');
-        this.classList.remove('active');
-      }
-    }
-  });
-  
-  // Close dropdown when clicking outside (mobile only)
-  document.addEventListener('click', function(e) {
-    if (window.innerWidth <= 768) {
-      const dropdown = document.querySelector('.dropdown');
-      const dropdownContent = document.querySelector('.dropdown-content');
+      // Refresh AOS on window resize
+      window.addEventListener('resize', function() {
+        AOS.refresh();
+      });
       
-      if (!e.target.closest('.dropdown') && dropdownContent) {
-        dropdownContent.style.display = 'none';
-        dropdownContent.classList.remove('active');
+      console.log('✅ AOS initialized with delay');
+    }, 200);
+  } else {
+    // If AOS not loaded yet, wait for it
+    console.log('⏳ Waiting for AOS to load...');
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    const checkAOS = setInterval(function() {
+      attempts++;
+      if (typeof AOS !== 'undefined') {
+        clearInterval(checkAOS);
+        setTimeout(function() {
+          AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            disable: window.innerWidth < 768 ? 'mobile' : false
+          });
+          
+          window.addEventListener('resize', function() {
+            AOS.refresh();
+          });
+          
+          console.log('✅ AOS initialized after loading');
+        }, 200);
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkAOS);
+        console.warn('⚠️ AOS failed to load');
       }
-    }
-  });
+    }, 100);
+  }
 }
+
+// ========== REMOVED - Using common.js instead ==========
+// function initializeMobileDropdown() { ... } - DELETED - Using common.js
+// function initMobileMenu() { ... } - DELETED - Using common.js
 
 // ========== ARTWORK DATA FUNCTIONS ==========
 function initArtworkData() {
-  console.log('Initializing artwork data');
+  console.log('📊 Initializing artwork data');
   
   // Fetch and update artwork stats
   updateArtworkStats();
@@ -760,15 +745,14 @@ function trackAssetDownload(fileName) {
   }
 }
 
-
 // ========== GLOBAL EXPORTS ==========
 window.viewNftDetails = viewNftDetails;
 window.openSubmissionForm = openSubmissionForm;
 window.downloadAsset = downloadAsset;
 window.downloadLogo = downloadLogo;
 window.trackAssetDownload = trackAssetDownload;
-window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
+window.initArtworkPage = initArtworkPage;
 
 // Add touch-active class styles
 document.addEventListener('DOMContentLoaded', function() {
@@ -814,12 +798,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load user preferences
 window.addEventListener('load', function() {
-  // Handle window resize for mobile dropdown
+  // Handle window resize for mobile dropdown - REMOVED conflicting code
   window.addEventListener('resize', function() {
-    const dropdownContent = document.querySelector('.dropdown-content');
-    if (window.innerWidth > 768 && dropdownContent) {
-      dropdownContent.style.display = '';
-      dropdownContent.classList.remove('active');
+    if (typeof window.setupMobileNavigation === 'function') {
+      window.setupMobileNavigation();
     }
   });
 });
