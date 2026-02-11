@@ -1,3 +1,40 @@
+// ===== DEBUG: Check what's blocking the menu =====
+console.log('🚀 trade.js loaded');
+console.log('Header container exists:', document.getElementById('header-container') !== null);
+
+// Check if any CSS is hiding the menu
+setTimeout(function() {
+  const header = document.querySelector('header, .site-header, .main-header, nav');
+  if (header) {
+    const styles = window.getComputedStyle(header);
+    console.log('Header styles:', {
+      overflow: styles.overflow,
+      overflowX: styles.overflowX,
+      overflowY: styles.overflowY,
+      display: styles.display,
+      visibility: styles.visibility,
+      opacity: styles.opacity,
+      position: styles.position,
+      zIndex: styles.zIndex,
+      maxHeight: styles.maxHeight,
+      height: styles.height
+    });
+  }
+  
+  const hamburger = document.querySelector('.hamburger, .mobile-menu-toggle, [class*="hamburger"], [class*="menu-toggle"]');
+  if (hamburger) {
+    const hamburgerStyles = window.getComputedStyle(hamburger);
+    console.log('Hamburger styles:', {
+      display: hamburgerStyles.display,
+      visibility: hamburgerStyles.visibility,
+      opacity: hamburgerStyles.opacity,
+      pointerEvents: hamburgerStyles.pointerEvents,
+      zIndex: hamburgerStyles.zIndex,
+      position: hamburgerStyles.position
+    });
+  }
+}, 1000);
+
 // trade.js - Trade page specific functionality
 
 // Initialize after common components are loaded
