@@ -1,24 +1,58 @@
-//// security-integrity.js - Combined Security & Integrity page functionality
+// security-integrity.js - Combined Security & Integrity page functionality
 
-// Initialize after common components are loaded
+// ===== INITIALIZATION - Wait for components to be ready =====
+function waitForComponents(callback, maxAttempts = 20) {
+  let attempts = 0;
+  
+  const checkInterval = setInterval(function() {
+    attempts++;
+    
+    // Check if components are loaded AND common.js functions are available
+    if (window.componentsLoaded && typeof window.setupMobileNavigation === 'function') {
+      clearInterval(checkInterval);
+      console.log('✅ Components ready, initializing security page');
+      callback();
+    } else if (attempts >= maxAttempts) {
+      clearInterval(checkInterval);
+      console.warn('⚠️ Components not ready after timeout, forcing initialization');
+      // Force initialization anyway
+      if (typeof window.initializeComponents === 'function') {
+        window.initializeComponents();
+      }
+      callback();
+    } else {
+      console.log(`⏳ Waiting for components... (${attempts}/${maxAttempts})`);
+    }
+  }, 100);
+}
+
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initSecurityIntegrityPage, 300);
+  console.log('📄 Security page DOM ready');
+  waitForComponents(function() {
+    setTimeout(initSecurityIntegrityPage, 200);
+  });
 });
 
+// ===== MAIN INITIALIZATION =====
 function initSecurityIntegrityPage() {
-  console.log('Initializing Security & Integrity page');
+  console.log('🚀 Initializing Security & Integrity page');
   
-  // Initialize mobile dropdown
-  initializeMobileDropdown();
+  // Make sure mobile navigation is set up (REMOVED local dropdown)
+  if (typeof window.setupMobileNavigation === 'function') {
+    window.setupMobileNavigation();
+  }
+  
+  // Make sure dropdowns are set up
+  if (typeof window.setupDropdowns === 'function') {
+    window.setupDropdowns();
+  }
   
   // Initialize security data
   initSecurityData();
   
-  // Initialize animations
-  initScrollAnimations();
-  
   // Initialize AOS animations
-  initAOS();
+  initAOSWithDelay();
   
   // Initialize touch events
   initTouchEvents();
@@ -28,60 +62,69 @@ function initSecurityIntegrityPage() {
   
   // Initialize copy contract functionality
   initCopyContract();
+  
+  // Initialize scroll animations
+  initScrollAnimations();
 }
 
 // ========== AOS ANIMATIONS ==========
-function initAOS() {
+function initAOSWithDelay() {
+  // Check if AOS is available
   if (typeof AOS !== 'undefined') {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-      disable: window.innerWidth < 768 ? 'mobile' : false
-    });
+    // Delay to ensure menu is fully initialized
+    setTimeout(function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        disable: window.innerWidth < 768 ? 'mobile' : false
+      });
+      
+      // Refresh AOS on window resize
+      window.addEventListener('resize', function() {
+        AOS.refresh();
+      });
+      
+      console.log('✅ AOS initialized with delay');
+    }, 200);
+  } else {
+    // If AOS not loaded yet, wait for it
+    console.log('⏳ Waiting for AOS to load...');
+    let attempts = 0;
+    const maxAttempts = 10;
     
-    // Refresh AOS on window resize
-    window.addEventListener('resize', function() {
-      AOS.refresh();
-    });
+    const checkAOS = setInterval(function() {
+      attempts++;
+      if (typeof AOS !== 'undefined') {
+        clearInterval(checkAOS);
+        setTimeout(function() {
+          AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            disable: window.innerWidth < 768 ? 'mobile' : false
+          });
+          
+          window.addEventListener('resize', function() {
+            AOS.refresh();
+          });
+          
+          console.log('✅ AOS initialized after loading');
+        }, 200);
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkAOS);
+        console.warn('⚠️ AOS failed to load');
+      }
+    }, 100);
   }
 }
 
-// ========== MOBILE DROPDOWN FUNCTIONALITY ==========
-function initializeMobileDropdown() {
-  const dropbtn = document.querySelector('.dropbtn');
-  const navDesktop = document.getElementById('nav-desktop');
-  
-  if (!dropbtn) return;
-  
-  // Mobile dropdown toggle
-  dropbtn.addEventListener('click', function(e) {
-    // Only handle on mobile
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const dropdownContent = this.nextElementSibling;
-      const isActive = dropdownContent.style.display === 'block' || 
-                      dropdownContent.classList.contains('active');
-      
-      // Toggle this dropdown
-      if (!isActive) {
-        dropdownContent.style.display = 'block';
-        dropdownContent.classList.add('active');
-        this.classList.add('active');
-      } else {
-        dropdownContent.style.display = 'none';
-        dropdownContent.classList.remove('active');
-        this.classList.remove('active');
-      }
-    }
-  });
-}
+// ========== REMOVED - Using common.js instead ==========
+// function initializeMobileDropdown() { ... } - DELETED - Using common.js
 
 // ========== SECURITY DATA FUNCTIONS ==========
 function initSecurityData() {
-  console.log('Initializing security data');
+  console.log('📊 Initializing security data');
   
   // Fetch and update holder count
   updateHolderCount();
@@ -165,7 +208,7 @@ function initPrincipleCards() {
 
 // ========== CONTRACT FUNCTIONS ==========
 function initCopyContract() {
-  console.log('Contract copy functionality initialized');
+  console.log('📋 Contract copy functionality initialized');
   
   // Add copy event to all copy buttons
   const copyButtons = document.querySelectorAll('.copy-button');
@@ -467,8 +510,8 @@ function showToast(message, type = 'info') {
 // ========== GLOBAL EXPORTS ==========
 window.copyContract = copyContract;
 window.addToWallet = addToWallet;
-window.initializeMobileDropdown = initializeMobileDropdown;
 window.showToast = showToast;
+window.initSecurityIntegrityPage = initSecurityIntegrityPage;
 
 // Add touch-active class styles
 document.addEventListener('DOMContentLoaded', function() {
