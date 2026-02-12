@@ -37,7 +37,6 @@ function initAOS() {
       duration: 800,
       once: true,
       offset: 100,
-      disable: window.innerWidth < 768 ? 'mobile' : false
     });
     
     // Refresh AOS on window resize
