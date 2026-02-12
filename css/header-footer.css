@@ -49,6 +49,8 @@
   --page-artwork: #E91E63;    /* Pink */
   --page-artwork-light: rgba(233, 30, 99, 0.15);
   --page-artwork-border: rgba(233, 30, 99, 0.4);
+
+
   
   /* Spacing Scale */
   --spacing-xs: 4px;
@@ -376,6 +378,7 @@ header.scrolled {
 }
 
 /* ========== DESKTOP NAVIGATION ========== */
+/* Desktop: Show desktop nav, hide mobile toggle */
 @media (min-width: 769px) {
   .mobile-nav-toggle {
     display: none !important;
@@ -385,6 +388,7 @@ header.scrolled {
     display: block !important;
   }
   
+  /* Hide mobile buy single link on desktop */
   .mobile-direct-buy {
     display: none !important;
   }
@@ -399,8 +403,9 @@ header.scrolled {
   }
 }
 
-/* ========== FIX: ALWAYS SHOW NAV ON DESKTOP ========== */
+/* ========== FIX: ALWAYS SHOW NAV ON DESKTOP WHEN SCROLLED ========== */
 @media (min-width: 769px) {
+  /* Ensure navigation is always visible on desktop, even when scrolled */
   header.scrolled #nav-desktop {
     display: flex !important;
     opacity: 1 !important;
@@ -408,6 +413,7 @@ header.scrolled {
     transform: none !important;
   }
   
+  /* Ensure individual nav links are visible */
   header.scrolled #nav-desktop a,
   header.scrolled .dropbtn,
   header.scrolled .dropdown {
@@ -417,6 +423,7 @@ header.scrolled {
     transform: none !important;
   }
   
+  /* Ensure dropdown content shows when active */
   header.scrolled .dropdown.active .dropdown-content {
     display: block !important;
     opacity: 1 !important;
@@ -424,6 +431,7 @@ header.scrolled {
     transform: translateY(0) !important;
   }
   
+  /* Ensure buy dropdown is visible */
   header.scrolled .buy-dropdown.desktop-primary-action {
     display: block !important;
     opacity: 1 !important;
@@ -452,6 +460,7 @@ header.scrolled {
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* Add subtle gradient border effect */
 #nav-desktop a::before {
   content: '';
   position: absolute;
@@ -473,6 +482,7 @@ header.scrolled {
   opacity: 1;
 }
 
+/* Icon spacing with animation */
 #nav-desktop a i {
   margin-right: 8px;
   transition: transform var(--transition-base) ease;
@@ -483,7 +493,7 @@ header.scrolled {
   transform: scale(1.15);
 }
 
-/* ========== ENHANCED PAGE-SPECIFIC NAVIGATION ========== */
+/* Enhanced Color-coded navigation with gradients */
 .nav-trade {
   color: var(--page-trade) !important;
   border-color: var(--page-trade-border) !important;
@@ -508,65 +518,28 @@ header.scrolled {
     rgba(0, 188, 212, 0.03)) !important;
 }
 
-/* ADDED: Security & Integrity navigation styles */
-.nav-security-integrity {
-  color: var(--page-security-integrity) !important;
-  border-color: var(--page-security-integrity-border) !important;
+/* ========== OPTIONAL: PAGE-SPECIFIC HERO BACKGROUNDS ========== */
+.page-hero--trade {
   background: linear-gradient(135deg, 
-    var(--page-security-integrity-light), 
-    rgba(76, 175, 80, 0.03)) !important;
+    rgba(255, 107, 53, 0.1), 
+    rgba(255, 107, 53, 0.05));
+  border-bottom: 2px solid var(--page-trade-border);
 }
 
-/* ADDED: REBL Calculator navigation styles */
-.nav-rebl-calculator {
-  color: var(--page-rebl-calculator) !important;
-  border-color: var(--page-rebl-calculator-border) !important;
+.page-hero--artwork {
   background: linear-gradient(135deg, 
-    var(--page-rebl-calculator-light), 
-    rgba(46, 204, 113, 0.03)) !important;
+    rgba(233, 30, 99, 0.1), 
+    rgba(233, 30, 99, 0.05));
+  border-bottom: 2px solid var(--page-artwork-border);
 }
 
-.nav-governance {
-  color: var(--page-governance) !important;
-  border-color: var(--page-governance-border) !important;
+.page-hero--community {
   background: linear-gradient(135deg, 
-    var(--page-governance-light), 
-    rgba(255, 152, 0, 0.03)) !important;
+    rgba(33, 150, 243, 0.1), 
+    rgba(33, 150, 243, 0.05));
+  border-bottom: 2px solid var(--page-community-border);
 }
-
-.nav-roadmap {
-  color: var(--page-roadmap) !important;
-  border-color: var(--page-roadmap-border) !important;
-  background: linear-gradient(135deg, 
-    var(--page-roadmap-light), 
-    rgba(255, 87, 34, 0.03)) !important;
-}
-
-.nav-artwork {
-  color: var(--page-artwork) !important;
-  border-color: var(--page-artwork-border) !important;
-  background: linear-gradient(135deg, 
-    var(--page-artwork-light), 
-    rgba(233, 30, 99, 0.03)) !important;
-}
-
-.nav-community {
-  color: var(--page-community) !important;
-  border-color: var(--page-community-border) !important;
-  background: linear-gradient(135deg, 
-    var(--page-community-light), 
-    rgba(33, 150, 243, 0.03)) !important;
-}
-
-.nav-whitepaper {
-  color: var(--page-whitepaper) !important;
-  border-color: var(--page-whitepaper-border) !important;
-  background: linear-gradient(135deg, 
-    var(--page-whitepaper-light), 
-    rgba(103, 58, 183, 0.03)) !important;
-}
-
-/* ========== ENHANCED HOVER EFFECTS ========== */
+/* Enhanced hover effects with glow */
 .nav-trade:hover {
   background: linear-gradient(135deg, 
     rgba(255, 107, 53, 0.2), 
@@ -591,65 +564,7 @@ header.scrolled {
   transform: translateY(-2px);
 }
 
-/* ADDED: Security & Integrity hover state */
-.nav-security-integrity:hover {
-  background: linear-gradient(135deg, 
-    rgba(76, 175, 80, 0.2), 
-    rgba(76, 175, 80, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.25);
-  transform: translateY(-2px);
-}
-
-/* ADDED: REBL Calculator hover state */
-.nav-rebl-calculator:hover {
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.2), 
-    rgba(46, 204, 113, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.25);
-  transform: translateY(-2px);
-}
-
-.nav-governance:hover {
-  background: linear-gradient(135deg, 
-    rgba(255, 152, 0, 0.2), 
-    rgba(255, 152, 0, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.25);
-  transform: translateY(-2px);
-}
-
-.nav-roadmap:hover {
-  background: linear-gradient(135deg, 
-    rgba(255, 87, 34, 0.2), 
-    rgba(255, 87, 34, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.25);
-  transform: translateY(-2px);
-}
-
-.nav-artwork:hover {
-  background: linear-gradient(135deg, 
-    rgba(233, 30, 99, 0.2), 
-    rgba(233, 30, 99, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.25);
-  transform: translateY(-2px);
-}
-
-.nav-community:hover {
-  background: linear-gradient(135deg, 
-    rgba(33, 150, 243, 0.2), 
-    rgba(33, 150, 243, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.25);
-  transform: translateY(-2px);
-}
-
-.nav-whitepaper:hover {
-  background: linear-gradient(135deg, 
-    rgba(103, 58, 183, 0.2), 
-    rgba(103, 58, 183, 0.1)) !important;
-  box-shadow: 0 4px 15px rgba(103, 58, 183, 0.25);
-  transform: translateY(-2px);
-}
-
-/* ========== ACTIVE STATES ========== */
+/* Active state with glow */
 #nav-desktop a.active {
   background: linear-gradient(135deg, 
     rgba(212, 167, 106, 0.25), 
@@ -658,101 +573,6 @@ header.scrolled {
   box-shadow: 0 4px 20px rgba(212, 167, 106, 0.25);
   border-color: var(--rebel-gold) !important;
   transform: translateY(-1px);
-}
-
-/* ADDED: Security & Integrity active state */
-#nav-desktop a.nav-security-integrity.active,
-.dropdown-content a.nav-security-integrity.active {
-  background: linear-gradient(135deg, 
-    rgba(76, 175, 80, 0.25), 
-    rgba(76, 175, 80, 0.15)) !important;
-  color: white !important;
-  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.25);
-  border-color: var(--page-security-integrity) !important;
-}
-
-/* ADDED: REBL Calculator active state */
-#nav-desktop a.nav-rebl-calculator.active,
-.dropdown-content a.nav-rebl-calculator.active {
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.25), 
-    rgba(46, 204, 113, 0.15)) !important;
-  color: white !important;
-  box-shadow: 0 4px 20px rgba(46, 204, 113, 0.25);
-  border-color: var(--page-rebl-calculator) !important;
-}
-
-/* ========== PAGE HERO BACKGROUNDS ========== */
-.page-hero--trade {
-  background: linear-gradient(135deg, 
-    rgba(255, 107, 53, 0.1), 
-    rgba(255, 107, 53, 0.05));
-  border-bottom: 2px solid var(--page-trade-border);
-}
-
-.page-hero--artwork {
-  background: linear-gradient(135deg, 
-    rgba(233, 30, 99, 0.1), 
-    rgba(233, 30, 99, 0.05));
-  border-bottom: 2px solid var(--page-artwork-border);
-}
-
-.page-hero--community {
-  background: linear-gradient(135deg, 
-    rgba(33, 150, 243, 0.1), 
-    rgba(33, 150, 243, 0.05));
-  border-bottom: 2px solid var(--page-community-border);
-}
-
-/* ADDED: Security & Integrity hero background */
-.page-hero--security-integrity {
-  background: linear-gradient(135deg, 
-    rgba(76, 175, 80, 0.1), 
-    rgba(76, 175, 80, 0.05));
-  border-bottom: 2px solid var(--page-security-integrity-border);
-}
-
-/* ADDED: REBL Calculator hero background */
-.page-hero--rebl-calculator {
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.1), 
-    rgba(46, 204, 113, 0.05));
-  border-bottom: 2px solid var(--page-rebl-calculator-border);
-}
-
-.page-hero--rewards {
-  background: linear-gradient(135deg, 
-    rgba(156, 39, 176, 0.1), 
-    rgba(156, 39, 176, 0.05));
-  border-bottom: 2px solid var(--page-rewards-border);
-}
-
-.page-hero--tokenomics {
-  background: linear-gradient(135deg, 
-    rgba(0, 188, 212, 0.1), 
-    rgba(0, 188, 212, 0.05));
-  border-bottom: 2px solid var(--page-tokenomics-border);
-}
-
-.page-hero--whitepaper {
-  background: linear-gradient(135deg, 
-    rgba(103, 58, 183, 0.1), 
-    rgba(103, 58, 183, 0.05));
-  border-bottom: 2px solid var(--page-whitepaper-border);
-}
-
-.page-hero--governance {
-  background: linear-gradient(135deg, 
-    rgba(255, 152, 0, 0.1), 
-    rgba(255, 152, 0, 0.05));
-  border-bottom: 2px solid var(--page-governance-border);
-}
-
-.page-hero--roadmap {
-  background: linear-gradient(135deg, 
-    rgba(255, 87, 34, 0.1), 
-    rgba(255, 87, 34, 0.05));
-  border-bottom: 2px solid var(--page-roadmap-border);
 }
 
 /* ========== DROPDOWN STYLES ========== */
@@ -794,6 +614,7 @@ header.scrolled {
   transform: rotate(15deg);
 }
 
+/* Dropdown Arrow with animation */
 .dropbtn .dropdown-arrow {
   display: inline-block;
   margin-left: 4px;
@@ -823,6 +644,7 @@ header.scrolled {
   box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
 }
 
+/* Professional dropdown content */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -846,6 +668,7 @@ header.scrolled {
   transform: translateY(-10px);
 }
 
+/* Add subtle gradient border */
 .dropdown-content::before {
   content: '';
   position: absolute;
@@ -884,6 +707,7 @@ header.scrolled {
   border-bottom: none;
 }
 
+/* Add color accent on hover */
 .dropdown-content a::before {
   content: '';
   position: absolute;
@@ -919,6 +743,34 @@ header.scrolled {
   transform: scale(1.2);
 }
 
+/* Dropdown item colors */
+.dropdown-content a.nav-community { 
+  color: #2196F3 !important;
+}
+
+.dropdown-content a.nav-security-integrity { 
+  color: #4CAF50 !important;
+}
+
+.dropdown-content a.nav-whitepaper { 
+  color: #673AB7 !important;
+}
+.dropdown-content a.nav-rebl-calculator { 
+  color: #2ECC71 !important;
+}
+.dropdown-content a.nav-governance { 
+  color: #FF9800 !important;
+}
+
+.dropdown-content a.nav-roadmap { 
+  color: #FF5722 !important;
+}
+
+
+.dropdown-content a.nav-artwork { 
+  color: #E91E63 !important;
+}
+
 .dropdown-divider {
   height: 1px;
   background: linear-gradient(90deg, 
@@ -928,6 +780,7 @@ header.scrolled {
   margin: 8px 20px;
 }
 
+/* Desktop dropdown visibility */
 @media (min-width: 769px) {
   .dropdown.active .dropdown-content {
     display: block !important;
@@ -944,6 +797,7 @@ header.scrolled {
   margin-left: auto;
 }
 
+/* Loading state for buttons */
 .buy-toggle.loading {
   position: relative;
   color: transparent !important;
@@ -964,6 +818,7 @@ header.scrolled {
   transform: translate(-50%, -50%);
 }
 
+/* Enhanced Buy Toggle Button */
 .buy-toggle {
   background: linear-gradient(135deg, 
     var(--rebel-red), 
@@ -1049,6 +904,7 @@ header.scrolled {
   transform: rotate(180deg);
 }
 
+/* Enhanced Buy Options Dropdown */
 .buy-options {
   display: none;
   position: absolute;
@@ -1082,6 +938,7 @@ header.scrolled {
   transform: translateY(0) scale(1);
 }
 
+/* Action Groups Enhancement */
 .action-group {
   margin-bottom: 25px;
   animation: fadeInUp 0.5s ease-out backwards;
@@ -1115,6 +972,7 @@ header.scrolled {
   border-radius: 8px;
 }
 
+/* Enhanced Buy Option Cards */
 .buy-option {
   display: flex;
   align-items: center;
@@ -1176,6 +1034,7 @@ header.scrolled {
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+/* ========== PLATFORM IMAGE ICONS WITH LOCAL FILES ========== */
 .platform-img {
   width: 24px;
   height: 24px;
@@ -1186,6 +1045,7 @@ header.scrolled {
   filter: brightness(0.95);
 }
 
+/* SVG specific styling - BETTER FOR VECTOR FILES */
 .platform-img[src*=".svg"] {
   width: 22px;
   height: 22px;
@@ -1194,6 +1054,7 @@ header.scrolled {
   background: transparent !important;
 }
 
+/* ICO specific styling */
 .platform-img[src*=".ico"] {
   width: 22px;
   height: 22px;
@@ -1203,6 +1064,7 @@ header.scrolled {
   border-radius: 8px;
 }
 
+/* PNG specific styling */
 .platform-img[src*=".png"] {
   width: 24px;
   height: 24px;
@@ -1212,6 +1074,20 @@ header.scrolled {
   border-radius: 8px;
 }
 
+/* Special styling for SVG icons that need color preservation */
+.platform-img[src*="Pump.Fun-favicon.svg"] {
+  filter: brightness(1.2) saturate(1.3);
+}
+
+.platform-img[src*="dextools-favicon.svg"] {
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.platform-img[src*="Gmgn.ai-favicon.svg"] {
+  filter: brightness(1.15) saturate(1.25);
+}
+
+/* Icon container optimization */
 .option-icon {
   width: 48px;
   height: 48px;
@@ -1226,6 +1102,7 @@ header.scrolled {
   overflow: hidden;
 }
 
+/* Special pump icon treatment */
 .pump-icon {
   background: linear-gradient(135deg, 
     rgba(255, 107, 53, 0.1), 
@@ -1234,6 +1111,7 @@ header.scrolled {
   box-shadow: 0 2px 8px rgba(255, 107, 53, 0.1);
 }
 
+/* Hover effects */
 .buy-option:hover .option-icon {
   transform: scale(1.08);
   background: rgba(255, 255, 255, 0.06);
@@ -1246,6 +1124,7 @@ header.scrolled {
   filter: brightness(1.3) saturate(1.4) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
+/* Enhanced Option Content */
 .option-content {
   flex: 1;
   text-align: left;
@@ -1265,6 +1144,7 @@ header.scrolled {
   line-height: 1.4;
 }
 
+/* Enhanced Badges */
 .option-badge {
   font-size: 0.75rem;
   font-weight: 900;
@@ -1297,6 +1177,7 @@ header.scrolled {
   background: linear-gradient(135deg, #F39C12, #D68910);
 }
 
+/* ========== FIXED CONTRACT ADDRESS WRAPPING ========== */
 .contract-quick {
   margin-top: 25px;
   padding-top: 20px;
@@ -1389,6 +1270,7 @@ header.scrolled {
   text-shadow: 0 0 8px rgba(212, 167, 106, 0.3);
 }
 
+/* Copy success message with animation */
 .contract-copied-message {
   position: absolute;
   top: -45px;
@@ -1472,6 +1354,7 @@ header.scrolled {
   font-size: 0.9rem;
 }
 
+/* ========== ENHANCED MOBILE DIRECT BUY BUTTON ========== */
 .mobile-direct-buy {
   width: 100%;
   max-width: 100%;
@@ -1537,6 +1420,7 @@ header.scrolled {
 
 /* ========== PREMIUM MOBILE HAMBURGER MENU ========== */
 @media (max-width: 768px) {
+  /* Premium Mobile Toggle Button */
   .mobile-nav-toggle {
     display: flex !important;
     background: linear-gradient(135deg, 
@@ -1567,6 +1451,7 @@ header.scrolled {
     box-shadow: 0 4px 20px rgba(212, 167, 106, 0.3);
   }
   
+  /* Professional Hamburger Icon */
   .mobile-nav-toggle .hamburger {
     width: 24px;
     height: 18px;
@@ -1592,6 +1477,7 @@ header.scrolled {
     position: relative;
   }
   
+  /* Add subtle glow effect */
   .mobile-nav-toggle .hamburger span::after {
     content: '';
     position: absolute;
@@ -1606,6 +1492,7 @@ header.scrolled {
     transition: opacity 0.3s ease;
   }
   
+  /* Hamburger line positioning */
   .mobile-nav-toggle .hamburger span:nth-child(1) {
     transform-origin: top left;
   }
@@ -1619,6 +1506,7 @@ header.scrolled {
     transform-origin: bottom left;
   }
   
+  /* Hamburger to X Transformation */
   .mobile-nav-toggle.active .hamburger span:nth-child(1) {
     transform: translateY(7.5px) rotate(45deg) scaleX(1.1);
     background: var(--rebel-red);
@@ -1634,6 +1522,7 @@ header.scrolled {
     background: var(--rebel-red);
   }
   
+  /* Active State Enhancement */
   .mobile-nav-toggle.active {
     border-color: var(--rebel-red);
     background: linear-gradient(135deg, 
@@ -1648,16 +1537,45 @@ header.scrolled {
     animation: particleExplode 0.6s ease-out forwards;
   }
   
+  /* Hide desktop buy button on mobile */
   .header-container > .buy-dropdown.desktop-primary-action {
     display: none !important;
   }
   
+  /* Enhanced Mobile Buy Button in Menu */
   .mobile-direct-buy {
-    display: flex !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0 0 0;
+    padding: 22px 32px;
+    font-size: 1.2rem;
+    min-height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background: linear-gradient(135deg, 
+      var(--rebel-red), 
+      var(--rebel-gold), 
+      var(--rebel-red));
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 
+      0 10px 40px rgba(215, 77, 77, 0.6),
+      0 0 50px rgba(215, 77, 77, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(212, 167, 106, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
   
+  /* Mobile Navigation Menu */
   #nav-desktop {
-    display: none !important;
+    display: none !important; /* Hidden by default on mobile */
     position: fixed;
     top: 0;
     left: 0;
@@ -1681,6 +1599,7 @@ header.scrolled {
     box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
   }
   
+  /* Show menu when active */
   #nav-desktop.active {
     display: flex !important;
     opacity: 1 !important;
@@ -1689,6 +1608,7 @@ header.scrolled {
     animation: menuAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
   }
   
+  /* Premium Menu Items */
   #nav-desktop a:not(.mobile-direct-buy) {
     padding: 20px 24px;
     border-radius: 16px;
@@ -1711,6 +1631,7 @@ header.scrolled {
     min-height: 64px;
   }
   
+  /* Mobile Dropdown Styling */
   .dropdown {
     width: 100%;
     margin-bottom: 12px;
@@ -1737,6 +1658,7 @@ header.scrolled {
     justify-content: space-between;
   }
   
+  /* Mobile Dropdown Content */
   .dropdown-content {
     display: block !important;
     position: relative !important;
@@ -1766,7 +1688,9 @@ header.scrolled {
     padding: 15px 0 !important;
     transform: translateY(0) !important;
   }
+}
   
+  /* Dropdown Items */
   .dropdown-content a {
     padding: 18px 24px !important;
     margin: 6px 15px !important;
@@ -1803,6 +1727,30 @@ header.scrolled {
     transform: scale(1.2);
   }
   
+  /* Dropdown link colors */
+  .dropdown-content a.nav-community { 
+    color: #2196F3 !important;
+  }
+  .dropdown-content a.nav-security-integrity { 
+    color: #4CAF50 !important;
+  }
+  .dropdown-content a.nav-whitepaper { 
+    color: #673AB7 !important;
+  }
+  .dropdown-content a.nav-rebl-calculator { 
+    color: #2ECC71 !important;
+  }
+  .dropdown-content a.nav-governance { 
+    color: #FF9800 !important;
+  }
+  .dropdown-content a.nav-roadmap { 
+    color: #FF5722 !important;
+  }
+  .dropdown-content a.nav-artwork { 
+    color: #E91E63 !important;
+  }
+  
+  /* Scrollbar styling */
   #nav-desktop::-webkit-scrollbar {
     width: 6px;
   }
@@ -1825,7 +1773,9 @@ header.scrolled {
   }
 }
 
-/* ========== SMALL MOBILE OPTIMIZATION ========== */
+
+
+/* Small Mobile Optimization */
 @media (max-width: 480px) {
   .mobile-nav-toggle {
     width: 48px;
@@ -1849,6 +1799,7 @@ header.scrolled {
     min-height: 64px;
   }
   
+  /* Responsive Buy Toggle */
   .buy-toggle {
     padding: 12px 20px;
     font-size: 1rem;
@@ -1913,6 +1864,7 @@ header.scrolled {
     padding-bottom: 22px;
   }
   
+  /* Active state feedback */
   #nav-desktop a:active,
   .dropbtn:active,
   .dropdown-content a:active {
@@ -1920,17 +1872,20 @@ header.scrolled {
     transition: transform 0.1s ease !important;
   }
   
+  /* Better tap targets */
   #nav-desktop a,
   .dropbtn {
     margin-bottom: 10px;
   }
   
+  /* Prevent text selection */
   #nav-desktop,
   #nav-desktop * {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
   }
   
+  /* Improved scrolling */
   #nav-desktop {
     scroll-behavior: smooth;
     overscroll-behavior: contain;
@@ -1947,202 +1902,6 @@ header.scrolled {
 .mobile-direct-buy:focus-visible {
   outline: 3px solid var(--rebel-gold);
   outline-offset: 2px;
-}
-
-/* ========== SEPARATE DESKTOP/MOBILE BUY BUTTONS ========== */
-@media (min-width: 769px) {
-  .buy-dropdown.desktop-only {
-    display: block !important;
-  }
-  
-  .mobile-direct-buy {
-    display: none !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-container > .buy-dropdown.desktop-only {
-    display: none !important;
-  }
-  
-  .mobile-direct-buy {
-    display: flex !important;
-  }
-  
-  #nav-desktop a,
-  #nav-desktop .dropbtn,
-  .dropdown-content a {
-    pointer-events: auto !important;
-    cursor: pointer !important;
-  }
-}
-
-/* ========== DYNAMIC SUBTITLE STYLES ========== */
-.brand-subtitle {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.brand-subtitle::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to bottom right,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0) 50%,
-        rgba(255, 255, 255, 0.1) 100%
-    );
-    transform: rotate(30deg);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.brand-subtitle:hover::after {
-    opacity: 0.3;
-    animation: shimmer 2s ease infinite;
-}
-
-.brand-subtitle[data-page="index"] {
-  color: var(--page-index);
-  border-color: var(--page-index-border);
-  background: linear-gradient(135deg, 
-    var(--page-index-light), 
-    rgba(212, 167, 106, 0.08));
-}
-
-.brand-subtitle[data-page="trade"] {
-  color: var(--page-trade);
-  border-color: var(--page-trade-border);
-  background: linear-gradient(135deg, 
-    var(--page-trade-light), 
-    rgba(255, 107, 53, 0.08));
-}
-
-.brand-subtitle[data-page="epoch-rewards"] {
-  color: var(--page-rewards);
-  border-color: var(--page-rewards-border);
-  background: linear-gradient(135deg, 
-    var(--page-rewards-light), 
-    rgba(156, 39, 176, 0.08));
-}
-
-.brand-subtitle[data-page="tokenomics"] {
-  color: var(--page-tokenomics);
-  border-color: var(--page-tokenomics-border);
-  background: linear-gradient(135deg, 
-    var(--page-tokenomics-light), 
-    rgba(0, 188, 212, 0.08));
-}
-
-.brand-subtitle[data-page="community"] {
-  color: var(--page-community);
-  border-color: var(--page-community-border);
-  background: linear-gradient(135deg, 
-    var(--page-community-light), 
-    rgba(33, 150, 243, 0.08));
-}
-
-/* ADDED: Security & Integrity subtitle styles */
-.brand-subtitle[data-page="security-integrity"] {
-  color: var(--page-security-integrity);
-  border-color: var(--page-security-integrity-border);
-  background: linear-gradient(135deg, 
-    var(--page-security-integrity-light), 
-    rgba(76, 175, 80, 0.08));
-}
-
-/* ADDED: REBL Calculator subtitle styles */
-.brand-subtitle[data-page="rebl-calculator"] {
-  color: var(--page-rebl-calculator);
-  border-color: var(--page-rebl-calculator-border);
-  background: linear-gradient(135deg, 
-    var(--page-rebl-calculator-light), 
-    rgba(46, 204, 113, 0.08));
-}
-
-.brand-subtitle[data-page="whitepaper"] {
-  color: var(--page-whitepaper);
-  border-color: var(--page-whitepaper-border);
-  background: linear-gradient(135deg, 
-    var(--page-whitepaper-light), 
-    rgba(103, 58, 183, 0.08));
-}
-
-.brand-subtitle[data-page="governance"] {
-  color: var(--page-governance);
-  border-color: var(--page-governance-border);
-  background: linear-gradient(135deg, 
-    var(--page-governance-light), 
-    rgba(255, 152, 0, 0.08));
-}
-
-.brand-subtitle[data-page="roadmap"] {
-  color: var(--page-roadmap);
-  border-color: var(--page-roadmap-border);
-  background: linear-gradient(135deg, 
-    var(--page-roadmap-light), 
-    rgba(255, 87, 34, 0.08));
-}
-
-.brand-subtitle[data-page="artwork"] {
-  color: var(--page-artwork);
-  border-color: var(--page-artwork-border);
-  background: linear-gradient(135deg, 
-    var(--page-artwork-light), 
-    rgba(233, 30, 99, 0.08));
-}
-
-/* ADDED: Security & Integrity hover state */
-.brand-subtitle[data-page="security-integrity"]:hover {
-  color: #2E8B57;
-  border-color: rgba(46, 139, 87, 0.6);
-  background: linear-gradient(135deg, 
-    rgba(76, 175, 80, 0.25), 
-    rgba(76, 175, 80, 0.15));
-}
-
-/* ADDED: REBL Calculator hover state */
-.brand-subtitle[data-page="rebl-calculator"]:hover {
-  color: #229954;
-  border-color: rgba(34, 153, 84, 0.6);
-  background: linear-gradient(135deg, 
-    rgba(46, 204, 113, 0.25), 
-    rgba(46, 204, 113, 0.15));
-}
-
-@keyframes subtitleChange {
-    0% {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.brand-subtitle.changing {
-    animation: subtitleChange 0.3s ease forwards;
-}
-
-@media (max-width: 768px) {
-    .brand-subtitle {
-        font-size: 0.7rem;
-        padding: 2px 8px;
-        margin-top: 1px;
-    }
-}
-
-@media (min-width: 1400px) {
-    .brand-subtitle {
-        font-size: 0.85rem;
-        padding: 4px 12px;
-    }
 }
 
 /* ========== ENHANCED FOOTER STYLES ========== */
@@ -2170,6 +1929,7 @@ footer {
   gap: var(--spacing-xl);
 }
 
+/* Footer Logo Section */
 .footer-logo {
   display: flex;
   flex-direction: column;
@@ -2241,6 +2001,7 @@ footer {
   text-align: center;
 }
 
+/* Enhanced Footer CTA Button */
 .footer-cta {
   display: flex;
   justify-content: center;
@@ -2307,6 +2068,7 @@ footer {
   animation: bounce 2s infinite;
 }
 
+/* Responsive Footer Button */
 @media (max-width: 768px) {
   .footer-buy-button {
     padding: 16px 28px;
@@ -2317,6 +2079,7 @@ footer {
   }
 }
 
+/* Footer Grid - 4 Columns */
 .footer-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2380,6 +2143,7 @@ footer {
   color: var(--rebel-gold);
 }
 
+/* Footer Bottom Section */
 .footer-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2428,6 +2192,7 @@ footer {
   font-size: 0.9rem;
 }
 
+/* Contract Info */
 .contract-info {
   display: flex;
   flex-direction: column;
@@ -2449,6 +2214,7 @@ footer {
   margin-top: 4px;
 }
 
+/* Footer Disclaimer */
 .footer-disclaimer {
   margin-top: var(--spacing-xl);
   padding-top: var(--spacing-lg);
@@ -2502,6 +2268,7 @@ footer {
   margin-top: var(--spacing-lg);
 }
 
+/* ========== BACK TO TOP BUTTON ========== */
 .back-to-top {
   position: fixed;
   bottom: 30px;
@@ -2537,6 +2304,7 @@ footer {
   box-shadow: 0 6px 25px rgba(215, 77, 77, 0.4);
 }
 
+/* ========== FOOTER RESPONSIVENESS ========== */
 @media (max-width: 1024px) {
   .footer-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -2636,37 +2404,276 @@ footer {
   }
 }
 
-/* ========== PAGE-SPECIFIC BUTTON STYLES ========== */
-/* ADDED: Security & Integrity button */
-.btn-security-integrity {
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  color: white;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  border: none;
-  font-weight: 600;
-  transition: all var(--transition-base) ease;
+/* ========== SEPARATE DESKTOP/MOBILE BUY BUTTONS ========== */
+/* Desktop: Show desktop button, hide mobile button */
+@media (min-width: 769px) {
+  .buy-dropdown.desktop-only {
+    display: block !important;
+  }
+  
+  .mobile-direct-buy {
+    display: none !important;
+  }
 }
 
-.btn-security-integrity:hover {
-  background: linear-gradient(135deg, #45a049, #3d8b40);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+/* Mobile: Show mobile button (in menu), hide desktop button */
+@media (max-width: 768px) {
+  /* Hide desktop buy button in header */
+  .header-container > .buy-dropdown.desktop-only {
+    display: none !important;
+  }
+  
+  /* Show mobile buy button inside menu */
+  .mobile-direct-buy {
+    display: flex !important;
+  }
+  
+  /* Fix clickability */
+  #nav-desktop a,
+  #nav-desktop .dropbtn,
+  .dropdown-content a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+}
+/* ========== DYNAMIC SUBTITLE STYLES ========== */
+.brand-subtitle {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-/* ADDED: REBL Calculator button */
-.btn-rebl-calculator {
-  background: linear-gradient(135deg, #2ECC71, #27ae60);
-  color: white;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  border: none;
-  font-weight: 600;
-  transition: all var(--transition-base) ease;
+/* Subtle background shimmer effect */
+.brand-subtitle::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    transform: rotate(30deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.btn-rebl-calculator:hover {
-  background: linear-gradient(135deg, #27ae60, #229954);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+.brand-subtitle:hover::after {
+    opacity: 0.3;
+    animation: shimmer 2s ease infinite;
+}
+
+/* Page-specific color variations */
+.brand-subtitle[data-page="index"] {
+  color: var(--page-index);
+  border-color: var(--page-index-border);
+  background: linear-gradient(135deg, 
+    var(--page-index-light), 
+    rgba(212, 167, 106, 0.08));
+}
+
+.brand-subtitle[data-page="trade"] {
+  color: var(--page-trade);
+  border-color: var(--page-trade-border);
+  background: linear-gradient(135deg, 
+    var(--page-trade-light), 
+    rgba(255, 107, 53, 0.08));
+}
+
+.brand-subtitle[data-page="epoch-rewards"] {
+  color: var(--page-rewards);
+  border-color: var(--page-rewards-border);
+  background: linear-gradient(135deg, 
+    var(--page-rewards-light), 
+    rgba(156, 39, 176, 0.08));
+}
+
+.brand-subtitle[data-page="tokenomics"] {
+  color: var(--page-tokenomics);
+  border-color: var(--page-tokenomics-border);
+  background: linear-gradient(135deg, 
+    var(--page-tokenomics-light), 
+    rgba(0, 188, 212, 0.08));
+}
+
+.brand-subtitle[data-page="community"] {
+  color: var(--page-community);
+  border-color: var(--page-community-border);
+  background: linear-gradient(135deg, 
+    var(--page-community-light), 
+    rgba(33, 150, 243, 0.08));
+}
+
+.brand-subtitle[data-page="security-integrity"] {
+  color: var(--page-security-integrity);
+  border-color: var(--page-security-integrity-border);
+  background: linear-gradient(135deg, 
+    var(--page-security-integrity-light), 
+    rgba(76, 175, 80, 0.08));
+}
+
+.brand-subtitle[data-page="whitepaper"] {
+  color: var(--page-whitepaper);
+  border-color: var(--page-whitepaper-border);
+  background: linear-gradient(135deg, 
+    var(--page-whitepaper-light), 
+    rgba(103, 58, 183, 0.08));
+}
+
+.brand-subtitle[data-page="rebl-calculator"] {
+  color: var(--page-rebl-calculator);
+  border-color: var(--page-rebl-calculator-border);
+  background: linear-gradient(135deg, 
+    var(--page-rebl-calculator-light), 
+    rgba(46, 204, 113, 0.08));
+}
+
+.brand-subtitle[data-page="governance"] {
+  color: var(--page-governance);
+  border-color: var(--page-governance-border);
+  background: linear-gradient(135deg, 
+    var(--page-governance-light), 
+    rgba(255, 152, 0, 0.08));
+}
+
+.brand-subtitle[data-page="roadmap"] {
+  color: var(--page-roadmap);
+  border-color: var(--page-roadmap-border);
+  background: linear-gradient(135deg, 
+    var(--page-roadmap-light), 
+    rgba(255, 87, 34, 0.08));
+}
+
+
+.brand-subtitle[data-page="artwork"] {
+  color: var(--page-artwork);
+  border-color: var(--page-artwork-border);
+  background: linear-gradient(135deg, 
+    var(--page-artwork-light), 
+    rgba(233, 30, 99, 0.08));
+}
+
+/* Hover effects for each page type */
+.brand-subtitle[data-page="index"]:hover {
+  color: #FFD700;
+  border-color: rgba(255, 215, 0, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(212, 167, 106, 0.25), 
+    rgba(212, 167, 106, 0.15));
+}
+
+.brand-subtitle[data-page="trade"]:hover {
+  color: #FF4500;
+  border-color: rgba(255, 69, 0, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.25), 
+    rgba(255, 107, 53, 0.15));
+}
+
+.brand-subtitle[data-page="epoch-rewards"]:hover {
+  color: #8A2BE2;
+  border-color: rgba(138, 43, 226, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(156, 39, 176, 0.25), 
+    rgba(156, 39, 176, 0.15));
+}
+
+
+.brand-subtitle[data-page="tokenomics"]:hover {
+  color: #00CED1;
+  border-color: rgba(0, 206, 209, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(0, 188, 212, 0.25), 
+    rgba(0, 188, 212, 0.15));
+}
+.brand-subtitle[data-page="community"]:hover {
+  color: #1E90FF;
+  border-color: rgba(30, 144, 255, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(33, 150, 243, 0.25), 
+    rgba(33, 150, 243, 0.15));
+}
+
+.brand-subtitle[data-page="security-integrity"]:hover {
+  color: #2E8B57;
+  border-color: rgba(46, 139, 87, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(76, 175, 80, 0.25), 
+    rgba(76, 175, 80, 0.15));
+}
+
+.brand-subtitle[data-page="whitepaper"]:hover {
+  color: #673AB7;
+  border-color: rgba(93, 46, 140, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(103, 58, 183, 0.25), 
+    rgba(103, 58, 183, 0.15));
+}
+
+.brand-subtitle[data-page="rebl-calculator"]:hover {
+  color: #229954;
+  border-color: rgba(34, 153, 84, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(46, 204, 113, 0.25), 
+    rgba(46, 204, 113, 0.15));
+}
+
+.brand-subtitle[data-page="governance"]:hover {
+  color: #E67E22;
+  border-color: rgba(230, 126, 34, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(255, 152, 0, 0.25), 
+    rgba(255, 152, 0, 0.15));
+}
+
+.brand-subtitle[data-page="roadmap"]:hover {
+  color: #E74C3C;
+  border-color: rgba(231, 76, 60, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(255, 87, 34, 0.25), 
+    rgba(255, 87, 34, 0.15));
+}
+
+.brand-subtitle[data-page="artwork"]:hover {
+  color: #C2185B;
+  border-color: rgba(194, 24, 91, 0.6);
+  background: linear-gradient(135deg, 
+    rgba(233, 30, 99, 0.25), 
+    rgba(233, 30, 99, 0.15));
+}
+/* Animation for subtitle changes */
+@keyframes subtitleChange {
+    0% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.brand-subtitle.changing {
+    animation: subtitleChange 0.3s ease forwards;
+}
+
+/* Enhanced subtitle for mobile */
+@media (max-width: 768px) {
+    .brand-subtitle {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        margin-top: 1px;
+    }
+}
+
+/* Large desktop enhancement */
+@media (min-width: 1400px) {
+    .brand-subtitle {
+        font-size: 0.85rem;
+        padding: 4px 12px;
+    }
 }
