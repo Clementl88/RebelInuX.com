@@ -1,6 +1,6 @@
 // rebl-calculator.js -- Enhanced Calculator JavaScript v3.2 - FIXED & OPTIMIZED
 
-// Global variables
+// ========== GLOBAL VARIABLES ==========
 let rewardChart = null;
 const CS = 499242047.00; // Circulating Supply
 const WERP = 3200000.00; // Weekly Epoch Reward Pool
@@ -44,6 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initialize quick presets
         initQuickPresets();
+        
+        // Ensure formula details button is properly initialized
+        const formulaToggleBtn = document.getElementById('formulaToggleBtn');
+        if (formulaToggleBtn) {
+            // Remove any existing onclick and reattach
+            formulaToggleBtn.onclick = null;
+            formulaToggleBtn.onclick = function(e) {
+                e.preventDefault();
+                toggleFormulaDetails();
+                return false;
+            };
+        }
     }, 100);
     
     // Show welcome message
@@ -129,6 +141,19 @@ function setupEventListeners() {
             updateWhatIfGamma();
         });
     }
+    
+    // Re-attach formula toggle button listener
+    const formulaToggleBtn = document.getElementById('formulaToggleBtn');
+    if (formulaToggleBtn) {
+        // Remove any existing listeners by cloning
+        const newBtn = formulaToggleBtn.cloneNode(true);
+        formulaToggleBtn.parentNode.replaceChild(newBtn, formulaToggleBtn);
+        newBtn.onclick = function(e) {
+            e.preventDefault();
+            toggleFormulaDetails();
+            return false;
+        };
+    }
 }
 
 function initQuickPresets() {
@@ -151,18 +176,18 @@ function setParticipantType(type) {
     const summaryOption = document.querySelector('.participant-type-option:nth-child(2)');
     
     if (type === 'detailed') {
-        detailedMode.style.display = 'block';
-        summaryMode.style.display = 'none';
-        detailedOption.classList.add('active');
-        summaryOption.classList.remove('active');
+        if (detailedMode) detailedMode.style.display = 'block';
+        if (summaryMode) summaryMode.style.display = 'none';
+        if (detailedOption) detailedOption.classList.add('active');
+        if (summaryOption) summaryOption.classList.remove('active');
         
         // Recalculate detailed batches
         calculateDetailedBatchesWS();
     } else {
-        detailedMode.style.display = 'none';
-        summaryMode.style.display = 'block';
-        detailedOption.classList.remove('active');
-        summaryOption.classList.add('active');
+        if (detailedMode) detailedMode.style.display = 'none';
+        if (summaryMode) summaryMode.style.display = 'block';
+        if (detailedOption) detailedOption.classList.remove('active');
+        if (summaryOption) summaryOption.classList.add('active');
         updateSummaryOther();
     }
     
@@ -828,10 +853,15 @@ function updateParticipationDisplay() {
     }
     
     // Update component values
-    document.getElementById('participationTerm').textContent = gammaData.participationTerm.toFixed(2);
-    document.getElementById('inflationCap').textContent = gammaData.inflationCap.toFixed(2);
-    document.getElementById('minTerm').textContent = gammaData.minTerm.toFixed(2);
-    document.getElementById('maxTerm').textContent = gammaData.gamma.toFixed(2);
+    const participationTermEl = document.getElementById('participationTerm');
+    const inflationCapEl = document.getElementById('inflationCap');
+    const minTermEl = document.getElementById('minTerm');
+    const maxTermEl = document.getElementById('maxTerm');
+    
+    if (participationTermEl) participationTermEl.textContent = gammaData.participationTerm.toFixed(2);
+    if (inflationCapEl) inflationCapEl.textContent = gammaData.inflationCap.toFixed(2);
+    if (minTermEl) minTermEl.textContent = gammaData.minTerm.toFixed(2);
+    if (maxTermEl) maxTermEl.textContent = gammaData.gamma.toFixed(2);
     
     // Update gamma info panel
     updateGammaInfoPanel(gamma);
@@ -858,7 +888,7 @@ function updateGammaInfoPanel(gamma) {
         panelClass = 'medium';
         panelTitle = 'Good Participation (γ = ' + gamma.toFixed(2) + ')';
         panelText = 'Good participation level. Rewards are scaling up with increased community activity.';
-    } else if (gamma >= 0.4) {
+    } else {
         panelClass = 'low';
         panelTitle = 'Low Participation (γ = ' + gamma.toFixed(2) + ')';
         panelText = 'The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.';
@@ -1041,7 +1071,7 @@ function calculateRewards() {
             // Restore button
             if (calculateButton) {
                 calculateButton.classList.remove('loading');
-                calculateButton.innerHTML = '<i class="fas fa-calculator"></i>  CALCULATE EPOCH REWARDS';
+                calculateButton.innerHTML = '<i class="fas fa-calculator"></i> CALCULATE YOUR $REBL REWARDS';
             }
             
             calculatorState.isCalculating = false;
@@ -1366,10 +1396,15 @@ function setSimulatorPreset(type) {
     }
     
     // Update simulator inputs
-    document.getElementById('whatIfParticipatingInput').value = participating;
-    document.getElementById('whatIfParticipating').value = participating;
-    document.getElementById('whatIfTotalWSInput').value = totalWS;
-    document.getElementById('whatIfTotalWS').value = totalWS;
+    const participatingInput = document.getElementById('whatIfParticipatingInput');
+    const participatingSlider = document.getElementById('whatIfParticipating');
+    const totalWSInput = document.getElementById('whatIfTotalWSInput');
+    const totalWSSlider = document.getElementById('whatIfTotalWS');
+    
+    if (participatingInput) participatingInput.value = participating;
+    if (participatingSlider) participatingSlider.value = participating;
+    if (totalWSInput) totalWSInput.value = totalWS;
+    if (totalWSSlider) totalWSSlider.value = totalWS;
     
     // Update display
     updateWhatIfGamma();
@@ -1379,7 +1414,6 @@ function setSimulatorPreset(type) {
 }
 
 // ========== ENHANCED CHART FUNCTIONS ==========
-
 function setupChartPlaceholder() {
     const chartPlaceholder = document.getElementById('chartPlaceholder');
     const canvas = document.getElementById('rewardChart');
@@ -1388,25 +1422,30 @@ function setupChartPlaceholder() {
     if (canvas) canvas.style.display = 'none';
 }
 
-// Toggle chart legend
 function toggleChartLegend() {
-    if (!rewardChart) return;
+    if (!rewardChart) {
+        showToast('No chart to toggle legend', 'warning');
+        return;
+    }
     
     const isVisible = rewardChart.options.plugins.legend.display;
     rewardChart.options.plugins.legend.display = !isVisible;
     rewardChart.update();
     
     const btn = document.getElementById('toggleLegendBtn');
-    btn.classList.toggle('active', !isVisible);
-    btn.innerHTML = `<i class="fas fa-layer-group"></i><span>${!isVisible ? 'Hide' : 'Show'} Legend</span>`;
+    if (btn) {
+        btn.classList.toggle('active', !isVisible);
+        btn.innerHTML = `<i class="fas fa-layer-group"></i><span>${!isVisible ? 'Hide' : 'Show'} Legend</span>`;
+    }
     
     showToast(`${!isVisible ? 'Showing' : 'Hiding'} chart legend`, 'info');
 }
 
-// Toggle chart labels
-// Toggle data labels on/off
 function toggleChartLabels() {
-    if (!rewardChart) return;
+    if (!rewardChart) {
+        showToast('No chart to toggle labels', 'warning');
+        return;
+    }
     
     // Check if we should use Chart.js datalabels plugin or custom labels
     const hasDatalabelsPlugin = rewardChart.config.plugins && 
@@ -1432,12 +1471,10 @@ function toggleChartLabels() {
         
         btn.classList.toggle('active', isShowingLabels);
         btn.innerHTML = `<i class="fas fa-tag"></i><span>${isShowingLabels ? 'Hide' : 'Show'} Labels</span>`;
-        
-        showToast(`${isShowingLabels ? 'Showing' : 'Hiding'} chart labels`, 'info');
     }
+    
+    showToast(`${hasDatalabelsPlugin ? 'Toggled' : 'Switched'} chart labels`, 'info');
 }
-
-// ========== ENHANCED CHART FUNCTIONS ==========
 
 function updateChart(batchData, totalUserWS) {
     const ctx = document.getElementById('rewardChart');
@@ -1485,11 +1522,18 @@ function updateChart(batchData, totalUserWS) {
     
     // Update chart stats overlay
     if (statsOverlay) {
-        document.getElementById('chartTotalWS').textContent = totalUserWS.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-        document.getElementById('chartBatchCount').textContent = batchData.length;
+        const chartTotalWS = document.getElementById('chartTotalWS');
+        const chartBatchCount = document.getElementById('chartBatchCount');
+        
+        if (chartTotalWS) {
+            chartTotalWS.textContent = totalUserWS.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        if (chartBatchCount) {
+            chartBatchCount.textContent = batchData.length;
+        }
     }
     
     // Create new chart with enhanced options
@@ -1575,81 +1619,81 @@ function updateChart(batchData, totalUserWS) {
                 mode: 'index'
             }
         },
-plugins: [{
-    id: 'centerText',
-    beforeDraw: function(chart) {
-        // Draw center text
-        const ctx = chart.ctx;
-        const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-        const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-        
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // Background circle with gradient
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fill();
-        ctx.strokeStyle = 'var(--rebel-gold)';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // Add subtle glow
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        
-        // Main title (what this number represents)
-        ctx.font = 'bold 14px Montserrat';
-        ctx.fillStyle = 'var(--rebel-gold)';
-        ctx.fillText('YOUR WEIGHTED SHARE', centerX, centerY - 35);
-        
-        // Subtitle for clarity
-        ctx.font = '600 10px Montserrat';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.fillText('Total WS = Σ(Tokens × Age Bonus)', centerX, centerY - 18);
-        
-        // Divider line
-        ctx.beginPath();
-        ctx.moveTo(centerX - 40, centerY - 5);
-        ctx.lineTo(centerX + 40, centerY - 5);
-        ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        
-        // Main value - formatted for readability
-        const formattedWS = formatNumber(totalUserWS, true);
-        ctx.font = 'bold 24px Montserrat';
-        ctx.fillStyle = 'white';
-        ctx.fillText(formattedWS, centerX, centerY + 12);
-        
-        // Unit label
-        ctx.font = 'bold 12px Montserrat';
-        ctx.fillStyle = 'var(--rebel-gold)';
-        ctx.fillText('WS UNITS', centerX, centerY + 30);
-        
-        // Footer with batch info
-        ctx.beginPath();
-        ctx.moveTo(centerX - 40, centerY + 40);
-        ctx.lineTo(centerX + 40, centerY + 40);
-        ctx.strokeStyle = 'rgba(212, 167, 106, 0.2)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        
-        ctx.font = '600 10px Montserrat';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-        ctx.fillText(`${batchData.length} token batches`, centerX, centerY + 52);
-        
-        ctx.restore();
-    }
-}]
+        plugins: [{
+            id: 'centerText',
+            beforeDraw: function(chart) {
+                // Draw center text
+                const ctx = chart.ctx;
+                const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+                const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Background circle with gradient
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fill();
+                ctx.strokeStyle = 'var(--rebel-gold)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Add subtle glow
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Main title (what this number represents)
+                ctx.font = 'bold 14px Montserrat';
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('YOUR WEIGHTED SHARE', centerX, centerY - 35);
+                
+                // Subtitle for clarity
+                ctx.font = '600 10px Montserrat';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.fillText('Total WS = Σ(Tokens × Age Bonus)', centerX, centerY - 18);
+                
+                // Divider line
+                ctx.beginPath();
+                ctx.moveTo(centerX - 40, centerY - 5);
+                ctx.lineTo(centerX + 40, centerY - 5);
+                ctx.strokeStyle = 'rgba(212, 167, 106, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Main value - formatted for readability
+                const formattedWS = formatNumber(totalUserWS, true);
+                ctx.font = 'bold 24px Montserrat';
+                ctx.fillStyle = 'white';
+                ctx.fillText(formattedWS, centerX, centerY + 12);
+                
+                // Unit label
+                ctx.font = 'bold 12px Montserrat';
+                ctx.fillStyle = 'var(--rebel-gold)';
+                ctx.fillText('WS UNITS', centerX, centerY + 30);
+                
+                // Footer with batch info
+                ctx.beginPath();
+                ctx.moveTo(centerX - 40, centerY + 40);
+                ctx.lineTo(centerX + 40, centerY + 40);
+                ctx.strokeStyle = 'rgba(212, 167, 106, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.font = '600 10px Montserrat';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.fillText(`${batchData.length} token batches`, centerX, centerY + 52);
+                
+                ctx.restore();
+            }
+        }]
     });
 }
-// Enhanced hideChart function
+
 function hideChart() {
     const chartPlaceholder = document.getElementById('chartPlaceholder');
     const canvas = document.getElementById('rewardChart');
@@ -1679,6 +1723,74 @@ function hideChart() {
     }
 }
 
+// ========== FORMULA DETAILS TOGGLE - FIXED ==========
+function toggleFormulaDetails() {
+    console.log('toggleFormulaDetails called'); // Debug log
+    
+    const details = document.getElementById('formulaDetails');
+    const button = document.getElementById('formulaToggleBtn');
+    
+    if (!details) {
+        console.error('Formula details element not found!');
+        return;
+    }
+    
+    if (!button) {
+        console.error('Formula toggle button not found!');
+        return;
+    }
+    
+    // Check current state
+    const isHidden = details.style.display === 'none' || details.style.display === '';
+    
+    if (isHidden) {
+        // Show details with animation
+        details.style.display = 'block';
+        button.innerHTML = '<i class="fas fa-times"></i> Hide Formula Details & Breakdown';
+        
+        // Animate in
+        details.style.opacity = '0';
+        details.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            details.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            details.style.opacity = '1';
+            details.style.transform = 'translateY(0)';
+        }, 10);
+        
+        showToast('Formula details expanded', 'info');
+    } else {
+        // Hide details with animation
+        details.style.opacity = '0';
+        details.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            details.style.display = 'none';
+            button.innerHTML = '<i class="fas fa-calculator"></i> Show Formula Details & Breakdown';
+            // Remove transition after hiding
+            setTimeout(() => {
+                details.style.transition = '';
+            }, 300);
+        }, 300);
+    }
+}
+
+// ========== QUICK ACTIONS FOR FORMULA SECTION ==========
+function scrollToSection(sectionId) {
+    const section = document.querySelector(sectionId);
+    if (section) {
+        section.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        // Add visual feedback
+        section.style.boxShadow = '0 0 0 3px var(--rebel-gold)';
+        setTimeout(() => {
+            section.style.boxShadow = '';
+        }, 1000);
+        
+        showToast(`Scrolled to ${sectionId.replace('.', '').replace('#', '')}`, 'info');
+    }
+}
 
 // ========== HELPER FUNCTIONS ==========
 function formatNumber(num, showDecimals = false) {
@@ -1742,78 +1854,6 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// ========== FORMULA DETAILS TOGGLE ==========
-function toggleFormulaDetails() {
-    const details = document.getElementById('formulaDetails');
-    const button = document.getElementById('formulaToggleBtn');
-    
-    if (!details || !button) return;
-    
-    if (details.style.display === 'none' || details.style.display === '') {
-        // Show details with animation
-        details.style.display = 'block';
-        button.innerHTML = '<i class="fas fa-times"></i> Hide Formula Details & Breakdown';
-        
-        // Animate in
-        details.style.opacity = '0';
-        details.style.transform = 'translateY(-10px)';
-        setTimeout(() => {
-            details.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            details.style.opacity = '1';
-            details.style.transform = 'translateY(0)';
-        }, 10);
-        
-        showToast('Formula details expanded', 'info');
-    } else {
-        // Hide details with animation
-        details.style.opacity = '0';
-        details.style.transform = 'translateY(-10px)';
-        setTimeout(() => {
-            details.style.display = 'none';
-            button.innerHTML = '<i class="fas fa-calculator"></i> Show Formula Details & Breakdown';
-        }, 300);
-    }
-}
-
-// ========== QUICK ACTIONS FOR FORMULA SECTION ==========
-function scrollToSection(sectionId) {
-    const section = document.querySelector(sectionId);
-    if (section) {
-        section.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-        });
-        
-        // Add visual feedback
-        section.style.boxShadow = '0 0 0 3px var(--rebel-gold)';
-        setTimeout(() => {
-            section.style.boxShadow = '';
-        }, 1000);
-        
-        showToast(`Scrolled to ${sectionId.replace('.', '').replace('#', '')}`, 'info');
-    }
-}
-
-// ========== EXPORT FUNCTIONS TO GLOBAL SCOPE ==========
-// Make functions available for onclick handlers
-window.addTokenBatch = addTokenBatch;
-window.removeTokenBatch = removeTokenBatch;
-window.clearTokenBatches = clearTokenBatches;
-window.updateRowCalculations = updateRowCalculations;
-window.addOtherParticipantBatch = addOtherParticipantBatch;
-window.removeOtherParticipantBatch = removeOtherParticipantBatch;
-window.clearOtherParticipantBatches = clearOtherParticipantBatches;
-window.updateOtherRowCalculations = updateOtherRowCalculations;
-window.addExampleOtherParticipants = addExampleOtherParticipants;
-window.setParticipantType = setParticipantType;
-window.updateSummaryOther = updateSummaryOther;
-window.calculateRewards = calculateRewards;
-window.updateWhatIfGamma = updateWhatIfGamma;
-window.loadExampleCase = loadExampleCase;
-window.setSimulatorPreset = setSimulatorPreset;
-window.toggleFormulaDetails = toggleFormulaDetails;
-window.scrollToSection = scrollToSection;
-
 // ========== KEYBOARD SHORTCUTS ==========
 document.addEventListener('keydown', function(e) {
     // Ctrl/Cmd + Enter to calculate
@@ -1841,8 +1881,51 @@ document.addEventListener('keydown', function(e) {
         addTokenBatch();
         showToast('Added new token batch (Ctrl+N)', 'info');
     }
+    
+    // Ctrl/Cmd + F to toggle formula details
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        toggleFormulaDetails();
+    }
 });
 
-// Add the new chart functions to window object
+// ========== EXPORT FUNCTIONS TO GLOBAL SCOPE - FIXED ==========
+// Make ALL functions available for onclick handlers
+window.addTokenBatch = addTokenBatch;
+window.removeTokenBatch = removeTokenBatch;
+window.clearTokenBatches = clearTokenBatches;
+window.updateRowCalculations = updateRowCalculations;
+window.addOtherParticipantBatch = addOtherParticipantBatch;
+window.removeOtherParticipantBatch = removeOtherParticipantBatch;
+window.clearOtherParticipantBatches = clearOtherParticipantBatches;
+window.updateOtherRowCalculations = updateOtherRowCalculations;
+window.addExampleOtherParticipants = addExampleOtherParticipants;
+window.setParticipantType = setParticipantType;
+window.updateSummaryOther = updateSummaryOther;
+window.calculateRewards = calculateRewards;
+window.updateWhatIfGamma = updateWhatIfGamma;
+window.loadExampleCase = loadExampleCase;
+window.setSimulatorPreset = setSimulatorPreset;
+window.toggleFormulaDetails = toggleFormulaDetails; // CRITICAL FIX
+window.scrollToSection = scrollToSection;
 window.toggleChartLegend = toggleChartLegend;
 window.toggleChartLabels = toggleChartLabels;
+
+// Also export to window explicitly for older browsers
+if (typeof window !== 'undefined') {
+    window.toggleFormulaDetails = toggleFormulaDetails;
+}
+
+// Re-attach on load to ensure it works
+window.addEventListener('load', function() {
+    const formulaToggleBtn = document.getElementById('formulaToggleBtn');
+    if (formulaToggleBtn) {
+        // Remove existing onclick and reattach
+        formulaToggleBtn.onclick = function(e) {
+            e.preventDefault();
+            toggleFormulaDetails();
+            return false;
+        };
+    }
+    console.log('Formula toggle button reattached'); // Debug log
+});
