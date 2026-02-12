@@ -1,6 +1,6 @@
 <header>
   <div class="header-container">
-    <!-- Brand Logo --->
+    <!-- Brand Logo -->
     <a href="index.html" class="brand-link" aria-label="RebelInuX Home">
       <div class="brand-content">
         <img src="images/Logo_REBL.svg" 
@@ -11,8 +11,7 @@
              class="brand-logo">
         <div class="brand-text">
           <div class="brand-title">RebelInuX</div>
-          <!-- Dynamic subtitle - will be updated per page -->
-          <div class="brand-subtitle" id="dynamicSubtitle">Multi-Chain Passive Income</div>
+          <div class="brand-subtitle">Multi-Chain Passive Income</div>
         </div>
       </div>
     </a>
@@ -53,14 +52,14 @@
           <a href="community.html" class="nav-community">
             <i class="fas fa-users"></i> Community
           </a>
-          <a href="security-integrity.html" class="nav-security-integrity">
-            <i class="fas fa-shield-alt"></i> Security & Integrity
-          </a>
+  <a href="security-integrity.html" class="nav-security-integrity">
+    <i class="fas fa-shield-alt"></i> Security & Integrity
+</a>
           <a href="whitepaper.html" class="nav-whitepaper">
             <i class="fas fa-file-contract"></i> Whitepaper
           </a>
           <a href="rebl-calculator.html" class="nav-rebl-calculator">
-            <i class="fas fa-calculator"></i> Epoch Calculator
+             <i class="fas fa-calculator"></i> Epoch Calculator
           </a>
           <a href="governance.html" class="nav-governance">
             <i class="fas fa-vote-yea"></i> Governance
@@ -124,13 +123,13 @@
           </a>
         </div>
         
-        <!-- 2. ESSENTIAL ANALYTICS -->
+        <!-- 2. ESSENTIAL ANALYTICS (Top 3) -->
         <div class="action-group">
           <div class="group-title">
             <i class="fas fa-chart-line"></i> Essential Analytics
           </div>
           
-          <!-- Dextools -->
+          <!-- Dextools (MUST HAVE) -->
           <a href="https://www.dextools.io/app/solana/pair-explorer/F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump" 
              class="buy-option analytics-option">
             <div class="option-icon">
@@ -168,7 +167,7 @@
           </a>
         </div>
         
-        <!-- 3. TRADING PLATFORMS -->
+        <!-- 3. TRADING PLATFORMS (Top 2) -->
         <div class="action-group">
           <div class="group-title">
             <i class="fas fa-exchange-alt"></i> Trading Platforms
@@ -250,7 +249,7 @@
           </a>
         </div>
         
-        <!-- Contract Quick Access -->
+        <!-- Contract Quick Access - FIXED WRAPPING -->
         <div class="contract-quick">
           <div class="contract-label">Contract Address:</div>
           <div class="contract-value-wrapper">
@@ -275,52 +274,3 @@
     </div>
   </div>
 </header>
-
-<!-- Page-specific script for dynamic subtitle and active states -->
-<script>
-  // Dynamic subtitle and active state manager
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get current page filename
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const subtitleElement = document.getElementById('dynamicSubtitle');
-    const navLinks = document.querySelectorAll('#nav-desktop a, .dropdown-content a');
-    
-    // Define page configurations
-    const pageConfig = {
-      'index.html': { subtitle: 'Multi-Chain Passive Income', dataPage: 'index', activeClass: null },
-      'trade.html': { subtitle: 'Trade Guide & Liquidity', dataPage: 'trade', activeClass: 'nav-trade' },
-      'epoch-rewards.html': { subtitle: 'Epoch Rewards System', dataPage: 'epoch-rewards', activeClass: 'nav-rewards' },
-      'tokenomics.html': { subtitle: 'Tokenomics & Supply', dataPage: 'tokenomics', activeClass: 'nav-tokenomics' },
-      'community.html': { subtitle: 'Join Our Community', dataPage: 'community', activeClass: 'nav-community' },
-      'security-integrity.html': { subtitle: 'Security & Integrity', dataPage: 'security-integrity', activeClass: 'nav-security-integrity' },
-      'whitepaper.html': { subtitle: 'Technical Whitepaper', dataPage: 'whitepaper', activeClass: 'nav-whitepaper' },
-      'rebl-calculator.html': { subtitle: 'REBL Epoch Calculator', dataPage: 'rebl-calculator', activeClass: 'nav-rebl-calculator' },
-      'governance.html': { subtitle: 'DAO Governance', dataPage: 'governance', activeClass: 'nav-governance' },
-      'roadmap.html': { subtitle: 'Project Roadmap', dataPage: 'roadmap', activeClass: 'nav-roadmap' },
-      'artwork.html': { subtitle: 'Rebel Art Collection', dataPage: 'artwork', activeClass: 'nav-artwork' }
-    };
-    
-    const config = pageConfig[currentPage] || pageConfig['index.html'];
-    
-    // Update subtitle
-    if (subtitleElement) {
-      subtitleElement.textContent = config.subtitle;
-      subtitleElement.setAttribute('data-page', config.dataPage);
-      subtitleElement.classList.add('changing');
-      setTimeout(() => subtitleElement.classList.remove('changing'), 300);
-    }
-    
-    // Remove all active classes first
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-    });
-    
-    // Add active class to current page link
-    if (config.activeClass) {
-      const activeLinks = document.querySelectorAll(`.${config.activeClass}`);
-      activeLinks.forEach(link => {
-        link.classList.add('active');
-      });
-    }
-  });
-</script>
