@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function initSecurityIntegrityPage() {
   console.log('🚀 Initializing Security & Integrity page');
   
-  // FIXED: Set navigation active state
-  setNavigationActive();
+  // ===== REMOVED: Mobile navigation calls =====
+  // These are handled by common.js - DO NOT CALL THEM HERE
   
   // Initialize security data
   initSecurityData();
@@ -47,7 +47,7 @@ function initSecurityIntegrityPage() {
   // Initialize AOS animations
   initAOSWithDelay();
   
-  // Initialize principle card interactions - FIXED to prevent event bubbling
+  // Initialize principle card interactions
   initPrincipleCards();
   
   // Initialize copy contract functionality
@@ -58,34 +58,6 @@ function initSecurityIntegrityPage() {
   
   // Initialize real-time data
   initRealTimeData();
-}
-
-// ===== FIXED: Set active state in navigation =====
-function setNavigationActive() {
-  console.log('🎯 Setting active navigation state for Security & Integrity');
-  
-  // Remove active class from all nav links first
-  const allNavLinks = document.querySelectorAll('#nav-desktop a, .dropdown-content a');
-  allNavLinks.forEach(link => {
-    link.classList.remove('active');
-  });
-  
-  // Add active class to Security & Integrity links
-  const securityLinks = document.querySelectorAll('.nav-security-integrity');
-  securityLinks.forEach(link => {
-    link.classList.add('active');
-    link.style.color = 'white !important';
-    link.style.background = 'linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(76, 175, 80, 0.15))';
-    link.style.borderColor = '#4CAF50';
-    link.style.boxShadow = '0 4px 20px rgba(76, 175, 80, 0.25)';
-  });
-  
-  // Also check dropdown if it's open
-  const dropdownLinks = document.querySelectorAll('.dropdown-content a.nav-security-integrity');
-  dropdownLinks.forEach(link => {
-    link.classList.add('active');
-    link.style.color = 'white !important';
-  });
 }
 
 // ========== AOS ANIMATIONS ==========
@@ -188,20 +160,14 @@ function updateVerificationTimestamps() {
   }
 }
 
-// ========== PRINCIPLE CARD INTERACTIONS - FIXED ==========
+// ========== PRINCIPLE CARD INTERACTIONS ==========
 function initPrincipleCards() {
   const principleCards = document.querySelectorAll('.principle-card');
   
   principleCards.forEach(card => {
-    // FIXED: Use event delegation and stop propagation for mobile
+    // Add click handler for mobile
     card.addEventListener('click', function(e) {
-      // Don't stop propagation for navigation clicks
-      if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.dropbtn')) {
-        return; // Let navigation clicks bubble up
-      }
-      
       if (window.innerWidth <= 768) {
-        e.stopPropagation(); // Only stop for mobile card expansion
         this.classList.toggle('expanded');
       }
     });
@@ -239,7 +205,6 @@ function initCopyContract() {
 }
 
 function copyContract(event) {
-  // FIXED: Don't stop propagation - let navigation work
   const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
   const button = event.target.closest('button') || event.target;
   const originalHTML = button.innerHTML;
