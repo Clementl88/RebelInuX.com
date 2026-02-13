@@ -1,4 +1,5 @@
-/* rebl-calculator.css - Calculator Specific Styles *//
+/* rebl-calculator.css - Calculator Specific Styles */
+/* ===== ALL STYLES ARE SCOPED TO CALCULATOR ONLY ===== */
 
 /* ===== Hero Section - Calculator ===== */
 .page-hero--calculator {
@@ -22,46 +23,107 @@
   z-index: -1;
 }
 
+.page-hero--calculator h1 {
+  font-size: clamp(2rem, 5vw, var(--font-size-4xl));
+  margin-bottom: var(--spacing-md);
+}
+
+.page-hero--calculator .text-lead {
+  font-size: clamp(1rem, 2vw, var(--font-size-lg));
+  max-width: 900px;
+  margin: 0 auto var(--spacing-xl);
+}
+
+/* Hero Buttons - SCOPED to calculator hero only */
+.page-hero--calculator .hero-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--spacing-xl);
+}
+
+.page-hero--calculator .hero-buttons .cta-button {
+  min-width: 200px;
+  padding: 14px 28px;
+  font-size: 1rem;
+}
+
+.page-hero--calculator .hero-buttons .cta-button.gold {
+  background: linear-gradient(135deg, var(--rebel-gold), #e6b800);
+  color: var(--color-text-dark);
+}
+
+/* ===== CALCULATOR CONTAINERS - PROPERLY SCOPED ===== */
+#rebl-calculator .calculator-announcement,
+#rebl-calculator .calculator-section,
+#rebl-calculator .formula-container,
+#rebl-calculator .gamma-simulator,
+#rebl-calculator .reward-result,
+#rebl-calculator .chart-container {
+  /* These styles are scoped to calculator only */
+}
+
 /* Calculator Announcement */
-.calculator-announcement {
+#rebl-calculator .calculator-announcement {
     background: linear-gradient(135deg, rgba(212, 167, 106, 0.2), rgba(255, 51, 102, 0.2));
     border: 2px solid var(--rebel-gold);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.formula-display {
+#rebl-calculator .calculator-announcement::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+}
+
+/* Formula Display */
+#rebl-calculator .formula-display {
     margin: var(--spacing-lg) 0;
 }
 
-.formula-equation {
+#rebl-calculator .formula-equation {
     font-size: 1.8rem;
     font-weight: 800;
     color: var(--rebel-gold);
     margin-bottom: var(--spacing-sm);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     font-family: 'Courier New', monospace;
+    line-height: 1.4;
 }
 
-.formula-component {
+#rebl-calculator .formula-equation .gamma {
+    color: #00ff00;
+    font-weight: 900;
+}
+
+#rebl-calculator .formula-component {
     font-size: 1.4rem;
     color: var(--rebel-red);
     font-weight: 600;
     margin-bottom: var(--spacing-md);
     font-family: 'Courier New', monospace;
+    line-height: 1.4;
 }
 
-/* Quick Actions */
-.quick-actions {
+/* Quick Actions - SCOPED */
+#rebl-calculator .quick-actions {
     display: flex;
     gap: var(--spacing-sm);
     margin: var(--spacing-lg) 0;
     flex-wrap: wrap;
 }
 
-.quick-action-btn {
+#rebl-calculator .quick-action-btn {
     background: rgba(0, 170, 255, 0.1);
     color: var(--rebel-blue);
     border: 1px solid var(--rebel-blue);
@@ -76,24 +138,24 @@
     transition: var(--transition-normal);
 }
 
-.quick-action-btn:hover {
+#rebl-calculator .quick-action-btn:hover {
     background: rgba(0, 170, 255, 0.2);
     transform: translateY(-2px);
 }
 
 /* Calculator Parameters */
-.calculator-parameters {
+#rebl-calculator .calculator-parameters {
     margin: var(--spacing-xl) 0;
 }
 
-.parameter-grid {
+#rebl-calculator .parameter-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 }
 
-.parameter-item {
+#rebl-calculator .parameter-item {
     background: var(--color-bg-card);
     border: 1px solid rgba(212, 167, 106, 0.2);
     border-radius: var(--border-radius-md);
@@ -104,13 +166,13 @@
     transition: var(--transition-normal);
 }
 
-.parameter-item:hover {
+#rebl-calculator .parameter-item:hover {
     transform: translateY(-4px);
     border-color: var(--rebel-gold);
     box-shadow: var(--shadow-md);
 }
 
-.parameter-icon {
+#rebl-calculator .parameter-icon {
     font-size: 2rem;
     color: var(--rebel-gold);
     background: rgba(212, 167, 106, 0.1);
@@ -120,13 +182,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
-.parameter-content {
+#rebl-calculator .parameter-content {
     flex: 1;
 }
 
-.parameter-label {
+#rebl-calculator .parameter-label {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
     text-transform: uppercase;
@@ -134,35 +197,47 @@
     margin-bottom: var(--spacing-xs);
 }
 
-.parameter-value {
+#rebl-calculator .parameter-value {
     font-size: 1.8rem;
     font-weight: 800;
     color: var(--rebel-gold);
     line-height: 1;
     margin-bottom: var(--spacing-xs);
+    background: linear-gradient(135deg, var(--rebel-gold), #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.parameter-description {
+#rebl-calculator .parameter-description {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted-dark);
 }
 
 /* Calculator Sections */
-.calculator-section {
-    background: var(--color-bg-card);
-    border: 1px solid rgba(212, 167, 106, 0.2);
+#rebl-calculator .calculator-section {
+    background: linear-gradient(135deg, 
+        rgba(20, 20, 20, 0.9), 
+        rgba(30, 30, 30, 0.8));
+    border: 1px solid rgba(212, 167, 106, 0.3);
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     transition: var(--transition-normal);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.calculator-section:hover {
+#rebl-calculator .calculator-section:hover {
     border-color: var(--rebel-gold);
-    box-shadow: var(--shadow-md);
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(212, 167, 106, 0.2);
 }
 
-.section-header {
+#rebl-calculator .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -171,12 +246,28 @@
     gap: var(--spacing-md);
 }
 
-.example-buttons {
+#rebl-calculator .section-header h3 {
     display: flex;
+    align-items: center;
     gap: var(--spacing-sm);
+    color: var(--rebel-gold);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0;
 }
 
-.example-btn {
+#rebl-calculator .section-header h3 i {
+    color: var(--rebel-gold);
+}
+
+/* Example Buttons */
+#rebl-calculator .example-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+#rebl-calculator .example-btn {
     background: rgba(0, 0, 0, 0.3);
     color: var(--rebel-blue);
     border: 1px solid var(--rebel-blue);
@@ -191,20 +282,20 @@
     transition: var(--transition-normal);
 }
 
-.example-btn:hover {
+#rebl-calculator .example-btn:hover {
     background: rgba(0, 170, 255, 0.2);
     transform: translateY(-2px);
 }
 
 /* Table Actions */
-.table-actions {
+#rebl-calculator .table-actions {
     display: flex;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
     flex-wrap: wrap;
 }
 
-.table-action-btn {
+#rebl-calculator .table-action-btn {
     background: rgba(212, 167, 106, 0.1);
     color: var(--rebel-gold);
     border: 1px solid var(--rebel-gold);
@@ -219,76 +310,103 @@
     transition: var(--transition-normal);
 }
 
-.table-action-btn:hover {
+#rebl-calculator .table-action-btn:hover {
     background: rgba(212, 167, 106, 0.2);
     transform: translateY(-2px);
 }
 
-/* Table Styles */
-.table-container {
+/* Table Styles - SCOPED */
+#rebl-calculator .table-container {
     overflow-x: auto;
     margin-bottom: var(--spacing-md);
     border-radius: var(--border-radius-md);
     border: 1px solid rgba(212, 167, 106, 0.3);
+    background: rgba(0, 0, 0, 0.2);
 }
 
-#token-batches-table {
+#rebl-calculator #token-batches-table,
+#rebl-calculator #other-participants-table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.5), 
+        rgba(26, 26, 26, 0.4));
 }
 
-#token-batches-table th {
-    background: rgba(212, 167, 106, 0.2);
+#rebl-calculator #token-batches-table th,
+#rebl-calculator #other-participants-table th {
+    background: linear-gradient(135deg, 
+        rgba(212, 167, 106, 0.25), 
+        rgba(212, 167, 106, 0.15));
     color: var(--rebel-gold);
-    font-weight: 700;
+    font-weight: 800;
     text-align: left;
-    padding: var(--spacing-md);
-    border-bottom: 2px solid var(--rebel-gold);
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-bottom: 3px solid var(--rebel-gold);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: var(--font-size-sm);
+    letter-spacing: 1.5px;
+    font-size: var(--font-size-xs);
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-#token-batches-table td {
+#rebl-calculator #token-batches-table td,
+#rebl-calculator #other-participants-table td {
     padding: var(--spacing-md);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     vertical-align: middle;
 }
 
-#token-batches-table tr:last-child td {
+#rebl-calculator #token-batches-table tr:last-child td,
+#rebl-calculator #other-participants-table tr:last-child td {
     border-bottom: none;
 }
 
-#token-batches-table tr:hover {
-    background: rgba(212, 167, 106, 0.1);
+#rebl-calculator #token-batches-table tr,
+#rebl-calculator #other-participants-table tr {
+    transition: all 0.2s ease;
 }
 
-#token-batches-table input {
+#rebl-calculator #token-batches-table tr:hover,
+#rebl-calculator #other-participants-table tr:hover {
+    background: linear-gradient(90deg, 
+        rgba(212, 167, 106, 0.1), 
+        rgba(212, 167, 106, 0.05));
+}
+
+#rebl-calculator #token-batches-table input,
+#rebl-calculator #other-participants-table input {
     width: 100%;
     padding: var(--spacing-sm);
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(212, 167, 106, 0.2);
     border-radius: var(--border-radius-sm);
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-size: var(--font-size-base);
     transition: var(--transition-normal);
+    font-weight: 600;
 }
 
-#token-batches-table input:focus {
+#rebl-calculator #token-batches-table input:focus,
+#rebl-calculator #other-participants-table input:focus {
     outline: none;
     border-color: var(--rebel-gold);
-    box-shadow: 0 0 0 2px rgba(212, 167, 106, 0.3);
+    box-shadow: 
+        0 0 0 3px rgba(212, 167, 106, 0.2),
+        inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.6);
 }
 
-#token-batches-table input:invalid {
+#rebl-calculator #token-batches-table input:invalid,
+#rebl-calculator #other-participants-table input:invalid {
     border-color: var(--rebel-red);
     box-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
 }
 
-.batch-btn {
+#rebl-calculator .batch-btn {
     background: var(--rebel-red);
     color: white;
     border: none;
@@ -297,15 +415,16 @@
     cursor: pointer;
     transition: var(--transition-normal);
     min-width: 40px;
+    font-weight: 600;
 }
 
-.batch-btn:hover {
+#rebl-calculator .batch-btn:hover {
     background: #ff3366;
     transform: scale(1.1);
 }
 
-/* Input Hints */
-.input-hint {
+/* Input Hints - SCOPED */
+#rebl-calculator .input-hint {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted-dark);
     margin-top: var(--spacing-xs);
@@ -314,7 +433,7 @@
 }
 
 /* Auto Update Toggle */
-.auto-update-toggle {
+#rebl-calculator .auto-update-toggle {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(212, 167, 106, 0.2);
     border-radius: var(--border-radius-md);
@@ -322,7 +441,7 @@
     margin-bottom: var(--spacing-lg);
 }
 
-.toggle-label {
+#rebl-calculator .toggle-label {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
@@ -330,11 +449,11 @@
     user-select: none;
 }
 
-.toggle-label input {
+#rebl-calculator .toggle-label input {
     display: none;
 }
 
-.toggle-slider {
+#rebl-calculator .toggle-slider {
     position: relative;
     width: 60px;
     height: 30px;
@@ -343,7 +462,7 @@
     transition: var(--transition-normal);
 }
 
-.toggle-slider::before {
+#rebl-calculator .toggle-slider::before {
     content: '';
     position: absolute;
     top: 3px;
@@ -355,23 +474,23 @@
     transition: var(--transition-normal);
 }
 
-.toggle-label input:checked + .toggle-slider {
+#rebl-calculator .toggle-label input:checked + .toggle-slider {
     background: rgba(76, 175, 80, 0.3);
 }
 
-.toggle-label input:checked + .toggle-slider::before {
+#rebl-calculator .toggle-label input:checked + .toggle-slider::before {
     transform: translateX(30px);
-    background: var(--rebel-green);
+    background: #4CAF50;
 }
 
-.toggle-text {
+#rebl-calculator .toggle-text {
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
     font-weight: 600;
     flex: 1;
 }
 
-.toggle-help {
+#rebl-calculator .toggle-help {
     margin-top: var(--spacing-sm);
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
@@ -380,21 +499,21 @@
     gap: var(--spacing-xs);
 }
 
-/* Slider Group */
-.slider-group {
+/* Slider Group - SCOPED */
+#rebl-calculator .slider-group {
     display: grid;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-lg);
 }
 
-.slider-container {
+#rebl-calculator .slider-container {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(212, 167, 106, 0.2);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
 }
 
-.slider-info {
+#rebl-calculator .slider-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -403,7 +522,7 @@
     gap: var(--spacing-sm);
 }
 
-.slider-info-label {
+#rebl-calculator .slider-info-label {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
@@ -412,2782 +531,260 @@
     font-size: var(--font-size-base);
 }
 
-.slider-info-help {
+#rebl-calculator .slider-info-help {
     color: var(--color-text-muted);
     cursor: help;
 }
 
-.slider-info-value {
+#rebl-calculator .slider-info-value {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
 }
 
-.value-input {
+#rebl-calculator .value-input {
     width: 120px;
     padding: var(--spacing-sm);
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--rebel-gold);
-    border-radius: var(--border-radius-sm);
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    font-size: var(--font-size-base);
-    text-align: right;
-    transition: var(--transition-normal);
-}
-
-.value-input:focus {
-    outline: none;
-    border-color: var(--rebel-red);
-    box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
-}
-
-.slider-value {
-    font-weight: 800;
-    color: var(--rebel-red);
-    font-size: 1.2rem;
-    min-width: 80px;
-    text-align: right;
-}
-
-.slider {
-    width: 100%;
-    height: 8px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-    border-radius: 4px;
-    outline: none;
-    margin: var(--spacing-md) 0;
-    cursor: pointer;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--rebel-gold);
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: var(--transition-normal);
-}
-
-.slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-}
-
-.slider::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--rebel-gold);
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: var(--transition-normal);
-}
-
-.slider::-moz-range-thumb:hover {
-    transform: scale(1.1);
-}
-
-/* Gamma Visualization */
-.gamma-visualization {
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid rgba(212, 167, 106, 0.3);
-}
-
-.gamma-scale {
-    position: relative;
-    height: 40px;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold), #00ff00);
-    border-radius: 20px;
-    margin: var(--spacing-md) 0;
-    overflow: hidden;
-    border: 2px solid rgba(0, 0, 0, 0.3);
-}
-
-.gamma-bar {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.gamma-marker {
-    position: absolute;
-    top: -10px;
-    width: 4px;
-    height: 60px;
-    background: white;
-    border-radius: 2px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    transform: translateX(-50%);
-    z-index: 2;
-}
-
-.gamma-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-top: var(--spacing-sm);
-}
-
-.gamma-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--rebel-red);
-    margin-left: var(--spacing-xs);
-}
-
-/* Gamma Info Panel */
-.gamma-info-panel {
-    background: rgba(0, 0, 0, 0.4);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    margin: var(--spacing-md) 0;
-    border-left: 4px solid;
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-normal);
-}
-
-.gamma-info-panel.low {
-    border-left-color: var(--rebel-red);
-    background: rgba(255, 51, 102, 0.1);
-}
-
-.gamma-info-panel.medium {
-    border-left-color: var(--rebel-yellow);
-    background: rgba(255, 204, 0, 0.1);
-}
-
-.gamma-info-panel.high {
-    border-left-color: var(--rebel-green);
-    background: rgba(0, 255, 0, 0.1);
-}
-
-.gamma-info-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-xs);
-}
-
-.gamma-info-header i {
-    font-size: 1.2rem;
-}
-
-.gamma-info-text {
-    margin: 0;
-    font-size: var(--font-size-sm);
-}
-
-/* Gamma Components */
-.gamma-components {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-lg);
-}
-
-.gamma-component {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-md);
-    text-align: center;
-}
-
-.component-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-    font-family: 'Courier New', monospace;
-}
-
-.component-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-}
-
-/* Preset Buttons */
-.preset-buttons {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-lg);
-    flex-wrap: wrap;
-}
-
-.optimal-preset {
-    background: rgba(76, 175, 80, 0.1) !important;
-    color: var(--rebel-green) !important;
-    border-color: var(--rebel-green) !important;
-}
-
-.full-gamma-preset {
-    background: rgba(0, 255, 0, 0.1) !important;
-    color: var(--rebel-green) !important;
-    border-color: var(--rebel-green) !important;
-}
-
-/* Calculate Button */
-.calculate-action {
-    text-align: center;
-    margin: var(--spacing-xl) 0;
-}
-
-.calculate-btn {
-    background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-    color: white;
-    border: none;
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    border-radius: var(--border-radius-full);
-    font-size: 1.2rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: var(--transition-normal);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    min-height: 60px;
-    position: relative;
-}
-
-.calculate-btn:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    opacity: 0.9;
-}
-
-.calculate-btn:active {
-    transform: translateY(-2px);
-}
-
-.calculate-btn.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.calculate-btn.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    right: var(--spacing-lg);
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Results Display */
-.reward-result {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(212, 167, 106, 0.1));
-    border: 2px solid var(--rebel-gold);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-xl) 0;
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.reward-placeholder {
-    text-align: center;
-    color: var(--color-text-muted);
-}
-
-.reward-placeholder i {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
-    opacity: 0.5;
-}
-
-.reward-placeholder-subtext {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted-dark);
-    margin-top: var(--spacing-xs);
-}
-
-.reward-results-content {
-    animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.reward-result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-sm);
-    padding-bottom: var(--spacing-xs);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.reward-result-label {
-    font-weight: 600;
-    color: var(--color-text-primary);
-}
-
-.reward-result-value {
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.reward-result-value.gold {
-    color: var(--rebel-gold);
-}
-
-.reward-result-value.red {
-    color: var(--rebel-red);
-}
-
-.reward-result-main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: var(--spacing-lg);
-    padding-top: var(--spacing-md);
-    border-top: 2px solid rgba(212, 167, 106, 0.5);
-}
-
-.reward-result-main-label {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-}
-
-.reward-result-main-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--rebel-red);
-    text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
-}
-
-.reward-result-note {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted-dark);
-    text-align: right;
-    margin-top: var(--spacing-xs);
-}
-
-.reward-projections {
-    margin-top: var(--spacing-lg);
-    padding-top: var(--spacing-md);
-    border-top: 1px dashed rgba(255, 255, 255, 0.2);
-}
-
-.projection-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-xs);
-}
-
-.projection-item {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.3);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-}
-
-.projection-label {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-xs);
-}
-
-.projection-value {
-    color: var(--rebel-gold);
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
-.projection-disclaimer {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted-dark);
-    text-align: center;
-    margin-top: var(--spacing-xs);
-}
-
-/* Example Loaded Message */
-.example-loaded-message {
-    text-align: center;
-}
-
-.example-loaded-header {
-    color: var(--rebel-gold);
-    font-weight: 700;
-    font-size: 1.2rem;
-    margin-bottom: var(--spacing-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.example-loaded-text {
-    color: var(--rebel-gold);
-    font-size: var(--font-size-sm);
-    margin-bottom: var(--spacing-lg);
-}
-
-.example-loaded-actions {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-}
-
-.example-action-btn {
-    background: var(--rebel-red);
-    color: white;
-    border: none;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    transition: var(--transition-normal);
-}
-
-.example-action-btn.gold {
-    background: var(--rebel-gold);
-    color: var(--color-text-dark);
-}
-
-.example-action-btn:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-/* Chart Container */
-.chart-container {
-    position: relative;
-    height: 350px; /* Increased height */
-    width: 100%;
-    margin: var(--spacing-lg) 0;
-    background: rgba(0, 0, 0, 0.4); /* Darker background */
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    border: 2px solid var(--rebel-gold); /* Thicker border */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.chart-wrapper {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#rewardChart {
-    width: 100% !important;
-    height: 100% !important;
-    display: none;
-}
-
-.chart-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    color: var(--rebel-gold);
-    text-align: center;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 26, 26, 0.8));
-    border-radius: var(--border-radius);
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: var(--spacing-xl);
-    border: 2px dashed rgba(255, 204, 0, 0.3);
-}
-
-.chart-placeholder i {
-    font-size: 4rem;
-    margin-bottom: var(--spacing-md);
-    opacity: 0.3;
-    color: var(--rebel-gold);
-}
-
-.chart-placeholder p {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: var(--spacing-sm);
-    max-width: 300px;
-}
-
-.chart-placeholder span {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* Chart stats overlay */
-.chart-stats-overlay {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid var(--rebel-gold);
-    border-radius: 8px;
-    padding: 12px;
-    color: white;
-    font-size: 0.85rem;
-    z-index: 10;
-    backdrop-filter: blur(10px);
-}
-
-.chart-stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 4px;
-}
-
-.chart-stat-label {
-    color: var(--rebel-gold);
-    font-weight: 600;
-}
-
-.chart-stat-value {
-    color: white;
-    font-weight: 700;
-}
-
-/* Chart actions */
-.chart-actions {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    display: flex;
-    gap: 10px;
-    z-index: 10;
-}
-
-.chart-action-btn {
-    background: rgba(255, 204, 0, 0.2);
-    color: var(--rebel-gold);
-    border: 1px solid var(--rebel-gold);
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.chart-action-btn:hover {
-    background: rgba(255, 204, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-.chart-action-btn.active {
-    background: rgba(255, 204, 0, 0.4);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-}
-/* Simulator */
-.simulator-info {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-}
-
-.simulator-info p {
-    margin: 0;
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
-}
-
-.simulator-info i {
-    color: var(--rebel-gold);
-    margin-top: 0.2rem;
-}
-
-.simulator-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-}
-
-.gamma-result, .effective-distribution {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.3);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    text-align: center;
-}
-
-.gamma-label, .distribution-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.gamma-result-value {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--rebel-red);
-}
-
-.distribution-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-}
-
-/* Gamma Breakdown */
-.gamma-breakdown {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-    font-family: 'Courier New', monospace;
-}
-
-.gamma-breakdown h4 {
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-md);
-    text-align: center;
-    font-size: var(--font-size-md);
-}
-
-.breakdown-text {
-    color: white;
-    font-size: var(--font-size-base);
-    text-align: center;
-    line-height: var(--line-height-normal);
-}
-
-/* Formula Display Section */
-.formula-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid var(--rebel-gold);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-lg) 0;
-    text-align: center;
-}
-
-.formula-main {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-md);
-    font-family: 'Courier New', monospace;
-}
-
-.formula-explanation {
-    display: grid;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-xl);
-}
-
-.explanation-item {
-    background: rgba(0, 0, 0, 0.3);
-    border-left: 4px solid var(--rebel-gold);
-    padding: var(--spacing-md);
-    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-}
-
-.explanation-item strong {
-    color: var(--rebel-gold);
-}
-
-/* User Stats Display */
-.user-stats-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-}
-
-.user-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.user-stat-item {
-    text-align: center;
-}
-
-.user-stat-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.user-stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-xs);
-}
-
-.user-stat-percentage {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted-dark);
-}
-
-/* Contribution Display */
-.contribution-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-}
-
-.contribution-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--rebel-gold);
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.contribution-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.contribution-item {
-    text-align: center;
-}
-
-.contribution-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-}
-
-.contribution-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--rebel-red);
-    margin-bottom: var(--spacing-sm);
-}
-
-.contribution-bar {
-    height: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(212, 167, 106, 0.3);
-}
-
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-    border-radius: 10px;
-    transition: width 1s ease;
-}
-
-/* FAQ Grid */
-.faq-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.faq-item {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    transition: var(--transition-normal);
-}
-
-.faq-item:hover {
-    border-color: var(--rebel-gold);
-    transform: translateY(-4px);
-}
-
-.faq-item h4 {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-sm);
-    font-size: var(--font-size-base);
-}
-
-.faq-item p {
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-normal);
-    margin-bottom: var(--spacing-sm);
-}
-
-.claim-link {
-    color: var(--rebel-blue) !important;
-    font-weight: 600;
-}
-
-.claim-link:hover {
-    text-decoration: underline !important;
-}
-
-/* Related Pages */
-.related-grid {
-  display: grid;
-  gap: var(--spacing-lg);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  margin-top: var(--spacing-xl);
-}
-
-.related-card {
-  background: var(--color-bg-card);
-  border: 1px solid;
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  transition: var(--transition);
-  text-align: center;
-  min-height: 240px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-decoration: none;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.related-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
-.related-card:hover::before {
-  opacity: 1;
-}
-
-.related-card:hover {
-  transform: none;
-  box-shadow: var(--shadow-md);
-}
-
-.related-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--spacing-md);
-  transition: var(--transition);
-}
-
-.related-card h3 {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
-  margin-bottom: var(--spacing-sm);
-  line-height: 1.3;
-}
-
-.related-card p {
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-md);
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
-  flex-grow: 1;
-}
-
-.related-arrow {
-  margin-top: var(--spacing-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
-  transition: var(--transition);
-}
-
-.related-card:hover .related-icon {
-  transform: scale(1.1);
-}
-
-.related-card:hover .related-arrow {
-  transform: translateX(5px);
-}
-
-
-/* Color Themes for Related Cards */
-.tokenomics-card {
-  border-color: var(--rebel-blue) !important;
-  background: rgba(0, 170, 255, 0.1) !important;
-}
-
-.tokenomics-card .related-icon,
-.tokenomics-card h3,
-.tokenomics-card .related-arrow {
-  color: var(--rebel-blue) !important;
-}
-
-.tokenomics-card::before {
-  background: var(--rebel-blue) !important;
-}
-
-.tokenomics-card:hover {
-  background: rgba(0, 170, 255, 0.15) !important;
-  border-color: #00ccff !important;
-}
-
-.governance-card {
-  border-color: var(--rebel-orange) !important;
-  background: rgba(255, 152, 0, 0.1) !important;
-}
-
-.governance-card .related-icon,
-.governance-card h3,
-.governance-card .related-arrow {
-  color: var(--rebel-orange) !important;
-}
-
-.governance-card::before {
-  background: var(--rebel-orange) !important;
-}
-
-.governance-card:hover {
-  background: rgba(255, 152, 0, 0.15) !important;
-  border-color: #ffad33 !important;
-}
-
-.security-card {
-  border-color: var(--rebel-green) !important;
-  background: rgba(76, 175, 80, 0.1) !important;
-}
-
-.security-card .related-icon,
-.security-card h3,
-.security-card .related-arrow {
-  color: var(--rebel-green) !important;
-}
-
-.security-card::before {
-  background: var(--rebel-green) !important;
-}
-
-.security-card:hover {
-  background: rgba(76, 175, 80, 0.15) !important;
-  border-color: #66bb6a !important;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Card animations */
-.social-card, .voting-card, .event-content, .chat-message, .stat-card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-/* Toast Notifications */
-.calculator-toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-lg);
-    z-index: var(--z-toast);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    animation: toastIn 0.3s ease;
-    backdrop-filter: blur(10px);
-    max-width: 350px;
-    border: 1px solid;
-}
-
-.calculator-toast-success {
-    background: rgba(76, 175, 80, 0.9);
-    color: white;
-    border-color: rgba(76, 175, 80, 0.5);
-}
-
-.calculator-toast-info {
-    background: rgba(33, 150, 243, 0.9);
-    color: white;
-    border-color: rgba(33, 150, 243, 0.5);
-}
-
-.calculator-toast-warning {
-    background: rgba(255, 193, 7, 0.9);
-    color: var(--color-text-dark);
-    border-color: rgba(255, 193, 7, 0.5);
-}
-
-.calculator-toast-error {
-    background: rgba(255, 51, 102, 0.9);
-    color: white;
-    border-color: rgba(255, 51, 102, 0.5);
-}
-
-.toast-content {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-@keyframes toastIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes toastOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-}
-
-/* Help Tooltips */
-.help-tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-}
-
-.help-tooltip .tooltip-text {
-    visibility: hidden;
-    width: 300px;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
-    text-align: left;
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-md);
-    position: absolute;
-    z-index: var(--z-tooltip);
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-normal);
-    border: 1px solid var(--rebel-gold);
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(10px);
-}
-
-.help-tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .parameter-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .example-buttons {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .table-actions,
-    .quick-actions,
-    .preset-buttons {
-        flex-direction: column;
-    }
-    
-    .table-action-btn,
-    .quick-action-btn,
-    .example-btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .gamma-components {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .simulator-results {
-        grid-template-columns: 1fr;
-    }
-    
-    .projection-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .example-loaded-actions {
-        flex-direction: column;
-    }
-    
-    .calculate-btn {
-        width: 100%;
-        justify-content: center;
-        padding: var(--spacing-md) var(--spacing-lg);
-        font-size: var(--font-size-base);
-    }
-    
-    .slider-info {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-    
-    .slider-info-value {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .value-input {
-        width: 100px;
-    }
-    
-    .faq-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .related-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .calculator-toast {
-        left: var(--spacing-md);
-        right: var(--spacing-md);
-        max-width: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .gamma-components {
-        grid-template-columns: 1fr;
-    }
-    
-    .formula-equation {
-        font-size: 1.4rem;
-    }
-    
-    .formula-component {
-        font-size: 1.1rem;
-    }
-    
-    .parameter-value {
-        font-size: 1.5rem;
-    }
-    
-    .gamma-result-value {
-        font-size: 2rem;
-    }
-    
-    .distribution-value {
-        font-size: 1.5rem;
-    }
-    
-    .reward-result-main-value {
-        font-size: 1.5rem;
-    }
-    
-    .chart-placeholder {
-        font-size: 1rem;
-        text-align: center;
-        padding: var(--spacing-md);
-    }
-    
-    .chart-placeholder i {
-        font-size: 3rem;
-    }
-}
-/* Enhanced WS Calculation Styles */
-
-/* User Stats Container */
-.user-stats-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-}
-
-.user-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.user-stat-item {
-    text-align: center;
-}
-
-.user-stat-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.user-stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-xs);
-}
-
-.user-stat-percentage {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted-dark);
-}
-
-/* Contribution Display */
-.contribution-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-}
-
-.contribution-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--rebel-gold);
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: var(--spacing-md);
-}
-
-.contribution-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.contribution-item {
-    text-align: center;
-}
-
-.contribution-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-sm);
-}
-
-.contribution-value {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--rebel-red);
-    margin-bottom: var(--spacing-sm);
-}
-
-.contribution-bar {
-    height: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(212, 167, 106, 0.3);
-}
-
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-    border-radius: 10px;
-    transition: width 1s ease;
-}
-
-/* Age Bonus Grid Styles */
-.age-bonus-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-md);
-}
-
-.age-bonus-item {
-    text-align: center;
-    padding: var(--spacing-sm);
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius-sm);
-}
-
-.age-bonus-age {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-}
-
-.age-bonus-multiplier {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--rebel-gold);
-}
-
-/* WS Info Grid */
-.ws-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-}
-
-.ws-info-item {
-    text-align: center;
-    padding: var(--spacing-sm);
-}
-
-.ws-info-label {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-xs);
-}
-
-.ws-info-value {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--rebel-gold);
-}
-
-.ws-info-hint {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted-dark);
-    margin-top: var(--spacing-xs);
-    font-style: italic;
-}
-
-/* Responsive Design for Enhanced Features */
-@media (max-width: 768px) {
-    .user-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .contribution-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .age-bonus-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .ws-info-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .user-stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .age-bonus-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .ws-info-grid {
-        grid-template-columns: 1fr;
-    }
-}
-/* Auto-update Indicator */
-.ws-auto-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: var(--font-size-xs);
-    color: #4CAF50;
-    margin-left: 8px;
-    padding: 2px 6px;
-    background: rgba(76, 175, 80, 0.2);
-    border-radius: 4px;
-    border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
-/* WS Hint Box */
-.input-hint.ws-hint {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    border-radius: var(--border-radius-sm);
-    margin-top: 10px;
-    border-left: 3px solid var(--rebel-gold);
-    font-size: var(--font-size-sm);
-}
-
-.input-hint.ws-hint i {
-    color: var(--rebel-gold);
-    margin-right: 5px;
-}
-
-.input-hint.ws-hint strong {
-    color: var(--rebel-gold);
-}
-
-/* Gamma Info Panel Enhancements */
-.gamma-info-panel {
-    background: rgba(0, 0, 0, 0.4);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    margin: var(--spacing-md) 0;
-    border-left: 4px solid;
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-normal);
-}
-
-.gamma-info-panel.low {
-    border-left-color: var(--rebel-red);
-    background: rgba(255, 51, 102, 0.1);
-}
-
-.gamma-info-panel.medium {
-    border-left-color: var(--rebel-yellow);
-    background: rgba(255, 204, 0, 0.1);
-}
-
-.gamma-info-panel.high {
-    border-left-color: var(--rebel-green);
-    background: rgba(0, 255, 0, 0.1);
-}
-
-/* Slider Info Value Enhancement */
-.slider-info-value {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.value-input {
-    width: 120px;
-    padding: var(--spacing-sm);
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--rebel-gold);
-    border-radius: var(--border-radius-sm);
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    font-size: var(--font-size-base);
-    text-align: right;
-    transition: var(--transition-normal);
-}
-
-.value-input:focus {
-    outline: none;
-    border-color: var(--rebel-red);
-    box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.3);
-}
-
-/* WS Multiplier Display */
-.ws-multiplier-display {
-    display: inline-block;
-    padding: 2px 6px;
-    background: rgba(212, 167, 106, 0.2);
-    border-radius: 4px;
-    font-size: var(--font-size-sm);
-    margin-left: 8px;
-    color: var(--rebel-gold);
-    font-weight: 600;
-}
-
-
-/* ========== ENHANCED CALCULATOR STYLES v3.0 ========== */
-
-/* Calculator Toast Notifications */
-.calculator-toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    animation: toastIn 0.3s ease;
-    backdrop-filter: blur(10px);
-    max-width: 350px;
-}
-
-.calculator-toast-success {
-    background: rgba(76, 175, 80, 0.9);
-    color: white;
-    border: 1px solid rgba(76, 175, 80, 0.5);
-}
-
-.calculator-toast-info {
-    background: rgba(33, 150, 243, 0.9);
-    color: white;
-    border: 1px solid rgba(33, 150, 243, 0.5);
-}
-
-.calculator-toast-warning {
-    background: rgba(255, 193, 7, 0.9);
-    color: black;
-    border: 1px solid rgba(255, 193, 7, 0.5);
-}
-
-.calculator-toast-error {
-    background: rgba(255, 51, 102, 0.9);
-    color: white;
-    border: 1px solid rgba(255, 51, 102, 0.5);
-}
-
-.toast-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-@keyframes toastIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes toastOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-}
-
-/* Contribution Container */
-.contribution-container {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
-}
-
-.contribution-header {
-    color: var(--rebel-gold);
-    font-weight: 600;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.contribution-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.contribution-item {
-    text-align: center;
-}
-
-.contribution-label {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 8px;
-}
-
-.contribution-value {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--rebel-gold);
-    margin-bottom: 8px;
-}
-
-.contribution-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-    border-radius: 4px;
-    transition: width 0.5s ease;
-}
-
-/* User Stats */
-.user-stats-container {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px 0;
-    display: none;
-}
-
-.user-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.user-stat-item {
-    text-align: center;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-}
-
-.user-stat-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.user-stat-value {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--rebel-gold);
-    margin-bottom: 4px;
-}
-
-.user-stat-percentage {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-/* Gamma info panels */
-.gamma-info-panel {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-    border-left: 4px solid;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.gamma-info-panel.low {
-    border-left-color: #ff3366;
-    background: rgba(255, 51, 102, 0.1);
-}
-
-.gamma-info-panel.medium {
-    border-left-color: #ffcc00;
-    background: rgba(255, 204, 0, 0.1);
-}
-
-.gamma-info-panel.high {
-    border-left-color: #00ff00;
-    background: rgba(0, 255, 0, 0.1);
-}
-
-/* Enhanced WS Info Styles */
-.ws-info-container {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(212, 167, 106, 0.2);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 15px 0;
-}
-
-.ws-info-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--rebel-gold);
-    font-weight: 600;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.ws-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.ws-info-item {
-    text-align: center;
-    padding: 10px;
-}
-
-.ws-info-label {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 5px;
-}
-
-.ws-info-value {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--rebel-gold);
-}
-
-.ws-info-hint {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 5px;
-    font-style: italic;
-}
-
-/* Other Participants Batches Styles */
-.other-participants-batches {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(0, 170, 255, 0.3);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-.other-participants-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--rebel-blue);
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.other-participants-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-
-.other-participants-btn {
-    background: rgba(0, 170, 255, 0.1);
-    color: var(--rebel-blue);
-    border: 1px solid var(--rebel-blue);
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.3s ease;
-}
-
-.other-participants-btn:hover {
-    background: rgba(0, 170, 255, 0.2);
-    transform: translateY(-2px);
-}
-
-.other-participants-btn.danger {
-    background: rgba(255, 51, 102, 0.1);
-    color: var(--rebel-red);
-    border-color: var(--rebel-red);
-}
-
-.other-participants-btn.danger:hover {
-    background: rgba(255, 51, 102, 0.2);
-}
-
-.other-participants-summary {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-.other-summary-item {
-    text-align: center;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-}
-
-.other-summary-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.other-summary-value {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--rebel-blue);
-}
-
-/* Participant type selector */
-.participant-type-selector {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.participant-type-option {
-    flex: 1;
-    text-align: center;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.participant-type-option:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.participant-type-option.active {
-    background: rgba(0, 170, 255, 0.1);
-    border-color: var(--rebel-blue);
-    color: var(--rebel-blue);
-}
-
-.participant-type-icon {
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-
-.participant-type-label {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.participant-type-description {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 4px;
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-    .contribution-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .user-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .ws-info-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .other-participants-summary {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .participant-type-selector {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    .user-stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .ws-info-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .other-participants-summary {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ========== CHART TEXT COLOR FIXES ========== */
-/* These styles force all Chart.js text to be white */
-.chartjs-render-monitor {
-    color: white !important;
-}
-
-.chartjs-legend {
-    color: white !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-    padding: 15px !important;
-    border-radius: 8px !important;
-    border: 1px solid var(--rebel-gold) !important;
-    backdrop-filter: blur(10px) !important;
-}
-
-.chartjs-legend-item {
-    color: white !important;
-     margin-bottom: 10px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    padding: 5px 10px !important;
-    border-radius: 4px !important;
-}
-.chartjs-legend-item:hover {
-    background: rgba(255, 204, 0, 0.1) !important;
-    transform: translateX(5px) !important;
-}
-
-.chartjs-legend-item-text {
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 600 !important;
-    color: white !important;
-    font-size: 13px !important;
-}
-
-.chartjs-legend-hidden .chartjs-legend-item-text {
-    text-decoration: line-through !important;
-    opacity: 0.5 !important;
-}
-
-/* Force legend text color */
-text {
-    fill: white !important;
-    color: white !important;
-}
-
-/* Specific selector for Chart.js 3.x and 4.x */
-canvas[aria-label*="chart"] {
-    color: white !important;
-}
-
-/* If using Chart.js 4+, try this */
-.chartjs-tooltip {
-    color: white !important;
-}
-
-/* ========== INTERACTIVE LEGEND STYLES ========== */
-.legend-strikethrough {
-    text-decoration: line-through !important;
-    opacity: 0.6 !important;
-}
-
-.chartjs-legend-item {
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    position: relative;
-}
-
-.chartjs-legend-item:hover {
-    transform: translateX(5px);
-    opacity: 0.8;
-}
-
-/* ========== ENHANCED FORMULA ANNOUNCEMENT ========== */
-.formula-announcement {
-    background: linear-gradient(135deg, 
-        rgba(255, 51, 102, 0.15), 
-        rgba(255, 204, 0, 0.15),
-        rgba(0, 0, 0, 0.3));
-    border: 2px solid transparent;
-    border-image: linear-gradient(45deg, var(--rebel-red), var(--rebel-gold)) 1;
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.formula-announcement::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-}
-
-.formula-announcement::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 30% 20%, rgba(255, 204, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 51, 102, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-.announcement-header {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid rgba(255, 204, 0, 0.3);
-}
-
-.announcement-icon {
-    background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-    flex-shrink: 0;
-}
-
-.announcement-title {
-    flex: 1;
-}
-
-.announcement-title h3 {
-    color: var(--rebel-red);
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin-bottom: var(--spacing-xs);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.announcement-subtitle {
-    color: var(--rebel-gold);
-    font-size: 0.9rem;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.formula-display-container {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-    border: 1px solid rgba(255, 204, 0, 0.2);
-    position: relative;
-}
-
-.formula-main-equation {
-    text-align: center;
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-lg);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.main-formula {
-    font-family: 'Courier New', 'Monaco', monospace;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--rebel-gold);
-    line-height: 1.4;
-    margin-bottom: var(--spacing-sm);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.main-formula span {
-    color: white;
-}
-
-.main-formula .gamma {
-    color: #00ff00;
-    font-weight: 800;
-}
-
-.formula-gamma-equation {
-    text-align: center;
-    margin-top: var(--spacing-md);
-}
-
-.gamma-formula {
-    font-family: 'Courier New', 'Monaco', monospace;
-    font-size: 1.5rem;
-    color: #00ff00;
-    font-weight: 700;
-    line-height: 1.4;
-}
-
-.formula-annotation {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-md);
-    flex-wrap: wrap;
-}
-
-.annotation-item {
-    text-align: center;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius-sm);
-    border: 1px solid rgba(255, 204, 0, 0.1);
-}
-
-.annotation-label {
-    font-size: 0.8rem;
-    color: var(--rebel-gold);
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.annotation-value {
-    font-size: 1rem;
-    font-weight: 700;
-    color: white;
-}
-
-.governance-approval {
-    background: rgba(76, 175, 80, 0.1);
-    border-left: 4px solid #4CAF50;
-    padding: var(--spacing-md);
-    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-    margin-top: var(--spacing-lg);
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-md);
-}
-
-.governance-icon {
-    color: #4CAF50;
-    font-size: 1.2rem;
-    margin-top: 2px;
-}
-
-.governance-text {
-    flex: 1;
-}
-
-.governance-title {
-    color: #4CAF50;
-    font-weight: 700;
-    margin-bottom: var(--spacing-xs);
-    font-size: 1rem;
-}
-
-.governance-description {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.formula-benefits {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-xl);
-}
-
-.benefit-item {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    border: 1px solid rgba(255, 204, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.benefit-item:hover {
-    transform: translateY(-3px);
-    border-color: var(--rebel-gold);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.benefit-icon {
-    color: var(--rebel-gold);
-    font-size: 1.5rem;
-    margin-bottom: var(--spacing-sm);
-}
-
-.benefit-title {
-    color: var(--rebel-gold);
-    font-weight: 700;
-    margin-bottom: var(--spacing-xs);
-    font-size: 1rem;
-}
-
-.benefit-description {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-/* Animation for formula display */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.formula-announcement {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-/* Pulsing gamma symbol */
-@keyframes pulseGamma {
-    0% { text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); }
-    50% { text-shadow: 0 0 15px rgba(0, 255, 0, 0.8); }
-    100% { text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); }
-}
-
-.main-formula .gamma {
-    animation: pulseGamma 2s infinite;
-}
-
-/* Hover effect for benefits */
-.benefit-item {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.benefit-item:hover .benefit-icon {
-    transform: scale(1.1);
-    transition: transform 0.3s ease;
-}
-
-/* Responsive adjustments for formula announcement */
-@media (max-width: 768px) {
-    .formula-announcement {
-        padding: var(--spacing-md);
-    }
-    
-    .main-formula {
-        font-size: 1.4rem;
-    }
-    
-    .gamma-formula {
-        font-size: 1.2rem;
-    }
-    
-    .formula-benefits {
-        grid-template-columns: 1fr;
-    }
-    
-    .announcement-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .formula-annotation {
-        gap: var(--spacing-sm);
-    }
-    
-    .annotation-item {
-        padding: var(--spacing-sm);
-        min-width: 100px;
-    }
-}
-/* ========== COMBINED FORMULA SECTION - SPECIFIC STYLES ========== */
-/* Add these at the END of rebl-calculator.css */
-
-/* Combined Formula Announcement Enhancements */
-#combined-formula-section .calculator-announcement {
-    background: linear-gradient(135deg, 
-        rgba(212, 167, 106, 0.15), 
-        rgba(255, 51, 102, 0.15),
-        rgba(0, 0, 0, 0.3));
-    border: 2px solid transparent;
-    border-image: linear-gradient(45deg, var(--rebel-red), var(--rebel-gold)) 1;
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#combined-formula-section .calculator-announcement::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
-}
-
-#combined-formula-section .announcement-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid rgba(255, 204, 0, 0.3);
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-#combined-formula-section .announcement-header h3 {
-    color: var(--rebel-red);
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-#combined-formula-section .governance-badge {
-    background: rgba(0, 170, 255, 0.2);
-    color: var(--rebel-blue);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid rgba(0, 170, 255, 0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-}
-
-/* Enhanced Formula Display */
-#combined-formula-section .formula-display {
-    margin: var(--spacing-lg) 0;
-    padding: var(--spacing-lg);
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: var(--border-radius);
-    border: 2px solid var(--rebel-gold);
-    box-shadow: 0 8px 32px rgba(212, 167, 106, 0.1);
-}
-
-#combined-formula-section .formula-equation {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-sm);
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-#combined-formula-section .formula-component {
-    font-size: 1.4rem;
-    color: var(--rebel-gold);
-    text-align: center;
-    padding: var(--spacing-sm) 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'Courier New', monospace;
-}
-
-/* Formula Details Toggle */
-#combined-formula-section .table-actions {
-    justify-content: center;
-    margin-top: var(--spacing-lg);
-}
-
-#combined-formula-section .formula-explanation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-}
-
-#combined-formula-section .explanation-item {
-    background: rgba(0, 0, 0, 0.3);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    border-left: 3px solid;
-    transition: all 0.3s ease;
-}
-
-#combined-formula-section .explanation-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#combined-formula-section .explanation-item:nth-child(1) {
-    border-left-color: var(--rebel-red);
-}
-
-#combined-formula-section .explanation-item:nth-child(2) {
-    border-left-color: var(--rebel-blue);
-}
-
-#combined-formula-section .explanation-item:nth-child(3) {
-    border-left-color: var(--rebel-gold);
-}
-
-#combined-formula-section .explanation-item:nth-child(4) {
-    border-left-color: #4CAF50;
-}
-
-#combined-formula-section .explanation-item:nth-child(5) {
-    border-left-color: var(--rebel-gold);
-}
-
-#combined-formula-section .explanation-item:nth-child(6) {
-    border-left-color: #FF9800;
-}
-
-#combined-formula-section .explanation-item.highlight {
-    background: rgba(212, 167, 106, 0.1);
-    border: 2px solid var(--rebel-gold);
-    grid-column: span 2;
-}
-
-#combined-formula-section .formula-sub {
-    font-size: 0.9rem;
-    margin-top: 8px;
-    color: rgba(255, 255, 255, 0.8);
-    font-family: 'Courier New', monospace;
-}
-
-/* Formula Benefits */
-#combined-formula-section .formula-benefits {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-lg);
-    background: rgba(0, 170, 255, 0.1);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(0, 170, 255, 0.2);
-}
-
-#combined-formula-section .formula-benefits h5 {
-    color: var(--rebel-blue);
-    margin-bottom: var(--spacing-md);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.1rem;
-}
-
-#combined-formula-section .formula-benefits > div {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-md);
-}
-
-#combined-formula-section .formula-benefits > div > div {
-    padding: var(--spacing-sm);
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius-sm);
-}
-
-#combined-formula-section .formula-benefits > div > div > div:first-child {
-    color: #4CAF50;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-#combined-formula-section .formula-benefits > div > div > div:last-child {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* Quick Actions in Formula Section */
-#combined-formula-section .quick-actions {
-    margin-top: var(--spacing-lg);
-    justify-content: center;
-}
-
-/* Responsive Design for Combined Formula */
-@media (max-width: 768px) {
-    #combined-formula-section .announcement-header {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .governance-badge {
-        align-self: center;
-        width: fit-content;
-    }
-    
-    #combined-formula-section .formula-equation {
-        font-size: 1.4rem;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 1.1rem;
-    }
-    
-    #combined-formula-section .formula-explanation-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    #combined-formula-section .explanation-item.highlight {
-        grid-column: span 1;
-    }
-    
-    #combined-formula-section .quick-actions {
-        flex-direction: column;
-    }
-    
-    #combined-formula-section .formula-benefits > div {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    #combined-formula-section .formula-equation {
-        font-size: 1.2rem;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 1rem;
-    }
-    
-    #combined-formula-section .formula-display {
-        padding: var(--spacing-md);
-    }
-}
-
-/* Animation for formula details */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#combined-formula-section #formulaDetails {
-    animation: fadeInUp 0.5s ease;
-}
-
-/* Table Action Button for Toggle */
-#formulaToggleBtn {
-    padding: 12px 25px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-#formulaToggleBtn:hover {
-    background: rgba(212, 167, 106, 0.2);
-    transform: translateY(-2px);
-}
-/* ========== ENHANCEMENTS & IMPROVEMENTS ========== */
-
-/* 1. ENHANCED FORMULA DISPLAY - More prominent */
-#combined-formula-section .formula-display {
-    margin: var(--spacing-xl) 0;
-    padding: var(--spacing-xl);
     background: linear-gradient(135deg, 
         rgba(0, 0, 0, 0.6), 
-        rgba(0, 0, 0, 0.4));
-    border-radius: var(--border-radius-lg);
+        rgba(20, 20, 20, 0.5));
     border: 2px solid var(--rebel-gold);
-    box-shadow: 
-        0 8px 32px rgba(212, 167, 106, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-#combined-formula-section .formula-display::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 51, 102, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 204, 0, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-#combined-formula-section .formula-equation {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--rebel-gold);
-    margin-bottom: var(--spacing-md);
-    text-align: center;
-    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-    text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.5),
-        0 0 20px rgba(212, 167, 106, 0.3);
-    letter-spacing: 0.5px;
-    position: relative;
-}
-
-/* Add subtle highlighting to the gamma symbol */
-#combined-formula-section .formula-equation .gamma {
-    color: #00ff00;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    animation: subtlePulse 3s infinite;
-}
-
-@keyframes subtlePulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.9; }
-}
-
-#combined-formula-section .formula-component {
-    font-size: 1.5rem;
-    color: var(--rebel-blue); /* Changed from red to blue for better contrast */
-    text-align: center;
-    padding: var(--spacing-md) 0;
-    border-top: 2px solid rgba(212, 167, 106, 0.2);
-    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-    font-weight: 700;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(0, 170, 255, 0.1), 
-        transparent);
-    margin: 0 calc(var(--spacing-lg) * -1);
-    padding-left: var(--spacing-lg);
-    padding-right: var(--spacing-lg);
-}
-
-/* 2. ENHANCED EXPLANATION ITEMS - More interactive */
-#combined-formula-section .explanation-item {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.4), 
-        rgba(0, 0, 0, 0.3));
-    padding: var(--spacing-lg);
     border-radius: var(--border-radius-md);
-    border: 1px solid;
-    border-left: 4px solid;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-#combined-formula-section .explanation-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 255, 255, 0.1), 
-        transparent);
-}
-
-#combined-formula-section .explanation-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 
-        0 8px 24px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(212, 167, 106, 0.2);
-    border-color: var(--rebel-gold) !important;
-}
-
-/* 3. IMPROVED TABLE STYLES - Better readability */
-#token-batches-table {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.5), 
-        rgba(26, 26, 26, 0.4));
-}
-
-#token-batches-table th {
-    background: linear-gradient(135deg, 
-        rgba(212, 167, 106, 0.25), 
-        rgba(212, 167, 106, 0.15));
-    color: var(--rebel-gold);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: var(--font-size-xs);
-    padding: var(--spacing-lg) var(--spacing-md);
-    border-bottom: 3px solid var(--rebel-gold);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-#token-batches-table tr {
-    transition: all 0.2s ease;
-}
-
-#token-batches-table tr:hover {
-    background: linear-gradient(90deg, 
-        rgba(212, 167, 106, 0.1), 
-        rgba(212, 167, 106, 0.05));
-}
-
-#token-batches-table input {
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(212, 167, 106, 0.2);
-    border-radius: var(--border-radius-sm);
-    padding: var(--spacing-md);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
     font-size: var(--font-size-base);
+    text-align: right;
+    transition: var(--transition-normal);
     font-weight: 600;
-    transition: all 0.2s ease;
 }
 
-#token-batches-table input:focus {
-    background: rgba(0, 0, 0, 0.6);
-    border-color: var(--rebel-gold);
-    box-shadow: 
-        0 0 0 3px rgba(212, 167, 106, 0.2),
-        inset 0 1px 3px rgba(0, 0, 0, 0.3);
+#rebl-calculator .value-input:focus {
     outline: none;
+    border-color: var(--rebel-red);
+    box-shadow: 
+        0 0 0 3px rgba(255, 51, 102, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.8), 
+        rgba(30, 30, 30, 0.6));
 }
 
-/* 4. ENHANCED SLIDERS - More tactile */
-.slider {
+#rebl-calculator .slider-value {
+    font-weight: 900;
+    color: var(--rebel-red);
+    font-size: 1.3rem;
+    min-width: 80px;
+    text-align: right;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#rebl-calculator .slider {
+    width: 100%;
     height: 10px;
-    background: linear-gradient(90deg, 
-        var(--rebel-red), 
-        var(--rebel-gold));
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
     border-radius: 5px;
+    outline: none;
+    margin: var(--spacing-md) 0;
+    cursor: pointer;
     border: none;
-    margin: var(--spacing-lg) 0;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.slider::-webkit-slider-thumb {
+#rebl-calculator .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
     width: 28px;
     height: 28px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--rebel-gold), #ffcc00);
+    cursor: pointer;
     border: 3px solid white;
     box-shadow: 
         0 0 10px rgba(0, 0, 0, 0.5),
         0 4px 8px rgba(212, 167, 106, 0.4);
-    transition: all 0.2s ease;
-    cursor: grab;
+    transition: var(--transition-normal);
 }
 
-.slider::-webkit-slider-thumb:hover {
+#rebl-calculator .slider::-webkit-slider-thumb:hover {
     transform: scale(1.15);
     box-shadow: 
         0 0 15px rgba(0, 0, 0, 0.6),
         0 6px 12px rgba(212, 167, 106, 0.5);
 }
 
-.slider::-webkit-slider-thumb:active {
+#rebl-calculator .slider::-webkit-slider-thumb:active {
     transform: scale(1.1);
     cursor: grabbing;
 }
 
-/* 5. ENHANCED CALCULATE BUTTON - More engaging */
-.calculate-btn {
+/* Gamma Visualization - SCOPED */
+#rebl-calculator .gamma-visualization {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(212, 167, 106, 0.3);
+}
+
+#rebl-calculator .gamma-visualization label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+#rebl-calculator .gamma-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--rebel-red);
+    margin-left: var(--spacing-xs);
+}
+
+#rebl-calculator .gamma-scale {
+    position: relative;
+    height: 50px;
+    background: linear-gradient(90deg, 
+        var(--rebel-red), 
+        var(--rebel-gold), 
+        #00ff00);
+    border-radius: 25px;
+    margin: var(--spacing-lg) 0;
+    overflow: hidden;
+    border: 3px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        inset 0 2px 8px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#rebl-calculator .gamma-bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#rebl-calculator .gamma-marker {
+    position: absolute;
+    top: -12px;
+    width: 6px;
+    height: 74px;
+    background: white;
+    border-radius: 3px;
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.9),
+        0 0 30px rgba(255, 255, 255, 0.6);
+    transform: translateX(-50%);
+    z-index: 2;
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#rebl-calculator .gamma-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+/* Gamma Info Panel */
+#rebl-calculator .gamma-info-panel {
+    background: rgba(0, 0, 0, 0.4);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin: var(--spacing-md) 0;
+    border-left: 4px solid;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+#rebl-calculator .gamma-info-panel.low {
+    border-left-color: var(--rebel-red);
+    background: rgba(255, 51, 102, 0.1);
+}
+
+#rebl-calculator .gamma-info-panel.medium {
+    border-left-color: #ffcc00;
+    background: rgba(255, 204, 0, 0.1);
+}
+
+#rebl-calculator .gamma-info-panel.high {
+    border-left-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+#rebl-calculator .gamma-info-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Gamma Components */
+#rebl-calculator .gamma-components {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+#rebl-calculator .gamma-component {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+#rebl-calculator .component-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+    font-family: 'Courier New', monospace;
+}
+
+#rebl-calculator .component-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--rebel-gold);
+}
+
+/* Preset Buttons */
+#rebl-calculator .preset-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#rebl-calculator .optimal-preset {
+    background: rgba(76, 175, 80, 0.1) !important;
+    color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+}
+
+#rebl-calculator .optimal-preset:hover {
+    background: rgba(76, 175, 80, 0.2) !important;
+}
+
+#rebl-calculator .full-gamma-preset {
+    background: rgba(0, 255, 0, 0.1) !important;
+    color: #00ff00 !important;
+    border-color: #00ff00 !important;
+}
+
+#rebl-calculator .full-gamma-preset:hover {
+    background: rgba(0, 255, 0, 0.2) !important;
+}
+
+/* Calculate Button */
+#rebl-calculator .calculate-action {
+    text-align: center;
+    margin: var(--spacing-xl) 0;
+}
+
+#rebl-calculator .calculate-btn {
     background: linear-gradient(135deg, 
         var(--rebel-red), 
         #ff3366,
@@ -3213,7 +810,7 @@ canvas[aria-label*="chart"] {
         0 4px 16px rgba(212, 167, 106, 0.2);
 }
 
-.calculate-btn::before {
+#rebl-calculator .calculate-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -3227,7 +824,7 @@ canvas[aria-label*="chart"] {
     transition: left 0.6s ease;
 }
 
-.calculate-btn:hover {
+#rebl-calculator .calculate-btn:hover {
     transform: translateY(-6px) scale(1.02);
     box-shadow: 
         0 12px 40px rgba(255, 51, 102, 0.4),
@@ -3235,17 +832,33 @@ canvas[aria-label*="chart"] {
     letter-spacing: 3.5px;
 }
 
-.calculate-btn:hover::before {
+#rebl-calculator .calculate-btn:hover::before {
     left: 100%;
 }
 
-.calculate-btn:active {
+#rebl-calculator .calculate-btn:active {
     transform: translateY(-2px) scale(0.98);
-    transition: transform 0.1s ease;
 }
 
-/* 6. ENHANCED REWARD RESULT - More celebratory */
-.reward-result {
+#rebl-calculator .calculate-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+#rebl-calculator .calculate-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    right: var(--spacing-lg);
+}
+
+/* Results Display */
+#rebl-calculator .reward-result {
     background: linear-gradient(135deg, 
         rgba(0, 0, 0, 0.6), 
         rgba(26, 26, 26, 0.5));
@@ -3258,7 +871,7 @@ canvas[aria-label*="chart"] {
     overflow: hidden;
 }
 
-.reward-result::before {
+#rebl-calculator .reward-result::before {
     content: '';
     position: absolute;
     top: 0;
@@ -3270,7 +883,65 @@ canvas[aria-label*="chart"] {
         var(--rebel-gold));
 }
 
-.reward-result-main-value {
+#rebl-calculator .reward-placeholder {
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+#rebl-calculator .reward-placeholder i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+    color: var(--rebel-gold);
+}
+
+#rebl-calculator .reward-results-content {
+    animation: slideIn 0.3s ease;
+}
+
+#rebl-calculator .reward-result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#rebl-calculator .reward-result-label {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+#rebl-calculator .reward-result-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+#rebl-calculator .reward-result-value.gold {
+    color: var(--rebel-gold);
+}
+
+#rebl-calculator .reward-result-value.red {
+    color: var(--rebel-red);
+}
+
+#rebl-calculator .reward-result-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid rgba(212, 167, 106, 0.5);
+}
+
+#rebl-calculator .reward-result-main-label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+#rebl-calculator .reward-result-main-value {
     font-size: 2.5rem;
     font-weight: 900;
     color: var(--rebel-red);
@@ -3280,13 +951,107 @@ canvas[aria-label*="chart"] {
     animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.9; }
+#rebl-calculator .reward-result-note {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted-dark);
+    text-align: right;
+    margin-top: var(--spacing-xs);
 }
 
-/* 7. ENHANCED CHART CONTAINER - More immersive */
-.chart-container {
+#rebl-calculator .reward-projections {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+#rebl-calculator .projection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+#rebl-calculator .projection-item {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+}
+
+#rebl-calculator .projection-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+#rebl-calculator .projection-value {
+    color: var(--rebel-gold);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+#rebl-calculator .projection-disclaimer {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted-dark);
+    text-align: center;
+    margin-top: var(--spacing-xs);
+}
+
+/* Example Loaded Message */
+#rebl-calculator .example-loaded-message {
+    text-align: center;
+}
+
+#rebl-calculator .example-loaded-header {
+    color: var(--rebel-gold);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+#rebl-calculator .example-loaded-text {
+    color: var(--rebel-gold);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+#rebl-calculator .example-loaded-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+#rebl-calculator .example-action-btn {
+    background: var(--rebel-red);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    transition: var(--transition-normal);
+}
+
+#rebl-calculator .example-action-btn.gold {
+    background: var(--rebel-gold);
+    color: var(--color-text-dark);
+}
+
+#rebl-calculator .example-action-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* Chart Container - SCOPED */
+#rebl-calculator .chart-container {
     position: relative;
     height: 400px;
     width: 100%;
@@ -3302,923 +1067,701 @@ canvas[aria-label*="chart"] {
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.chart-placeholder {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.9), 
-        rgba(30, 30, 30, 0.8));
-    border: 2px dashed rgba(212, 167, 106, 0.3);
-}
-
-/* 8. ENHANCED GAMMA VISUALIZATION - More informative */
-.gamma-scale {
-    height: 50px;
-    background: linear-gradient(90deg, 
-        var(--rebel-red), 
-        var(--rebel-gold), 
-        #00ff00);
-    border-radius: 25px;
-    margin: var(--spacing-lg) 0;
-    overflow: hidden;
-    border: 3px solid rgba(0, 0, 0, 0.3);
-    box-shadow: 
-        inset 0 2px 8px rgba(0, 0, 0, 0.4),
-        0 4px 12px rgba(0, 0, 0, 0.2);
+#rebl-calculator .chart-wrapper {
     position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.gamma-marker {
-    top: -12px;
-    width: 6px;
-    height: 74px;
-    background: white;
-    border-radius: 3px;
-    box-shadow: 
-        0 0 15px rgba(255, 255, 255, 0.9),
-        0 0 30px rgba(255, 255, 255, 0.6);
-    z-index: 2;
-    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 9. IMPROVED TOAST NOTIFICATIONS - More visible */
-.calculator-toast {
-    padding: var(--spacing-md) var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        0 4px 16px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: var(--font-size-base);
-    font-weight: 700;
-}
-
-/* 10. PERFORMANCE OPTIMIZATIONS */
-/* Hardware acceleration for smooth animations */
-.calculator-section,
-.calculate-btn,
-.explanation-item,
-#token-batches-table tr {
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Optimize transitions for mobile */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* 11. DARK THEME ENHANCEMENTS */
-.calculator-section {
-    background: linear-gradient(135deg, 
-        rgba(20, 20, 20, 0.9), 
-        rgba(30, 30, 30, 0.8));
-    border: 1px solid rgba(212, 167, 106, 0.3);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.calculator-section:hover {
-    border-color: var(--rebel-gold);
-    box-shadow: 
-        0 12px 48px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 0 0 1px rgba(212, 167, 106, 0.2);
-}
-
-/* 12. IMPROVED TYPOGRAPHY HIERARCHY */
-.parameter-value {
-    font-size: 2rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--rebel-gold), #ffcc00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-}
-
-.slider-value {
-    font-size: 1.3rem;
-    font-weight: 900;
-    color: var(--rebel-red);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* 13. ENHANCED INPUT FIELDS */
-.value-input {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.6), 
-        rgba(20, 20, 20, 0.5));
-    border: 2px solid var(--rebel-gold);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-md);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.value-input:focus {
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.8), 
-        rgba(30, 30, 30, 0.6));
-    border-color: var(--rebel-red);
-    box-shadow: 
-        0 0 0 3px rgba(255, 51, 102, 0.2),
-        inset 0 2px 4px rgba(0, 0, 0, 0.4);
-    outline: none;
-}
-
-/* 14. ENHANCED MOBILE EXPERIENCE */
-@media (max-width: 768px) {
-    .calculate-btn {
-        padding: var(--spacing-lg) var(--spacing-xl);
-        font-size: 1.1rem;
-        letter-spacing: 2px;
-        min-height: 60px;
-    }
-    
-    .reward-result-main-value {
-        font-size: 2rem;
-    }
-    
-    .chart-container {
-        height: 300px;
-        padding: var(--spacing-md);
-    }
-    
-    #combined-formula-section .formula-equation {
-        font-size: 1.5rem;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 1.2rem;
-    }
-}
-
-/* 15. ACCESSIBILITY IMPROVEMENTS */
-.calculate-btn:focus-visible,
-.table-action-btn:focus-visible,
-.quick-action-btn:focus-visible {
-    outline: 3px solid var(--rebel-blue);
-    outline-offset: 2px;
-}
-
-#token-batches-table input:focus-visible {
-    outline: 3px solid var(--rebel-gold);
-    outline-offset: 1px;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .calculator-section {
-        border: 2px solid var(--rebel-gold);
-    }
-    
-    #token-batches-table th {
-        background: var(--rebel-gold);
-        color: black;
-    }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion) {
-    .calculate-btn,
-    .explanation-item,
-    .calculator-section {
-        transition: none !important;
-        animation: none !important;
-    }
-    
-    .calculate-btn:hover {
-        transform: none;
-    }
-}
-/* ========== MOBILE RESPONSIVE FIXES FOR COMBINED FORMULA ========== */
-
-/* Mobile-specific fixes for combined formula section */
-@media (max-width: 768px) {
-    /* Fix formula announcement header */
-    #combined-formula-section .announcement-header {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--spacing-sm);
-        padding-bottom: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .announcement-header h3 {
-        font-size: 1.1rem;
-        line-height: 1.3;
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    #combined-formula-section .governance-badge {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        align-self: center;
-    }
-    
-    /* Fix formula display */
-    #combined-formula-section .formula-display {
-        padding: var(--spacing-md);
-        margin: var(--spacing-md) 0;
-    }
-    
-    #combined-formula-section .formula-equation {
-        font-size: 1.3rem;
-        line-height: 1.4;
-        word-break: break-word;
-        overflow-wrap: break-word;
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 1rem;
-        line-height: 1.3;
-        padding: var(--spacing-sm) var(--spacing-md);
-        margin: 0 calc(var(--spacing-md) * -1);
-        border-top: 1px solid rgba(212, 167, 106, 0.2);
-    }
-    
-    /* Stack formula details grid */
-    #combined-formula-section .formula-explanation-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .explanation-item {
-        padding: var(--spacing-sm);
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    #combined-formula-section .explanation-item.highlight {
-        grid-column: span 1;
-    }
-    
-    /* Stack benefits grid */
-    #combined-formula-section .formula-benefits > div {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    
-    /* Fix toggle button */
-    #formulaToggleBtn {
-        width: 100%;
-        padding: var(--spacing-sm);
-        font-size: 0.9rem;
-        justify-content: center;
-    }
-    
-    /* Stack quick actions */
-    #combined-formula-section .quick-actions {
-        flex-direction: column;
-        gap: var(--spacing-xs);
-    }
-    
-    #combined-formula-section .quick-action-btn {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
-        padding: var(--spacing-sm);
-    }
-}
-
-/* Extra small mobile devices */
-@media (max-width: 480px) {
-    #combined-formula-section .calculator-announcement {
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
-    }
-    
-    #combined-formula-section .announcement-header h3 {
-        font-size: 1rem;
-        letter-spacing: 0.5px;
-    }
-    
-    #combined-formula-section .formula-equation {
-        font-size: 1.1rem;
-        font-weight: 700;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-    
-    /* Make formula text more readable on small screens */
-    #combined-formula-section .formula-display {
-        padding: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-sub {
-        font-size: 0.85rem;
-    }
-    
-    /* Adjust benefit items */
-    #combined-formula-section .formula-benefits {
-        padding: var(--spacing-md);
-    }
-    
-    #combined-formula-section .formula-benefits h5 {
-        font-size: 1rem;
-    }
-    
-    #combined-formula-section .formula-benefits > div > div > div:last-child {
-        font-size: 0.8rem;
-    }
-}
-
-/* Very small screens (under 360px) */
-@media (max-width: 360px) {
-    #combined-formula-section .formula-equation {
-        font-size: 1rem;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 0.85rem;
-    }
-    
-    #combined-formula-section .announcement-header h3 {
-        font-size: 0.9rem;
-    }
-    
-    #combined-formula-section .governance-badge {
-        font-size: 0.7rem;
-        padding: 3px 8px;
-    }
-}
-
-/* Landscape mode fixes */
-@media (max-height: 600px) and (orientation: landscape) {
-    #combined-formula-section .formula-display {
-        padding: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-equation {
-        font-size: 1.1rem;
-        margin-bottom: 4px;
-    }
-    
-    #combined-formula-section .formula-component {
-        font-size: 0.9rem;
-        padding: 6px 0;
-    }
-    
-    /* Reduce spacing for tall formula items */
-    #combined-formula-section .explanation-item {
-        padding: 8px;
-        margin-bottom: 4px;
-    }
-}
-/* Show/hide line break on mobile */
-.mobile-break {
+#rebl-calculator #rewardChart {
+    width: 100% !important;
+    height: 100% !important;
     display: none;
 }
 
+#rebl-calculator .chart-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: var(--rebel-gold);
+    text-align: center;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.9), 
+        rgba(30, 30, 30, 0.8));
+    border-radius: var(--border-radius);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--spacing-xl);
+    border: 2px dashed rgba(255, 204, 0, 0.3);
+}
+
+#rebl-calculator .chart-placeholder i {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.3;
+    color: var(--rebel-gold);
+}
+
+/* Chart stats overlay */
+#rebl-calculator .chart-stats-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--rebel-gold);
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-size: 0.85rem;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+#rebl-calculator .chart-stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+#rebl-calculator .chart-stat-label {
+    color: var(--rebel-gold);
+    font-weight: 600;
+}
+
+/* Chart actions */
+#rebl-calculator .chart-actions {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+#rebl-calculator .chart-action-btn {
+    background: rgba(255, 204, 0, 0.2);
+    color: var(--rebel-gold);
+    border: 1px solid var(--rebel-gold);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#rebl-calculator .chart-action-btn:hover {
+    background: rgba(255, 204, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+#rebl-calculator .chart-action-btn.active {
+    background: rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* Simulator - SCOPED */
+#rebl-calculator .simulator-info {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+#rebl-calculator .simulator-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+#rebl-calculator .gamma-result,
+#rebl-calculator .effective-distribution {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+#rebl-calculator .gamma-label,
+#rebl-calculator .distribution-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#rebl-calculator .gamma-result-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--rebel-red);
+}
+
+#rebl-calculator .distribution-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--rebel-gold);
+}
+
+/* Gamma Breakdown */
+#rebl-calculator .gamma-breakdown {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    font-family: 'Courier New', monospace;
+}
+
+#rebl-calculator .gamma-breakdown h4 {
+    color: var(--rebel-gold);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    font-size: var(--font-size-md);
+}
+
+#rebl-calculator .breakdown-text {
+    color: white;
+    font-size: var(--font-size-base);
+    text-align: center;
+    line-height: var(--line-height-normal);
+}
+
+/* User Stats Display */
+#rebl-calculator .user-stats-container {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+#rebl-calculator .user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+#rebl-calculator .user-stat-item {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius-sm);
+}
+
+#rebl-calculator .user-stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#rebl-calculator .user-stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--rebel-gold);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Contribution Display */
+#rebl-calculator .contribution-container {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+#rebl-calculator .contribution-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--rebel-gold);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+}
+
+#rebl-calculator .contribution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+#rebl-calculator .contribution-item {
+    text-align: center;
+}
+
+#rebl-calculator .contribution-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+
+#rebl-calculator .contribution-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--rebel-red);
+    margin-bottom: var(--spacing-sm);
+}
+
+#rebl-calculator .contribution-bar {
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 167, 106, 0.3);
+}
+
+#rebl-calculator .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rebel-red), var(--rebel-gold));
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+
+/* Age Bonus Grid */
+#rebl-calculator .age-bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+#rebl-calculator .age-bonus-item {
+    text-align: center;
+    padding: var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius-sm);
+}
+
+#rebl-calculator .age-bonus-age {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+#rebl-calculator .age-bonus-multiplier {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--rebel-gold);
+}
+
+/* WS Info Grid */
+#rebl-calculator .ws-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+#rebl-calculator .ws-info-item {
+    text-align: center;
+    padding: var(--spacing-sm);
+}
+
+#rebl-calculator .ws-info-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+#rebl-calculator .ws-info-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--rebel-gold);
+}
+
+/* Other Participants - SCOPED */
+#rebl-calculator .other-participants-batches {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 170, 255, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#rebl-calculator .other-participants-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--rebel-blue);
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+#rebl-calculator .other-participants-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+#rebl-calculator .other-participants-btn {
+    background: rgba(0, 170, 255, 0.1);
+    color: var(--rebel-blue);
+    border: 1px solid var(--rebel-blue);
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+#rebl-calculator .other-participants-btn:hover {
+    background: rgba(0, 170, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+#rebl-calculator .other-participants-btn.danger {
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--rebel-red);
+    border-color: var(--rebel-red);
+}
+
+#rebl-calculator .other-participants-summary {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+#rebl-calculator .other-summary-item {
+    text-align: center;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+#rebl-calculator .other-summary-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#rebl-calculator .other-summary-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--rebel-blue);
+}
+
+/* Participant type selector */
+#rebl-calculator .participant-type-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#rebl-calculator .participant-type-option {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+#rebl-calculator .participant-type-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#rebl-calculator .participant-type-option.active {
+    background: rgba(0, 170, 255, 0.1);
+    border-color: var(--rebel-blue);
+    color: var(--rebel-blue);
+}
+
+/* WS Hint Box */
+#rebl-calculator .input-hint.ws-hint {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    margin-top: 10px;
+    border-left: 3px solid var(--rebel-gold);
+    font-size: var(--font-size-sm);
+}
+
+#rebl-calculator .ws-auto-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--font-size-xs);
+    color: #4CAF50;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* FAQ Section - SCOPED to calculator only */
+#calculator-faq {
+    /* This section is inside the calculator page */
+}
+
+#calculator-faq .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+#calculator-faq .faq-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(212, 167, 106, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    transition: var(--transition-normal);
+}
+
+#calculator-faq .faq-item:hover {
+    border-color: var(--rebel-gold);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+#calculator-faq .faq-item h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--rebel-gold);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-base);
+}
+
+#calculator-faq .claim-link {
+    color: var(--rebel-blue) !important;
+    font-weight: 600;
+}
+
+/* Related Pages - FIXED: SCOPED to calculator only */
+#related-pages {
+    /* This section is inside the calculator page */
+}
+
+#related-pages .related-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: var(--spacing-xl);
+}
+
+#related-pages .related-card {
+    background: var(--color-bg-card);
+    border: 1px solid;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: var(--transition);
+    text-align: center;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+#related-pages .related-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+#related-pages .related-card:hover::before {
+    opacity: 1;
+}
+
+#related-pages .related-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+}
+
+#related-pages .related-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+    transition: var(--transition);
+}
+
+#related-pages .related-card h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+}
+
+#related-pages .related-card p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+#related-pages .related-arrow {
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    transition: var(--transition);
+}
+
+/* Color Themes for Related Cards - SCOPED */
+#related-pages .trade-card {
+    border-color: #FF6B35 !important;
+    background: linear-gradient(135deg, 
+        rgba(255, 107, 53, 0.1), 
+        rgba(255, 107, 53, 0.05)) !important;
+}
+
+#related-pages .trade-card .related-icon,
+#related-pages .trade-card h3,
+#related-pages .trade-card .related-arrow {
+    color: #FF6B35 !important;
+}
+
+#related-pages .trade-card::before {
+    background: #FF6B35 !important;
+}
+
+#related-pages .rewards-card {
+    border-color: #9C27B0 !important;
+    background: linear-gradient(135deg, 
+        rgba(156, 39, 176, 0.1), 
+        rgba(156, 39, 176, 0.05)) !important;
+}
+
+#related-pages .rewards-card .related-icon,
+#related-pages .rewards-card h3,
+#related-pages .rewards-card .related-arrow {
+    color: #9C27B0 !important;
+}
+
+#related-pages .rewards-card::before {
+    background: #9C27B0 !important;
+}
+
+#related-pages .tokenomics-card {
+    border-color: #00BCD4 !important;
+    background: linear-gradient(135deg, 
+        rgba(0, 188, 212, 0.1), 
+        rgba(0, 188, 212, 0.05)) !important;
+}
+
+#related-pages .tokenomics-card .related-icon,
+#related-pages .tokenomics-card h3,
+#related-pages .tokenomics-card .related-arrow {
+    color: #00BCD4 !important;
+}
+
+#related-pages .tokenomics-card::before {
+    background: #00BCD4 !important;
+}
+
+/* Toast Notifications - SCOPED */
+.calculator-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-toast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    animation: toastIn 0.3s ease;
+    backdrop-filter: blur(20px) saturate(180%);
+    max-width: 350px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ChartJS Text Colors - SCOPED */
+#rebl-calculator .chartjs-render-monitor {
+    color: white !important;
+}
+
+#rebl-calculator .chartjs-legend {
+    color: white !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--rebel-gold) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* ========== ENHANCED FORMULA ANNOUNCEMENT - SCOPED ========== */
+#combined-formula-section .formula-announcement {
+    background: linear-gradient(135deg, 
+        rgba(255, 51, 102, 0.15), 
+        rgba(255, 204, 0, 0.15),
+        rgba(0, 0, 0, 0.3));
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, var(--rebel-red), var(--rebel-gold)) 1;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ========== MOBILE RESPONSIVE FIXES - SCOPED ========== */
 @media (max-width: 768px) {
-    .mobile-break {
-        display: block;
+    /* Hero section - preserve background */
+    .page-hero--calculator {
+        padding: 4rem 0 3rem;
     }
     
-    /* Make the header stack better */
-    .announcement-header {
+    .page-hero--calculator .hero-buttons {
         flex-direction: column;
-        align-items: stretch !important;
-        text-align: center;
+        width: 100%;
     }
     
-    .announcement-header > div {
-        min-width: auto !important;
-        justify-content: center;
-        margin-bottom: 10px;
+    .page-hero--calculator .hero-buttons .cta-button {
+        width: 100%;
+        min-width: auto;
     }
     
-    .announcement-header h3 {
-        text-align: center !important;
-    }
-    
-    .governance-badge {
-        align-self: center !important;
-        margin-top: 5px;
-    }
-}
-/* ========== MOBILE RESPONSIVE FIXES FOR FORMULA EXPLANATION ITEMS ========== */
-
-/* Mobile fixes for formula explanation grid */
-@media (max-width: 768px) {
-    /* Fix the explanation grid layout */
-    #combined-formula-section .formula-explanation-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-        margin-bottom: var(--spacing-md);
-    }
-    
-    /* Fix individual explanation items */
-    #combined-formula-section .explanation-item {
-        padding: var(--spacing-md);
-        margin-bottom: var(--spacing-xs);
-        min-height: auto;
-    }
-    
-    /* Highlight item should span full width */
-    #combined-formula-section .explanation-item.highlight {
-        grid-column: span 1;
-        padding: var(--spacing-md);
-        border-width: 1px;
-    }
-    
-    /* Adjust text sizes */
-    #combined-formula-section .explanation-item strong {
-        font-size: 0.9rem;
-        display: block;
-        margin-bottom: 4px;
-    }
-    
-    #combined-formula-section .formula-sub {
-        font-size: 0.85rem;
-        margin-top: 6px;
-        line-height: 1.3;
-        display: block;
-    }
-    
-    #combined-formula-section .explanation-item .input-hint {
-        font-size: 0.75rem;
-        margin-top: 6px;
-        line-height: 1.3;
-    }
-    
-    /* Fix formula benefits section */
-    #combined-formula-section .formula-benefits {
-        padding: var(--spacing-md);
-        margin-top: var(--spacing-lg);
-    }
-    
-    #combined-formula-section .formula-benefits h5 {
-        font-size: 1rem;
-        margin-bottom: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-benefits > div {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-benefits > div > div {
-        padding: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-benefits > div > div > div:first-child {
-        font-size: 0.85rem;
-        margin-bottom: 4px;
-    }
-    
-    #combined-formula-section .formula-benefits > div > div > div:last-child {
-        font-size: 0.8rem;
-    }
-}
-/* ===== Color Themes for Related Cards ===== */
-
-/* Trade Card - Orange */
-.trade-card {
-  border-color: #FF6B35 !important; /* UPDATED */
-  background: linear-gradient(135deg, 
-    rgba(255, 107, 53, 0.1), 
-    rgba(255, 107, 53, 0.05)) !important; /* UPDATED */
-}
-
-.trade-card .related-icon,
-.trade-card h3,
-.trade-card .related-arrow {
-  color: #FF6B35 !important; /* UPDATED */
-}
-
-.trade-card::before {
-  background: #FF6B35 !important; /* UPDATED */
-}
-
-.trade-card:hover {
-  background: linear-gradient(135deg, 
-    rgba(255, 107, 53, 0.15), 
-    rgba(255, 107, 53, 0.08)) !important; /* UPDATED */
-  border-color: #FF4500 !important; /* UPDATED */
-}
-
-.trade-card:hover .related-icon,
-.trade-card:hover h3,
-.trade-card:hover .related-arrow {
-  color: #FF4500 !important; /* UPDATED */
-}
-
-/* Rewards Card - Purple */
-.rewards-card {
-  border-color: #9C27B0 !important; /* UPDATED */
-  background: linear-gradient(135deg, 
-    rgba(156, 39, 176, 0.1), 
-    rgba(156, 39, 176, 0.05)) !important; /* UPDATED */
-}
-
-.rewards-card .related-icon,
-.rewards-card h3,
-.rewards-card .related-arrow {
-  color: #9C27B0 !important; /* UPDATED */
-}
-
-.rewards-card::before {
-  background: #9C27B0 !important; /* UPDATED */
-}
-
-.rewards-card:hover {
-  background: linear-gradient(135deg, 
-    rgba(156, 39, 176, 0.15), 
-    rgba(156, 39, 176, 0.08)) !important; /* UPDATED */
-  border-color: #8A2BE2 !important; /* UPDATED */
-}
-
-.rewards-card:hover .related-icon,
-.rewards-card:hover h3,
-.rewards-card:hover .related-arrow {
-  color: #8A2BE2 !important; /* UPDATED */
-}
-
-/* Tokenomics Card - Cyan */
-.tokenomics-card {
-  border-color: #00BCD4 !important; /* UPDATED */
-  background: linear-gradient(135deg, 
-    rgba(0, 188, 212, 0.1), 
-    rgba(0, 188, 212, 0.05)) !important; /* UPDATED */
-}
-
-.tokenomics-card .related-icon,
-.tokenomics-card h3,
-.tokenomics-card .related-arrow {
-  color: #00BCD4 !important; /* UPDATED */
-}
-
-.tokenomics-card::before {
-  background: #00BCD4 !important; /* UPDATED */
-}
-
-.tokenomics-card:hover {
-  background: linear-gradient(135deg, 
-    rgba(0, 188, 212, 0.15), 
-    rgba(0, 188, 212, 0.08)) !important; /* UPDATED */
-  border-color: #00CED1 !important; /* UPDATED */
-}
-
-.tokenomics-card:hover .related-icon,
-.tokenomics-card:hover h3,
-.tokenomics-card:hover .related-arrow {
-  color: #00CED1 !important; /* UPDATED */
-}
-/* Extra small mobile devices */
-@media (max-width: 480px) {
-    /* Make explanation items more compact */
-    #combined-formula-section .explanation-item {
-        padding: var(--spacing-sm);
-        border-left-width: 2px;
-    }
-    
-    /* Adjust text for very small screens */
-    #combined-formula-section .explanation-item strong {
-        font-size: 0.85rem;
-    }
-    
-    #combined-formula-section .formula-sub {
-        font-size: 0.8rem;
-    }
-    
-    #combined-formula-section .explanation-item .input-hint {
-        font-size: 0.7rem;
-    }
-    
-    /* Adjust formula benefits */
-    #combined-formula-section .formula-benefits {
-        padding: var(--spacing-sm);
-    }
-    
-    #combined-formula-section .formula-benefits h5 {
-        font-size: 0.9rem;
-    }
-    
-    #combined-formula-section .formula-benefits > div > div {
-        padding: 8px;
-    }
-}
-
-/* Very small screens (under 360px) */
-@media (max-width: 360px) {
-    /* Further compact the explanation items */
-    #combined-formula-section .explanation-item {
-        padding: 10px;
-    }
-    
-    #combined-formula-section .explanation-item strong {
-        font-size: 0.8rem;
-    }
-    
-    #combined-formula-section .formula-sub {
-        font-size: 0.75rem;
-    }
-    
-    /* Make mathematical formulas wrap properly */
-    #combined-formula-section .formula-sub {
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-}
-
-/* Landscape mode for formula explanations */
-@media (max-height: 600px) and (orientation: landscape) {
-    #combined-formula-section .formula-explanation-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-    
-    #combined-formula-section .explanation-item {
-        padding: 8px;
-        min-height: 100px;
-    }
-    
-    #combined-formula-section .explanation-item.highlight {
-        grid-column: span 2;
-        min-height: auto;
-    }
-    
-    /* Reduce spacing in benefits */
-    #combined-formula-section .formula-benefits > div {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-}
-
-/* Tablet adjustments (481px to 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    #combined-formula-section .formula-explanation-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-md);
-    }
-    
-    #combined-formula-section .explanation-item.highlight {
-        grid-column: span 2;
-    }
-}
-
-/* Improve touch interaction on mobile */
-@media (hover: none) and (pointer: coarse) {
-    #combined-formula-section .explanation-item {
-        border-left-width: 3px;
-    }
-    
-    #combined-formula-section .explanation-item:hover {
-        transform: none;
-    }
-    
-    #combined-formula-section .explanation-item:active {
-        background: rgba(212, 167, 106, 0.15);
-        transform: scale(0.98);
-    }
-}
-/* ========== MOBILE RESPONSIVE FIXES FOR FORMULA DETAILS ========== */
-
-/* Mobile fixes for formula details section */
-@media (max-width: 768px) {
-    /* Fix formula details container */
-    #formulaDetails {
-        padding: var(--spacing-md) !important;
-        margin-top: var(--spacing-md) !important;
-    }
-    
-    /* Fix the header */
-    #formulaDetails h4 {
-        font-size: 1.1rem !important;
-        margin-bottom: var(--spacing-md) !important;
-        flex-direction: column;
-        align-items: flex-start !important;
-        gap: 8px !important;
-    }
-    
-    /* Make grid single column on mobile */
-    .formula-explanation-grid {
-        grid-template-columns: 1fr !important;
-        gap: var(--spacing-sm) !important;
-        margin-bottom: var(--spacing-md) !important;
-    }
-    
-    /* Fix explanation items */
-    .explanation-item {
-        padding: var(--spacing-md) !important;
-        margin-bottom: 0 !important;
-    }
-    
-    .explanation-item.highlight {
-        grid-column: 1 !important; /* Remove span 2 on mobile */
-        border-width: 1px !important;
-        border-left: 3px solid var(--rebel-gold) !important;
-    }
-    
-    /* Adjust text sizes */
-    .explanation-item strong {
-        font-size: 0.95rem !important;
-        display: block;
-        margin-bottom: 6px;
-    }
-    
-    .formula-sub {
-        font-size: 0.85rem !important;
-        margin-top: 6px !important;
-        line-height: 1.3;
-    }
-    
-    .input-hint {
-        font-size: 0.8rem !important;
-        margin-top: 8px !important;
-        line-height: 1.3;
-    }
-    
-    /* Fix the gamma formula */
-    .explanation-item.highlight .formula-sub {
-        font-size: 0.9rem !important;
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-    
-    /* Fix formula benefits */
-    .formula-benefits {
-        padding: var(--spacing-md) !important;
-        margin-top: var(--spacing-md) !important;
-    }
-    
-    .formula-benefits h5 {
-        font-size: 1rem !important;
-        margin-bottom: var(--spacing-sm) !important;
-        flex-direction: column;
-        align-items: flex-start !important;
-        gap: 8px !important;
-    }
-    
-    .formula-benefits > div {
-        grid-template-columns: 1fr !important;
-        gap: var(--spacing-sm) !important;
-    }
-    
-    .formula-benefits > div > div {
-        padding: var(--spacing-sm) !important;
-    }
-    
-    .formula-benefits > div > div > div:first-child {
-        font-size: 0.85rem !important;
-        margin-bottom: 4px !important;
-    }
-    
-    .formula-benefits > div > div > div:last-child {
-        font-size: 0.8rem !important;
-    }
-}
-
-/* Extra small mobile devices */
-@media (max-width: 480px) {
-    /* Make everything more compact */
-    #formulaDetails {
-        padding: 15px !important;
-    }
-    
-    .explanation-item {
-        padding: 12px !important;
-    }
-    
-    .explanation-item strong {
-        font-size: 0.9rem !important;
-    }
-    
-    .formula-sub {
-        font-size: 0.8rem !important;
-    }
-    
-    .input-hint {
-        font-size: 0.75rem !important;
-    }
-    
-    /* Adjust formula benefits */
-    .formula-benefits {
-        padding: 15px !important;
-    }
-    
-    .formula-benefits > div > div {
-        padding: 10px !important;
-    }
-}
-
-/* Very small screens (under 360px) */
-@media (max-width: 360px) {
-    #formulaDetails {
-        padding: 12px !important;
-    }
-    
-    #formulaDetails h4 {
-        font-size: 1rem !important;
-    }
-    
-    .explanation-item {
-        padding: 10px !important;
-        border-left-width: 2px !important;
-    }
-    
-    .explanation-item.highlight {
-        border-left-width: 2px !important;
-    }
-    
-    .explanation-item strong {
-        font-size: 0.85rem !important;
-    }
-    
-    .formula-sub {
-        font-size: 0.75rem !important;
-    }
-    
-    /* Break long formulas */
-    .explanation-item.highlight .formula-sub {
-        font-size: 0.8rem !important;
-        word-break: break-word;
-    }
-}
-
-/* Landscape mode for formula details */
-@media (max-height: 600px) and (orientation: landscape) {
-    #formulaDetails {
-        padding: 15px !important;
-    }
-    
-    .formula-explanation-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-    }
-    
-    .explanation-item.highlight {
-        grid-column: 1 / -1 !important;
-    }
-    
-    .explanation-item {
-        padding: 10px !important;
-        min-height: 120px;
-    }
-    
-    .formula-benefits > div {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-    }
-}
-
-/* Tablet adjustments (481px to 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
-    .formula-explanation-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px !important;
-    }
-    
-    .explanation-item.highlight {
-        grid-column: 1 / -1 !important;
-    }
-    
-    .formula-benefits > div {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-}
-
-/* Touch device optimizations */
-@media (hover: none) and (pointer: coarse) {
-    .explanation-item {
-        border-left-width: 4px !important;
-    }
-    
-    .explanation-item:active {
-        background: rgba(212, 167, 106, 0.15) !important;
-        transform: scale(0.98);
-        transition: transform 0.1s ease;
-    }
-}
-/* ===== MOBILE-ONLY HORIZONTAL SCROLL FIXES ===== */
-/* These ONLY apply on mobile devices, preserve desktop layout */
-
-@media (max-width: 768px) {
-    /* Force body to not overflow */
-    html, body {
-        overflow-x: hidden !important;
-        width: 100% !important;
-        max-width: 100vw !important;
-        position: relative;
-    }
-    
-    /* Fix main containers */
-    .container,
-    .calculator-section,
-    .content-card,
-    .page-hero .container {
+    /* Calculator containers - SCOPED */
+    #rebl-calculator .calculator-section,
+    #rebl-calculator .content-card {
         width: 100% !important;
         max-width: 100% !important;
         padding-left: 15px !important;
@@ -4226,225 +1769,183 @@ canvas[aria-label*="chart"] {
         margin-left: 0 !important;
         margin-right: 0 !important;
         box-sizing: border-box !important;
-        overflow-x: hidden !important;
     }
     
-    /* Fix parameter grid - prevent columns from overflowing */
-    .parameter-grid {
-        grid-template-columns: 1fr !important; /* Stack on mobile */
-        gap: 15px;
+    #rebl-calculator .parameter-grid {
+        grid-template-columns: 1fr !important;
     }
     
-    .parameter-item {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
+    #rebl-calculator .section-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
     
-    /* Fix formula display - reduce font size and force wrap */
-    .formula-equation {
+    #rebl-calculator .example-buttons {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    #rebl-calculator .example-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Formula display */
+    #combined-formula-section .formula-equation,
+    #rebl-calculator .formula-equation {
         font-size: 1.2rem !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: break-word !important;
-        max-width: 100% !important;
-        line-height: 1.3;
-    }
-    
-    .formula-component {
-        font-size: 1rem !important;
-        white-space: normal !important;
         word-break: break-word !important;
     }
     
-    /* Fix tables - keep them scrollable INSIDE container, not overflow page */
-    .table-container {
+    /* Tables */
+    #rebl-calculator .table-container {
         overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 10px 0 !important;
-        border: 1px solid rgba(212, 167, 106, 0.2);
     }
     
-    #token-batches-table,
-    #other-participants-table {
-        min-width: 600px; /* Keeps table readable on mobile */
-        width: 100%;
-        table-layout: auto;
-    }
-    
-    /* Fix gamma components grid */
-    .gamma-components {
+    /* Grids */
+    #rebl-calculator .gamma-components {
         grid-template-columns: 1fr 1fr !important;
-        gap: 10px;
     }
     
-    /* Fix WS info grid */
-    .ws-info-grid {
+    #rebl-calculator .ws-info-grid {
         grid-template-columns: 1fr 1fr !important;
-        gap: 10px;
     }
     
-    /* Fix slider containers */
-    .slider-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 15px !important;
-        box-sizing: border-box !important;
-    }
-    
-    .slider-info {
-        flex-wrap: wrap;
-    }
-    
-    .slider-info-value {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .value-input {
-        width: 120px !important;
-    }
-    
-    /* Fix any inline styles that might have fixed widths */
-    [style*="width:"] {
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Fix formula announcement header */
-    .announcement-header {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px;
-    }
-    
-    .announcement-header > div {
-        width: 100% !important;
-        min-width: auto !important;
-    }
-    
-    .governance-badge {
-        align-self: flex-start !important;
-    }
-    
-    /* Fix mobile break line */
-    .mobile-break {
-        display: block !important;
-    }
-    
-    /* Fix other participants summary grid */
-    .other-participants-summary {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px;
-    }
-    
-    /* Fix quick actions buttons */
-    .quick-actions,
-    .table-actions,
-    .other-participants-actions,
-    .preset-buttons {
+    /* Quick actions */
+    #rebl-calculator .quick-actions,
+    #rebl-calculator .table-actions,
+    #rebl-calculator .other-participants-actions,
+    #rebl-calculator .preset-buttons {
         flex-direction: column !important;
         width: 100% !important;
     }
     
-    .quick-action-btn,
-    .table-action-btn,
-    .other-participants-btn,
-    .example-btn {
+    #rebl-calculator .quick-action-btn,
+    #rebl-calculator .table-action-btn,
+    #rebl-calculator .other-participants-btn,
+    #rebl-calculator .example-btn {
         width: 100% !important;
         justify-content: center !important;
-        margin: 2px 0 !important;
     }
     
-    /* Fix hero section */
-    .hero-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .hero-buttons .cta-button {
-        width: 100%;
-        margin: 5px 0 !important;
-    }
-    
-    /* Fix chart container */
-    .chart-container {
-        width: 100% !important;
-        max-width: 100% !important;
+    /* Chart */
+    #rebl-calculator .chart-container {
         height: 300px;
         padding: 10px !important;
     }
     
-    /* Fix reward result */
-    .reward-result {
-        width: 100% !important;
-        max-width: 100% !important;
+    /* Reward result */
+    #rebl-calculator .reward-result {
         padding: 15px !important;
     }
     
-    /* Fix contribution grid */
-    .contribution-grid {
-        grid-template-columns: 1fr !important;
+    #rebl-calculator .reward-result-main {
+        flex-direction: column;
+        text-align: center;
     }
     
-    /* Fix participant type selector */
-    .participant-type-selector {
+    #rebl-calculator .projection-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* User stats */
+    #rebl-calculator .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #rebl-calculator .age-bonus-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Participant selector */
+    #rebl-calculator .participant-type-selector {
         flex-direction: column !important;
     }
     
-    .participant-type-option {
+    #rebl-calculator .participant-type-option {
         width: 100% !important;
+    }
+    
+    /* Formula details */
+    #combined-formula-section .formula-explanation-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Related pages - SCOPED */
+    #related-pages .related-grid {
+        grid-template-columns: 1fr;
     }
 }
 
-/* Extra small devices - even more compact */
+/* Extra small devices */
 @media (max-width: 480px) {
-    .gamma-components {
+    #rebl-calculator .gamma-components {
         grid-template-columns: 1fr !important;
     }
     
-    .ws-info-grid {
+    #rebl-calculator .ws-info-grid {
         grid-template-columns: 1fr !important;
     }
     
-    .other-participants-summary {
+    #rebl-calculator .other-participants-summary {
         grid-template-columns: 1fr !important;
     }
     
-    .formula-equation {
+    #rebl-calculator .user-stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    #rebl-calculator .age-bonus-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    #rebl-calculator .formula-equation {
         font-size: 1rem !important;
     }
     
-    .formula-component {
-        font-size: 0.9rem !important;
-    }
-    
-    .parameter-value {
+    #rebl-calculator .parameter-value {
         font-size: 1.5rem !important;
     }
     
-    .slider-value {
-        font-size: 1rem !important;
-    }
-    
-    .value-input {
-        width: 90px !important;
+    #rebl-calculator .calculate-btn {
+        padding: var(--spacing-md) var(--spacing-lg);
+        font-size: 1.1rem;
     }
 }
 
-/* Fix for landscape mode on mobile */
-@media (max-height: 600px) and (orientation: landscape) and (max-width: 900px) {
-    .parameter-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-    
-    .gamma-components {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-    
-    .ws-info-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+/* ========== ANIMATIONS - SCOPED ========== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes toastIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* ===== MOBILE BREAK LINE ===== */
+.mobile-break {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-break {
+        display: block;
     }
 }
