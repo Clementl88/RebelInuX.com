@@ -54,7 +54,7 @@ function initLegalPage() {
   initCopyButtons();
   initDisclaimerCheckboxes();
   initCookiePreferences();
-  initPrintButton();
+//  initPrintButton();
   highlightCurrentLegalPage();
   initAOSWithDelay();
   initContractReminder();
@@ -245,44 +245,44 @@ window.saveCookiePreferences = function() {
 };
 
 // ===== PRINT BUTTON =====
-function initPrintButton() {
-  const legalHeader = document.querySelector('.legal-header');
+//function initPrintButton() {
+//  const legalHeader = document.querySelector('.legal-header');
   
-  if (legalHeader && !document.querySelector('.print-button')) {
-    const printButton = document.createElement('button');
-    printButton.className = 'print-button';
-    printButton.innerHTML = '<i class="fas fa-print"></i> Print';
-    printButton.style.cssText = `
-      background: rgba(255,255,255,0.1);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 25px;
-      padding: 0.5rem 1rem;
-      margin-left: auto;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-    `;
+ // if (legalHeader && !document.querySelector('.print-button')) {
+//    const printButton = document.createElement('button');
+  //  printButton.className = 'print-button';
+  //  printButton.innerHTML = '<i class="fas fa-print"></i> Print';
+  //  printButton.style.cssText = `
+   //   background: rgba(255,255,255,0.1);
+ //     color: white;
+   //   border: 1px solid rgba(255,255,255,0.3);
+  //    border-radius: 25px;
+  //    padding: 0.5rem 1rem;
+  //    margin-left: auto;
+  //    cursor: pointer;
+  //    display: flex;
+ //     align-items: center;
+  //    gap: 0.5rem;
+  //    font-size: 0.85rem;
+  //    transition: all 0.3s ease;
+    //`;
     
-    printButton.addEventListener('mouseenter', function() {
-      this.style.background = 'rgba(255,255,255,0.2)';
-    });
+ //   printButton.addEventListener('mouseenter', function() {
+  //    this.style.background = 'rgba(255,255,255,0.2)';
+  //  });
     
-    printButton.addEventListener('mouseleave', function() {
-      this.style.background = 'rgba(255,255,255,0.1)';
-    });
+  //  printButton.addEventListener('mouseleave', function() {
+  //    this.style.background = 'rgba(255,255,255,0.1)';
+   // });
     
-    printButton.addEventListener('click', function() {
-      window.print();
-      showLegalToast('Preparing document for printing...', 'info');
-    });
+   // printButton.addEventListener('click', function() {
+   //   window.print();
+  //    showLegalToast('Preparing document for printing...', 'info');
+  //  });
     
-    legalHeader.appendChild(printButton);
-  }
-}
+ //   legalHeader.appendChild(printButton);
+  //}
+//}
 
 // ===== HIGHLIGHT CURRENT PAGE =====
 function highlightCurrentLegalPage() {
