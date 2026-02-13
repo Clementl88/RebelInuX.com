@@ -1,195 +1,158 @@
-// Add this function to js/includes.js after the existing functions
-// Function to set active navigation item based on current page
-function setActiveNavItem() {
-    console.log('Setting active navigation item...');
+// js/includes.js - Load header and footer components with enhanced error handling
+
+// Global state to track component loading
+window.componentsLoaded = false;
+window.componentsLoading = false;
+window.componentsError = false;
+
+// Configuration
+const COMPONENTS_CONFIG = {
+  retryAttempts: 3,
+  retryDelay: 1000,
+  timeout: 5000
+};
+
+// Load all components
+async function loadAllComponents() {
+  if (window.componentsLoading || window.componentsLoaded) return;
+  
+  window.componentsLoading = true;
+  window.componentsError = false;
+  
+  console.log('🔄 Loading components...');
+  
+  try {
+    const components = [];
     
-    // Get current page filename
-    const path = window.location.pathname;
-    let currentPage = path.split('/').pop();
-    
-    // Handle empty path or root
-    if (currentPage === '' || currentPage === '/' || !currentPage) {
-        currentPage = 'index.html';
+    // Load header
+    if (document.getElementById('header-container')) {
+      components.push(loadComponent('header-container', 'header.html'));
     }
     
-    console.log('Current page:', currentPage);
-    
-    // Wait for navigation to be in DOM
-    setTimeout(() => {
-        // Get all navigation links - try multiple selectors
-        const selectors = [
-            '#nav-desktop a',
-            '.dropdown-content a',
-            '.nav-links a',
-            '.nav-menu a',
-            'header a[href*=".html"]'
-        ];
-        
-        let navLinks = [];
-        selectors.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            if (elements.length) {
-                navLinks = [...navLinks, ...elements];
-            }
-        });
-        
-        if (navLinks.length === 0) {
-            console.warn('No navigation links found');
-            return;
-        }
-        
-        // Remove active class from all links first
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            // Remove any inline color styles
-            link.style.color = '';
-        });
-        
-        // Find and highlight the matching link
-        let activeFound = false;
-        
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (!href) return;
-            
-            // Skip empty links, hash links, and javascript links
-            if (href === '#' || href === '' || href.startsWith('javascript:')) {
-                return;
-            }
-            
-            // Extract filename from href
-            const hrefPage = href.split('/').pop();
-            
-            // Check if this link matches the current page
-            if (hrefPage === currentPage) {
-                link.classList.add('active');
-                link.style.color = 'white';
-                
-                // Also style parent if needed
-                const parentLi = link.closest('li');
-                if (parentLi) {
-                    parentLi.classList.add('active');
-                }
-                
-                // If this is in a dropdown, highlight the dropdown button too
-                const dropdown = link.closest('.dropdown-content');
-                if (dropdown) {
-                    const dropbtn = dropdown.previousElementSibling;
-                    if (dropbtn && dropbtn.classList.contains('dropbtn')) {
-                        dropbtn.classList.add('active');
-                    }
-                }
-                
-                activeFound = true;
-                console.log('Active link set:', href);
-            }
-        });
-        
-        // Special handling for calculator page in dropdown
-        if (currentPage === 'rebl-calculator.html' && !activeFound) {
-            // Try to find calculator link specifically
-            const calcLink = document.querySelector('a[href*="rebl-calculator"]');
-            if (calcLink) {
-                calcLink.classList.add('active');
-                calcLink.style.color = 'white';
-                
-                // Highlight the More dropdown button
-                const dropdown = calcLink.closest('.dropdown-content');
-                if (dropdown) {
-                    const dropbtn = dropdown.previousElementSibling;
-                    if (dropbtn && dropbtn.classList.contains('dropbtn')) {
-                        dropbtn.classList.add('active');
-                        dropbtn.style.color = 'white';
-                    }
-                }
-                activeFound = true;
-                console.log('Calculator link activated');
-            }
-        }
-        
-        // Update brand subtitle based on page
-        updateBrandSubtitle(currentPage);
-        
-        if (!activeFound) {
-            console.log('No matching nav link found for:', currentPage);
-        }
-    }, 150); // Slight delay to ensure DOM is ready
-}
-
-// Function to update brand subtitle based on current page
-function updateBrandSubtitle(currentPage) {
-    const brandSubtitle = document.querySelector('.brand-subtitle');
-    if (!brandSubtitle) return;
-    
-    // Remove all page-specific data attributes
-    brandSubtitle.removeAttribute('data-page');
-    
-    // Set subtitle text based on page
-    let subtitleText = '';
-    let pageName = '';
-    
-    switch(currentPage) {
-        case 'index.html':
-            subtitleText = 'Multi-Chain Passive Income';
-            pageName = 'index';
-            break;
-        case 'rebl-calculator.html':
-            subtitleText = 'Epoch Reward Calculator';
-            pageName = 'rebl-calculator';
-            break;
-        case 'epoch-rewards.html':
-            subtitleText = 'Claim Your Rewards';
-            pageName = 'epoch-rewards';
-            break;
-        case 'tokenomics.html':
-            subtitleText = 'Supply & Distribution';
-            pageName = 'tokenomics';
-            break;
-        case 'trade.html':
-            subtitleText = 'Buy & Trade Guide';
-            pageName = 'trade';
-            break;
-        case 'community.html':
-            subtitleText = 'Join Our Community';
-            pageName = 'community';
-            break;
-        case 'security-integrity.html':
-            subtitleText = 'Security & Integrity';
-            pageName = 'security-integrity';
-            break;
-        case 'whitepaper.html':
-            subtitleText = 'Technical Documentation';
-            pageName = 'whitepaper';
-            break;
-        case 'governance.html':
-            subtitleText = 'DAO Governance';
-            pageName = 'governance';
-            break;
-        case 'roadmap.html':
-            subtitleText = 'Development Roadmap';
-            pageName = 'roadmap';
-            break;
-        case 'artwork.html':
-            subtitleText = 'REBL Art Collection';
-            pageName = 'artwork';
-            break;
-        default:
-            subtitleText = 'Multi-Chain Passive Income';
-            pageName = 'index';
+    // Load footer
+    if (document.getElementById('footer-container')) {
+      components.push(loadComponent('footer-container', 'footer.html'));
     }
     
-    brandSubtitle.textContent = subtitleText;
-    brandSubtitle.setAttribute('data-page', pageName);
-    brandSubtitle.classList.add('changing');
+    // Wait for all components to load
+    await Promise.all(components);
     
-    setTimeout(() => {
-        brandSubtitle.classList.remove('changing');
-    }, 300);
+    window.componentsLoaded = true;
+    window.componentsLoading = false;
     
-    console.log('Brand subtitle updated to:', subtitleText);
+    console.log('✅ All components loaded successfully');
+    
+    // Initialize components after loading
+    initializeComponents();
+    
+  } catch (error) {
+    console.error('❌ Error loading components:', error);
+    window.componentsLoading = false;
+    window.componentsError = true;
+    
+    // Show user-friendly error messages
+    showComponentErrors();
+  }
 }
 
-// Also update your initializeComponents function to include setActiveNavItem
+// Load individual component with retry logic
+async function loadComponent(elementId, url, attempt = 1) {
+  try {
+    console.log(`📥 Loading ${url} (attempt ${attempt}/${COMPONENTS_CONFIG.retryAttempts})...`);
+    
+    // Create abort controller for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), COMPONENTS_CONFIG.timeout);
+    
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'Accept': 'text/html',
+        'Cache-Control': 'no-cache'
+      }
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} loading ${url}`);
+    }
+    
+    const html = await response.text();
+    const container = document.getElementById(elementId);
+    
+    if (!container) {
+      throw new Error(`Container #${elementId} not found`);
+    }
+    
+    // Insert the HTML
+    container.innerHTML = html;
+    
+    // Mark as loaded
+    container.dataset.loaded = 'true';
+    container.dataset.component = url.replace('.html', '');
+    
+    console.log(`✅ ${url} loaded into #${elementId}`);
+    
+    // Dispatch custom event
+    container.dispatchEvent(new CustomEvent('component:loaded', {
+      detail: { elementId, url }
+    }));
+    
+    return true;
+    
+  } catch (error) {
+    console.error(`❌ Failed to load ${url}:`, error);
+    
+    // Retry logic
+    if (attempt < COMPONENTS_CONFIG.retryAttempts) {
+      console.log(`🔄 Retrying ${url} in ${COMPONENTS_CONFIG.retryDelay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, COMPONENTS_CONFIG.retryDelay));
+      return loadComponent(elementId, url, attempt + 1);
+    }
+    
+    // Show error message
+    const container = document.getElementById(elementId);
+    if (container) {
+      container.innerHTML = `
+        <div class="component-error" style="
+          padding: 20px;
+          text-align: center;
+          color: var(--rebel-red);
+          background: rgba(215, 77, 77, 0.1);
+          border-radius: 8px;
+          margin: 10px;
+          border: 1px solid rgba(215, 77, 77, 0.3);
+        ">
+          <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+          <strong>Failed to load ${url}</strong>
+          <br>
+          <small style="color: rgba(255, 255, 255, 0.7);">
+            Please check your internet connection and try refreshing the page.
+          </small>
+          <br>
+          <button onclick="window.location.reload()" style="
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: var(--rebel-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+          ">
+            <i class="fas fa-sync-alt" style="margin-right: 5px;"></i>
+            Retry Loading
+          </button>
+        </div>
+      `;
+    }
+    
+    throw error;
+  }
+}
+
+// Initialize components after everything is loaded
 function initializeComponents() {
   console.log('⚙️ Initializing components...');
   
@@ -198,7 +161,7 @@ function initializeComponents() {
     const requiredFunctions = [
       'setupMobileNavigation',
       'setupDropdowns',
-      'setActiveNavItem', // Make sure this is included
+      'setActiveNavItem',
       'setupBackToTop',
       'setupBuyDropdown',
       'setupHeaderScrollEffect'
@@ -209,16 +172,11 @@ function initializeComponents() {
     if (missingFunctions.length > 0) {
       console.warn('⚠️ Missing required functions:', missingFunctions);
       
-      // Define setActiveNavItem locally if missing
-      if (!window.setActiveNavItem) {
-        window.setActiveNavItem = setActiveNavItem;
-        console.log('✅ setActiveNavItem defined locally');
-      }
-      
-      // Try to load common.js dynamically if other functions are missing
-      if (!window.commonJsLoaded && missingFunctions.some(fn => fn !== 'setActiveNavItem')) {
+      // Try to load common.js dynamically if missing
+      if (!window.commonJsLoaded) {
         console.log('🔄 Attempting to load common.js dynamically...');
         loadScript('js/common.js');
+        return;
       }
     }
     
@@ -238,13 +196,8 @@ function initializeComponents() {
       setupBuyDropdown();
     }
     
-    // ALWAYS run setActiveNavItem, regardless of where it comes from
-    if (typeof window.setActiveNavItem === 'function') {
+    if (typeof setActiveNavItem === 'function') {
       console.log('🔧 Setting active nav item...');
-      window.setActiveNavItem();
-    } else {
-      // Fallback - use our local function
-      console.log('🔧 Using local setActiveNavItem...');
       setActiveNavItem();
     }
     
@@ -268,29 +221,146 @@ function initializeComponents() {
   }
 }
 
-// Also add a dedicated function to highlight calculator specifically
-function highlightCalculatorLink() {
-    const currentPage = window.location.pathname.split('/').pop();
-    if (currentPage === 'rebl-calculator.html') {
-        const calcLink = document.querySelector('a[href*="rebl-calculator"]');
-        if (calcLink) {
-            calcLink.classList.add('active');
-            calcLink.style.color = 'white';
-            
-            // Highlight the More dropdown button
-            const dropdown = calcLink.closest('.dropdown-content');
-            if (dropdown) {
-                const dropbtn = dropdown.previousElementSibling;
-                if (dropbtn && dropbtn.classList.contains('dropbtn')) {
-                    dropbtn.classList.add('active');
-                }
-            }
-            console.log('Calculator link highlighted via direct function');
-        }
-    }
+// Load external script dynamically
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    
+    script.onload = () => {
+      console.log(`✅ ${src} loaded`);
+      window.commonJsLoaded = true;
+      resolve();
+    };
+    
+    script.onerror = () => {
+      console.error(`❌ Failed to load ${src}`);
+      reject(new Error(`Failed to load script: ${src}`));
+    };
+    
+    document.head.appendChild(script);
+  });
 }
 
-// Export the functions
-window.setActiveNavItem = setActiveNavItem;
-window.updateBrandSubtitle = updateBrandSubtitle;
-window.highlightCalculatorLink = highlightCalculatorLink;
+// Show component errors to user
+function showComponentErrors() {
+  const errorContainer = document.createElement('div');
+  errorContainer.id = 'components-error-alert';
+  errorContainer.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--rebel-red);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 9999;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+  `;
+  
+  errorContainer.innerHTML = `
+    <div style="display: flex; align-items: flex-start; gap: 10px;">
+      <i class="fas fa-exclamation-circle" style="font-size: 1.2rem; margin-top: 2px;"></i>
+      <div>
+        <strong>Connection Issue</strong>
+        <p style="margin: 5px 0; font-size: 0.9rem; opacity: 0.9;">
+          Some components failed to load. The site may not function properly.
+        </p>
+        <button onclick="this.closest('#components-error-alert').remove()" 
+                style="background: rgba(255,255,255,0.2); border: none; color: white; 
+                       padding: 5px 10px; border-radius: 4px; cursor: pointer; 
+                       font-size: 0.8rem; margin-top: 5px;">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(errorContainer);
+  
+  // Auto-remove after 10 seconds
+  setTimeout(() => {
+    if (errorContainer.parentNode) {
+      errorContainer.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => errorContainer.remove(), 300);
+    }
+  }, 10000);
+}
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+  
+  .component-error {
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+document.head.appendChild(style);
+
+// Handle page load
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('📄 DOM Content Loaded (includes.js)');
+  
+  // Start loading components
+  setTimeout(() => {
+    loadAllComponents();
+  }, 100);
+});
+
+// Handle window load (when all resources are loaded)
+window.addEventListener('load', function() {
+  console.log('🌐 Window fully loaded');
+  
+  // If components haven't loaded yet, try to initialize
+  if (window.componentsLoaded && typeof initializeComponents === 'function') {
+    setTimeout(initializeComponents, 100);
+  } else if (window.componentsError) {
+    // If there was an error, try one more time
+    console.log('🔄 Retrying component loading...');
+    setTimeout(loadAllComponents, 2000);
+  }
+});
+
+// Handle network status changes
+window.addEventListener('online', function() {
+  console.log('📶 Network connection restored');
+  
+  if (!window.componentsLoaded && !window.componentsLoading) {
+    console.log('🔄 Retrying component loading...');
+    loadAllComponents();
+  }
+});
+
+// Export for debugging and external use
+window.loadAllComponents = loadAllComponents;
+window.loadComponent = loadComponent;
+window.initializeComponents = initializeComponents;
+window.showComponentErrors = showComponentErrors;
+
+// Global component state access
+Object.defineProperty(window, 'componentState', {
+  get: function() {
+    return {
+      loaded: window.componentsLoaded,
+      loading: window.componentsLoading,
+      error: window.componentsError
+    };
+  }
+});
