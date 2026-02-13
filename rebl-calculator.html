@@ -1410,5 +1410,29 @@
 
         <!-- Analytics -->
   <script src="js/analytics.js" defer></script>
+
+  <!-- Force calculator link to be white -->
+<script>
+  (function() {
+    function forceWhite() {
+      var link = document.querySelector('a[href*="rebl-calculator"]');
+      if (link) {
+        link.classList.add('active');
+        link.style.color = 'white';
+        var dropdown = link.closest('.dropdown-content');
+        if (dropdown) {
+          var btn = dropdown.previousElementSibling;
+          if (btn && btn.classList.contains('dropbtn')) {
+            btn.classList.add('active');
+            btn.style.color = 'white';
+          }
+        }
+      }
+    }
+    forceWhite();
+    setTimeout(forceWhite, 200);
+    setTimeout(forceWhite, 500);
+  })();
+</script>
 </body>
 </html>
