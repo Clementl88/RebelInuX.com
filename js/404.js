@@ -1,4 +1,4 @@
-// 404.js - 404 Error page specific functionality
+/// 404.js - 404 Error page specific functionality
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
