@@ -1,5 +1,9 @@
-/// rebelinus-journey.js - RebelInuX Journey Functionality
-// Following RebelInuX, the Shiba Inu mascot, across the world and through the ages
+// rebelinus-journey.js - RebelInuX Journey Functionality
+// 1 vote = 500,000 $REBL
+// Contract: F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+
+const REBL_CONTRACT = "F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump";
+const VOTE_THRESHOLD = 500000; // 500,000 $REBL = 1 vote
 
 let voteData = {
     destinations: [
@@ -9,8 +13,8 @@ let voteData = {
             era: "73 BCE", 
             location: "Roman Republic",
             desc: "Witness the rebellion of Spartacus and the gladiators against the Roman Empire. Support those fighting for freedom against oppression.",
-            icon: "fa-roman-statue",
-            votes: 1245
+            icon: "fa-roman-statue", 
+            votes: 1245 
         },
         { 
             id: "viking_age", 
@@ -18,8 +22,8 @@ let voteData = {
             era: "793-1066 CE", 
             location: "Scandinavia",
             desc: "Join the Viking rebels as they challenge feudal kingdoms and explore new lands. Support Norse explorers and warriors.",
-            icon: "fa-viking",
-            votes: 980
+            icon: "fa-viking", 
+            votes: 980 
         },
         { 
             id: "renaissance", 
@@ -27,8 +31,8 @@ let voteData = {
             era: "14th-17th Century", 
             location: "Florence, Italy",
             desc: "Stand with revolutionary artists and thinkers challenging the established order. Support the birth of humanism and free thought.",
-            icon: "fa-palette",
-            votes: 1560
+            icon: "fa-palette", 
+            votes: 1560 
         },
         { 
             id: "american_revolution", 
@@ -36,8 +40,8 @@ let voteData = {
             era: "1775-1783", 
             location: "American Colonies",
             desc: "Travel to 1776 and stand with colonists fighting for independence. Support the birth of a new nation built on liberty.",
-            icon: "fa-fist-raised",
-            votes: 890
+            icon: "fa-fist-raised", 
+            votes: 890 
         },
         { 
             id: "future_rebellion", 
@@ -45,8 +49,8 @@ let voteData = {
             era: "The Future", 
             location: "Unknown",
             desc: "Journey forward to witness future rebellions. Support those fighting for freedom in tomorrow's world.",
-            icon: "fa-robot",
-            votes: 1450
+            icon: "fa-robot", 
+            votes: 1450 
         }
     ],
     totalVotes: 6125,
@@ -54,7 +58,9 @@ let voteData = {
     selectedDestination: null,
     selectedTiming: null,
     walletConnected: false,
-    walletAddress: null
+    walletAddress: null,
+    walletBalance: 0,
+    votingPower: 0
 };
 
 // Initialize on page load
@@ -63,7 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initRebelInuXJourney() {
-    console.log('RebelInuX Journey Initialized - Following the Rebel Shiba');
+    console.log('RebelInuX Journey Initialized - 1 vote = 500,000 $REBL');
+    console.log('Contract:', REBL_CONTRACT);
     
     renderVoteOptions();
     initTimingOptions();
@@ -75,10 +82,17 @@ function initRebelInuXJourney() {
     initNotifyButton();
     updateVoteStats();
     
+    // Periodic updates
     setInterval(updateVoteStats, 30000);
     saveJourneyVisit();
 }
 
+// Calculate voting power based on $REBL balance
+function calculateVotingPower(balance) {
+    return Math.floor(balance / VOTE_THRESHOLD);
+}
+
+// Render vote options
 function renderVoteOptions() {
     const container = document.getElementById('voteOptionsContainer');
     if (!container) return;
@@ -106,6 +120,7 @@ function renderVoteOptions() {
     }
 }
 
+// Select destination
 function selectDestination(id) {
     document.querySelectorAll('.vote-option').forEach(opt => opt.classList.remove('selected'));
     const selected = document.querySelector(`.vote-option[data-id="${id}"]`);
@@ -115,6 +130,7 @@ function selectDestination(id) {
     showToast(`You're sending RebelInuX to ${destName}!`, 'info');
 }
 
+// Initialize timing options
 function initTimingOptions() {
     const timingBtns = document.querySelectorAll('.timing-btn');
     timingBtns.forEach(btn => {
@@ -128,6 +144,7 @@ function initTimingOptions() {
     });
 }
 
+// Initialize past journeys gallery
 function initPastJourneys() {
     const gallery = document.getElementById('pastJourneysGallery');
     if (!gallery) return;
@@ -140,7 +157,7 @@ function initPastJourneys() {
             </div>
             <div class="journey-card-content">
                 <h4>French Revolution 1789</h4>
-                <div class="journey-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
                 <p>RebelInuX stood with the revolutionaries, witnessing the storming of the Bastille and the birth of modern democracy.</p>
                 <small><i class="fas fa-calendar-alt"></i> Coming Soon</small>
                 <div style="margin-top: 10px;">
@@ -153,21 +170,22 @@ function initPastJourneys() {
     `;
 }
 
+// Render leaderboard
 function renderLeaderboard() {
     const leaderboardList = document.getElementById('leaderboardList');
     if (!leaderboardList) return;
     
     const leaders = [
-        { rank: 1, name: "Pathfinder.eth", votes: 3420, badge: "🥇", title: "Master Guide" },
-        { rank: 2, name: "TimeTraveler_Sol", votes: 2890, badge: "🥈", title: "Senior Guide" },
-        { rank: 3, name: "RebelGuide", votes: 2100, badge: "🥉", title: "Guide" },
-        { rank: 4, name: "HistorySeeker", votes: 1875, badge: "⭐", title: "Pathfinder" },
-        { rank: 5, name: "JourneyHodler", votes: 1432, badge: "⭐", title: "Pathfinder" },
-        { rank: 6, name: "AdventureRebel", votes: 1240, badge: "⭐", title: "Scout" },
-        { rank: 7, name: "TrailBlazer_X", votes: 987, badge: "⭐", title: "Scout" },
-        { rank: 8, name: "WildExplorer", votes: 856, badge: "⭐", title: "Scout" },
-        { rank: 9, name: "SummitSeeker", votes: 723, badge: "⭐", title: "Apprentice" },
-        { rank: 10, name: "RoamingRebel", votes: 654, badge: "⭐", title: "Apprentice" }
+        { rank: 1, name: "Pathfinder.eth", votes: 3420, badge: "🥇" },
+        { rank: 2, name: "TimeTraveler_Sol", votes: 2890, badge: "🥈" },
+        { rank: 3, name: "RebelGuide", votes: 2100, badge: "🥉" },
+        { rank: 4, name: "HistorySeeker", votes: 1875, badge: "⭐" },
+        { rank: 5, name: "JourneyHodler", votes: 1432, badge: "⭐" },
+        { rank: 6, name: "AdventureRebel", votes: 1240, badge: "⭐" },
+        { rank: 7, name: "TrailBlazer_X", votes: 987, badge: "⭐" },
+        { rank: 8, name: "WildExplorer", votes: 856, badge: "⭐" },
+        { rank: 9, name: "SummitSeeker", votes: 723, badge: "⭐" },
+        { rank: 10, name: "RoamingRebel", votes: 654, badge: "⭐" }
     ];
     
     leaderboardList.innerHTML = leaders.map(leader => `
@@ -175,7 +193,6 @@ function renderLeaderboard() {
             <span class="leaderboard-rank">${leader.badge} #${leader.rank}</span>
             <span class="leaderboard-name">
                 <i class="fab fa-ethereum"></i> ${leader.name}
-                <span class="leaderboard-title">${leader.title}</span>
             </span>
             <span class="leaderboard-votes">
                 <i class="fas fa-vote-yea"></i> ${leader.votes.toLocaleString()} votes
@@ -184,6 +201,7 @@ function renderLeaderboard() {
     `).join('');
 }
 
+// Wallet connection
 function initWalletConnection() {
     const connectBtn = document.getElementById('connectWalletBtn');
     if (!connectBtn) return;
@@ -191,9 +209,12 @@ function initWalletConnection() {
     connectBtn.addEventListener('click', toggleWalletConnection);
     
     const savedWallet = localStorage.getItem('rebelinusWalletConnected');
-    if (savedWallet === 'true') {
+    const savedBalance = localStorage.getItem('rebelinusWalletBalance');
+    if (savedWallet === 'true' && savedBalance) {
         voteData.walletConnected = true;
         voteData.walletAddress = localStorage.getItem('rebelinusWalletAddress');
+        voteData.walletBalance = parseInt(savedBalance);
+        voteData.votingPower = calculateVotingPower(voteData.walletBalance);
         updateWalletUI();
     }
 }
@@ -207,24 +228,35 @@ function toggleWalletConnection() {
 }
 
 function connectWallet() {
-    showToast('Connecting wallet to guide RebelInuX...', 'info');
+    showToast('Connecting wallet to check $REBL holdings...', 'info');
+    
     setTimeout(() => {
+        // Simulate wallet balance check
+        const mockBalance = Math.floor(Math.random() * 5000000) + 500000;
         voteData.walletConnected = true;
         voteData.walletAddress = '0x' + Math.random().toString(16).substr(2, 12);
+        voteData.walletBalance = mockBalance;
+        voteData.votingPower = calculateVotingPower(mockBalance);
+        
         localStorage.setItem('rebelinusWalletConnected', 'true');
         localStorage.setItem('rebelinusWalletAddress', voteData.walletAddress);
+        localStorage.setItem('rebelinusWalletBalance', mockBalance);
+        
         updateWalletUI();
-        showToast('Wallet connected! Your voice now guides RebelInuX.', 'success');
+        showToast(`Wallet connected! You have ${voteData.walletBalance.toLocaleString()} $REBL = ${voteData.votingPower} vote${voteData.votingPower !== 1 ? 's' : ''}`, 'success');
     }, 1000);
 }
 
 function disconnectWallet() {
     voteData.walletConnected = false;
     voteData.walletAddress = null;
+    voteData.walletBalance = 0;
+    voteData.votingPower = 0;
     localStorage.removeItem('rebelinusWalletConnected');
     localStorage.removeItem('rebelinusWalletAddress');
+    localStorage.removeItem('rebelinusWalletBalance');
     updateWalletUI();
-    showToast('Wallet disconnected. RebelInuX will miss your guidance!', 'info');
+    showToast('Wallet disconnected.', 'info');
 }
 
 function updateWalletUI() {
@@ -233,17 +265,19 @@ function updateWalletUI() {
     
     if (voteData.walletConnected && voteData.walletAddress) {
         const shortAddress = voteData.walletAddress.slice(0, 6) + '...' + voteData.walletAddress.slice(-4);
-        walletStatus.innerHTML = `<i class="fas fa-check-circle"></i> Guiding as: ${shortAddress}`;
+        walletStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${shortAddress} | ${voteData.walletBalance.toLocaleString()} $REBL = ${voteData.votingPower} vote${voteData.votingPower !== 1 ? 's' : ''}`;
         connectBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Disconnect';
         connectBtn.style.background = '#ff4444';
+        connectBtn.style.color = 'white';
     } else {
         walletStatus.innerHTML = '<i class="fas fa-link"></i> Not connected';
-        connectBtn.innerHTML = '<i class="fas fa-wallet"></i> Connect to Guide';
-        connectBtn.style.background = '#ffcc00';
+        connectBtn.innerHTML = '<i class="fas fa-wallet"></i> Connect Wallet';
+        connectBtn.style.background = 'var(--rebel-gold)';
         connectBtn.style.color = '#1a1a1a';
     }
 }
 
+// Submit vote
 function submitVote() {
     if (!voteData.selectedDestination) {
         showToast('Where should RebelInuX go? Choose a destination first!', 'error');
@@ -256,11 +290,16 @@ function submitVote() {
     }
     
     if (!voteData.walletConnected) {
-        showToast('Connect your wallet to guide RebelInuX on his journey!', 'warning');
+        showToast('Connect your wallet to vote! 500,000 $REBL = 1 vote.', 'warning');
         return;
     }
     
-    const weight = Math.floor(Math.random() * 500) + 50;
+    if (voteData.votingPower === 0) {
+        showToast(`You need at least ${VOTE_THRESHOLD.toLocaleString()} $REBL to vote. Current balance: ${voteData.walletBalance.toLocaleString()} $REBL`, 'warning');
+        return;
+    }
+    
+    const weight = voteData.votingPower;
     const destIndex = voteData.destinations.findIndex(d => d.id === voteData.selectedDestination);
     
     if (destIndex !== -1) {
@@ -273,7 +312,7 @@ function submitVote() {
         const destName = voteData.destinations[destIndex].name;
         const timingText = document.querySelector(`.timing-btn[data-timing="${voteData.selectedTiming}"] span:first-child`).textContent.trim();
         
-        showToast(`✓ RebelInuX is heading to ${destName} with ${weight} guiding power! Travel: ${timingText}`, 'success');
+        showToast(`✓ ${weight} vote${weight !== 1 ? 's' : ''} cast for ${destName}! Travel: ${timingText}`, 'success');
         
         saveVoteToLocalStorage(voteData.selectedDestination, weight);
         
@@ -297,23 +336,30 @@ function saveVoteToLocalStorage(destination, weight) {
     localStorage.setItem('rebelinusUserVotes', JSON.stringify(votes));
 }
 
+// Update vote stats
 function updateVoteStats() {
     const totalVotesSpan = document.getElementById('totalVotesCount');
     const activeVotersSpan = document.getElementById('activeVotersCount');
     const liveTallyDiv = document.getElementById('liveTally');
     
-    if (totalVotesSpan) totalVotesSpan.textContent = voteData.totalVotes.toLocaleString();
+    if (totalVotesSpan) {
+        totalVotesSpan.textContent = voteData.totalVotes.toLocaleString();
+    }
+    
     if (activeVotersSpan) {
         voteData.activeVoters = 1247 + Math.floor(Math.random() * 10);
         activeVotersSpan.textContent = voteData.activeVoters.toLocaleString();
     }
+    
     if (liveTallyDiv) {
-        liveTallyDiv.innerHTML = voteData.destinations.map(d => 
+        const tallyHtml = voteData.destinations.map(d => 
             `<div><strong>${d.name}:</strong> ${d.votes.toLocaleString()} votes (${Math.round((d.votes/voteData.totalVotes)*100)}%)</div>`
         ).join('');
+        liveTallyDiv.innerHTML = tallyHtml;
     }
 }
 
+// Countdown timer
 function initCountdownTimer() {
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + 7);
@@ -335,20 +381,25 @@ function initCountdownTimer() {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (86400000)) / 3600000);
         
-        if (timerElement) timerElement.innerHTML = days > 0 ? `${days}d ${hours}h` : `${hours}h`;
-        if (deadlineElement) deadlineElement.innerHTML = `${days} days, ${hours} hours`;
+        if (timerElement) {
+            timerElement.innerHTML = days > 0 ? `${days}d ${hours}h` : `${hours}h`;
+        }
+        if (deadlineElement) {
+            deadlineElement.innerHTML = `${days} days, ${hours} hours`;
+        }
     }
     
     updateTimer();
     setInterval(updateTimer, 60000);
 }
 
+// Notify button
 function initNotifyButton() {
     const notifyBtn = document.getElementById('notifyBtn');
     if (notifyBtn) {
         notifyBtn.addEventListener('click', function() {
             if (!voteData.walletConnected) {
-                showToast('Connect your wallet to get notified when RebelInuX\'s French Revolution journey releases!', 'warning');
+                showToast('Connect your wallet to get notified when the French Revolution journey releases!', 'warning');
                 return;
             }
             showToast('You\'ll be notified when RebelInuX\'s Paris adventure is ready!', 'success');
@@ -357,6 +408,7 @@ function initNotifyButton() {
     }
 }
 
+// Community suggestions
 function initSuggestions() {
     const submitBtn = document.getElementById('submitSuggestionBtn');
     const input = document.getElementById('suggestionInput');
@@ -397,6 +449,7 @@ function addSuggestion(suggestion) {
     }
 }
 
+// Toast notification
 function showToast(message, type = 'success') {
     const existingToast = document.querySelector('.journey-toast');
     if (existingToast) existingToast.remove();
@@ -409,18 +462,21 @@ function showToast(message, type = 'success') {
     `;
     
     document.body.appendChild(toast);
+    
     setTimeout(() => {
         toast.style.animation = 'slideDown 0.3s ease';
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
+// Escape HTML
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
+// Save journey visit
 function saveJourneyVisit() {
     const lastVisit = localStorage.getItem('rebelinusJourneyLastVisit');
     const now = new Date();
@@ -438,6 +494,5 @@ function saveJourneyVisit() {
     localStorage.setItem('rebelinusJourneyLastVisit', now.toISOString());
 }
 
-// Make functions available globally
+// Make functions globally available
 window.selectDestination = selectDestination;
-window.submitVote = submitVote;
