@@ -1,4 +1,4 @@
-// rebelinus-journey.js - RebelInuX Journey Functionality
+/// rebelinus-journey.js - RebelInuX Journey Functionality
 // 1 vote = 500,000 $REBL
 // Contract: F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
 
