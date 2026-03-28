@@ -1,4 +1,4 @@
-// rebelinus-journey.js - RebelInuX Journey Functionality
+/// rebelinus-journey.js - RebelInuX Journey Functionality
 // Following RebelInuX, the Shiba Inu mascot, across the world and through the ages
 
 let voteData = {
