@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="RebelInuX Journey - Follow RebelInuX, the Shiba Inu mascot, as he travels across the world and throughout the ages to support rebellious events. You fund. You choose. We ride." />
-  <meta name="keywords" content="$REBL journey, RebelInuX, Shiba Inu traveler, rebellious events, community voting, historical adventures, time travel, mascot journey" />
+  <meta name="keywords" content="$REBL journey, RebelInuX, Shiba Inu traveler, rebellious events, community voting, historical adventures, time travel" />
   <meta property="og:title" content="RebelInuX Journey - The Rebel Shiba Travels Across Time & Space" />
   <meta property="og:description" content="Join RebelInuX, our Shiba Inu mascot, as he travels across the world and throughout the ages to support rebellious events. You choose the next destination with $REBL." />
   <meta property="og:image" content="https://i.imgur.com/gEuSg1Y.webp" />
@@ -40,8 +40,733 @@
   <!-- CSS Files -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/header-footer.css">
-  <link rel="stylesheet" href="css/rebelinus-journey.css">
-
+  <link rel="stylesheet" href="css/roadmap.css">
+  <style>
+    /* Journey Page Specific Additions - Maintaining roadmap.css style */
+    .page-hero--journey {
+      background: linear-gradient(135deg, #1a1a1a 0%, #4a2f1f 100%);
+      color: white;
+      padding: 6rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-hero--journey::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('../images/Unleashtheroar.svg') center/cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .page-hero--journey h1 {
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .page-hero--journey .text-lead {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      max-width: 800px;
+      margin: 0 auto var(--spacing-md);
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .journey-tagline {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--rebel-gold);
+      margin: var(--spacing-sm) 0 var(--spacing-lg);
+    }
+    
+    .hero-mascot {
+      font-size: 3rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+      display: inline-block;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Vote Card */
+    .vote-card {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(255, 51, 102, 0.1));
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-xl);
+      margin: var(--spacing-xl) 0;
+      transition: transform 0.3s ease;
+    }
+    
+    .vote-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .vote-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid rgba(212, 167, 106, 0.3);
+    }
+    
+    .vote-header i {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .vote-header h3 {
+      color: var(--rebel-gold);
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .vote-deadline {
+      display: inline-block;
+      background: rgba(255, 204, 0, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--rebel-gold);
+      margin-top: var(--spacing-sm);
+    }
+    
+    .vote-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .vote-option {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .vote-option:hover {
+      border-color: var(--rebel-gold);
+      transform: translateY(-5px);
+    }
+    
+    .vote-option.selected {
+      border-color: var(--rebel-gold);
+      background: linear-gradient(135deg, rgba(212, 167, 106, 0.2), rgba(212, 167, 106, 0.05));
+      box-shadow: 0 0 20px rgba(212, 167, 106, 0.3);
+    }
+    
+    .vote-option-icon {
+      font-size: 3rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .vote-option h4 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-sm);
+      font-size: 1.2rem;
+    }
+    
+    .vote-option p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      margin: var(--spacing-sm) 0;
+      line-height: 1.5;
+    }
+    
+    .vote-count {
+      display: inline-block;
+      background: rgba(212, 167, 106, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--rebel-gold);
+    }
+    
+    .era-badge, .location-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 15px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin: 0.2rem;
+    }
+    
+    .era-badge {
+      background: rgba(212, 167, 106, 0.2);
+      color: var(--rebel-gold);
+    }
+    
+    .location-badge {
+      background: rgba(255, 51, 102, 0.2);
+      color: var(--rebel-red);
+    }
+    
+    .timing-section {
+      text-align: center;
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .timing-section h4 {
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-lg);
+      font-size: 1.2rem;
+    }
+    
+    .timing-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      justify-content: center;
+    }
+    
+    .timing-btn {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--rebel-gold);
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      min-width: 120px;
+    }
+    
+    .timing-btn i {
+      font-size: 1.2rem;
+      margin-right: 0.3rem;
+    }
+    
+    .timing-detail {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+    
+    .timing-btn.selected {
+      background: linear-gradient(135deg, var(--rebel-gold), #ffaa00);
+      color: #1a1a1a;
+      border-color: var(--rebel-gold);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(212, 167, 106, 0.5);
+    }
+    
+    .vote-actions {
+      text-align: center;
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .submit-vote-btn {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .submit-vote-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(212, 167, 106, 0.4);
+    }
+    
+    .submit-vote-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .wallet-connect-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      flex-wrap: wrap;
+    }
+    
+    .connect-wallet-btn {
+      background: var(--rebel-gold);
+      color: #1a1a1a;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .connect-wallet-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .vote-stats {
+      background: rgba(212, 167, 106, 0.1);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+      text-align: center;
+    }
+    
+    .vote-stats i {
+      color: var(--rebel-gold);
+      margin-right: 0.5rem;
+    }
+    
+    .live-tally {
+      margin-top: var(--spacing-sm);
+      font-size: 0.9rem;
+      color: var(--rebel-gold);
+      font-weight: 600;
+    }
+    
+    .live-tally div {
+      margin: 5px 0;
+    }
+    
+    .vote-info {
+      margin-top: var(--spacing-sm);
+      font-size: 0.8rem;
+      color: var(--rebel-gold);
+    }
+    
+    /* Current Adventure Card */
+    .current-adventure-card {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(255, 51, 102, 0.1));
+      border: 2px solid var(--rebel-gold);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      margin: var(--spacing-xl) 0;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+    }
+    
+    .adventure-visual {
+      background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      gap: 1rem;
+    }
+    
+    .adventure-visual i {
+      font-size: 4rem;
+      color: var(--rebel-gold);
+    }
+    
+    .adventure-content {
+      padding: var(--spacing-xl);
+    }
+    
+    .adventure-badge {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .adventure-content h3 {
+      color: var(--rebel-gold);
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .adventure-content p {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .adventure-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-md) 0;
+      padding: var(--spacing-md);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--rebel-gold);
+    }
+    
+    .adventure-preview {
+      background: rgba(212, 167, 106, 0.1);
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius);
+      margin: var(--spacing-md) 0;
+      border-left: 3px solid var(--rebel-gold);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+    
+    .adventure-preview i {
+      color: var(--rebel-gold);
+      margin-top: 0.2rem;
+    }
+    
+    .notify-btn {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: var(--spacing-md);
+    }
+    
+    .notify-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Past Journeys Gallery */
+    .past-journeys-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-xl) 0;
+    }
+    
+    .journey-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(212, 167, 106, 0.3);
+    }
+    
+    .journey-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--rebel-gold);
+    }
+    
+    .journey-video-placeholder {
+      background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .journey-video-placeholder i {
+      font-size: 3rem;
+      color: var(--rebel-gold);
+    }
+    
+    .journey-card-content {
+      padding: var(--spacing-md);
+    }
+    
+    .journey-card-content h4 {
+      color: var(--rebel-gold);
+      margin-bottom: 0.5rem;
+    }
+    
+    .journey-card-content p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+    
+    .journey-card-content small {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.8rem;
+    }
+    
+    /* Leaderboard */
+    .leaderboard-list {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease;
+    }
+    
+    .leaderboard-item:hover {
+      background: rgba(212, 167, 106, 0.1);
+    }
+    
+    .leaderboard-rank {
+      font-weight: bold;
+      color: var(--rebel-gold);
+      width: 60px;
+      font-size: 1.1rem;
+    }
+    
+    .leaderboard-name {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .leaderboard-name i {
+      color: var(--rebel-gold);
+    }
+    
+    .leaderboard-votes {
+      color: #ffcc00;
+      font-weight: 600;
+    }
+    
+    .leaderboard-rewards {
+      text-align: center;
+      padding: var(--spacing-md);
+      background: rgba(212, 167, 106, 0.1);
+      border-radius: var(--border-radius);
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .leaderboard-rewards i {
+      color: var(--rebel-gold);
+      margin-right: 0.5rem;
+    }
+    
+    /* Suggestions */
+    .suggestions-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .suggestion-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-xl);
+      text-align: center;
+      border: 2px solid var(--rebel-red);
+    }
+    
+    .suggestion-card i.fa-comment {
+      font-size: 2.5rem;
+      color: var(--rebel-gold);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .suggestion-card p {
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: var(--spacing-lg);
+      font-size: 1.1rem;
+    }
+    
+    .suggestion-form {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .suggestion-input {
+      flex: 1;
+      min-width: 250px;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(212, 167, 106, 0.3);
+      border-radius: var(--border-radius);
+      color: white;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    .suggestion-input:focus {
+      outline: none;
+      border-color: var(--rebel-gold);
+    }
+    
+    .suggestion-btn {
+      background: linear-gradient(135deg, var(--rebel-red), var(--rebel-gold));
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--border-radius);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .suggestion-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .suggestions-list {
+      text-align: left;
+      margin-top: var(--spacing-lg);
+    }
+    
+    .suggestion-item {
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 0.5rem;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: background 0.3s ease;
+    }
+    
+    .suggestion-item:hover {
+      background: rgba(212, 167, 106, 0.1);
+    }
+    
+    .suggestion-item i {
+      color: var(--rebel-gold);
+      width: 24px;
+    }
+    
+    /* Toast Notification */
+    .journey-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 40px;
+      z-index: 10000;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .journey-toast.error {
+      background: #f44336;
+    }
+    
+    .journey-toast.warning {
+      background: #ff9800;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(30px);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .current-adventure-card {
+        grid-template-columns: 1fr;
+      }
+      
+      .adventure-visual {
+        min-height: 200px;
+      }
+      
+      .adventure-visual i {
+        font-size: 3rem;
+      }
+      
+      .vote-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .timing-options {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .timing-btn {
+        width: 100%;
+      }
+      
+      .leaderboard-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+      
+      .leaderboard-rank {
+        width: auto;
+      }
+      
+      .hero-mascot {
+        font-size: 2.5rem;
+      }
+      
+      .journey-tagline {
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .page-hero--journey h1 {
+        font-size: 1.6rem;
+      }
+      
+      .adventure-content {
+        padding: var(--spacing-lg);
+      }
+      
+      .adventure-content h3 {
+        font-size: 1.2rem;
+      }
+      
+      .vote-card {
+        padding: var(--spacing-lg);
+      }
+      
+      .submit-vote-btn {
+        width: 100%;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Loading Animation -->
@@ -64,7 +789,7 @@
         <div class="hero-mascot" data-aos="zoom-in">
           <i class="fas fa-dog"></i>
         </div>
-        <h1 data-aos="fade-up">THE REBELINUX JOURNEY</h1>
+        <h1 data-aos="fade-up">REBELINUX JOURNEY</h1>
         <p class="text-lead" data-aos="fade-up" data-aos-delay="100">
           Following RebelInuX, the Shiba Inu, Across the World & Throughout the Ages
         </p>
@@ -85,7 +810,7 @@
       </div>
     </section>
 
-    <!-- Journey Stats -->
+    <!-- Key Takeaways Stats -->
     <section class="key-takeaways" id="key-takeaways">
       <div class="container">
         <div class="takeaways-card" data-aos="fade-up">
@@ -93,7 +818,7 @@
             <div class="takeaways-icon">
               <i class="fas fa-paw"></i>
             </div>
-            <h2>RebelInuX's Journey Stats</h2>
+            <h2>RebelInuX Journey Stats</h2>
             <div class="current-status-badge">ALWAYS ON THE MOVE</div>
           </div>
           
@@ -113,7 +838,7 @@
               </div>
               <h4>Active Pathfinders</h4>
               <div class="takeaway-value" id="activeVotersCount">1,247</div>
-              <div class="takeaway-details">$REBL holders choosing his next destination</div>
+              <div class="takeaway-details">$REBL holders guiding the journey</div>
             </div>
             
             <div class="takeaway-item phase-complete" data-aos="fade-left" data-aos-delay="200">
@@ -122,15 +847,15 @@
               </div>
               <h4>Total Votes Cast</h4>
               <div class="takeaway-value" id="totalVotesCount">3,785</div>
-              <div class="takeaway-details">Guiding RebelInuX's path</div>
+              <div class="takeaway-details">Weighted by $REBL holdings</div>
             </div>
             
             <div class="takeaway-item community-driven" data-aos="fade-left" data-aos-delay="300">
               <div class="takeaway-icon">
                 <i class="fas fa-globe"></i>
               </div>
-              <h4>Eras & Locations</h4>
-              <div class="takeaway-value">1 Era, 1 Country</div>
+              <h4>Eras Explored</h4>
+              <div class="takeaway-value">1 Era</div>
               <div class="takeaway-details">More to come based on your votes</div>
             </div>
           </div>
@@ -155,10 +880,13 @@
             <div class="focus-card" data-aos="fade-right">
               <i class="fas fa-coins"></i>
               <h3>1. Hold $REBL Tokens</h3>
-              <p>Your $REBL holdings give you the power to guide RebelInuX. The more you hold, the stronger your voice in choosing where he goes next.</p>
+              <p>Your voting power is based on your $REBL holdings. <strong>500,000 $REBL = 1 vote</strong>. The more you hold, the stronger your voice.</p>
               <span class="status-badge status-in-progress">
                 <i class="fas fa-chart-line"></i> Active
               </span>
+              <div style="margin-top: 10px; font-size: 0.75rem; color: var(--rebel-gold); word-break: break-all;">
+                <i class="fas fa-link"></i> CA: F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
+              </div>
             </div>
             
             <div class="focus-card" data-aos="fade-up">
@@ -184,7 +912,7 @@
     </section>
     
     <!-- Current Adventure: French Revolution -->
-    <section id="current-adventure" class="timeline-section" data-aos="fade-up">
+    <section id="current-adventure" class="timeline-section completed" data-aos="fade-up">
       <div class="container">
         <div class="section-header">
           <i class="fas fa-flag-france"></i>
@@ -193,10 +921,8 @@
         
         <div class="current-adventure-card">
           <div class="adventure-visual">
-            <div class="visual-overlay">
-              <i class="fas fa-dog"></i>
-              <i class="fas fa-landmark"></i>
-            </div>
+            <i class="fas fa-dog"></i>
+            <i class="fas fa-landmark"></i>
           </div>
           <div class="adventure-content">
             <div class="adventure-badge">
@@ -243,55 +969,55 @@
           <h2>Guide RebelInuX: Where Should He Go Next?</h2>
         </div>
         
-        <div class="vote-container">
-          <div class="vote-card">
-            <div class="vote-header">
-              <i class="fas fa-paw"></i>
-              <h3>Voting Cycle #2: Choose RebelInuX's Next Adventure</h3>
-              <div class="vote-deadline">
-                <i class="fas fa-hourglass-half"></i> Voting ends in <span id="voteDeadline">7 days</span>
+        <div class="vote-card">
+          <div class="vote-header">
+            <i class="fas fa-paw"></i>
+            <h3>Voting Cycle #2: Choose RebelInuX's Next Adventure</h3>
+            <div class="vote-deadline">
+              <i class="fas fa-hourglass-half"></i> Voting ends in <span id="voteDeadline">7 days</span>
+            </div>
+          </div>
+          
+          <div class="vote-options" id="voteOptionsContainer">
+            <!-- Dynamic vote options will be inserted here -->
+          </div>
+          
+          <div class="timing-section">
+            <h4><i class="fas fa-clock"></i> When Should He Travel?</h4>
+            <div class="timing-options" id="timingOptionsContainer">
+              <div class="timing-btn" data-timing="q2">
+                <i class="fas fa-calendar-week"></i> Q2 2026
+                <span class="timing-detail">April - June</span>
+              </div>
+              <div class="timing-btn" data-timing="q3">
+                <i class="fas fa-calendar-alt"></i> Q3 2026
+                <span class="timing-detail">July - September</span>
+              </div>
+              <div class="timing-btn" data-timing="q4">
+                <i class="fas fa-calendar-month"></i> Q4 2026
+                <span class="timing-detail">October - December</span>
               </div>
             </div>
-            
-            <div class="vote-options" id="voteOptionsContainer">
-              <!-- Dynamic vote options will be inserted here -->
-            </div>
-            
-            <div class="timing-section">
-              <h4><i class="fas fa-clock"></i> When Should He Travel?</h4>
-              <div class="timing-options" id="timingOptionsContainer">
-                <div class="timing-btn" data-timing="q2">
-                  <i class="fas fa-calendar-week"></i> Q2 2026
-                  <span class="timing-detail">April - June</span>
-                </div>
-                <div class="timing-btn" data-timing="q3">
-                  <i class="fas fa-calendar-alt"></i> Q3 2026
-                  <span class="timing-detail">July - September</span>
-                </div>
-                <div class="timing-btn" data-timing="q4">
-                  <i class="fas fa-calendar-month"></i> Q4 2026
-                  <span class="timing-detail">October - December</span>
-                </div>
-              </div>
-            </div>
-            
-            <div class="vote-actions">
-              <button class="submit-vote-btn" id="submitVoteBtn">
-                <i class="fas fa-paper-plane"></i> Send RebelInuX There!
+          </div>
+          
+          <div class="vote-actions">
+            <button class="submit-vote-btn" id="submitVoteBtn">
+              <i class="fas fa-paper-plane"></i> Send RebelInuX There!
+            </button>
+            <div class="wallet-connect-info">
+              <i class="fas fa-link"></i> <span id="walletStatus">Wallet not connected</span>
+              <button class="connect-wallet-btn" id="connectWalletBtn">
+                <i class="fas fa-wallet"></i> Connect Wallet
               </button>
-              <div class="wallet-connect-info">
-                <i class="fas fa-link"></i> <span id="walletStatus">Wallet not connected</span>
-                <button class="connect-wallet-btn" id="connectWalletBtn">
-                  <i class="fas fa-wallet"></i> Connect Wallet
-                </button>
-              </div>
             </div>
-            
-            <div class="vote-stats" id="voteStatsDisplay">
-              <i class="fas fa-chart-line"></i>
-              <span>Live Tally:</span>
-              <div id="liveTally" class="live-tally"></div>
+            <div class="vote-info">
+              <i class="fas fa-info-circle"></i> 500,000 $REBL = 1 vote. Connect your wallet to see your voting power.
             </div>
+          </div>
+          
+          <div class="vote-stats">
+            <i class="fas fa-chart-line"></i> Live Tally:
+            <div id="liveTally" class="live-tally"></div>
           </div>
         </div>
       </div>
@@ -311,7 +1037,7 @@
       </div>
     </section>
     
-    <!-- Hall of Fame -->
+    <!-- Leaderboard / Hall of Fame -->
     <section id="leaderboard" data-aos="fade-up">
       <div class="container">
         <div class="takeaways-card" style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(0, 0, 0, 0.6));">
@@ -323,12 +1049,10 @@
             <div class="current-status-badge">Top Guides</div>
           </div>
           
-          <div class="leaderboard-container">
-            <div class="leaderboard-list" id="leaderboardList"></div>
-            <div class="leaderboard-rewards">
-              <i class="fas fa-gift"></i>
-              <span>Top 10 voters receive exclusive RebelInuX Pathfinder NFT badges + $REBL rewards!</span>
-            </div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+          <div class="leaderboard-rewards">
+            <i class="fas fa-gift"></i>
+            <span>Top 10 voters receive exclusive RebelInuX Pathfinder NFT badges + $REBL rewards!</span>
           </div>
         </div>
       </div>
@@ -347,7 +1071,7 @@
             <i class="fas fa-comment"></i>
             <p>Know a rebellious event, time period, or place RebelInuX should visit? Submit it for the next voting cycle!</p>
             <div class="suggestion-form">
-              <input type="text" id="suggestionInput" placeholder="Example: Ancient Rome, Viking Age, American Revolution, Future Mars Colony..." class="suggestion-input">
+              <input type="text" id="suggestionInput" placeholder="Example: Ancient Rome, Viking Age, American Revolution..." class="suggestion-input">
               <button id="submitSuggestionBtn" class="suggestion-btn">
                 <i class="fas fa-paper-plane"></i> Submit Idea
               </button>
@@ -391,25 +1115,27 @@
     </section>
     
     <!-- Call to Action -->
-    <section class="cta-section" data-aos="fade-up">
-      <div class="container">
-        <div class="mascot-call">
-          <i class="fas fa-dog"></i>
-        </div>
-        <h2>JOIN REBELINUX'S JOURNEY</h2>
-        <p>Hold $REBL tokens to guide our Shiba Inu mascot across the world and through the ages. Every token gives RebelInuX a new direction.</p>
-        
-        <div class="cta-buttons">
-          <a href="trade.html" class="cta-button">
-            <i class="fas fa-chart-line"></i> Buy $REBL
-          </a>
-          <a href="https://t.me/RebelInuX_Official" target="_blank" class="cta-button gold">
-            <i class="fab fa-telegram"></i> Join Telegram Army
-          </a>
-          <a href="community.html" class="cta-button red">
-            <i class="fas fa-users"></i> Community Hub
-          </a>
-        </div>
+    <section style="text-align: center; padding: var(--spacing-xl) var(--spacing-md); margin: var(--spacing-xl) auto; max-width: 800px;" data-aos="fade-up">
+      <h2 style="color: var(--rebel-gold); margin-bottom: var(--spacing-lg);">JOIN REBELINUX'S JOURNEY</h2>
+      <p style="font-size: 1.2em; margin-bottom: var(--spacing-lg); line-height: 1.6;">
+        Hold $REBL tokens to guide our Shiba Inu mascot across the world and through the ages. 
+        <strong>Every 500,000 $REBL gives RebelInuX a new direction.</strong>
+      </p>
+      
+      <div style="display: flex; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap;">
+        <a href="trade.html" class="cta-button">
+          <i class="fas fa-chart-line"></i> Buy $REBL
+        </a>
+        <a href="https://t.me/RebelInuX_Official" target="_blank" class="cta-button gold">
+          <i class="fab fa-telegram"></i> Join Telegram Army
+        </a>
+        <a href="community.html" class="cta-button" style="background: var(--rebel-red);">
+          <i class="fas fa-users"></i> Community Hub
+        </a>
+      </div>
+      
+      <div style="margin-top: var(--spacing-md); font-size: 0.8rem; color: var(--rebel-gold); word-break: break-all;">
+        <i class="fas fa-link"></i> $REBL Contract: F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump
       </div>
     </section>
 
@@ -450,21 +1176,27 @@
     </section>
   </main>
   
-  <!-- Footer -->
+  <!-- Footer will be inserted here by JavaScript -->
   <div id="footer-container"></div>
   
-  <!-- JavaScript -->
+  <!-- JavaScript Includes -->
   <script src="js/includes.js"></script>
   <script src="js/common.js"></script>
-  <script src="js/rebelinus-journey.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/rebelinus-journey.js"></script>
   
   <script>
+    // Initialize AOS
     document.addEventListener('DOMContentLoaded', function() {
-      AOS.init({ duration: 800, once: true, offset: 100 });
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
     });
   </script>
   
+  <!-- Analytics -->
   <script src="js/analytics.js" defer></script>
 </body>
 </html>
