@@ -1,4 +1,4 @@
-// ===== INDEXX PAGE JAVASCRIPT - EPOCH 31+ VERSION =====
+/// ===== INDEXX PAGE JAVASCRIPT - EPOCH 31+ VERSION =====
 // Professional Crypto Project - Mobile Optimized
 // Updated for Permanent Rebel Key, One-Time Registration, REBL Governance Hub
 
