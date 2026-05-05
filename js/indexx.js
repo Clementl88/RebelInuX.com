@@ -1,4 +1,4 @@
-/// ===== INDEXX PAGE JAVASCRIPT - EPOCH A1+ VERSION =====
+// ===== INDEXX PAGE JAVASCRIPT - EPOCH A1+ VERSION =====
 // Professional Crypto Project - Mobile Optimized
 // Updated for REBL-K, REBL-J1A, One-Time Registration, $REBL Only Governance
 
