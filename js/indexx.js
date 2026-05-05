@@ -1,11 +1,11 @@
-/// ===== INDEXX PAGE JAVASCRIPT - EPOCH A1+ VERSION =====
-// Professional Crypto Project - Mobile Optimized
-// Updated for REBL-K, REBL-J1A, One-Time Registration, $REBL Only Governance
+// ===== INDEX PAGE JAVASCRIPT - REBELINUX NFTFI ECOSYSTEM =====
+// Professional NFTfi Project - Mobile Optimized
+// Updated for Journey NFTs, AI-Animated Historical Art, NFTfi Focus
 
 let animationFrameId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 RebelInuX IndexX Page (Epoch A1+) Initializing...');
+  console.log('🚀 RebelInuX NFTfi Ecosystem Index Page Initializing...');
   
   setTimeout(() => {
     initIndexPage();
@@ -57,7 +57,7 @@ function initScrollAnimations() {
   const animatedElements = document.querySelectorAll(
     '.value-card, .comparison-card, .step-card, .stat-card, ' +
     '.token-card, .logo-card, .contract-emphasis, ' +
-    '.feature-card, .process-step, .journey-card'
+    '.feature-card, .process-step, .journey-card, .journey-story-card'
   );
   
   const observer = new IntersectionObserver((entries) => {
@@ -110,12 +110,12 @@ function showCopyFeedback(button, success) {
   const originalColor = button.style.color;
   
   if (success) {
-    button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    button.innerHTML = '<i class="fas fa-check"></i>';
     button.style.background = '#4CAF50';
     button.style.color = 'white';
-    showNotification('Contract address copied to clipboard!', 'success');
+    showNotification('Contract address copied!', 'success');
   } else {
-    button.innerHTML = '<i class="fas fa-times"></i> Failed';
+    button.innerHTML = '<i class="fas fa-times"></i>';
     button.style.background = '#f44336';
     button.style.color = 'white';
     showNotification('Failed to copy address', 'error');
@@ -138,7 +138,7 @@ function handleCopyClick(e) {
     contractText = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
     copyToClipboard(contractText.trim())
       .then(() => {
-        showNotification('Solana ($REBL) address copied!', 'success');
+        showNotification('$REBL contract address copied!', 'success');
         showCopyFeedback(button, true);
       })
       .catch(() => {
@@ -153,7 +153,7 @@ function handleCopyClick(e) {
     if (codeElement) {
       contractText = codeElement.getAttribute('data-full') || codeElement.textContent;
       const isSolana = contractText.length > 32;
-      const tokenType = isSolana ? 'Solana ($REBL)' : 'Base ($rebelinux)';
+      const tokenType = isSolana ? '$REBL (Solana)' : '$rebelinux (Base)';
       
       copyToClipboard(contractText.trim())
         .then(() => {
@@ -327,7 +327,7 @@ function copyContractAddress() {
   if (contractCode) {
     const address = contractCode.textContent.trim();
     copyToClipboard(address)
-      .then(() => showNotification('Contract address copied!', 'success'))
+      .then(() => showNotification('$REBL contract address copied!', 'success'))
       .catch(() => showNotification('Failed to copy', 'error'));
   }
 }
@@ -347,23 +347,53 @@ function initWalletDetection() {
 }
 
 function showNotification(message, type = 'info') {
+  // Remove existing notification
   const existing = document.querySelector('.notification');
   if (existing) existing.remove();
   
+  // Create notification element
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
-  notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i><span>${message}</span>`;
+  
+  let icon = 'fa-info-circle';
+  if (type === 'success') icon = 'fa-check-circle';
+  if (type === 'error') icon = 'fa-exclamation-circle';
+  if (type === 'warning') icon = 'fa-exclamation-triangle';
+  
+  notification.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+  
+  // Style notification
+  let bgColor = 'rgba(33, 150, 243, 0.95)';
+  if (type === 'success') bgColor = 'rgba(76, 175, 80, 0.95)';
+  if (type === 'error') bgColor = 'rgba(244, 67, 54, 0.95)';
+  if (type === 'warning') bgColor = 'rgba(255, 152, 0, 0.95)';
+  
   notification.style.cssText = `
-    position: fixed; top: 100px; right: 20px; background: ${type === 'success' ? 'rgba(76,175,80,0.95)' : type === 'error' ? 'rgba(244,67,54,0.95)' : 'rgba(33,150,243,0.95)'};
-    color: white; padding: 15px 25px; border-radius: 12px; display: flex; align-items: center; gap: 15px;
-    z-index: 10000; animation: slideInRight 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    backdrop-filter: blur(10px); max-width: min(350px, calc(100vw - 40px));
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: ${bgColor};
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    max-width: min(350px, calc(100vw - 40px));
+    font-size: 0.9rem;
   `;
+  
   document.body.appendChild(notification);
+  
+  // Auto remove after 4 seconds
   setTimeout(() => {
     notification.style.animation = 'slideOutRight 0.3s ease';
     setTimeout(() => notification.remove(), 300);
-  }, 5000);
+  }, 4000);
 }
 
 function isMobile() {
@@ -377,7 +407,7 @@ function optimizeForMobile() {
   if (heroMetrics) heroMetrics.style.gridTemplateColumns = '1fr';
   
   const chainNodes = document.querySelectorAll('.chain-node');
-  chainNodes.forEach(node => node.style.maxWidth = '280px');
+  chainNodes.forEach(node => node.style.maxWidth = '250px');
 }
 
 function initMobileOptimizations() {
@@ -394,29 +424,67 @@ function initMobileOptimizations() {
   }
 }
 
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#' || href === '#how-it-works') {
+        e.preventDefault();
+        const target = document.querySelector('#how-it-works');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+}
+
 function initIndexPage() {
-  console.log('✨ Initializing Epoch A1+ Index page features');
+  console.log('✨ Initializing RebelInuX NFTfi Ecosystem Index Page');
   
   const initFunctions = [
-    initLoader, initScrollAnimations, initParallaxEffects, initContractAddresses,
-    initCopyButtons, initBackToTop, initMobileOptimizations, initWalletDetection,
-    initLogoInteractions
+    initLoader,
+    initScrollAnimations,
+    initParallaxEffects,
+    initContractAddresses,
+    initCopyButtons,
+    initBackToTop,
+    initMobileOptimizations,
+    initWalletDetection,
+    initLogoInteractions,
+    initSmoothScroll
   ];
   
   initFunctions.forEach((fn, i) => {
     setTimeout(() => {
-      try { fn(); } catch (e) { console.warn(`⚠️ ${fn.name}:`, e); }
+      try { 
+        fn(); 
+      } catch (e) { 
+        console.warn(`⚠️ ${fn.name}:`, e); 
+      }
     }, i * 100);
   });
 }
 
-window.RebelInuX = { initIndexPage, copyToClipboard, addToWallet, showNotification, toggleContractView };
+// Expose global functions
+window.RebelInuX = { 
+  initIndexPage, 
+  copyToClipboard, 
+  addToWallet, 
+  showNotification, 
+  toggleContractView,
+  copyContractAddress
+};
 
+// Page ready event
 window.addEventListener('load', () => {
-  document.dispatchEvent(new CustomEvent('rebelinux:pageReady', { detail: { timestamp: Date.now(), page: 'indexx' } }));
-  console.log('✅ RebelInuX IndexX Page (Epoch A1+) Initialized');
+  document.dispatchEvent(new CustomEvent('rebelinux:pageReady', { 
+    detail: { timestamp: Date.now(), page: 'index' } 
+  }));
+  console.log('✅ RebelInuX NFTfi Ecosystem Index Page Initialized');
 });
 
+// Add required keyframe animations if not present
 const keyframeStyle = document.createElement('style');
 keyframeStyle.textContent = `
   @keyframes move-down {
