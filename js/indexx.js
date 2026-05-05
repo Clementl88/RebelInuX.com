@@ -1,4 +1,4 @@
-// ===== INDEX PAGE JAVASCRIPT - REBELINUX NFTFI ECOSYSTEM =====
+/// ===== INDEX PAGE JAVASCRIPT - REBELINUX NFTFI ECOSYSTEM =====
 // Professional NFTfi Project - Mobile Optimized
 // Updated for Journey NFTs, AI-Animated Historical Art, NFTfi Focus
 
