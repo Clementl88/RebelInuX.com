@@ -1,11 +1,11 @@
-/// ===== INDEX PAGE JAVASCRIPT - REBELINUX NFTFI ECOSYSTEM =====
+/* ===== INDEX PAGE JAVASCRIPT - REBELINUX NFTFI ECOSYSTEM ===== */
 // Professional NFTfi Project - Mobile Optimized
 // Updated for Journey NFTs, AI-Animated Historical Art, NFTfi Focus
 
 let animationFrameId = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 RebelInuX NFTfi Ecosystem Index Page Initializing...');
+  console.log('RebelInuX NFTfi Ecosystem Index Page Initializing...');
   
   setTimeout(() => {
     initIndexPage();
@@ -17,9 +17,9 @@ function initPerformanceMonitoring() {
   if (window.performance) {
     const perfData = window.performance.timing;
     const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-    console.log(`📊 Page loaded in ${loadTime}ms`);
+    console.log('Page loaded in ' + loadTime + 'ms');
     if (loadTime > 3000) {
-      console.warn('⚠️ Page load time is slow, consider optimization');
+      console.warn('Page load time is slow, consider optimization');
     }
   }
 }
@@ -157,7 +157,7 @@ function handleCopyClick(e) {
       
       copyToClipboard(contractText.trim())
         .then(() => {
-          showNotification(`${tokenType} address copied!`, 'success');
+          showNotification(tokenType + ' address copied!', 'success');
           showCopyFeedback(button, true);
         })
         .catch(() => {
@@ -190,7 +190,7 @@ function toggleContractView(button) {
     } else {
       const fullAddress = codeElement.getAttribute('data-full') || codeElement.textContent;
       const shortAddress = fullAddress.length > 20 
-        ? `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`
+        ? fullAddress.substring(0, 8) + '...' + fullAddress.substring(fullAddress.length - 6)
         : fullAddress;
       codeElement.textContent = shortAddress;
       icon.className = 'fas fa-expand-alt';
@@ -203,7 +203,7 @@ function initContractAddresses() {
   contractCodes.forEach(code => {
     const fullAddress = code.getAttribute('data-full') || code.textContent;
     if (fullAddress.length > 20) {
-      const shortAddress = `${fullAddress.substring(0, 8)}...${fullAddress.substring(fullAddress.length - 6)}`;
+      const shortAddress = fullAddress.substring(0, 8) + '...' + fullAddress.substring(fullAddress.length - 6);
       code.textContent = shortAddress;
     }
   });
@@ -215,7 +215,7 @@ function initParallaxEffects() {
   
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    heroBackground.style.transform = `translate3d(0, ${scrolled * -0.3}px, 0)`;
+    heroBackground.style.transform = 'translate3d(0, ' + (scrolled * -0.3) + 'px, 0)';
   });
 }
 
@@ -269,13 +269,13 @@ function addSolanaTokenToWallet(contractAddress, symbol) {
     phantom.connect({ onlyIfTrusted: true })
       .then(() => {
         copyToClipboard(contractAddress);
-        showNotification(`${symbol} address copied! Add it in Phantom.`, 'success');
+        showNotification(symbol + ' address copied! Add it in Phantom.', 'success');
       })
       .catch(() => {
         phantom.connect()
           .then(() => {
             copyToClipboard(contractAddress);
-            showNotification(`${symbol} address copied! Add it in Phantom.`, 'success');
+            showNotification(symbol + ' address copied! Add it in Phantom.', 'success');
           })
           .catch(() => showNotification('Failed to connect Phantom wallet', 'error'));
       });
@@ -302,7 +302,7 @@ function addBaseTokenToWallet(contractAddress, symbol, decimals) {
       }
     })
     .then(success => {
-      if (success) showNotification(`${symbol} added to wallet!`, 'success');
+      if (success) showNotification(symbol + ' added to wallet!', 'success');
       else showNotification('Failed to add token', 'error');
     })
     .catch(() => showNotification('Error adding token', 'error'));
@@ -353,14 +353,14 @@ function showNotification(message, type = 'info') {
   
   // Create notification element
   const notification = document.createElement('div');
-  notification.className = `notification notification-${type}`;
+  notification.className = 'notification notification-' + type;
   
   let icon = 'fa-info-circle';
   if (type === 'success') icon = 'fa-check-circle';
   if (type === 'error') icon = 'fa-exclamation-circle';
   if (type === 'warning') icon = 'fa-exclamation-triangle';
   
-  notification.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+  notification.innerHTML = '<i class="fas ' + icon + '"></i><span>' + message + '</span>';
   
   // Style notification
   let bgColor = 'rgba(33, 150, 243, 0.95)';
@@ -440,7 +440,7 @@ function initSmoothScroll() {
 }
 
 function initIndexPage() {
-  console.log('✨ Initializing RebelInuX NFTfi Ecosystem Index Page');
+  console.log('Initializing RebelInuX NFTfi Ecosystem Index Page');
   
   const initFunctions = [
     initLoader,
@@ -460,7 +460,7 @@ function initIndexPage() {
       try { 
         fn(); 
       } catch (e) { 
-        console.warn(`⚠️ ${fn.name}:`, e); 
+        console.warn(fn.name + ':', e); 
       }
     }, i * 100);
   });
@@ -468,12 +468,12 @@ function initIndexPage() {
 
 // Expose global functions
 window.RebelInuX = { 
-  initIndexPage, 
-  copyToClipboard, 
-  addToWallet, 
-  showNotification, 
-  toggleContractView,
-  copyContractAddress
+  initIndexPage: initIndexPage, 
+  copyToClipboard: copyToClipboard, 
+  addToWallet: addToWallet, 
+  showNotification: showNotification, 
+  toggleContractView: toggleContractView,
+  copyContractAddress: copyContractAddress
 };
 
 // Page ready event
@@ -481,7 +481,7 @@ window.addEventListener('load', () => {
   document.dispatchEvent(new CustomEvent('rebelinux:pageReady', { 
     detail: { timestamp: Date.now(), page: 'index' } 
   }));
-  console.log('✅ RebelInuX NFTfi Ecosystem Index Page Initialized');
+  console.log('RebelInuX NFTfi Ecosystem Index Page Initialized');
 });
 
 // Add required keyframe animations if not present
