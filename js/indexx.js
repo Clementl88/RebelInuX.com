@@ -1168,59 +1168,6 @@ function initWalletDetection() {
   });
 }
 
-// Function for adding Solana tokens
-function addSolanaTokenToWallet(contractAddress) {
-  // Check for Phantom wallet
-  if (window.phantom?.solana || window.solana) {
-    const solana = window.phantom?.solana || window.solana;
-    
-    // Check if wallet is connected
-    solana.connect({ onlyIfTrusted: true })
-      .then(() => {
-        // Wallet is connected, show instruction
-        showNotification('Please add $REBL manually using the contract address', 'info');
-        
-        // Copy address to clipboard
-        copyToClipboard(contractAddress)
-          .then(() => {
-            showNotification('Contract address copied! Paste it in your wallet', 'success');
-            
-            // Show more detailed instructions
-            setTimeout(() => {
-              showNotification('In Phantom: Tap + → Add Token → Paste Address', 'info');
-            }, 1500);
-          })
-          .catch(() => {
-            showNotification('Failed to copy address', 'error');
-          });
-      })
-      .catch(() => {
-        // Wallet not connected or user rejected
-        showNotification('Please connect your Phantom wallet first', 'warning');
-        
-        // Try to connect
-        solana.connect()
-          .then(() => {
-            showNotification('Wallet connected! Now try adding the token again', 'success');
-          })
-          .catch((error) => {
-            console.error('Connection error:', error);
-            showNotification('Failed to connect wallet', 'error');
-          });
-      });
-  } else {
-    // Phantom not installed
-    showNotification('Please install Phantom wallet for Solana', 'warning');
-    
-    // Offer to redirect to Phantom
-    setTimeout(() => {
-      if (confirm('Phantom wallet not detected. Would you like to install it?')) {
-        window.open('https://phantom.app/', '_blank');
-      }
-    }, 1000);
-  }
-}
-
 // Function for adding Ethereum tokens (for $rebelinux)
 function addEthereumTokenToWallet(contractAddress) {
   if (typeof window.ethereum !== 'undefined') {
