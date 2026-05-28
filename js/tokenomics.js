@@ -168,47 +168,45 @@ function initializeTokenomicsChart() {
         }
         
         // Create new chart
-        window.tokenomicsChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: [
-                    'Bonding Curve (53.77%)',
-                    'Founder\'s Commitment (16.23%)',
-                    'ZORA Rewards Treasury (16%)',
-                    'Team Fund (7%)',
-                    'Ecosystem Fund (6%)',
-                    'Community DAO Reserve (1%)'
-                ],
-                datasets: [{
-                    data: [53.77, 16.23, 16, 7, 6, 1],
-                    backgroundColor: [
-                        'rgba(255, 51, 102, 0.9)',     // Red
-                        'rgba(0, 170, 255, 0.9)',      // Blue
-                        'rgba(156, 39, 176, 0.9)',     // Purple
-                        'rgba(75, 192, 192, 0.9)',     // Teal
-                        'rgba(255, 206, 86, 0.9)',     // Yellow
-                        'rgba(75, 192, 86, 0.9)'       // Green
-                    ],
-                    borderColor: 'rgba(255, 255, 255, 1)',
-                    borderWidth: 2,
-                    hoverOffset: 15
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: window.innerWidth <= 768 ? 'bottom' : 'right',
-                        labels: {
-                            color: 'white',
-                            padding: 15,
-                            usePointStyle: true
-                        }
-                    }
+    window.tokenomicsChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: [
+            'Bonding Curve (70%)',
+            'ZORA Rewards Treasury (16%)',
+            'Team Fund (7%)',
+            'Ecosystem Fund (6%)',
+            'Community Reserve (1%)'
+        ],
+        datasets: [{
+            data: [70, 16, 7, 6, 1],
+            backgroundColor: [
+                'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
+                'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards
+                'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
+                'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
+                'rgba(75, 192, 86, 0.9)'       // Green - Community Reserve
+            ],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 2,
+            hoverOffset: 15
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: window.innerWidth <= 768 ? 'bottom' : 'right',
+                labels: {
+                    color: 'white',
+                    padding: 15,
+                    usePointStyle: true
                 }
             }
-        });
+        }
+    }
+});
         
     } catch (error) {
         console.error('Chart initialization failed:', error);
