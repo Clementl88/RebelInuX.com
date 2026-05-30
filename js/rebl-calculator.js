@@ -1389,13 +1389,14 @@ function setSimulatorPreset(type) {
             participating = calculatorState.currentParticipatingTokens;
             totalWS = calculatorState.currentTotalWS;
             break;
-        case 'optimal':
-            participating = 249621024; // 50% of CS
-            totalWS = participating * 1.6; // Realistic age bonus average
-            break;
+case 'half':
+    participating = 249621023; // 50% of CS
+    totalWS = 374431535; // Realistic WS at 50% (1.5x average)
+    break;
+    
 case 'full':
     participating = 499242047; // 100% of CS
-    totalWS = 748863070; // Max allowed for γ = 1.00 (CS × 1.5)
+    totalWS = 748863070; // CS × 1.5 (γ = 1.00)
     break;
         default:
             return;
