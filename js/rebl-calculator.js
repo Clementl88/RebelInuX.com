@@ -619,8 +619,9 @@ function updateOtherRowCalculations(input) {
         row.querySelector('.other-batch-age').value = 20;
     }
     
-    // Calculate weight factor: 1 + 0.07 × min(Age, 20)
-    const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
+    // Age Bonus: +7% per epoch (max 20 epochs = +140% = 2.4x)
+// Loyalty Bonus: At 20 epochs, a one-time +20% bonus applies (total 2.88x / +168%)
+const weightFactor = 1 + (K * Math.min(age, MAX_AGE));
     
     // Calculate weighted share: Token Amount × Weight Factor
     const weightedShare = amount * weightFactor;
@@ -859,7 +860,14 @@ function updateGammaInfoPanel(gamma) {
     const gammaInfoPanel = document.getElementById('gammaInfoPanel');
     if (!gammaInfoPanel) return;
     
-    let panelClass, panelTitle, panelText;
+    // Get current gamma components
+    const P = calculatorState.currentParticipatingTokens;
+    const totalWS = calculatorState.currentTotalWS;
+    const participationTerm = P / (0.5 * CS);
+    const inflationCapTerm = (CS * 1.5) / totalWS;
+    const minTerm = Math.min(1, participationTerm, inflationCapTerm);
+    
+    let panelClass, panelTitle, panelText, capNote = '';
     
     if (gamma >= 1) {
         panelClass = 'high';
@@ -867,25 +875,40 @@ function updateGammaInfoPanel(gamma) {
         panelText = 'Gamma Scale is at maximum! 100% of weekly pool is distributed. Ideal participation level reached.';
     } else if (gamma >= 0.8) {
         panelClass = 'high';
-        panelTitle = 'High Participation (γ = ' + gamma.toFixed(2) + ')';
+        panelTitle = `High Participation (γ = ${gamma.toFixed(2)})`;
         panelText = 'Excellent participation! Close to unlocking maximum rewards. Keep encouraging participation!';
     } else if (gamma >= 0.6) {
         panelClass = 'medium';
-        panelTitle = 'Good Participation (γ = ' + gamma.toFixed(2) + ')';
+        panelTitle = `Good Participation (γ = ${gamma.toFixed(2)})`;
         panelText = 'Good participation level. Rewards are scaling up with increased community activity.';
     } else {
         panelClass = 'low';
-        panelTitle = 'Low Participation (γ = ' + gamma.toFixed(2) + ')';
-        panelText = 'The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.';
+        panelTitle = `Low Gamma (γ = ${gamma.toFixed(2)})`;
+        
+        // Determine WHY gamma is low
+        if (participationTerm < inflationCapTerm) {
+            panelText = `Low participation: P/(0.5×CS) = ${participationTerm.toFixed(2)}. Need ${(0.5 * CS).toLocaleString()} tokens to reach 50% participation.`;
+            capNote = `Current participating tokens: ${P.toLocaleString()}`;
+        } else if (inflationCapTerm < participationTerm) {
+            panelText = `Age inflation cap active: CS×1.5/∑WS = ${inflationCapTerm.toFixed(2)}. Weighted shares (∑WS) are limiting Gamma.`;
+            capNote = `∑WS = ${totalWS.toLocaleString()} | Max allowed: ${(1.5 * CS).toLocaleString()}`;
+        } else {
+            panelText = 'Gamma is at minimum (40%). Increase participating tokens or reduce weighted shares to unlock higher rewards.';
+        }
     }
     
     gammaInfoPanel.className = `gamma-info-panel ${panelClass}`;
     gammaInfoPanel.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
             <i class="fas fa-info-circle"></i>
             <strong>${panelTitle}</strong>
         </div>
         <p style="margin: 0; font-size: 12px;">${panelText}</p>
+        ${capNote ? `<p style="margin: 5px 0 0 0; font-size: 11px; color: rgba(255, 255, 255, 0.6);"><i class="fas fa-chart-line"></i> ${capNote}</p>` : ''}
+        <p style="margin: 8px 0 0 0; font-size: 11px; color: rgba(212, 167, 106, 0.8); border-top: 1px solid rgba(212, 167, 106, 0.2); padding-top: 6px;">
+            <i class="fas fa-gift"></i> <strong>Loyalty Bonus:</strong> Batches at 20 epochs receive +20% on cumulative rewards.
+            <i class="fas fa-chart-line"></i> <strong>Age Cap:</strong> CS×1.5/∑WS prevents excessive age bonus inflation.
+        </p>
     `;
 }
 
