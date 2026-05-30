@@ -740,8 +740,7 @@
     <div class="explanation-item" style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; border-left: 3px solid var(--rebel-red);" data-aos="fade-right">
       <strong>WSᵢ:</strong> Your Weighted Share
       <div class="formula-sub" style="font-size: 0.9rem; margin-top: 8px; font-family: 'Courier New', monospace;">= Σ[Token Batch × (1 + 0.07 × min(Age, 20))]</div>
-      <div class="input-hint" style="margin-top: 8px; font-size: 0.85rem;">Each batch gets 7% weight boost per epoch (max 20 epochs = 2.4x)</div>
-    </div>
+<div class="input-hint" style="margin-top: 8px; font-size: 0.85rem;">Each batch gets +7% per epoch (max 20 epochs = +140% = 2.4x). At 20 epochs, a one-time +20% loyalty bonus applies (total 2.88x / +168%).</div>    </div>
     
     <div class="explanation-item" style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; border-left: 3px solid var(--rebel-blue);" data-aos="fade-up">
       <strong>∑WS:</strong> Total Active Weighted Shares
@@ -772,6 +771,11 @@
       <div class="formula-sub" style="font-size: 0.9rem; margin-top: 8px; font-family: 'Courier New', monospace;">1.5x multiplier for age bonus flexibility</div>
       <div class="input-hint" style="margin-top: 8px; font-size: 0.85rem;">Allows more age bonus before inflation cap kicks in</div>
     </div>
+    <div class="explanation-item" style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; border-left: 3px solid #FF9800;" data-aos="fade-up">
+  <strong><i class="fas fa-gift"></i> Loyalty Bonus:</strong>
+  <div class="formula-sub" style="font-size: 0.9rem; margin-top: 8px;">Once a batch reaches 20 epochs, a one-time +20% loyalty bonus is applied to that batch's cumulative rewards.</div>
+  <div class="input-hint" style="margin-top: 8px; font-size: 0.85rem;">Example: 20 epochs = +140% weight → ×1.20 loyalty bonus = +168% total for that batch</div>
+</div>
   </div>
   
   <!-- Key Benefits -->
@@ -1094,13 +1098,14 @@
             </div>
             
             <!-- Gamma Info Panel -->
-            <div id="gammaInfoPanel" class="gamma-info-panel low" data-aos="fade-up">
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
-                <i class="fas fa-info-circle"></i>
-                <strong>Low Participation (γ = 0.40)</strong>
-              </div>
-              <p style="margin: 0; font-size: 12px;">The Gamma Scale is at its minimum (40%). Increase participating tokens to unlock higher rewards.</p>
-            </div>
+<div id="gammaInfoPanel" class="gamma-info-panel low" data-aos="fade-up">
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+    <i class="fas fa-info-circle"></i>
+    <strong>Gamma Scale: γ = <span id="gammaPanelValue">0.40</span></strong>
+  </div>
+  <p style="margin: 0; font-size: 12px;" id="gammaPanelReason">Low participation: P/(0.5×CS) = <span id="gammaPanelTerm1">0.40</span> (below 1.0). Increase participating tokens to raise Gamma.</p>
+  <p style="margin: 5px 0 0 0; font-size: 11px; color: rgba(255, 255, 255, 0.6);" id="gammaPanelCapNote"></p>
+</div>
           </div>
           
           <!-- Gamma Components -->
@@ -1110,11 +1115,14 @@
               <div id="participationTerm" class="component-value">0.40</div>
               <div class="input-hint" style="font-size: 10px;">Participation Scaling</div>
             </div>
-            <div class="gamma-component" data-aos="fade-up">
-              <div class="component-label">CS×1.5/∑WS</div>
-              <div id="inflationCap" class="component-value">1.00</div>
-              <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
-            </div>
+<div class="gamma-component" data-aos="fade-up">
+  <div class="component-label">
+    CS×1.5/∑WS
+    <i class="fas fa-question-circle" style="font-size: 10px; cursor: help;" title="If weighted shares (∑WS) grow too large, this term can drop below 1.0 and limit Gamma, preventing excessive age bonus inflation."></i>
+  </div>
+  <div id="inflationCap" class="component-value">1.00</div>
+  <div class="input-hint" style="font-size: 10px;">Age Inflation Cap</div>
+</div>
             <div class="gamma-component" data-aos="fade-up">
               <div class="component-label">MIN(1, ...)</div>
               <div id="minTerm" class="component-value">0.40</div>
