@@ -172,7 +172,7 @@ function initializeTokenomicsChart() {
     type: 'pie',
     data: {
         labels: [
-            'Bonding Curve (70%)',
+            'Public Distribution (70%)',
             'ZORA Rewards Treasury (16%)',
             'Team Fund (7%)',
             'Ecosystem Fund (6%)',
@@ -181,7 +181,7 @@ function initializeTokenomicsChart() {
         datasets: [{
             data: [70, 16, 7, 6, 1],
             backgroundColor: [
-                'rgba(255, 51, 102, 0.9)',     // Red - Bonding Curve
+                'rgba(255, 51, 102, 0.9)',     // Red - Public Distribution
                 'rgba(156, 39, 176, 0.9)',     // Purple - ZORA Rewards
                 'rgba(75, 192, 192, 0.9)',     // Teal - Team Fund
                 'rgba(255, 206, 86, 0.9)',     // Yellow - Ecosystem Fund
