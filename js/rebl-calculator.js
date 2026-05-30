@@ -1393,10 +1393,10 @@ function setSimulatorPreset(type) {
             participating = 249621024; // 50% of CS
             totalWS = participating * 1.6; // Realistic age bonus average
             break;
-        case 'full':
-            participating = 499242047; // 100% of CS
-            totalWS = participating * 2.4; // Maximum age bonus (2.4x)
-            break;
+case 'full':
+    participating = 499242047; // 100% of CS
+    totalWS = 748863070; // Max allowed for γ = 1.00 (CS × 1.5)
+    break;
         default:
             return;
     }
