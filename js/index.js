@@ -1018,7 +1018,7 @@ function initAssetTypesDisplay() {
     if (!card.querySelector('.asset-type-badge')) {
       const badge = document.createElement('div');
       badge.className = 'asset-type-badge';
-      const types = ['TYPE 1', 'TYPE 2', 'TYPE 3'];
+      const types = ['ASSET 1', 'ASSET 2', 'ASSET 3'];
       const colors = ['#e3b87c', '#8b5cf6', '#fbbf24'];
       badge.textContent = types[index] || `TYPE ${index + 1}`;
       badge.style.cssText = `
