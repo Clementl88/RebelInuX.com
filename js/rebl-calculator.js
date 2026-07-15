@@ -1,4 +1,4 @@
-/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.3 - WHITEPAPER ALIGNED
+/// rebl-calculator.js --- Enhanced Calculator JavaScript v3.3 - WHITEPAPER ALIGNED
 
 // Global variables
 let rewardChart = null;
