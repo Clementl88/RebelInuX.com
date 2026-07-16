@@ -1,4 +1,4 @@
-/// rebl-calculator.js --- Enhanced Calculator JavaScript v3.3 - WHITEPAPER ALIGNED
+/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.4 - WITH COLLECTOR MULTIPLIER
 
 // Global variables
 let rewardChart = null;
@@ -19,16 +19,23 @@ let calculatorState = {
     otherAvgBonus: 1.0,
     currentParticipatingTokens: 0,
     currentTotalWS: 0,
-    isCalculating: false
+    isCalculating: false,
+    // Multiplier state
+    collectiblesCount: 1,
+    isLargestHolder: false,
+    multiplier: 1.0
 };
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing REBL Calculator v3.3 - Whitepaper Aligned');
+    console.log('Initializing REBL Calculator v3.4 - With Collector Multiplier');
     
     setTimeout(function() {
         addTokenBatch();
         addOtherParticipantBatch();
+        
+        // Initialize multiplier
+        updateMultiplier();
         
         updateOtherParticipantsSummary();
         updateParticipationDisplay();
@@ -49,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
     
     setTimeout(() => {
-        showToast('Welcome to the Epoch Reward Calculator! Add your tokens and other participants to calculate rewards.', 'info');
+        showToast('Welcome to the Epoch Reward Calculator! Add your tokens, set your collector multiplier, and calculate rewards.', 'info');
     }, 1500);
 });
 
@@ -128,6 +135,29 @@ function setupEventListeners() {
             updateWhatIfGamma();
         });
     }
+    
+    // Multiplier inputs
+    const collectiblesInput = document.getElementById('collectiblesCount');
+    const largestHolderCheck = document.getElementById('largestHolderCheck');
+    
+    if (collectiblesInput) {
+        collectiblesInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            value = Math.max(0, Math.min(20, value));
+            this.value = value;
+            calculatorState.collectiblesCount = value;
+            updateMultiplier();
+            calculateRewards();
+        });
+    }
+    
+    if (largestHolderCheck) {
+        largestHolderCheck.addEventListener('change', function() {
+            calculatorState.isLargestHolder = this.checked;
+            updateMultiplier();
+            calculateRewards();
+        });
+    }
 }
 
 function initQuickPresets() {
@@ -138,34 +168,46 @@ function initQuickPresets() {
     }
 }
 
-// ========== PARTICIPANT TYPE SELECTION ==========
-function setParticipantType(type) {
-    calculatorState.participantType = type;
+// ========== MULTIPLIER FUNCTIONS ==========
+function updateMultiplier() {
+    const collectibles = parseInt(document.getElementById('collectiblesCount').value) || 0;
+    const isLargestHolder = document.getElementById('largestHolderCheck').checked;
     
-    const detailedMode = document.getElementById('detailedBatchesMode');
-    const summaryMode = document.getElementById('summaryMode');
-    const detailedOption = document.querySelector('.participant-type-option:nth-child(1)');
-    const summaryOption = document.querySelector('.participant-type-option:nth-child(2)');
+    // Multiplierᵢ = 1.0 + (0.05 × Collectibles) + (0.1 × LargestHolder)
+    const collectiblesBonus = collectibles * 0.05;
+    const largestHolderBonus = isLargestHolder ? 0.1 : 0;
+    const totalMultiplier = 1.0 + collectiblesBonus + largestHolderBonus;
     
-    if (type === 'detailed') {
-        if (detailedMode) detailedMode.style.display = 'block';
-        if (summaryMode) summaryMode.style.display = 'none';
-        if (detailedOption) detailedOption.classList.add('active');
-        if (summaryOption) summaryOption.classList.remove('active');
-        calculateDetailedBatchesWS();
-    } else {
-        if (detailedMode) detailedMode.style.display = 'none';
-        if (summaryMode) summaryMode.style.display = 'block';
-        if (detailedOption) detailedOption.classList.remove('active');
-        if (summaryOption) summaryOption.classList.add('active');
-        updateSummaryOther();
+    // Update state
+    calculatorState.collectiblesCount = collectibles;
+    calculatorState.isLargestHolder = isLargestHolder;
+    calculatorState.multiplier = totalMultiplier;
+    
+    // Update display
+    const baseMultiplier = document.getElementById('baseMultiplier');
+    const collectiblesBonusDisplay = document.getElementById('collectiblesBonus');
+    const largestHolderBonusDisplay = document.getElementById('largestHolderBonus');
+    const totalMultiplierDisplay = document.getElementById('totalMultiplier');
+    
+    if (baseMultiplier) baseMultiplier.textContent = '1.00x';
+    
+    if (collectiblesBonusDisplay) {
+        collectiblesBonusDisplay.textContent = `+${collectiblesBonus.toFixed(2)}x`;
+        collectiblesBonusDisplay.style.color = collectiblesBonus > 0 ? '#4CAF50' : 'rgba(255, 255, 255, 0.6)';
     }
     
-    updateOtherParticipantsSummary();
-    updateParticipationDisplay();
-    calculateRewards();
+    if (largestHolderBonusDisplay) {
+        largestHolderBonusDisplay.textContent = `+${largestHolderBonus.toFixed(2)}x`;
+        largestHolderBonusDisplay.style.color = isLargestHolder ? '#FF9800' : 'rgba(255, 255, 255, 0.6)';
+    }
     
-    showToast(`Switched to ${type} mode for other participants`, 'info');
+    if (totalMultiplierDisplay) {
+        totalMultiplierDisplay.textContent = `${totalMultiplier.toFixed(2)}x`;
+        totalMultiplierDisplay.style.color = totalMultiplier > 1.0 ? '#ffcc00' : '#ffffff';
+    }
+    
+    // Recalculate user totals with new multiplier
+    updateUserTotals();
 }
 
 // ========== YOUR TOKEN BATCH FUNCTIONS ==========
@@ -343,22 +385,26 @@ function updateUserTotals() {
         }
     });
     
+    // Apply multiplier to total WS
+    const multiplier = calculatorState.multiplier || 1.0;
+    const totalWSWithMultiplier = totalWS * multiplier;
+    
     calculatorState.totalUserTokens = totalTokens;
-    calculatorState.totalUserWS = totalWS;
+    calculatorState.totalUserWS = totalWSWithMultiplier;
     
     const userTokenSum = document.getElementById('userTokenSum');
     const userWSSum = document.getElementById('userWSSum');
     
     if (userTokenSum) userTokenSum.textContent = formatNumber(totalTokens);
-    if (userWSSum) userWSSum.textContent = formatNumber(totalWS, true);
+    if (userWSSum) userWSSum.textContent = formatNumber(totalWSWithMultiplier, true);
     
     updateOtherParticipantsSummary();
     updateParticipationDisplay();
-    updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge);
+    updateUserStatsDisplay(totalTokens, totalWSWithMultiplier, totalWeightedAge);
     updateWSInfoDisplay();
 }
 
-function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
+function updateUserStatsDisplay(totalTokens, totalWSWithMultiplier, totalWeightedAge) {
     let statsContainer = document.querySelector('.user-stats-container');
     
     if (!statsContainer && totalTokens > 0) {
@@ -377,7 +423,7 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
                 <div class="user-stat-item">
                     <div class="user-stat-label">Your Weighted Share</div>
                     <div id="userTotalWS" class="user-stat-value">0</div>
-                    <div class="user-stat-percentage">Weighted total</div>
+                    <div class="user-stat-percentage">With ${calculatorState.multiplier.toFixed(2)}x multiplier</div>
                 </div>
                 <div class="user-stat-item">
                     <div class="user-stat-label">Avg. Age</div>
@@ -385,9 +431,9 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
                     <div class="user-stat-percentage">Epochs</div>
                 </div>
                 <div class="user-stat-item">
-                    <div class="user-stat-label">Avg. Age Bonus</div>
-                    <div id="userAvgBonus" class="user-stat-value">1.00x</div>
-                    <div class="user-stat-percentage">Multiplier (max +140%)</div>
+                    <div class="user-stat-label">Collector Multiplier</div>
+                    <div id="userMultiplier" class="user-stat-value">1.00x</div>
+                    <div class="user-stat-percentage">From collectibles</div>
                 </div>
             </div>
         `;
@@ -400,14 +446,15 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
     
     if (statsContainer) {
         const avgAge = totalTokens > 0 ? (totalWeightedAge / totalTokens) : 0;
-        const avgBonus = totalTokens > 0 ? (totalWS / totalTokens) : 1.0;
+        const avgBonus = totalTokens > 0 ? (totalWSWithMultiplier / totalTokens) : 1.0;
         const tokenPercentage = totalTokens > 0 ? ((totalTokens / CS) * 100) : 0;
+        const multiplier = calculatorState.multiplier || 1.0;
         
         const userTotalTokens = document.getElementById('userTotalTokens');
         const userTokenPercentage = document.getElementById('userTokenPercentage');
         const userTotalWS = document.getElementById('userTotalWS');
         const userAvgAge = document.getElementById('userAvgAge');
-        const userAvgBonus = document.getElementById('userAvgBonus');
+        const userMultiplier = document.getElementById('userMultiplier');
         
         if (userTotalTokens) {
             userTotalTokens.textContent = formatNumber(totalTokens);
@@ -426,8 +473,8 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
         }
         
         if (userTotalWS) {
-            userTotalWS.textContent = formatNumber(totalWS, true);
-            userTotalWS.style.color = totalWS > totalTokens * 1.5 ? 'var(--rebel-gold)' : '#ffffff';
+            userTotalWS.textContent = formatNumber(totalWSWithMultiplier, true);
+            userTotalWS.style.color = totalWSWithMultiplier > totalTokens * 1.5 ? 'var(--rebel-gold)' : '#ffffff';
         }
         
         if (userAvgAge) {
@@ -435,17 +482,9 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
             userAvgAge.style.color = avgAge >= 10 ? '#4CAF50' : avgAge >= 5 ? '#FFC107' : '#ffffff';
         }
         
-        if (userAvgBonus) {
-            userAvgBonus.textContent = `${avgBonus.toFixed(2)}x`;
-            if (avgBonus >= 2.0) {
-                userAvgBonus.style.color = '#4CAF50';
-            } else if (avgBonus >= 1.5) {
-                userAvgBonus.style.color = '#FFC107';
-            } else if (avgBonus > 1.0) {
-                userAvgBonus.style.color = '#FF9800';
-            } else {
-                userAvgBonus.style.color = '#ffffff';
-            }
+        if (userMultiplier) {
+            userMultiplier.textContent = `${multiplier.toFixed(2)}x`;
+            userMultiplier.style.color = multiplier > 1.0 ? '#ffcc00' : '#ffffff';
         }
         
         statsContainer.style.display = totalTokens > 0 ? 'block' : 'none';
@@ -454,8 +493,15 @@ function updateUserStatsDisplay(totalTokens, totalWS, totalWeightedAge) {
 
 function updateWSInfoDisplay() {
     const yourTokensDisplay = document.getElementById('yourTokensDisplay');
+    const yourWSDisplay = document.getElementById('yourWSDisplay');
+    
     if (yourTokensDisplay) {
         yourTokensDisplay.textContent = formatNumber(calculatorState.totalUserTokens);
+    }
+    
+    if (yourWSDisplay) {
+        yourWSDisplay.textContent = formatNumber(calculatorState.totalUserWS, true);
+        yourWSDisplay.style.color = calculatorState.multiplier > 1.0 ? '#ffcc00' : 'var(--rebel-gold)';
     }
 }
 
@@ -634,7 +680,6 @@ function updateOtherParticipantsSummary() {
     const otherAvgAge = document.getElementById('otherAvgAge');
     const otherAvgBonus = document.getElementById('otherAvgBonus');
     const otherTotalWS = document.getElementById('otherTotalWS');
-    const displayOtherTokens = document.getElementById('displayOtherTokens');
     
     if (otherTotalTokens) {
         otherTotalTokens.textContent = formatNumber(calculatorState.otherTokens);
@@ -656,9 +701,6 @@ function updateOtherParticipantsSummary() {
     }
     if (otherTotalWS) {
         otherTotalWS.textContent = formatNumber(calculatorState.otherWS);
-    }
-    if (displayOtherTokens) {
-        displayOtherTokens.textContent = formatNumber(calculatorState.otherTokens);
     }
     
     updateParticipationDisplay();
@@ -818,6 +860,7 @@ function updateGammaInfoPanel(gamma) {
         ${capNote ? `<p style="margin: 5px 0 0 0; font-size: 11px; color: rgba(255, 255, 255, 0.6);"><i class="fas fa-chart-line"></i> ${capNote}</p>` : ''}
         <p style="margin: 8px 0 0 0; font-size: 11px; color: rgba(212, 167, 106, 0.8); border-top: 1px solid rgba(212, 167, 106, 0.2); padding-top: 6px;">
             <i class="fas fa-info-circle"></i> <strong>Age Bonus:</strong> +7% per epoch (max +140% at 20 epochs).
+            <i class="fas fa-trophy"></i> <strong>Collector Multiplier:</strong> +0.05x per collectible, +0.1x for largest holder.
             <i class="fas fa-chart-line"></i> <strong>Age Cap:</strong> CS×1.5/∑WS prevents excessive age bonus inflation.
         </p>
     `;
@@ -852,7 +895,7 @@ function updateContributionPercentage() {
                     </div>
                 </div>
                 <div class="contribution-item">
-                    <div class="contribution-label">Weighted Share</div>
+                    <div class="contribution-label">Weighted Share (with Multiplier)</div>
                     <div id="wsContribution" class="contribution-value">0%</div>
                     <div class="contribution-bar">
                         <div id="wsBar" class="bar-fill" style="width: 0%"></div>
@@ -942,6 +985,10 @@ function calculateRewards() {
             }
         });
         
+        // Apply collector multiplier to user WS
+        const multiplier = calculatorState.multiplier || 1.0;
+        userWS = userWS * multiplier;
+        
         const participatingTokens = calculatorState.currentParticipatingTokens;
         const totalWS = calculatorState.currentTotalWS;
         
@@ -1012,6 +1059,10 @@ function calculateRewards() {
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Average Bonus:</strong></span>
                     <span style="color: var(--rebel-gold); font-weight: bold;">${userAvgBonus.toFixed(2)}x</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
+                    <span><strong>Collector Multiplier:</strong></span>
+                    <span style="color: #ffcc00; font-weight: bold;">${multiplier.toFixed(2)}x</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">
                     <span><strong>Your Weighted Share (WSᵢ):</strong></span>
@@ -1165,6 +1216,38 @@ function updateWhatIfGamma() {
 function loadExampleCase(type) {
     clearTokenBatches();
     
+    // Set multiplier defaults based on example type
+    let collectibles = 1;
+    let isLargest = false;
+    
+    switch(type) {
+        case 'starter':
+            collectibles = 1;
+            isLargest = false;
+            break;
+        case 'investor':
+            collectibles = 3;
+            isLargest = true;
+            break;
+        case 'whale':
+            collectibles = 5;
+            isLargest = true;
+            break;
+        default:
+            collectibles = 1;
+            isLargest = false;
+    }
+    
+    // Set multiplier inputs
+    const collectiblesInput = document.getElementById('collectiblesCount');
+    const largestHolderCheck = document.getElementById('largestHolderCheck');
+    
+    if (collectiblesInput) collectiblesInput.value = collectibles;
+    if (largestHolderCheck) largestHolderCheck.checked = isLargest;
+    calculatorState.collectiblesCount = collectibles;
+    calculatorState.isLargestHolder = isLargest;
+    updateMultiplier();
+    
     setTimeout(() => {
         switch(type) {
             case 'starter':
@@ -1226,6 +1309,9 @@ function loadExampleCase(type) {
                     <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.2rem;">
                         <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
                     </span>
+                    <span style="display: block; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                        Multiplier: ${calculatorState.multiplier.toFixed(2)}x (${collectibles} collectibles${isLargest ? ', largest holder' : ''})
+                    </span>
                 </div>
                 <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
                     Adjust other participants and click "Calculate Your $REBL epoch rewards" to see results!
@@ -1240,7 +1326,7 @@ function loadExampleCase(type) {
         }
         
         setTimeout(() => calculateRewards(), 800);
-        showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} example loaded`, 'success');
+        showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} example loaded with ${calculatorState.multiplier.toFixed(2)}x multiplier`, 'success');
     }, 500);
 }
 
@@ -1434,7 +1520,7 @@ function updateChart(batchData, totalUserWS) {
                 
                 ctx.font = '600 10px Montserrat';
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.fillText('Total WS = Σ(Tokens × Age Bonus)', centerX, centerY - 18);
+                ctx.fillText('Total WS = Σ(Tokens × Age Bonus) × Multiplier', centerX, centerY - 18);
                 
                 ctx.beginPath();
                 ctx.moveTo(centerX - 40, centerY - 5);
@@ -1461,7 +1547,8 @@ function updateChart(batchData, totalUserWS) {
                 
                 ctx.font = '600 10px Montserrat';
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-                ctx.fillText(`${batchData.length} token batches`, centerX, centerY + 52);
+                const multiplier = calculatorState.multiplier || 1.0;
+                ctx.fillText(`${batchData.length} token batches × ${multiplier.toFixed(2)}x multiplier`, centerX, centerY + 52);
                 
                 ctx.restore();
             }
@@ -1587,3 +1674,4 @@ window.updateWhatIfGamma = updateWhatIfGamma;
 window.loadExampleCase = loadExampleCase;
 window.setSimulatorPreset = setSimulatorPreset;
 window.toggleFormulaDetails = toggleFormulaDetails;
+window.updateMultiplier = updateMultiplier;
