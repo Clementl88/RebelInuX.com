@@ -171,16 +171,16 @@ function initQuickPresets() {
 // ========== MULTIPLIER FUNCTIONS ==========
 function updateMultiplier() {
     const collectibles = parseInt(document.getElementById('collectiblesCount').value) || 0;
-    const isLargestHolder = document.getElementById('largestHolderCheck').checked;
+    const largestHolderCount = parseInt(document.getElementById('largestHolderCount').value) || 0;
     
-    // Multiplierᵢ = 1.0 + (0.05 × Collectibles) + (0.1 × LargestHolder)
+    // Multiplierᵢ = 1.0 + (0.05 × Collectibles) + (0.1 × LargestHolderCount)
     const collectiblesBonus = collectibles * 0.05;
-    const largestHolderBonus = isLargestHolder ? 0.1 : 0;
+    const largestHolderBonus = largestHolderCount * 0.1;
     const totalMultiplier = 1.0 + collectiblesBonus + largestHolderBonus;
     
     // Update state
     calculatorState.collectiblesCount = collectibles;
-    calculatorState.isLargestHolder = isLargestHolder;
+    calculatorState.largestHolderCount = largestHolderCount;
     calculatorState.multiplier = totalMultiplier;
     
     // Update display
@@ -198,7 +198,7 @@ function updateMultiplier() {
     
     if (largestHolderBonusDisplay) {
         largestHolderBonusDisplay.textContent = `+${largestHolderBonus.toFixed(2)}x`;
-        largestHolderBonusDisplay.style.color = isLargestHolder ? '#FF9800' : 'rgba(255, 255, 255, 0.6)';
+        largestHolderBonusDisplay.style.color = largestHolderBonus > 0 ? '#FF9800' : 'rgba(255, 255, 255, 0.6)';
     }
     
     if (totalMultiplierDisplay) {
@@ -209,6 +209,7 @@ function updateMultiplier() {
     // Recalculate user totals with new multiplier
     updateUserTotals();
 }
+
 
 // ========== YOUR TOKEN BATCH FUNCTIONS ==========
 function addTokenBatch(amount = '', age = '') {
@@ -1217,35 +1218,36 @@ function loadExampleCase(type) {
     clearTokenBatches();
     
     // Set multiplier defaults based on example type
-    let collectibles = 1;
-    let isLargest = false;
+    let collectibles = 0;
+    let largestHolderCount = 0;
     
     switch(type) {
         case 'starter':
             collectibles = 1;
-            isLargest = false;
+            largestHolderCount = 0;
             break;
         case 'investor':
             collectibles = 3;
-            isLargest = true;
+            largestHolderCount = 1;
             break;
         case 'whale':
             collectibles = 5;
-            isLargest = true;
+            largestHolderCount = 3;
             break;
         default:
             collectibles = 1;
-            isLargest = false;
+            largestHolderCount = 0;
     }
     
     // Set multiplier inputs
     const collectiblesInput = document.getElementById('collectiblesCount');
-    const largestHolderCheck = document.getElementById('largestHolderCheck');
+    const largestHolderInput = document.getElementById('largestHolderCount');
     
     if (collectiblesInput) collectiblesInput.value = collectibles;
-    if (largestHolderCheck) largestHolderCheck.checked = isLargest;
+    if (largestHolderInput) largestHolderInput.value = largestHolderCount;
+    
     calculatorState.collectiblesCount = collectibles;
-    calculatorState.isLargestHolder = isLargest;
+    calculatorState.largestHolderCount = largestHolderCount;
     updateMultiplier();
     
     setTimeout(() => {
@@ -1304,13 +1306,14 @@ function loadExampleCase(type) {
         
         const resultElement = document.getElementById('reward-result');
         if (resultElement) {
+            const multiplier = calculatorState.multiplier || 1.0;
             resultElement.innerHTML = `
                 <div style="text-align: center; margin-bottom: var(--spacing-sm);">
                     <span style="color: var(--rebel-gold); font-weight: bold; font-size: 1.2rem;">
                         <i class="fas fa-user-check"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Example Loaded
                     </span>
                     <span style="display: block; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
-                        Multiplier: ${calculatorState.multiplier.toFixed(2)}x (${collectibles} collectibles${isLargest ? ', largest holder' : ''})
+                        Multiplier: ${multiplier.toFixed(2)}x (${collectibles} collectibles${largestHolderCount > 0 ? `, ${largestHolderCount} largest holder${largestHolderCount > 1 ? 's' : ''}` : ''})
                     </span>
                 </div>
                 <p style="text-align: center; color: var(--rebel-gold); font-size: 0.9rem;">
