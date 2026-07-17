@@ -1,6 +1,6 @@
 /* community.css - Community Hub specific styles */
 
-/* ===== CSS Variables (ensure these exist) ===== */
+/* ===== CSS Variables ===== */
 :root {
     --rebel-purple: #9C27B0;
     --rebel-red: #D74D4D;
@@ -60,6 +60,7 @@
   border: 1px solid rgba(255, 204, 0, 0.3);
   backdrop-filter: blur(10px);
   transition: var(--transition);
+  box-sizing: border-box;
 }
 
 .stat-item:hover {
@@ -175,7 +176,7 @@
   padding-left: var(--spacing-xl);
 }
 
-/* ===== Social Platforms ===== */
+/* ===== Social Platforms - FIXED OVERLAP ===== */
 .social-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -195,8 +196,10 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  min-height: 320px;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .social-card:hover {
@@ -204,113 +207,6 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== Social Card Colors ===== */
-.telegram-card {
-  border-color: #0088cc !important;
-  background: linear-gradient(135deg, rgba(0, 136, 204, 0.15), rgba(0, 136, 204, 0.05)) !important;
-}
-.telegram-card .social-icon,
-.telegram-card h3,
-.telegram-card .social-button { color: #0088cc !important; }
-.telegram-card::before { background: #0088cc !important; }
-
-.twitter-card {
-  border-color: #1DA1F2 !important;
-  background: linear-gradient(135deg, rgba(29, 161, 242, 0.15), rgba(29, 161, 242, 0.05)) !important;
-}
-.twitter-card .social-icon,
-.twitter-card h3,
-.twitter-card .social-button { color: #1DA1F2 !important; }
-.twitter-card::before { background: #1DA1F2 !important; }
-
-.discord-card {
-  border-color: #7289da !important;
-  background: linear-gradient(135deg, rgba(114, 137, 218, 0.15), rgba(114, 137, 218, 0.05)) !important;
-}
-.discord-card .social-icon,
-.discord-card h3,
-.discord-card .social-button { color: #7289da !important; }
-.discord-card::before { background: #7289da !important; }
-
-.zora-card {
-  border-color: #7C3AED !important;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.05)) !important;
-}
-.zora-card .social-icon,
-.zora-card h3,
-.zora-card .social-button { color: #7C3AED !important; }
-.zora-card::before { background: #7C3AED !important; }
-
-/* TikTok Card */
-.tiktok-card {
-  border-color: #000000 !important;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)) !important;
-}
-.tiktok-card .social-icon,
-.tiktok-card h3,
-.tiktok-card .social-button { color: #ffffff !important; }
-.tiktok-card::before { 
-  background: linear-gradient(90deg, #00f2ea, #ff0050) !important; 
-}
-.tiktok-card:hover {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)) !important;
-}
-
-/* Instagram Card */
-.instagram-card {
-  border-color: #E4405F !important;
-  background: linear-gradient(135deg, rgba(228, 64, 95, 0.15), rgba(228, 64, 95, 0.05)) !important;
-}
-.instagram-card .social-icon,
-.instagram-card h3,
-.instagram-card .social-button { color: #E4405F !important; }
-.instagram-card::before { 
-  background: linear-gradient(45deg, #f09433, #d62976, #962fbf) !important; 
-}
-.instagram-card:hover {
-  background: linear-gradient(135deg, rgba(228, 64, 95, 0.25), rgba(228, 64, 95, 0.08)) !important;
-}
-
-/* Farcaster Card */
-.farcaster-card {
-  border-color: #8B5CF6 !important;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05)) !important;
-}
-.farcaster-card .social-icon,
-.farcaster-card h3,
-.farcaster-card .social-button { color: #8B5CF6 !important; }
-.farcaster-card::before { background: #8B5CF6 !important; }
-.farcaster-card:hover {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(139, 92, 246, 0.08)) !important;
-}
-
-/* Reddit Card */
-.reddit-card {
-  border-color: #FF4500 !important;
-  background: linear-gradient(135deg, rgba(255, 69, 0, 0.15), rgba(255, 69, 0, 0.05)) !important;
-}
-.reddit-card .social-icon,
-.reddit-card h3,
-.reddit-card .social-button { color: #FF4500 !important; }
-.reddit-card::before { background: #FF4500 !important; }
-.reddit-card:hover {
-  background: linear-gradient(135deg, rgba(255, 69, 0, 0.25), rgba(255, 69, 0, 0.08)) !important;
-}
-
-/* YouTube Card */
-.youtube-card {
-  border-color: #FF0000 !important;
-  background: linear-gradient(135deg, rgba(255, 0, 0, 0.15), rgba(255, 0, 0, 0.05)) !important;
-}
-.youtube-card .social-icon,
-.youtube-card h3,
-.youtube-card .social-button { color: #FF0000 !important; }
-.youtube-card::before { background: #FF0000 !important; }
-.youtube-card:hover {
-  background: linear-gradient(135deg, rgba(255, 0, 0, 0.25), rgba(255, 0, 0, 0.08)) !important;
-}
-
-/* ===== Social Card Shared Styles ===== */
 .social-card::before {
   content: '';
   position: absolute;
@@ -337,6 +233,7 @@
   margin-bottom: var(--spacing-lg);
   background: rgba(255, 255, 255, 0.1);
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .social-card:hover .social-icon {
@@ -355,6 +252,7 @@
   line-height: 1.6;
   margin-bottom: var(--spacing-lg);
   flex: 1;
+  max-width: 100%;
 }
 
 .social-stats {
@@ -394,10 +292,52 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* ===== Social Card Colors ===== */
+.telegram-card { border-color: #0088cc !important; background: linear-gradient(135deg, rgba(0, 136, 204, 0.15), rgba(0, 136, 204, 0.05)) !important; }
+.telegram-card .social-icon, .telegram-card h3, .telegram-card .social-button { color: #0088cc !important; }
+.telegram-card::before { background: #0088cc !important; }
+
+.twitter-card { border-color: #1DA1F2 !important; background: linear-gradient(135deg, rgba(29, 161, 242, 0.15), rgba(29, 161, 242, 0.05)) !important; }
+.twitter-card .social-icon, .twitter-card h3, .twitter-card .social-button { color: #1DA1F2 !important; }
+.twitter-card::before { background: #1DA1F2 !important; }
+
+.discord-card { border-color: #7289da !important; background: linear-gradient(135deg, rgba(114, 137, 218, 0.15), rgba(114, 137, 218, 0.05)) !important; }
+.discord-card .social-icon, .discord-card h3, .discord-card .social-button { color: #7289da !important; }
+.discord-card::before { background: #7289da !important; }
+
+.zora-card { border-color: #7C3AED !important; background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.05)) !important; }
+.zora-card .social-icon, .zora-card h3, .zora-card .social-button { color: #7C3AED !important; }
+.zora-card::before { background: #7C3AED !important; }
+
+.tiktok-card { border-color: #000000 !important; background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)) !important; }
+.tiktok-card .social-icon, .tiktok-card h3, .tiktok-card .social-button { color: #ffffff !important; }
+.tiktok-card::before { background: linear-gradient(90deg, #00f2ea, #ff0050) !important; }
+.tiktok-card:hover { background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)) !important; }
+
+.instagram-card { border-color: #E4405F !important; background: linear-gradient(135deg, rgba(228, 64, 95, 0.15), rgba(228, 64, 95, 0.05)) !important; }
+.instagram-card .social-icon, .instagram-card h3, .instagram-card .social-button { color: #E4405F !important; }
+.instagram-card::before { background: linear-gradient(45deg, #f09433, #d62976, #962fbf) !important; }
+.instagram-card:hover { background: linear-gradient(135deg, rgba(228, 64, 95, 0.25), rgba(228, 64, 95, 0.08)) !important; }
+
+.farcaster-card { border-color: #8B5CF6 !important; background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05)) !important; }
+.farcaster-card .social-icon, .farcaster-card h3, .farcaster-card .social-button { color: #8B5CF6 !important; }
+.farcaster-card::before { background: #8B5CF6 !important; }
+.farcaster-card:hover { background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(139, 92, 246, 0.08)) !important; }
+
+.reddit-card { border-color: #FF4500 !important; background: linear-gradient(135deg, rgba(255, 69, 0, 0.15), rgba(255, 69, 0, 0.05)) !important; }
+.reddit-card .social-icon, .reddit-card h3, .reddit-card .social-button { color: #FF4500 !important; }
+.reddit-card::before { background: #FF4500 !important; }
+.reddit-card:hover { background: linear-gradient(135deg, rgba(255, 69, 0, 0.25), rgba(255, 69, 0, 0.08)) !important; }
+
+.youtube-card { border-color: #FF0000 !important; background: linear-gradient(135deg, rgba(255, 0, 0, 0.15), rgba(255, 0, 0, 0.05)) !important; }
+.youtube-card .social-icon, .youtube-card h3, .youtube-card .social-button { color: #FF0000 !important; }
+.youtube-card::before { background: #FF0000 !important; }
+.youtube-card:hover { background: linear-gradient(135deg, rgba(255, 0, 0, 0.25), rgba(255, 0, 0, 0.08)) !important; }
+
 /* ===== Daily Voting Missions ===== */
 .voting-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--spacing-xl);
   margin: var(--spacing-xl) 0;
 }
@@ -411,6 +351,12 @@
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 280px;
+  box-sizing: border-box;
 }
 
 .voting-card:hover {
@@ -448,6 +394,7 @@
   margin: 0 auto var(--spacing-md);
   box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .voting-card:hover .voting-icon {
@@ -466,6 +413,7 @@
   font-size: 0.95em;
   line-height: 1.6;
   margin-bottom: var(--spacing-lg);
+  flex: 1;
   min-height: 48px;
 }
 
@@ -509,7 +457,7 @@
 
 .guidelines-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-xl);
   margin: var(--spacing-xl) 0;
   padding: 0 var(--spacing-xl);
@@ -524,6 +472,9 @@
   border-radius: var(--border-radius);
   border: 1px solid rgba(255, 204, 0, 0.2);
   transition: var(--transition);
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 120px;
 }
 
 .guideline-item:hover {
@@ -585,7 +536,7 @@
 /* ===== Community Benefits ===== */
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-xl);
   margin: var(--spacing-xl) 0;
 }
@@ -599,6 +550,12 @@
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 220px;
+  box-sizing: border-box;
 }
 
 .benefit-card:hover {
@@ -628,6 +585,7 @@
   color: var(--rebel-gold);
   margin-bottom: var(--spacing-lg);
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .benefit-card:hover .benefit-icon {
@@ -644,7 +602,8 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.95em;
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 var(--spacing-sm) 0;
+  flex: 1;
 }
 
 .benefit-link {
@@ -677,6 +636,7 @@
   border-radius: var(--border-radius);
   border: 1px solid rgba(255, 204, 0, 0.3);
   transition: var(--transition);
+  box-sizing: border-box;
 }
 
 .step-item:hover {
@@ -781,6 +741,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .faq-item:hover {
@@ -854,7 +815,7 @@
 /* ===== Related Pages ===== */
 .related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-xl);
   max-width: 1200px;
   margin: 0 auto;
@@ -874,6 +835,8 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
+  height: 100%;
 }
 
 .related-card::before {
@@ -900,6 +863,7 @@
   font-size: 2.5rem;
   margin-bottom: var(--spacing-lg);
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .related-card h3 {
@@ -937,69 +901,32 @@
 }
 
 /* ===== Color Themes for Related Cards ===== */
-.artwork-card {
-  border-color: #E91E63 !important;
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.1), rgba(233, 30, 99, 0.05)) !important;
-}
-.artwork-card .related-icon,
-.artwork-card h3,
-.artwork-card .related-arrow { color: #E91E63 !important; }
+.artwork-card { border-color: #E91E63 !important; background: linear-gradient(135deg, rgba(233, 30, 99, 0.1), rgba(233, 30, 99, 0.05)) !important; }
+.artwork-card .related-icon, .artwork-card h3, .artwork-card .related-arrow { color: #E91E63 !important; }
 .artwork-card::before { background: #E91E63 !important; }
-.artwork-card:hover {
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.15), rgba(233, 30, 99, 0.08)) !important;
-  border-color: #C2185B !important;
-}
-.artwork-card:hover .related-icon,
-.artwork-card:hover h3,
-.artwork-card:hover .related-arrow { color: #C2185B !important; }
+.artwork-card:hover { background: linear-gradient(135deg, rgba(233, 30, 99, 0.15), rgba(233, 30, 99, 0.08)) !important; border-color: #C2185B !important; }
+.artwork-card:hover .related-icon, .artwork-card:hover h3, .artwork-card:hover .related-arrow { color: #C2185B !important; }
 
-.governance-card {
-  border-color: #FF9800 !important;
-  background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05)) !important;
-}
-.governance-card .related-icon,
-.governance-card h3,
-.governance-card .related-arrow { color: #FF9800 !important; }
+.governance-card { border-color: #FF9800 !important; background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05)) !important; }
+.governance-card .related-icon, .governance-card h3, .governance-card .related-arrow { color: #FF9800 !important; }
 .governance-card::before { background: #FF9800 !important; }
-.governance-card:hover {
-  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.08)) !important;
-  border-color: #E67E22 !important;
-}
-.governance-card:hover .related-icon,
-.governance-card:hover h3,
-.governance-card:hover .related-arrow { color: #E67E22 !important; }
+.governance-card:hover { background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.08)) !important; border-color: #E67E22 !important; }
+.governance-card:hover .related-icon, .governance-card:hover h3, .governance-card:hover .related-arrow { color: #E67E22 !important; }
 
-.roadmap-card {
-  border-color: #FF5722 !important;
-  background: linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(255, 87, 34, 0.05)) !important;
-}
-.roadmap-card .related-icon,
-.roadmap-card h3,
-.roadmap-card .related-arrow { color: #FF5722 !important; }
+.roadmap-card { border-color: #FF5722 !important; background: linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(255, 87, 34, 0.05)) !important; }
+.roadmap-card .related-icon, .roadmap-card h3, .roadmap-card .related-arrow { color: #FF5722 !important; }
 .roadmap-card::before { background: #FF5722 !important; }
-.roadmap-card:hover {
-  background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(255, 87, 34, 0.08)) !important;
-  border-color: #E74C3C !important;
-}
-.roadmap-card:hover .related-icon,
-.roadmap-card:hover h3,
-.roadmap-card:hover .related-arrow { color: #E74C3C !important; }
+.roadmap-card:hover { background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(255, 87, 34, 0.08)) !important; border-color: #E74C3C !important; }
+.roadmap-card:hover .related-icon, .roadmap-card:hover h3, .roadmap-card:hover .related-arrow { color: #E74C3C !important; }
 
 /* ===== Responsive Design ===== */
 @media (max-width: 1024px) {
-  .social-grid,
-  .benefits-grid,
-  .guidelines-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .voting-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .faq-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .social-grid { grid-template-columns: repeat(2, 1fr); }
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .guidelines-grid { grid-template-columns: repeat(2, 1fr); }
+  .voting-grid { grid-template-columns: repeat(2, 1fr); }
+  .faq-grid { grid-template-columns: repeat(2, 1fr); }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1010,15 +937,28 @@
   .related-grid,
   .faq-grid {
     grid-template-columns: 1fr;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
+  
+  .social-card { min-height: 280px; }
+  .benefit-card { min-height: 200px; }
+  .voting-card { min-height: 250px; }
+  .related-card { min-height: 200px; }
+  .guidelines-grid { padding: 0; }
   
   .community-stats {
     gap: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .stat-item {
     min-width: 100px;
     padding: var(--spacing-md);
+    flex: 1 1 45%;
+    max-width: 160px;
   }
   
   .mission-header {
@@ -1051,24 +991,6 @@
     gap: var(--spacing-md);
   }
   
-  .related-grid {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .related-card {
-    min-height: 200px;
-    padding: var(--spacing-lg);
-  }
-  
-  .related-icon {
-    font-size: 2.2rem;
-  }
-  
-  .related-card h3 {
-    font-size: 1.1rem;
-  }
-  
   .pro-tip,
   .guidelines-warning {
     flex-direction: column;
@@ -1076,42 +998,8 @@
     gap: var(--spacing-sm);
   }
   
-  .faq-item h4 {
-    font-size: 1rem;
-  }
-  
-  .faq-item p {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .related-card {
-    min-height: 180px;
-    padding: var(--spacing-md);
-  }
-  
-  .related-icon {
-    font-size: 2rem;
-  }
-  
-  .related-card h3 {
-    font-size: 1rem;
-  }
-  
-  .related-card p {
-    font-size: 0.85rem;
-  }
-  
-  .benefit-card,
-  .voting-card,
-  .guideline-item {
-    padding: var(--spacing-lg);
-  }
-  
-  .faq-item {
-    padding: var(--spacing-lg);
-  }
+  .faq-item h4 { font-size: 1rem; }
+  .faq-item p { font-size: 0.9rem; }
   
   .hero-buttons {
     flex-direction: column;
@@ -1121,7 +1009,32 @@
   .hero-buttons .cta-button {
     width: 100%;
     margin: 5px 0 !important;
+    justify-content: center;
   }
+}
+
+@media (max-width: 480px) {
+  .social-card { min-height: 250px; padding: var(--spacing-lg); }
+  .benefit-card { min-height: 180px; padding: var(--spacing-lg); }
+  .voting-card { min-height: 220px; padding: var(--spacing-lg); }
+  .related-card { min-height: 180px; padding: var(--spacing-md); }
+  
+  .related-icon { font-size: 2rem; }
+  .related-card h3 { font-size: 1rem; }
+  .related-card p { font-size: 0.85rem; }
+  
+  .benefit-card,
+  .voting-card,
+  .guideline-item { padding: var(--spacing-lg); }
+  .faq-item { padding: var(--spacing-lg); }
+  
+  .stat-item {
+    min-width: 80px;
+    padding: var(--spacing-sm);
+    flex: 1 1 40%;
+  }
+  
+  .stat-number { font-size: var(--font-size-xl); }
 }
 
 /* ===== Touch Device Optimizations ===== */
