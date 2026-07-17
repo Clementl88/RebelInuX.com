@@ -931,7 +931,37 @@ function hideLoader() {
         }, 500);
     }
 }
-
+function setupMobileNavToggle() {
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    const navDesktop = document.getElementById('nav-desktop');
+    
+    if (mobileToggle && navDesktop) {
+        mobileToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isActive = navDesktop.classList.contains('active');
+            
+            // Toggle navigation
+            navDesktop.classList.toggle('active');
+            this.classList.toggle('active');
+            this.setAttribute('aria-expanded', !isActive);
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        });
+        
+        // Close mobile menu when clicking a link
+        navDesktop.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navDesktop.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                mobileToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+    }
+}
 // ========== INITIALIZE EVERYTHING ==========
 function initializeCommon() {
     console.log('🚀 Initializing common functionality...');
@@ -966,6 +996,7 @@ function initializeCommon() {
         
         // 10. Setup enhanced contract copy functionality
         setupContractCopy();
+        setupMobileNavToggle(); 
         
         // 11. Add body class for JavaScript detection
         document.body.classList.add('js-enabled');
