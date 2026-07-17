@@ -1,4 +1,4 @@
-/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.4 - WITH COLLECTOR MULTIPLIER
+/// rebl-calculator.js -- Enhanced Calculator JavaScript v3.5 - FULLY ALIGNED WITH WHITEPAPER
 
 // Global variables
 let rewardChart = null;
@@ -22,13 +22,13 @@ let calculatorState = {
     isCalculating: false,
     // Multiplier state
     collectiblesCount: 1,
-    isLargestHolder: false,
+    largestHolderCount: 0,
     multiplier: 1.0
 };
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing REBL Calculator v3.4 - With Collector Multiplier');
+    console.log('Initializing REBL Calculator v3.5 - Fully Aligned with Whitepaper');
     
     setTimeout(function() {
         addTokenBatch();
@@ -136,14 +136,14 @@ function setupEventListeners() {
         });
     }
     
-    // Multiplier inputs
+    // Multiplier inputs - using number inputs (not checkboxes)
     const collectiblesInput = document.getElementById('collectiblesCount');
-    const largestHolderCheck = document.getElementById('largestHolderCheck');
+    const largestHolderInput = document.getElementById('largestHolderCount');
     
     if (collectiblesInput) {
         collectiblesInput.addEventListener('input', function() {
             let value = parseInt(this.value) || 0;
-            value = Math.max(0, Math.min(20, value));
+            value = Math.max(0, Math.min(100, value)); // Max 100 as per HTML
             this.value = value;
             calculatorState.collectiblesCount = value;
             updateMultiplier();
@@ -151,9 +151,12 @@ function setupEventListeners() {
         });
     }
     
-    if (largestHolderCheck) {
-        largestHolderCheck.addEventListener('change', function() {
-            calculatorState.isLargestHolder = this.checked;
+    if (largestHolderInput) {
+        largestHolderInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            value = Math.max(0, Math.min(100, value)); // Max 100 as per HTML
+            this.value = value;
+            calculatorState.largestHolderCount = value;
             updateMultiplier();
             calculateRewards();
         });
@@ -209,7 +212,6 @@ function updateMultiplier() {
     // Recalculate user totals with new multiplier
     updateUserTotals();
 }
-
 
 // ========== YOUR TOKEN BATCH FUNCTIONS ==========
 function addTokenBatch(amount = '', age = '') {
