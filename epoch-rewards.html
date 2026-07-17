@@ -338,12 +338,13 @@
             <!-- Formula Breakdown -->
             <div class="formula-breakdown">
               <!-- WSᵢ Component -->
-              <div class="formula-component" style="border-left-color: var(--rebel-red);" data-aos="fade-right">
-                <h5><i class="fas fa-user"></i> WSᵢ (Your Weighted Share)</h5>
-                <p><strong>WSᵢ = Σ[Token Batch × (1 + 0.07 × min(Epoch Age, 20))]</strong></p>
-                <p>Your loyalty metric: <strong>+7% weight boost per epoch (max 20 epochs = +140%)</strong>.</p>
-                <p>Example: A token batch held for 20 epochs receives <strong>+140% weight</strong>.</p>
-              </div>
+<div class="formula-component" style="border-left-color: var(--rebel-red);" data-aos="fade-right">
+  <h5><i class="fas fa-user"></i> WSᵢ (Your Weighted Share)</h5>
+  <p><strong>WSᵢ = Σ[Token Batch × (1 + 0.07 × min(Epoch Age, 20))] × Multiplierᵢ</strong></p>
+  <p>Your loyalty metric: <strong>+7% weight boost per epoch</strong> (max 20 epochs = +140%).</p>
+  <p><strong>Multiplierᵢ = 1.0 + (0.05 × Collectibles) + (0.1 × LargestHolderCount)</strong></p>
+  <p>+0.05x per Journey Collectible held | +0.1x per collectible where you're the largest holder</p>
+</div>
               
               <!-- ∑WS Component -->
               <div class="formula-component" style="border-left-color: var(--rebel-gold);" data-aos="fade-up">
@@ -482,7 +483,41 @@
         </div>
       </div>
     </section>
-
+    
+<!-- Collector Multiplier -->
+<div class="collector-multiplier-section" data-aos="fade-up">
+  <h4><i class="fas fa-trophy"></i> Collector Multiplier</h4>
+  <div class="multiplier-info-grid">
+    <div class="multiplier-info-item">
+      <div class="multiplier-info-icon"><i class="fas fa-coins"></i></div>
+      <div class="multiplier-info-label">Base</div>
+      <div class="multiplier-info-value">1.0x</div>
+      <div class="multiplier-info-desc">Always applied</div>
+    </div>
+    <div class="multiplier-info-item gold">
+      <div class="multiplier-info-icon"><i class="fas fa-film"></i></div>
+      <div class="multiplier-info-label">Per Collectible</div>
+      <div class="multiplier-info-value">+0.05x</div>
+      <div class="multiplier-info-desc">Each Journey Collectible you hold</div>
+    </div>
+    <div class="multiplier-info-item orange">
+      <div class="multiplier-info-icon"><i class="fas fa-crown"></i></div>
+      <div class="multiplier-info-label">Largest Holder</div>
+      <div class="multiplier-info-value">+0.1x</div>
+      <div class="multiplier-info-desc">Per collectible where you're the largest holder</div>
+    </div>
+    <div class="multiplier-info-item highlight">
+      <div class="multiplier-info-icon"><i class="fas fa-calculator"></i></div>
+      <div class="multiplier-info-label">Total Multiplier</div>
+      <div class="multiplier-info-value" style="color: #ffcc00;">1.0 + (0.05×C) + (0.1×L)</div>
+      <div class="multiplier-info-desc">Applied to your weighted share (WSᵢ)</div>
+    </div>
+  </div>
+  <div class="multiplier-note">
+    <i class="fas fa-info-circle"></i>
+    <strong>Example:</strong> Holding 5 collectibles with 2 largest holder bonuses = <strong>1.0 + (0.05×5) + (0.1×2) = 1.45x multiplier</strong>
+  </div>
+</div>
     <!-- Epoch Stats with Tabs -->
     <section id="epoch-stats" data-aos="fade-up">
       <div class="container">
