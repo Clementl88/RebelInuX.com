@@ -2677,3 +2677,73 @@ footer {
         padding: 4px 12px;
     }
 }
+/* ===== FIX: DROPDOWN CLICK ISSUES ===== */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    min-width: 240px;
+    background: rgba(15, 15, 15, 0.98);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(212, 167, 106, 0.3);
+    padding: 8px 0;
+    z-index: 1001;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+}
+
+.dropdown.active .dropdown-content {
+    display: block !important;
+}
+
+/* Fix for mobile dropdown */
+@media (max-width: 768px) {
+    .dropdown-content {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        min-width: unset !important;
+        margin-top: 8px !important;
+        background: rgba(20, 20, 20, 0.95) !important;
+        border-radius: 12px !important;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 !important;
+        transition: max-height 0.4s ease, padding 0.4s ease, opacity 0.3s ease;
+        opacity: 0;
+    }
+    
+    .dropdown.active .dropdown-content {
+        max-height: 600px !important;
+        padding: 12px 0 !important;
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    .dropdown-content a {
+        padding: 14px 20px !important;
+        margin: 4px 12px !important;
+        border-radius: 10px !important;
+        font-size: 1rem !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .dropdown-content a:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        transform: translateX(5px) !important;
+    }
+}
