@@ -2399,3 +2399,190 @@ canvas[aria-label*="chart"] {
     display: block;
   }
 }
+/* ===== SUMMARY MODE STYLES ===== */
+#summaryMode {
+    display: none; /* Hidden by default, shown via JS */
+    padding: var(--spacing-md) 0;
+}
+
+#summaryMode .slider-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+}
+
+#summaryMode .slider-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 170, 255, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    transition: var(--transition-normal);
+}
+
+#summaryMode .slider-container:hover {
+    border-color: var(--rebel-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+#summaryMode .slider-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+#summaryMode .slider-info-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--rebel-blue);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+#summaryMode .slider-info-label i {
+    color: var(--rebel-blue);
+    font-size: 0.9rem;
+}
+
+#summaryMode .slider-info-value {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+#summaryMode .slider-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--rebel-blue);
+    min-width: 60px;
+    text-align: right;
+}
+
+#summaryMode .value-input {
+    width: 110px;
+    padding: var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 170, 255, 0.3);
+    border-radius: var(--border-radius-sm);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-align: right;
+    transition: var(--transition-normal);
+}
+
+#summaryMode .value-input:focus {
+    outline: none;
+    border-color: var(--rebel-blue);
+    box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.2);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#summaryMode .slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(90deg, rgba(0, 170, 255, 0.3), var(--rebel-blue));
+    border-radius: 4px;
+    outline: none;
+    margin: var(--spacing-sm) 0 var(--spacing-md) 0;
+    cursor: pointer;
+}
+
+#summaryMode .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--rebel-blue);
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+    transition: var(--transition-normal);
+}
+
+#summaryMode .slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 170, 255, 0.6);
+}
+
+#summaryMode .slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--rebel-blue);
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+}
+
+#summaryMode .input-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted-dark);
+    margin-top: var(--spacing-xs);
+    display: block;
+}
+
+/* Summary Mode active state */
+#summaryMode.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Participant Mode transitions */
+.participant-mode {
+    transition: all 0.3s ease;
+}
+
+.participant-mode.active {
+    display: block;
+}
+
+/* Fix for summary mode on mobile */
+@media (max-width: 768px) {
+    #summaryMode .slider-group {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    #summaryMode .slider-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+    
+    #summaryMode .slider-info-value {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    #summaryMode .value-input {
+        width: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    #summaryMode .slider-container {
+        padding: var(--spacing-md);
+    }
+    
+    #summaryMode .value-input {
+        width: 80px;
+        font-size: var(--font-size-sm);
+    }
+}
+/* Initially hidden - shown by JavaScript when summary mode is selected */
+#summaryMode {
+    display: none;
+}
+
+#summaryMode.active {
+    display: block;
+}
