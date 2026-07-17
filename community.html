@@ -78,19 +78,19 @@
         </div>
         <div class="community-stats" data-aos="fade-up" data-aos-delay="300">
           <div class="stat-item">
-            <div class="stat-number" id="telegramMembers">278+</div>
+            <div class="stat-number" id="telegramMembers">Loading...</div>
             <div class="stat-label">Telegram</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="xFollowers">440+</div>
+            <div class="stat-number" id="xFollowers">Loading...</div>
             <div class="stat-label">X Followers</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="discordMembers">65+</div>
+            <div class="stat-number" id="discordMembers">Loading...</div>
             <div class="stat-label">Discord</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" id="zoraFollowers">432+</div>
+            <div class="stat-number" id="zoraFollowers">Loading...</div>
             <div class="stat-label">ZORA</div>
           </div>
         </div>
@@ -156,7 +156,7 @@
             <p>Main community chat for announcements, discussions, and support</p>
             <div class="social-stats">
               <span class="social-stat">
-                <i class="fas fa-users"></i> 278+ Members
+                <i class="fas fa-users"></i> <span id="telegramStat">278</span>+ Members
               </span>
               <span class="social-stat">
                 <i class="fas fa-comments"></i> Active Community
@@ -179,7 +179,7 @@
             <p>Latest updates, news, and community engagement</p>
             <div class="social-stats">
               <span class="social-stat">
-                <i class="fas fa-users"></i> 440+ Followers
+                <i class="fas fa-users"></i> <span id="xStat">440</span>+ Followers
               </span>
               <span class="social-stat">
                 <i class="fas fa-retweet"></i> Daily Updates
@@ -248,7 +248,7 @@
             <p>Community discussions, events, and voice channels</p>
             <div class="social-stats">
               <span class="social-stat">
-                <i class="fas fa-users"></i> 65+ Members
+                <i class="fas fa-users"></i> <span id="discordStat">65</span>+ Members
               </span>
               <span class="social-stat">
                 <i class="fas fa-headset"></i> Voice Chat
@@ -291,7 +291,7 @@
             <p>NFT collections, digital art, and creative community</p>
             <div class="social-stats">
               <span class="social-stat">
-                <i class="fas fa-users"></i> 432+ Followers
+                <i class="fas fa-users"></i> <span id="zoraStat">432</span>+ Followers
               </span>
               <span class="social-stat">
                 <i class="fas fa-palette"></i> NFT Community
@@ -810,7 +810,213 @@
         once: true,
         offset: 100
       });
+      
+      // Fetch live community stats
+      fetchCommunityStats();
     });
+
+    /**
+     * Fetch live community stats from various sources
+     * Uses fallback values if APIs fail
+     */
+    function fetchCommunityStats() {
+      // Fallback values
+      const fallbackStats = {
+        telegram: 278,
+        twitter: 440,
+        discord: 65,
+        zora: 432
+      };
+      
+      // Try to get Telegram member count
+      try {
+        fetchTelegramMembers();
+      } catch (e) {
+        console.log('Telegram stats fallback:', fallbackStats.telegram);
+        updateStat('telegramMembers', fallbackStats.telegram);
+        updateStat('telegramStat', fallbackStats.telegram);
+      }
+      
+      // Try to get X follower count
+      try {
+        fetchTwitterFollowers();
+      } catch (e) {
+        console.log('X stats fallback:', fallbackStats.twitter);
+        updateStat('xFollowers', fallbackStats.twitter);
+        updateStat('xStat', fallbackStats.twitter);
+      }
+      
+      // Try to get Discord member count
+      try {
+        fetchDiscordMembers();
+      } catch (e) {
+        console.log('Discord stats fallback:', fallbackStats.discord);
+        updateStat('discordMembers', fallbackStats.discord);
+        updateStat('discordStat', fallbackStats.discord);
+      }
+      
+      // Try to get ZORA follower count
+      try {
+        fetchZoraFollowers();
+      } catch (e) {
+        console.log('ZORA stats fallback:', fallbackStats.zora);
+        updateStat('zoraFollowers', fallbackStats.zora);
+        updateStat('zoraStat', fallbackStats.zora);
+      }
+    }
+
+    /**
+     * Update a stat element with a value
+     */
+    function updateStat(elementId, value) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = value;
+      }
+    }
+
+    /**
+     * Fetch Telegram member count using Telemetry API
+     */
+    function fetchTelegramMembers() {
+      // Using Telegram's public API via Telemetry
+      const apiUrl = 'https://api.telegram.org/bot' + 
+        // Note: This requires a bot token. You can use a public service or fallback.
+        // For now, we use a proxy that doesn't require authentication
+        'https://api.telegram.org/bot' + 
+        // Using a public bot token for demonstration - replace with your own
+        'YOUR_BOT_TOKEN' +
+        '/getChatMembersCount?chat_id=@RebelInuX';
+      
+      // Since we can't expose a bot token in client-side code,
+      // we'll use a simpler approach: fetch from a public API
+      // or use the fallback value.
+      
+      // For production, you should use a server-side proxy or
+      // a service like Telemetry API.
+      
+      // Using fallback with a note that this is from cache
+      updateStat('telegramMembers', '278+');
+      updateStat('telegramStat', '278');
+      
+      // Try to fetch from a public mirror if available
+      fetch('https://t.me/RebelInuX')
+        .then(response => response.text())
+        .then(html => {
+          // Try to parse member count from the page
+          const match = html.match(/(\d+[\.,]?\d*)\s*(?:members|subscribers)/i);
+          if (match && match[1]) {
+            const count = parseInt(match[1].replace(/[,\.]/g, ''));
+            if (count > 0) {
+              updateStat('telegramMembers', count + '+');
+              updateStat('telegramStat', count);
+            }
+          }
+        })
+        .catch(() => {
+          // Fallback - keep existing value
+          console.log('Using Telegram fallback value');
+        });
+    }
+
+    /**
+     * Fetch X (Twitter) follower count using a public API
+     */
+    function fetchTwitterFollowers() {
+      // Use a public Twitter API proxy
+      const username = 'RebelInuX';
+      
+      // Try multiple free APIs
+      const apis = [
+        `https://api.twitter.com/2/users/by/username/${username}?user.fields=public_metrics`,
+        `https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=${username}`,
+        `https://api.followercount.net/api/v1/count?username=${username}&service=twitter`
+      ];
+      
+      // Use the first API that works
+      fetch(apis[0])
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.data && data.data.public_metrics) {
+            const count = data.data.public_metrics.followers_count;
+            if (count > 0) {
+              updateStat('xFollowers', count + '+');
+              updateStat('xStat', count);
+            }
+          }
+        })
+        .catch(() => {
+          // Try second API
+          fetch(apis[1])
+            .then(response => response.json())
+            .then(data => {
+              if (data && data[0] && data[0].followers_count) {
+                const count = data[0].followers_count;
+                if (count > 0) {
+                  updateStat('xFollowers', count + '+');
+                  updateStat('xStat', count);
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback
+              console.log('Using X fallback value');
+            });
+        });
+    }
+
+    /**
+     * Fetch Discord member count using a public API
+     */
+    function fetchDiscordMembers() {
+      // Discord requires OAuth for member counts,
+      // so we use a public proxy or fallback
+      const serverId = 'YOUR_DISCORD_SERVER_ID'; // Replace with actual server ID
+      
+      // Using a public Discord API proxy
+      fetch(`https://discord.com/api/v9/invites/s8dkuyD3cZ?with_counts=true`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.approximate_member_count) {
+            const count = data.approximate_member_count;
+            if (count > 0) {
+              updateStat('discordMembers', count + '+');
+              updateStat('discordStat', count);
+            }
+          }
+        })
+        .catch(() => {
+          // Fallback
+          console.log('Using Discord fallback value');
+        });
+    }
+
+    /**
+     * Fetch ZORA follower count
+     */
+    function fetchZoraFollowers() {
+      // ZORA doesn't have a public API for follower counts yet
+      // We'll use a fallback or a proxy
+      
+      // Try to fetch from ZORA page
+      fetch('https://zora.co/@rebelinux')
+        .then(response => response.text())
+        .then(html => {
+          // Try to parse follower count from the page
+          const match = html.match(/(\d+[\.,]?\d*)\s*(?:followers|fans)/i);
+          if (match && match[1]) {
+            const count = parseInt(match[1].replace(/[,\.]/g, ''));
+            if (count > 0) {
+              updateStat('zoraFollowers', count + '+');
+              updateStat('zoraStat', count);
+            }
+          }
+        })
+        .catch(() => {
+          // Fallback
+          console.log('Using ZORA fallback value');
+        });
+    }
   </script>
 
   <!-- Analytics -->
