@@ -406,7 +406,47 @@ function updateUserTotals() {
     updateUserStatsDisplay(totalTokens, totalWSWithMultiplier, totalWeightedAge);
     updateWSInfoDisplay();
 }
-
+function setParticipantType(type) {
+    calculatorState.participantType = type;
+    
+    const detailedMode = document.getElementById('detailedBatchesMode');
+    const summaryMode = document.getElementById('summaryMode');
+    const detailedOption = document.querySelector('.participant-type-option:nth-child(1)');
+    const summaryOption = document.querySelector('.participant-type-option:nth-child(2)');
+    
+    if (type === 'detailed') {
+        if (detailedMode) {
+            detailedMode.style.display = 'block';
+            detailedMode.classList.add('active');
+        }
+        if (summaryMode) {
+            summaryMode.style.display = 'none';
+            summaryMode.classList.remove('active');
+        }
+        if (detailedOption) detailedOption.classList.add('active');
+        if (summaryOption) summaryOption.classList.remove('active');
+        
+        calculateDetailedBatchesWS();
+    } else {
+        if (detailedMode) {
+            detailedMode.style.display = 'none';
+            detailedMode.classList.remove('active');
+        }
+        if (summaryMode) {
+            summaryMode.style.display = 'block';
+            summaryMode.classList.add('active');
+        }
+        if (detailedOption) detailedOption.classList.remove('active');
+        if (summaryOption) summaryOption.classList.add('active');
+        updateSummaryOther();
+    }
+    
+    updateOtherParticipantsSummary();
+    updateParticipationDisplay();
+    calculateRewards();
+    
+    showToast(`Switched to ${type} mode for other participants`, 'info');
+}
 function updateUserStatsDisplay(totalTokens, totalWSWithMultiplier, totalWeightedAge) {
     let statsContainer = document.querySelector('.user-stats-container');
     
