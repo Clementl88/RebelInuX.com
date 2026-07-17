@@ -1223,16 +1223,16 @@ function loadExampleCase(type) {
     
     switch(type) {
         case 'starter':
-            collectibles = 1;
+            collectibles = 2;
             largestHolderCount = 0;
             break;
         case 'investor':
-            collectibles = 3;
-            largestHolderCount = 1;
+            collectibles = 5;
+            largestHolderCount = 2;
             break;
         case 'whale':
-            collectibles = 5;
-            largestHolderCount = 3;
+            collectibles = 15;
+            largestHolderCount = 8;
             break;
         default:
             collectibles = 1;
@@ -1332,6 +1332,7 @@ function loadExampleCase(type) {
         showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} example loaded with ${calculatorState.multiplier.toFixed(2)}x multiplier`, 'success');
     }, 500);
 }
+
 
 // ========== SIMULATOR PRESETS ==========
 function setSimulatorPreset(type) {
