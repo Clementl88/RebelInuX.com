@@ -8,12 +8,12 @@ let lastClickedDropdown = null;
 // ========== DYNAMIC PAGE SUBTITLES ==========
 const PAGE_SUBTITLES = {
     // Main pages
-    'index.html': 'Multi-Chain Passive Income',
+    'index.html': 'AI-Animated Historical Journey Collectibles',
     'trade.html': 'Trade & Exchange Guide',
     'epoch-rewards.html': 'Reward System Dashboard',
     'tokenomics.html': 'Tokenomics & Distribution',
     'community.html': 'Community Hub & Links',
-    'security-integrity.html': 'Security & Integrity Protocols',  
+    'security-integrity.html': 'Security & Integrity Protocols',
     'whitepaper.html': 'Project Documentation',
     'rebl-calculator.html': 'Reward Calculator Tool',
     'governance.html': 'Governance & Voting',
@@ -21,12 +21,12 @@ const PAGE_SUBTITLES = {
     'artwork.html': 'Art & Media Gallery',
     
     // Handle root/index pages
-    'index': 'Multi-Chain Passive Income',
-    '/': 'Multi-Chain Passive Income',
-    '': 'Multi-Chain Passive Income',
+    'index': 'AI-Animated Historical Journey Collectibles',
+    '/': 'AI-Animated Historical Journey Collectibles',
+    '': 'AI-Animated Historical Journey Collectibles',
     
     // Default fallback
-    'default': 'Multi-Chain Passive Income'
+    'default': 'AI-Animated Historical Journey Collectibles'
 };
 
 function getCurrentPage() {
@@ -320,6 +320,9 @@ function setupMobileNavigation() {
         document.body.classList.add('nav-open');
         document.body.style.overflow = 'hidden';
         
+        // Close any open dropdowns
+        closeAllDropdowns();
+        
         // Focus management for accessibility
         setTimeout(() => {
             const firstFocusable = navDesktop.querySelector('a:not(.buy-toggle), .dropbtn');
@@ -388,7 +391,10 @@ function setupDropdowns() {
             e.stopPropagation();
             
             const dropdown = this.closest('.dropdown');
-            if (!dropdown) return;
+            if (!dropdown) {
+                console.error('❌ Dropdown parent not found');
+                return;
+            }
             
             const isMobile = window.innerWidth <= 768;
             const isOpen = dropdown.classList.contains('active');
@@ -467,8 +473,11 @@ function setupDropdowns() {
             const dropdown = this.closest('.dropdown');
             if (dropdown) {
                 dropdown.classList.remove('active');
-                dropdown.querySelector('.dropbtn')?.classList.remove('active');
-                dropdown.querySelector('.dropbtn')?.setAttribute('aria-expanded', 'false');
+                const btn = dropdown.querySelector('.dropbtn');
+                if (btn) {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
             }
             
             // Close mobile menu on mobile
@@ -639,18 +648,18 @@ function setActiveNavItem() {
     // Update subtitle FIRST
     updateBrandSubtitle();
     
-    // Define active page mapping
+    // Define active page mapping - FIXED: Use correct nav class names
     const pageMap = {
         'index.html': 'a[href="index.html"]',
         'trade.html': 'a.nav-trade',
         'epoch-rewards.html': 'a.nav-rewards',
         'tokenomics.html': 'a.nav-tokenomics',
-        'security-integrity.html': 'a.nav-security', // CHANGE 3: Map new page to security nav
+        'security-integrity.html': 'a.nav-security-integrity', // FIXED: Correct class name
         'community.html': 'a.nav-community',
         'governance.html': 'a.nav-governance',
         'roadmap.html': 'a.nav-roadmap',
         'artwork.html': 'a.nav-artwork',
-        'REBL-calculator.html': 'a.nav-calculator',
+        'rebl-calculator.html': 'a.nav-rebl-calculator', // FIXED: Correct class name
         'whitepaper.html': 'a.nav-whitepaper'
     };
     
@@ -709,25 +718,66 @@ function setupPerformance() {
 }
 
 // ========== ENHANCED CONTRACT COPY FUNCTIONALITY ==========
+function setupContractCopy() {
+    console.log('📋 Setting up enhanced contract copy functionality...');
+    
+    const contractElement = document.querySelector('.contract-value-quick');
+    
+    if (!contractElement) {
+        console.warn('⚠️ Contract copy element not found');
+        return;
+    }
+    
+    // Remove existing event listeners by cloning
+    const newContractElement = contractElement.cloneNode(true);
+    contractElement.parentNode.replaceChild(newContractElement, contractElement);
+    
+    // Re-select fresh element
+    const freshContractElement = document.querySelector('.contract-value-quick');
+    
+    // Add click event listener
+    freshContractElement.addEventListener('click', copyContract);
+    
+    // Add touch support for mobile
+    freshContractElement.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        copyContract();
+    }, { passive: false });
+    
+    console.log('✅ Enhanced contract copy functionality setup complete');
+}
+
 function copyContract() {
     const contractAddress = 'F4gh7VNjtp69gKv3JVhFFtXTD4NBbHfbEq5zdiBJpump';
     const message = document.getElementById('contractCopiedMessage');
     const copyButton = document.querySelector('.contract-value-quick');
+    
+    if (!copyButton) {
+        console.error('❌ Contract copy button not found');
+        return;
+    }
+    
     const copyIcon = copyButton.querySelector('.copy-icon');
     
     // Show loading state
-    copyIcon.classList.remove('fa-copy');
-    copyIcon.classList.add('fa-spinner', 'fa-spin');
+    if (copyIcon) {
+        copyIcon.classList.remove('fa-copy');
+        copyIcon.classList.add('fa-spinner', 'fa-spin');
+    }
     
     // Copy to clipboard
     navigator.clipboard.writeText(contractAddress).then(() => {
         // Success state
         setTimeout(() => {
-            copyIcon.classList.remove('fa-spinner', 'fa-spin');
-            copyIcon.classList.add('fa-check');
+            if (copyIcon) {
+                copyIcon.classList.remove('fa-spinner', 'fa-spin');
+                copyIcon.classList.add('fa-check');
+            }
             
             // Show success message
-            message.classList.add('show');
+            if (message) {
+                message.classList.add('show');
+            }
             
             // Visual feedback on button
             copyButton.style.background = 'rgba(39, 174, 96, 0.1)';
@@ -735,9 +785,13 @@ function copyContract() {
             
             // Reset after 3 seconds
             setTimeout(() => {
-                copyIcon.classList.remove('fa-check');
-                copyIcon.classList.add('fa-copy');
-                message.classList.remove('show');
+                if (copyIcon) {
+                    copyIcon.classList.remove('fa-check');
+                    copyIcon.classList.add('fa-copy');
+                }
+                if (message) {
+                    message.classList.remove('show');
+                }
                 copyButton.style.background = '';
                 copyButton.style.borderColor = '';
             }, 3000);
@@ -753,19 +807,38 @@ function copyContract() {
         textArea.style.opacity = '0';
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand('copy');
+        
+        try {
+            document.execCommand('copy');
+            
+            if (copyIcon) {
+                copyIcon.classList.remove('fa-spinner', 'fa-spin');
+                copyIcon.classList.add('fa-check');
+            }
+            if (message) {
+                message.classList.add('show');
+            }
+            
+            setTimeout(() => {
+                if (copyIcon) {
+                    copyIcon.classList.remove('fa-check');
+                    copyIcon.classList.add('fa-copy');
+                }
+                if (message) {
+                    message.classList.remove('show');
+                }
+            }, 3000);
+        } catch (fallbackErr) {
+            console.error('Fallback copy failed:', fallbackErr);
+            alert('Failed to copy contract address. Please copy manually: ' + contractAddress);
+            
+            if (copyIcon) {
+                copyIcon.classList.remove('fa-spinner', 'fa-spin');
+                copyIcon.classList.add('fa-copy');
+            }
+        }
+        
         document.body.removeChild(textArea);
-        
-        // Show success anyway
-        copyIcon.classList.remove('fa-spinner', 'fa-spin');
-        copyIcon.classList.add('fa-check');
-        message.classList.add('show');
-        
-        setTimeout(() => {
-            copyIcon.classList.remove('fa-check');
-            copyIcon.classList.add('fa-copy');
-            message.classList.remove('show');
-        }, 3000);
     });
 }
 
@@ -838,25 +911,9 @@ function debugMobileDropdowns() {
         console.log(`Dropdown ${i + 1}:`, {
             isActive: isActive,
             btnActive: btnActive,
-            ariaExpanded: ariaExpanded,
-            hasEventListeners: btn ? btn._hasListeners || false : false
+            ariaExpanded: ariaExpanded
         });
     });
-    
-    // Check for duplicate event listeners
-    const dropbtns = document.querySelectorAll('.dropbtn');
-    dropbtns.forEach((btn, i) => {
-        const listeners = getEventListeners(btn);
-        console.log(`Dropbtn ${i + 1} listeners:`, Object.keys(listeners || {}));
-    });
-}
-
-// Helper to check event listeners (requires DevTools)
-function getEventListeners(element) {
-    if (window.getEventListeners) {
-        return window.getEventListeners(element);
-    }
-    return null;
 }
 
 // ========== LOADER ==========
@@ -919,36 +976,6 @@ function initializeCommon() {
     }
 }
 
-// ========== SETUP CONTRACT COPY FUNCTIONALITY ==========
-function setupContractCopy() {
-    console.log('📋 Setting up enhanced contract copy functionality...');
-    
-    const contractElement = document.querySelector('.contract-value-quick');
-    
-    if (!contractElement) {
-        console.warn('⚠️ Contract copy element not found');
-        return;
-    }
-    
-    // Remove existing event listeners by cloning
-    const newContractElement = contractElement.cloneNode(true);
-    contractElement.parentNode.replaceChild(newContractElement, contractElement);
-    
-    // Re-select fresh element
-    const freshContractElement = document.querySelector('.contract-value-quick');
-    
-    // Add click event listener
-    freshContractElement.addEventListener('click', copyContract);
-    
-    // Add touch support for mobile
-    freshContractElement.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        copyContract();
-    }, { passive: false });
-    
-    console.log('✅ Enhanced contract copy functionality setup complete');
-}
-
 // ========== INITIALIZE ON DOM READY ==========
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM Content Loaded (common.js)');
@@ -962,6 +989,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('🔧 Debug commands available: debugMobileDropdowns()');
     }
 });
+
 // Update subtitle on navigation events
 window.addEventListener('popstate', updateBrandSubtitle);
 window.addEventListener('hashchange', updateBrandSubtitle);
@@ -972,6 +1000,7 @@ if (window.componentsLoaded) {
 } else {
     document.addEventListener('components:initialized', updateBrandSubtitle);
 }
+
 // ========== EXPORT FUNCTIONS FOR OTHER FILES ==========
 window.setupMobileNavigation = setupMobileNavigation;
 window.setupDropdowns = setupDropdowns;
@@ -979,4 +1008,8 @@ window.setupBackToTop = setupBackToTop;
 window.setActiveNavItem = setActiveNavItem;
 window.closeAllDropdowns = closeAllDropdowns;
 window.initializeCommon = initializeCommon;
-window.copyContract = copyContract; // Export both functions for compatibility
+window.copyContract = copyContract;
+window.fallbackCopy = fallbackCopy;
+window.setupContractCopy = setupContractCopy;
+window.updateBrandSubtitle = updateBrandSubtitle;
+window.getCurrentPage = getCurrentPage;
